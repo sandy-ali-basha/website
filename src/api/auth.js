@@ -1,0 +1,63 @@
+import { _axios } from "interceptor/http-config";
+
+export const _AuthApi = {
+  login: (data) => {
+    return _axios.post("/login", data).then((res) => {
+      _AuthApi.storeToken(res?.data?.token);
+      return res;
+    });
+  },
+
+  register: (data) => {
+    return _axios.post("/register", data).then((res) => {
+      return res;
+    });
+  },
+
+  verifyEmail: (data) => {
+    return _axios.post("/forgot-password", data).then((res) => {
+      return res;
+    });
+  },
+
+  storeToken: (access_token) => {
+    localStorage.setItem("access_token", access_token);
+  },
+
+  getToken: () => localStorage.getItem("access_token"),
+
+  destroyToken: () => {
+    localStorage.removeItem("access_token");
+    window.location.reload();
+  },
+
+  resetPass: (data) => {
+    return _axios.post("/reset-password", data).then((res) => res?.data);
+  },
+
+  verifyCode: (data) => {
+    return _axios
+      .post("/checkCode", data)
+      .then((res) => {
+        console.log("done");
+        return res;
+      })
+      .catch((error) => {
+        console.error("Verify code error:", error);
+        throw error;
+      });
+  },
+
+  passEdit: (data) => {
+    return _axios
+      .post("/editPassword", data)
+      .then((res) => {
+        console.log("done");
+        return res;
+      })
+      .catch((error) => {
+        console.error("Edit password error:", error);
+        throw error;
+      });
+  },
+};
