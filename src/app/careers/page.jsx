@@ -1,5 +1,5 @@
 import { Box, Button, Chip, Container, Typography, Grid } from "@mui/material";
-  
+
 import React from "react";
 import careerimg from "assets/images/careers.png";
 import careerimg1 from "assets/images/careers-img.png";
@@ -8,9 +8,13 @@ import careerimg3 from "assets/images/pic2.png";
 
 import { Star } from "@mui/icons-material";
 import JobCard from "./component/JobCard";
+import { useCareers } from "hooks/careers/useCreers";
+import Loader from "components/modules/Loader";
 export default function Careers() {
+  const { data, isLoading } = useCareers();
   return (
     <Container sx={{ pt: 7 }}>
+      {isLoading && <Loader />}
       <Grid container spacing={2}>
         <Grid
           item
@@ -34,9 +38,7 @@ export default function Careers() {
             find jobs according to your interest, Here are +1000 jobs
             opportunities for your better future .
           </Typography>
-          <Button variant="contained" sx={{ mt: 3 }}>
-            Read more
-          </Button>
+        
         </Grid>
         <Grid item sm={6} sx={{ px: 4, textAlign: "center" }}>
           <img
@@ -203,10 +205,16 @@ export default function Careers() {
         >
           Open Positions
         </Typography>
-        <JobCard
-          title="Senior Front End Engineer"
-          description="Engineering · Toronto, Ontario (Remote)"
-        />
+        {data?.careers?.map((item, idx) => (
+          <JobCard
+            key={idx}
+            id={item.id}
+            title={item?.vacancy_name}
+            description={
+              item?.category_name + ". " + item.location + " " + item.country
+            }
+          />
+        ))}
       </section>
     </Container>
   );

@@ -73,7 +73,7 @@ function App() {
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/careers" element={<Careers />} />
-          <Route path="/careers/:job" element={<Job />} />
+          <Route path="/careers/job/:id" element={<Job />} />
           <Route path="/payment-methods" element={<PaymentMethods />} />
           <Route path="/policy/delivery" element={<Delivery />} />
           <Route path="/policy/privacy" element={<Privecy />} />

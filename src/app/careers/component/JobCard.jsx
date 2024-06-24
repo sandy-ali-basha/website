@@ -2,7 +2,7 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import { Box, Button } from "@mui/material";
 
-export default function JobCard({ title, description }) {
+export default function JobCard({ id, title, description }) {
   return (
     <Box
       sx={{
@@ -24,7 +24,7 @@ export default function JobCard({ title, description }) {
           {description}
         </Typography>
       </Box>
-      <Button href="/careers/job" variant="contained" color="secondary">
+      <Button href={"/careers/job" + id} variant="contained" color="secondary">
         View details
       </Button>
     </Box>
