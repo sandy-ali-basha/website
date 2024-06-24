@@ -50,8 +50,7 @@ function SignUp() {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
-        pt: 20,
-        pb: 7,
+        py: 5,
       }}
     >
       <img
@@ -97,39 +96,52 @@ function SignUp() {
           create new account{" "}
         </Typography>
         <Box onSubmit={handleSubmit(onSubmit)} component="form">
-          {details.map((item, index) => (
-            <Box key={index} sx={{ pt: 1 }}>
-              <TextField
-                sx={{ width: "100%" }}
-                size="small"
-                type={
-                  item.type === "password"
-                    ? showPassword
-                      ? "text"
-                      : "password"
-                    : item.type
+          <Grid container >
+            {details.map((item, index) => (
+              <Grid
+                item
+                xs={
+                  (item.name === "first_name") | (item.name === "last_name")
+                    ? "6"
+                    : "12"
                 }
-                placeholder={item.placeholder}
-                label={item.placeholder}
-                name={item.name}
-                {...register(item.register)}
-                error={!!errors[item.error]?.message}
-                helperText={errors[item.helperText]?.message || ""}
-                InputProps={{
-                  autoComplete: false,
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      {item.type === "password" && (
-                        <IconButton onClick={handleTogglePasswordVisibility}>
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      )}
-                    </InputAdornment>
-                  ),
+                key={index}
+                sx={{
+                  pt: 1,
                 }}
-              />
-            </Box>
-          ))}
+              >
+                <TextField
+                  sx={{ width: "99%" }}
+                  size="small"
+                  type={
+                    item.type === "password"
+                      ? showPassword
+                        ? "text"
+                        : "password"
+                      : item.type
+                  }
+                  placeholder={item.placeholder}
+                  label={item.placeholder}
+                  name={item.name}
+                  {...register(item.register)}
+                  error={!!errors[item.error]?.message}
+                  helperText={errors[item.helperText]?.message || ""}
+                  InputProps={{
+                    autoComplete: false,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        {item.type === "password" && (
+                          <IconButton onClick={handleTogglePasswordVisibility}>
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        )}
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+            ))}
+          </Grid>
           <Box sx={{ pt: 1 }}>
             <GenderSelect register={register} errors={errors} />
           </Box>

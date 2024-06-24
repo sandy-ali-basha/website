@@ -14,7 +14,7 @@ import VerificationCodeInput from "components/modules/VerificationCodeInput";
 import { CloseFullscreen, CloseOutlined } from "@mui/icons-material";
 
 const ConfirmPhoneNum = ({ open, setOpen, id }) => {
-  console.log("open", open);
+
   const { t } = useTranslation("index");
   const [loading, setLoading] = useState(false);
 

@@ -39,8 +39,7 @@ const ResetPassword = () => {
 
   const onSubmit = async (e) => {
     _AuthApi
-      .resetPass({
-        token,
+      .resetPass(token, {
         email,
         password,
         password_confirmation,
@@ -48,7 +47,7 @@ const ResetPassword = () => {
       .then((res) => {
         if (res?.code == 200) {
           setMessage(true);
-          setTimeout(() => navigate("/"), [1000]);
+          setTimeout(() => navigate("/"), [2000]);
         } else {
           setError(res?.error || "An unexpected error occurred");
         }

@@ -31,8 +31,11 @@ export const _AuthApi = {
     window.location.reload();
   },
 
-  resetPass: (data) => {
-    return _axios.post("/reset-password", data).then((res) => res?.data);
+  resetPass: (token, data) => {
+    return _axios.post(`/reset-password/${token}`, data).then((res) => res?.data);
+  },
+  forgetPass: (data) => {
+    return _axios.post("/forgot-password", data).then((res) => res?.data);
   },
 
   verifyCode: (data) => {

@@ -1,13 +1,11 @@
 import {
   Box,
   Typography,
-  Grid,
   Button,
   TextField,
-  Container,
   Alert,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -27,20 +25,35 @@ const ForgetPassword = () => {
   const { t } = useTranslation("index");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const navigate = useNavigate();
+  const [error, setError] = useState(false);
+  const [timer, setTimer] = useState(0);
   const formOptions = { resolver: yupResolver(schema) };
   const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
-  const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
-  const onSubmit = async (e) => {
-    _AuthApi.resetPass({ email }).then((res) => {
-     if (res?.code == 200) {
-        setMessage(true);
-      } else {
-        setError(res?.error || "An unexpected error occurred");
-      }
-    });
+  useEffect(() => {
+    if (timer > 0) {
+      const interval = setInterval(() => {
+        setTimer(timer - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [timer]);
+
+  const onSubmit = async (data) => {
+    if (timer === 0) {
+      _AuthApi.forgetPass({ email }).then((res) => {
+        if (res?.code === 200) {
+          setMessage(true);
+          setError(false);
+          setTimer(60); // Set the timer to 60 seconds
+        } else {
+          setError(res?.error || "An unexpected error occurred");
+          setMessage(false);
+        }
+      });
+    }
   };
 
   return (
@@ -53,14 +66,12 @@ const ForgetPassword = () => {
           alignItems: "center",
           minHeight: "100vh",
           pt: 20,
-          pb: 7,
+          pb: 7,  
         }}
       >
         <img
           src={img}
           alt="gummie"
-          objectFit="cover"
-          quality={100}
           style={{
             position: "absolute",
             left: "0px",
@@ -68,6 +79,7 @@ const ForgetPassword = () => {
             width: "100%",
             height: "100%",
             zIndex: "-1",
+            objectFit: "cover",
           }}
         />
         <Box
@@ -89,7 +101,7 @@ const ForgetPassword = () => {
             {t("Reset Your Password")}
           </Typography>
           <Typography variant="body1" sx={{ mb: 2 }} color="text.secondary">
-            {t("Enter your credentials to continue")}
+            {t("Enter your Email to continue")}
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -107,31 +119,26 @@ const ForgetPassword = () => {
             {errors.email && (
               <Alert severity="error">{errors.email.message}</Alert>
             )}
-            {error?.errors && Object.keys(error?.errors).length > 0 && (
-              <div>
-                {Object.keys(error?.errors).map((key, idx) => (
-                  <Alert key={idx} severity="error" sx={{ mt: 1 }}>
-                    {error?.errors[key]}
-                  </Alert>
-                ))}
-              </div>
+            {error && (
+              <Alert severity="error" sx={{ mt: 2 }}>
+                {error}
+              </Alert>
             )}
             {message && (
-              <Alert severity="success">
+              <Alert severity="success" sx={{ textAlign: 'start', mt: 2 }}>
                 {
-                  "We have sent you a message on WhatsApp. Please check the code in the message"
+                  "We have sent you an email with a link to reset your password. Please check your inbox and follow the instructions to restore access to your account. If you do not see the email in your inbox, please check your spam or junk folder."
                 }
               </Alert>
             )}
             <Button
-              disableOnLoading
-              loading={false}
+              disabled={timer > 0}
               fullWidth
               type="submit"
               variant="contained"
               sx={{ mt: 2 }}
             >
-              Send Verification Code
+              {timer > 0 ? `Send Again in ${timer}s` : "Send Reset Email"}
             </Button>
           </Box>
         </Box>

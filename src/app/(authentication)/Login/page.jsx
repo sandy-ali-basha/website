@@ -25,9 +25,7 @@ export default function Login() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "100vh",
-        pt: 20,
-        pb: 7,
+        minHeight:'100vh'
       }}
     >
       <img
