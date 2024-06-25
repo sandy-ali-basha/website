@@ -76,8 +76,8 @@ export default function Home() {
               <Box
                 sx={{
                   position: "relative",
-                  zIndex: 1, // Ensure content is above the image
-                  width: "50%",
+                  zIndex: 1,
+                  width: {md:"50%",xs:"100%"},
                 }}
               >
                 <Typography variant="h2" color="inherit">
@@ -104,7 +104,8 @@ export default function Home() {
           <Grid
             p="2rem"
             item
-            xs={6}
+            md={6}
+            xs={12}
             sx={{
               display: "flex",
               justifyContent: "center",
@@ -191,7 +192,8 @@ export default function Home() {
             }}
             ref={gummieBox}
           />
-          <Grid item xs={5} sx={{ height: "60vh" }}>
+          <Grid item md={5} 
+            xs={12} sx={{ height: "60vh" }}>
             <Box
               sx={{
                 background: "#6A83B0",

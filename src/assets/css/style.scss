@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+*{
+  border:1px solid forestgreen
+}
 .animatedText {
   display: flex;
   justify-content: center;
@@ -16,12 +19,17 @@
     -webkit-text-fill-color: transparent;
     text-align: center;
     filter: drop-shadow(0 5px 0.2rem #4d4d4d27);
+    @media only screen and (max-width: 600px) {
+     font-size: 3rem;
+    }
   }
   .floatingGummie {
     position: absolute;
     width: 100px;
     object-fit: contain;
-
+    @media only screen and (max-width: 600px) {
+    width: 50px;
+    }
     &:nth-child(1) {
       left: 50px;
       top: 0px;
@@ -47,7 +55,7 @@
       top: 300px;
     }
     &:nth-child(7) {
-      left: 560px;
+      right: 20px;
       top: 250px;
       z-index: -1;
       width: 100px;
@@ -62,11 +70,17 @@
     object-fit: contain;
     width: 300px;
     filter: drop-shadow(0 10px 0.3rem #4d4d4d52);
+    @media only screen and (max-width: 600px) {
+      width:30vw;
+     }
   }
   .floatingGar2 {
     transform: translate(-80px, -80px);
     object-fit: contain;
     width: 350px;
     filter: drop-shadow(0 10px 0.3rem #4d4d4d52);
+    @media only screen and (max-width: 600px) {
+      width:30vw;
+     }
   }
 }

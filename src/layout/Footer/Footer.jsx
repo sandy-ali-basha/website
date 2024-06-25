@@ -69,13 +69,16 @@ function Footer() {
             </Typography>
           </Grid>
           <Grid
-            xs={6}
+            xs={12}
+            md={6}
             item
             sx={{
               my: "2",
               alignItems: "center",
+              justifyContent:"space-evenly",
               height: "auto",
               display: "flex",
+              flexWrap:"wrap"
             }}
           >
             {MenuItems.map((item, index) => (
@@ -90,7 +93,8 @@ function Footer() {
             ))}
           </Grid>
           <Grid
-            xs={6}
+            md={6}
+            xs={12}
             sx={{ display: "flex", justifyContent: "end", my: 2, gap: 1 }}
             item
           >

@@ -7,11 +7,9 @@ import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import logo from "assets/images/logo.svg";
 import SearchInput from "components/modules/SearchInput";
 import {
-  LanguageOutlined,
   PersonOutlineOutlined,
   ShoppingCartOutlined,
 } from "@mui/icons-material";
@@ -22,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 import LanguageSelector from "components/LanguageSelector";
 
 function NavBar() {
-  const { changeLanguage, handleCloseNavMenu, t } = useNavBar();
+  const {  handleCloseNavMenu, t } = useNavBar();
   const GoToCart = () => {
     return (
       <Button sx={{ width: "100%" }} variant="outlined" href="/store/checkout">
@@ -122,6 +120,7 @@ function NavBar() {
       position="fixed"
       color="transparent"
       sx={{
+        width:"100%",
         boxShadow: "0px ",
         background: "#6666663d",
         backdropFilter: "blur(5px)",
