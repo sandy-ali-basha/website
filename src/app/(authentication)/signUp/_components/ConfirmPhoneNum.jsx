@@ -15,7 +15,7 @@ import { CloseFullscreen, CloseOutlined } from "@mui/icons-material";
 
 const ConfirmPhoneNum = ({ open, setOpen, id }) => {
 
-  const { t } = useTranslation("index");
+  const { t } = useTranslation("auth");
   const [loading, setLoading] = useState(false);
 
   const handleClickOpen = (e) => setOpen(true);

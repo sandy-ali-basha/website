@@ -11,46 +11,7 @@ import { useTranslation } from "react-i18next";
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/;
 
-let schema = yup.object().shape({
-  first_name: yup.string().required("First name is required"),
-  last_name: yup.string().required("Last name is required"), // Assuming you wanted last name instead of repeating first_name
-  email: yup
-    .string()
-    .email("Invalid email format")
-    .required("Email is required"),
-  phone_number: yup
-    .string()
-    .matches(phoneRegExp, "Enter a valid phone number")
-    .required("Phone number is required"),
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(6, "The password must be at least six characters")
-    .max(20, "The password must be at most 20 characters"),
-  password_confirmation: yup
-    .string()
-    .required("Confirm password is required")
-    .min(6, "The confirm password must be at least six characters")
-    .max(20, "The confirm password must be at most 20 characters")
-    .oneOf([yup.ref("password")], "Your passwords do not match"),
-  age: yup
-    .date()
-    .required("Birth date is required")
-    .test("age", "You must be at least 18 years old", function (value) {
-      const today = new Date();
-      const birthDate = new Date(value);
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const m = today.getMonth() - birthDate.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      return age >= 18;
-    }),
-  gender: yup
-    .string()
-    .required("Gender is required")
-    .oneOf(["male", "female", "other"], "Invalid gender selection"),
-});
+
 
 export const useSignUp = () => {
   const [loading, setLoading] = useState(false);
@@ -58,12 +19,52 @@ export const useSignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
-  const { t } = useTranslation("index");
+  const { t } = useTranslation("auth");
 
+  let schema = yup.object().shape({
+    first_name: yup.string().required(t("First name is required")),
+    last_name: yup.string().required(t("Last name is required")),
+    email: yup
+      .string()
+      .email(t("Invalid email format"))
+      .required(t("Email is required")),
+    phone_number: yup
+      .string()
+      .matches(phoneRegExp, t("Enter a valid phone number"))
+      .required(t("Phone number is required")),
+    password: yup
+      .string()
+      .required(t("Password is required"))
+      .min(6, t("The password must be at least six characters"))
+      .max(20, t("The password must be at most 20 characters")),
+    password_confirmation: yup
+      .string()
+      .required(t("Confirm password is required"))
+      .min(6, t("The confirm password must be at least six characters"))
+      .max(20, t("The confirm password must be at most 20 characters"))
+      .oneOf([yup.ref("password")], t("Your passwords do not match")),
+    age: yup
+      .date()
+      .required(t("Birth date is required"))
+      .test("age", t("You must be at least 18 years old"), function (value) {
+        const today = new Date();
+        const birthDate = new Date(value);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        return age >= 18;
+      }),
+    gender: yup
+      .string()
+      .required(t("Gender is required"))
+      .oneOf(["male", "female", "other"], t("Invalid gender selection")),
+  });
+ 
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-  const navigate = useNavigate();
 
   const formOptions = { resolver: yupResolver(schema) };
   const { register, handleSubmit, formState, setValue } = useForm(formOptions);

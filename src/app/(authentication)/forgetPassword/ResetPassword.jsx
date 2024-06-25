@@ -7,23 +7,24 @@ import { useTranslation } from "react-i18next";
 import img from "../../../assets/images/hero-image (3).jpg";
 import { _AuthApi } from "api/auth";
 import { Alert, Box, Button, Grid, TextField, Typography } from "@mui/material";
-let schema = yup.object().shape({
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(6, "The Password must be of six characters")
-    .max(20, "The Password must be of 20 characters"),
+import LanguageSelector from "components/LanguageSelector";
 
-  password_confirmation: yup
-    .string()
-    .required("Confirm password is required")
-    .min(6, "The confirm password must be of six characters")
-    .max(20, "The confirm password must be of 20 characters")
-    .oneOf([yup.ref("password")], "your password does not match"),
-});
 const ResetPassword = () => {
   const { t } = useTranslation("index");
+  let schema = yup.object().shape({
+    password: yup
+      .string()
+      .required(t("Password is required"))
+      .min(6, t("The Password must be of six characters"))
+      .max(20, t("The Password must be of 20 characters")),
 
+    password_confirmation: yup
+      .string()
+      .required(t("Confirm password is required"))
+      .min(6, t("The confirm password must be of six characters"))
+      .max(20, t("The confirm password must be of 20 characters"))
+      .oneOf([yup.ref("password")], t("your password does not match")),
+  });
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
   const token = searchParams.get("token");
@@ -49,7 +50,7 @@ const ResetPassword = () => {
           setMessage(true);
           setTimeout(() => navigate("/"), [2000]);
         } else {
-          setError(res?.error || "An unexpected error occurred");
+          setError(res?.error || t("An unexpected error occurred"));
         }
       });
   };
@@ -153,7 +154,7 @@ const ResetPassword = () => {
             )}
             {message && (
               <Alert severity="success">
-                {"Password Reset Successfully ,redirect you to login"}
+                {t("Password Reset Successfully ,redirect you to login")}
               </Alert>
             )}
             <Button
@@ -163,9 +164,12 @@ const ResetPassword = () => {
               type="submit"
               variant="contained"
             >
-              Update Password
+              {t("Update Password")}
             </Button>
           </Box>
+        </Box>
+        <Box sx={{ position: "fixed", bottom: "10px", right: "10px" }}>
+          <LanguageSelector />
         </Box>
       </Box>
     </>

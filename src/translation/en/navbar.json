@@ -1,10 +1,17 @@
 {
-  "Ar": "EN",
-  "Contact us": "Contact us",
-  "Shop": "Shop",
-  "SIGN IN": "Sign In",
-  "sign Up": "sign Up",
-  "Home": "Home",
+  "About Us": "About Us",
+  "MILESTONES": "MILESTONES",
   "Profile": "Profile",
-  "Log Out": "Log Out"
+  "My account": "My account",
+  "Change Password": "Change Password",
+  "Billing": "Billing",
+  "My Orders": "My Orders",
+  "Login": "Login",
+  "Home": "Home",
+  "Products": "Products",
+  "Careers": "Careers",
+  "Special Offers": "Special Offers",
+  "Contact Us": "Contact Us",
+  "Change Language":"Change Language",
+    "Show Cart":"Show Cart"
 }

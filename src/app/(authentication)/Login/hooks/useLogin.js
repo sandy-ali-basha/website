@@ -22,7 +22,7 @@ export const useLogin = () => {
   const formOptions = { resolver: yupResolver(schema) };
   const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
-  const { t } = useTranslation("index");
+  const { t } = useTranslation("auth");
   const navigate = useNavigate();
 
   const [error, setError] = useState(false);

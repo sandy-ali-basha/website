@@ -1,10 +1,4 @@
-import {
-  Box,
-  Typography,
-  Button,
-  TextField,
-  Alert,
-} from "@mui/material";
+import { Box, Typography, Button, TextField, Alert } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -13,16 +7,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { _AuthApi } from "api/auth";
 import img from "../../../assets/images/hero-image (3).jpg";
 import { useTranslation } from "react-i18next";
-
-let schema = yup.object().shape({
-  email: yup
-    .string()
-    .email("This must be a valid email")
-    .required("Email is required"),
-});
+import LanguageSelector from "components/LanguageSelector";
 
 const ForgetPassword = () => {
-  const { t } = useTranslation("index");
+  const { t } = useTranslation("auth");
+  let schema = yup.object().shape({
+    email: yup
+      .string()
+      .email(t("This must be a valid email"))
+      .required(t("Email is required")),
+  });
+
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
@@ -30,7 +25,6 @@ const ForgetPassword = () => {
   const formOptions = { resolver: yupResolver(schema) };
   const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (timer > 0) {
@@ -49,7 +43,7 @@ const ForgetPassword = () => {
           setError(false);
           setTimer(60); // Set the timer to 60 seconds
         } else {
-          setError(res?.error || "An unexpected error occurred");
+          setError(res?.error || t("An unexpected error occurred"));
           setMessage(false);
         }
       });
@@ -66,7 +60,7 @@ const ForgetPassword = () => {
           alignItems: "center",
           minHeight: "100vh",
           pt: 20,
-          pb: 7,  
+          pb: 7,
         }}
       >
         <img
@@ -108,13 +102,13 @@ const ForgetPassword = () => {
             <TextField
               type="email"
               sx={{ width: "100%" }}
-              placeholder="Enter your email"
+              placeholder={t("Enter your email")}
               {...register("email", { validate: true })}
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               size="small"
-              label="Email"
+              label={t("Email")}
             />
             {errors.email && (
               <Alert severity="error">{errors.email.message}</Alert>
@@ -125,7 +119,7 @@ const ForgetPassword = () => {
               </Alert>
             )}
             {message && (
-              <Alert severity="success" sx={{ textAlign: 'start', mt: 2 }}>
+              <Alert severity="success" sx={{ textAlign: "start", mt: 2 }}>
                 {
                   "We have sent you an email with a link to reset your password. Please check your inbox and follow the instructions to restore access to your account. If you do not see the email in your inbox, please check your spam or junk folder."
                 }
@@ -138,9 +132,12 @@ const ForgetPassword = () => {
               variant="contained"
               sx={{ mt: 2 }}
             >
-              {timer > 0 ? `Send Again in ${timer}s` : "Send Reset Email"}
+              {timer > 0 ? `${t("Send Again in")} ${timer}s` : t("Send Reset Email")}
             </Button>
           </Box>
+        </Box>
+        <Box sx={{ position: "fixed", bottom: "10px", right: "10px" }}>
+          <LanguageSelector />
         </Box>
       </Box>
     </>

@@ -19,13 +19,14 @@ import { useNavBar } from "./useNavBar";
 import MenuButton from "components/modules/NavBar/MenuButton";
 import CartItem from "components/modules/cart/CartItem";
 import { useNavigate } from "react-router-dom";
+import LanguageSelector from "components/LanguageSelector";
 
 function NavBar() {
-  const { changeLanguage, handleCloseNavMenu } = useNavBar();
+  const { changeLanguage, handleCloseNavMenu, t } = useNavBar();
   const GoToCart = () => {
     return (
       <Button sx={{ width: "100%" }} variant="outlined" href="/store/checkout">
-        Show Cart
+        {t("Show Cart")}
       </Button>
     );
   };
@@ -55,29 +56,65 @@ function NavBar() {
   ];
 
   const settings = [
-    { id: 1, label: "Profile", onClick: handleCloseNavMenu },
-    { id: 2, label: "My account", onClick: () => navigate("/profile/account") },
+    { id: 1, 
+      label:
+       t("Profile"), onClick: handleCloseNavMenu },
+    {
+      id: 2,
+      
+      label:
+       t("My account"),
+      onClick: () => navigate("/profile/account"),
+    },
     {
       id: 3,
-      label: "Change Password",
+      
+      label:
+       t("Change Password"),
       onClick: () => navigate("/profile/security"),
     },
-    { id: 4, label: "Billing", onClick: () => navigate("/profile/billing") },
-    { id: 5, label: "My Orders", onClick: () => navigate("/profile/orders") },
-    { id: 6, label: "Login", onClick: () => navigate("/Login") },
+    { id: 4, 
+      label:
+       t("Billing"), onClick: () => navigate("/profile/billing") },
+    {
+      id: 5,
+      
+      label:
+       t("My Orders"),
+      onClick: () => navigate("/profile/orders"),
+    },
+    { id: 6, 
+      label:
+       t("Login"), onClick: () => navigate("/Login") },
   ];
 
   const pages = [
-    { id: "0", onClick: () => navigate("/"), label: "Home" },
-    { id: "1", onClick: () => navigate("/store/categories"),label: "Products" },
-    { id: "2", onClick: () => navigate("/about"), label: "About Us" },
-    { id: "3", onClick: () => navigate("/careers"), label: "Careers" },
+    { id: "0", onClick: () => navigate("/"), 
+      label:
+       t("Home") },
+    {
+      id: "1",
+      onClick: () => navigate("/store/categories"),
+      
+      label:
+       t("Products"),
+    },
+    { id: "2", onClick: () => navigate("/about"), 
+      label:
+       t("About Us") },
+    { id: "3", onClick: () => navigate("/careers"), 
+      label:
+       t("Careers") },
     {
       id: "4",
       onClick: () => navigate("/store/offers"),
-      label: "Special Offers",
+      
+      label:
+       t("Special Offers"),
     },
-    { id: "5", onClick: () => navigate("/contact-us"), label: "Contact Us" },
+    { id: "5", onClick: () => navigate("/contact-us"), 
+      label:
+       t("Contact Us") },
   ];
 
   return (
@@ -159,13 +196,7 @@ function NavBar() {
             <SearchInput />
           </Box>
           {/* //*cart */}
-          <Box sx={{ mx: "10px" }}>
-            <Tooltip title="Change Language">
-              <IconButton onClick={changeLanguage} sx={{ p: 0 }}>
-                <LanguageOutlined sx={{ color: "white" }} />
-              </IconButton>
-            </Tooltip>
-          </Box>  
+        <LanguageSelector/>
           <Box sx={{ mx: "10px" }}>
             <MenuButton
               badgeNumber={4}

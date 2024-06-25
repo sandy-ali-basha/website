@@ -14,6 +14,7 @@ import logo from "../../../assets/images/logo.svg";
 import { Apple, Facebook, Google } from "@mui/icons-material";
 import ButtonLoader from "components/customs/ButtonLoader";
 import { useLogin } from "./hooks/useLogin";
+import LanguageSelector from "components/LanguageSelector";
 
 export default function Login() {
   const { errors, register, t, handleSubmit, onSubmit, loading, error } =
@@ -25,7 +26,7 @@ export default function Login() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight:'100vh'
+        minHeight: "100vh",
       }}
     >
       <img
@@ -68,7 +69,7 @@ export default function Login() {
           color="initial"
           sx={{ textAlign: "center", mb: 2 }}
         >
-          Log in to your account{" "}
+          {t("Log in to your account")}{" "}
         </Typography>
         <Box>
           <TextField
@@ -108,7 +109,7 @@ export default function Login() {
             disabled={loading}
             fullWidth
           >
-            Waiting..
+            {t("Waiting")}..
           </ButtonLoader>
         ) : (
           <Button
@@ -147,7 +148,7 @@ export default function Login() {
           }}
           startIcon={<Google />}
         >
-          Sign Up With Google
+          {t("Sign Up With Google")}
         </Button>
         <Button
           variant="outlined"
@@ -161,7 +162,7 @@ export default function Login() {
           }}
           startIcon={<Apple />}
         >
-          Sign Up With Apple
+          {t("Sign Up With Apple")}
         </Button>
         <Button
           variant="outlined"
@@ -175,7 +176,7 @@ export default function Login() {
           }}
           startIcon={<Facebook />}
         >
-          Sign Up With Facebook
+          {t("Sign Up With Facebook")}
         </Button>
         <Box sx={{ display: "flex", justifyContent: "space-around", mt: 2 }}>
           <Box>
@@ -184,7 +185,7 @@ export default function Login() {
               variant="body2"
               color="text.secondary"
             >
-              Having trouble logging in?
+              {t("Having trouble logging in?")}
             </Typography>
             <Link
               sx={{
@@ -194,7 +195,7 @@ export default function Login() {
               }}
               href="/forget-Password"
             >
-              Forget Password
+              {t("Forget Password")}
             </Link>
           </Box>
           <Box>
@@ -203,7 +204,7 @@ export default function Login() {
               variant="body2"
               color="text.secondary"
             >
-              Don't have account ?
+              {t("Don't have account")} ?
             </Typography>
             <Link
               sx={{
@@ -213,10 +214,13 @@ export default function Login() {
               }}
               href="/signUp"
             >
-              Register
+              {t("Register")}
             </Link>
           </Box>
         </Box>
+      </Box>
+      <Box sx={{ position: "fixed", bottom: "10px", right: "10px" }}>
+        <LanguageSelector />
       </Box>
     </Box>
   );

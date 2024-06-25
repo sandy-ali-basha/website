@@ -26,6 +26,7 @@ import { useSignUp } from "./_hooks/useSignUp";
 import ConfirmPhoneNum from "./_components/ConfirmPhoneNum";
 import ButtonLoader from "components/customs/ButtonLoader";
 import GenderSelect from "components/customs/GenderSelect";
+import LanguageSelector from "components/LanguageSelector";
 function SignUp() {
   const {
     register,
@@ -93,10 +94,10 @@ function SignUp() {
           color="initial"
           sx={{ textAlign: "center", mb: 2 }}
         >
-          create new account{" "}
+          {t("create new account")}{" "}
         </Typography>
         <Box onSubmit={handleSubmit(onSubmit)} component="form">
-          <Grid container >
+          <Grid container>
             {details.map((item, index) => (
               <Grid
                 item
@@ -185,7 +186,7 @@ function SignUp() {
             ))}
           </div>
         )}
-        <Divider>OR</Divider>
+        <Divider>{t("OR")}</Divider>
         <Button
           variant="outlined"
           sx={{
@@ -198,7 +199,7 @@ function SignUp() {
           }}
           startIcon={<Google />}
         >
-          Sign Up With Google
+          {t("Sign Up With Google")}
         </Button>
         <Button
           variant="outlined"
@@ -212,7 +213,7 @@ function SignUp() {
           }}
           startIcon={<Apple />}
         >
-          Sign Up With Apple
+          {t("Sign Up With Apple")}
         </Button>
         <Button
           variant="outlined"
@@ -226,7 +227,7 @@ function SignUp() {
           }}
           startIcon={<Facebook />}
         >
-          Sign Up With Facebook
+          {t("Sign Up With Facebook")}
         </Button>
         <Box>
           <Typography
@@ -234,7 +235,7 @@ function SignUp() {
             variant="body2"
             color="text.secondary"
           >
-            already have an account ?
+            {t("already have an account")} ?
           </Typography>
           <Link
             sx={{
@@ -244,11 +245,14 @@ function SignUp() {
             }}
             href="/Login"
           >
-            Log In
+            {t("Log In")}
           </Link>
         </Box>
       </Box>
       <ConfirmPhoneNum open={open} setOpen={setOpen} id={2} />
+      <Box sx={{ position: "fixed", bottom: "10px", right: "10px" }}>
+        <LanguageSelector />
+      </Box>
     </Box>
   );
 }

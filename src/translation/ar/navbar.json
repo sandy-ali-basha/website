@@ -1,10 +1,18 @@
 {
-  "Ar": "En",
-  "Contact us": "تواصل معنا",
-  "Shop": "تسوق",
-  "SIGN IN": "تسجيل الدخول",
-  "sign Up": "انشاء حساب",
-  "Home": "الرئيسية",
-  "Profile": "الحساب",
-  "Log Out": "تسجيل الخروج"
+  "About Us": "عنا",
+  "MILESTONES": "الإنجازات",
+  "Profile": "الملف الشخصي",
+  "My account": "حسابي",
+  "Change Password": "تغيير كلمة المرور",
+  "Billing": "الفواتير",
+  "My Orders": "طلباتي",
+  "Login": "تسجيل الدخول",
+  "Home": "الصفحة الرئيسية",
+  "Products": "المنتجات",
+  "Careers": "الوظائف",
+  "Special Offers": "العروض الخاصة",
+  "Contact Us": "اتصل بنا",
+  "Change Language": "تغيير اللغة",
+  "Show Cart":"عرض السلة"
+  
 }
