@@ -6,8 +6,8 @@ import ProductCard from "components/modules/ProductCard";
 export default function Simillar() {
   return (
     <Container>
-      <Grid container spacing={1} >
-        <Grid item sm="4" >
+      <Grid container spacing={1}>
+        <Grid item xs="12" md="4">
           <ProductCard
             productImage={productImage}
             productName={" lorem "}
@@ -15,7 +15,7 @@ export default function Simillar() {
             link={`/store/product/0`}
           />
         </Grid>
-        <Grid item sm="4" >
+        <Grid item xs="12" md="4">
           <ProductCard
             productImage={productImage}
             productName={" lorem lorem"}
@@ -23,7 +23,7 @@ export default function Simillar() {
             link={`/store/product/2`}
           />
         </Grid>
-        <Grid item sm="4" >
+        <Grid item xs="12" md="4">
           <ProductCard
             productImage={productImage}
             productName={" lorem lorem m"}

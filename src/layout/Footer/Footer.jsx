@@ -114,7 +114,7 @@ function Footer() {
           <Grid xs="12">
             <hr />
           </Grid>
-          <Grid item xs="4" sx={{ mt: 2 }}>
+          <Grid item xs="12" md={4} sx={{ mt: 2 }}>
             <Typography
               sx={{ color: "white", fontWeight: "300" }}
               variant="body3"
@@ -124,8 +124,9 @@ function Footer() {
           </Grid>
           <Grid
             item
-            xs="8"
-            sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}
+            xs="12"
+            md="8"
+            sx={{ display: "flex", justifyContent: {md:"flex-end",xs:"space-evenly"}, mt: 2 ,flexWrap:'wrap'}}
           >
             {ButtomMenuItems.map((item, index) => (
               <Button

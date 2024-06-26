@@ -5,7 +5,15 @@ import { CardContent, CardMedia, Link, Typography } from "@mui/material";
 export default function CategoryCard({ img, label, link }) {
   console.log(img);
   return (
-    <Card sx={{ width: "-webkit-fill-available", mx: 1, my: 2, boxShadow: 3,borderRadius:3 }}>
+    <Card
+      sx={{
+        width: "-webkit-fill-available",
+        mx: 1,
+        my: { md: 2, xs: 1 },
+        boxShadow: 3,
+        borderRadius: 3,
+      }}
+    >
       <Link
         href={"/store/categories/" + link}
         component="a"

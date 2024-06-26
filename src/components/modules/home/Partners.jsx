@@ -1,5 +1,5 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
-  
+
 import React from "react";
 import logo1 from "../../../assets/images/partners/logo.png";
 import logo2 from "../../../assets/images/partners/Logo2.png";
@@ -16,7 +16,7 @@ export default function Partners() {
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <hr style={{ width: "100%" }} />
         <Typography
-          sx={{ textAlign: "center", width: "20%" }}
+          sx={{ textAlign: "center", width: { md: "20%", xs: "50%" } }}
           variant="body2"
           color="initial"
         >
@@ -26,8 +26,12 @@ export default function Partners() {
       </Box>
       <Grid container sx={{ my: "2rem" }} spacing="2">
         {logos.map((item, index) => (
-          <Grid md="3" sm="6" item key={index} >
-            <img alt="logo" style={{ width: "70%", objectFit: "contain" }} src={item} />
+          <Grid md="3" xs="6" item key={index} sx={{textAlign:"center"}}>
+            <img
+              alt="logo"
+              style={{ width: "70%", objectFit: "contain" }}
+              src={item}
+            />
           </Grid>
         ))}
       </Grid>

@@ -80,7 +80,7 @@ export default function Categories() {
             borderBottom: isMobile ? 1 : 0,
             borderColor: "divider",
             width: isMobile ? "100%" : "30%",
-            marginRight:2
+            marginRight: 2,
           }}
         >
           {data.categories.map((category, index) => (
@@ -93,9 +93,9 @@ export default function Categories() {
         </Tabs>
         {data.categories.map((category, index) => (
           <TabPanel value={value} index={index} key={category.name}>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{ mt: { xs: 2, md: 0 } }}>
               {category.items.map((item, idx) => (
-                <Grid item md={3} sm={6} key={idx}>
+                <Grid item md={3} xs={6} key={idx}>
                   <CategoryCard
                     img={item.img}
                     label={item.label}

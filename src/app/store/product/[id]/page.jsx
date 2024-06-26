@@ -12,14 +12,14 @@ import { useTheme } from "@emotion/react";
 import Simillar from "./_components/Simllar";
 import AccordionUsage from "./_components/AccordionUsage";
 
-import 'swiper/css/navigation'; 
-import { Navigation } from 'swiper/modules';
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
 import { useParams } from "react-router-dom";
 
 function Product() {
   const theme = useTheme();
   const images = [img1, img2, img3];
-  const params = useParams()
+  const params = useParams();
   const data = {
     product: {
       id: params.id,
@@ -64,12 +64,17 @@ function Product() {
         <Grid item xs={12} md={6}>
           <Swiper navigation={true} modules={[Navigation]} spaceBetween={10}>
             {images.map((item, idx) => (
-              <SwiperSlide key={idx} >
-                <Box sx={{ width: "100%", height: "100%",borderRadius:3}}>
+              <SwiperSlide key={idx}>
+                <Box sx={{ width: "100%", height: "100%", borderRadius: 3 }}>
                   <img
                     src={item}
                     alt={`Slide`}
-                    style={{ objectFit: "cover",width:'100%',height:"100%",borderRadius:'inherit' }}  
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "inherit",
+                    }}
                     quality={100}
                   />
                 </Box>
@@ -134,31 +139,33 @@ function Product() {
           <Box display="flex" alignItems="center" justifyContent="center">
             <Button
               size="large"
-              sx={{ width: "90%", p: 1, mt: 2 ,borderRadius:3}}
+              sx={{ width: "90%", p: 1, mt: 2, borderRadius: 3 }}
               variant="contained"
               color="secondary"
             >
               Add To Cart
             </Button>
           </Box>
-          <Typography sx={{ px: 2, mb: 2,mt:5 }} variant="h4" >
+          <Typography sx={{ px: 2, mb: 2, mt: 5 }} variant="h4">
             You May Also Like
           </Typography>
           <Simillar />
         </Grid>
       </Grid>
-      <Box sx={{m:3}}>
-      <AccordionUsage data={data?.product?.discriptionAccourdion} />
+      <Box sx={{ m: 3 }}>
+        <AccordionUsage data={data?.product?.discriptionAccourdion} />
       </Box>
-      <Box sx={{ my: 5,px:3 }}>
+      <Box sx={{ my: 5, px: 3 }}>
         <Swiper>
           {images.map((item, idx) => (
             <SwiperSlide key={idx}>
-              <Box sx={{ width: "100%", height: "80vh" ,borderRadius:3}}>
+              <Box
+                sx={{ width: "100%", height: { md: "80vh" }, borderRadius: 3 }}
+              >
                 <img
                   src={item}
                   alt={`Slide `}
-                style={{ objectFit: "cover",borderRadius:'inherit' }}
+                  style={{ objectFit: "cover", borderRadius: "inherit",width:"100%" }}
                   quality={100}
                 />
               </Box>
