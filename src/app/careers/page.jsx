@@ -10,11 +10,11 @@ import { Star } from "@mui/icons-material";
 import JobCard from "./component/JobCard";
 import { useCareers } from "hooks/careers/useCreers";
 import Loader from "components/modules/Loader";
+import { LoaderIcon } from "react-hot-toast";
 export default function Careers() {
   const { data, isLoading } = useCareers();
   return (
     <Container sx={{ pt: 7 }}>
-      {isLoading && <Loader />}
       <Grid container spacing={2}>
         <Grid
           item
@@ -38,7 +38,6 @@ export default function Careers() {
             find jobs according to your interest, Here are +1000 jobs
             opportunities for your better future .
           </Typography>
-        
         </Grid>
         <Grid item sm={6} sx={{ px: 4, textAlign: "center" }}>
           <img
@@ -205,16 +204,32 @@ export default function Careers() {
         >
           Open Positions
         </Typography>
-        {data?.careers?.map((item, idx) => (
-          <JobCard
-            key={idx}
-            id={item.id}
-            title={item?.vacancy_name}
-            description={
-              item?.category_name + ". " + item.location + " " + item.country
-            }
-          />
-        ))}
+        {isLoading ? (
+          <Box
+            sx={{
+              width: "100%",
+              py: 10,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <LoaderIcon style={{ width: "10vw", height: "10vw" }} />
+          </Box>
+        ) : data?.careers ? (
+          data?.careers?.map((item, idx) => (
+            <JobCard
+              key={idx}
+              id={item.id}
+              title={item?.vacancy_name}
+              description={
+                item?.category_name + ". " + item.location + " " + item.country
+              }
+            />
+          ))
+        ) : (
+          "sorry we currently have no open position poleas check out later "
+        )}
       </section>
     </Container>
   );

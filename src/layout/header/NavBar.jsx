@@ -184,7 +184,7 @@ function NavBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                href={page.href}
+                onClick={page.onClick}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page.label}

@@ -24,7 +24,7 @@ export default function JobCard({ id, title, description }) {
           {description}
         </Typography>
       </Box>
-      <Button href={"/careers/job" + id} variant="contained" color="secondary">
+      <Button href={"/careers/job/" + id} variant="contained" color="secondary">
         View details
       </Button>
     </Box>
