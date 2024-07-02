@@ -1,194 +1,323 @@
 // ** React Imports
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react'
 
 // ** MUI Imports
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import TabPanel from '@mui/lab/TabPanel';
-import TabContext from '@mui/lab/TabContext';
-import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import MuiTabList from '@mui/lab/TabList';
-import CircularProgress from '@mui/material/CircularProgress';
-import { Card, Container } from '@mui/material';
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import Dialog from '@mui/material/Dialog'
+import { styled } from '@mui/material/styles'
+import Checkbox from '@mui/material/Checkbox'
+import Typography from '@mui/material/Typography'
+import CardHeader from '@mui/material/CardHeader'
+import FormControl from '@mui/material/FormControl'
+import CardContent from '@mui/material/CardContent'
+import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
+import FormHelperText from '@mui/material/FormHelperText'
+import InputAdornment from '@mui/material/InputAdornment'
+import Button from '@mui/material/Button'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import profileImg from "assets/images/profile.png"
+// ** Third Party Imports
+import { useForm, Controller } from 'react-hook-form'
 
 // ** Icon Imports
-import Icon from 'components/modules/icon';
+import Icon from 'components/modules/icon'
+import CustomTextField from 'components/customs/CustomTextField'
 
-// ** Demo Tabs Imports
-import TabAccount from './TabAccount';
-import TabBilling from './TabBilling';
-import TabSecurity from './TabSecurity';
-import TabOrders from './TabOrders';
-import TabAddresses from './TabAddresses';
-import TabPoints from './TabPoints';
+const initialData = {
+  state: '',
+  number: '',
+  address: '',
+  zipCode: '',
+  lastName: 'Doe',
+  currency: 'usd',
+  firstName: 'John',
+  language: 'arabic',
+  timezone: 'gmt-12',
+  country: 'australia',
+  organization: 'Pixinvent',
+  email: 'john.doe@example.com'
+}
 
-const TabList = styled(MuiTabList)(({ theme }) => ({
-  border: '0 !important',
-  '&, & .MuiTabs-scroller': {
-    boxSizing: 'content-box',
-    padding: theme.spacing(1.25, 1.25, 2),
-    margin: `${theme.spacing(-1.25, -1.25, -2)} !important`
-  },
-  '& .MuiTabs-indicator': {
-    display: 'none'
-  },
-  '& .Mui-selected': {
-    boxShadow: theme.shadows[2],
-    backgroundColor: theme.palette.primary.main,
-    color: `${theme.palette.common.white} !important`
-  },
-  '& .MuiTab-root': {
-    minWidth: 65,
-    minHeight: 38,
-    lineHeight: 1,
-    borderRadius: theme.shape.borderRadius,
-    [theme.breakpoints.up('md')]: {
-      minWidth: 130
-    },
-    '&:hover': {
-      color: theme.palette.primary.main
-    },
-    '& .MuiLink-root': {
-      textDecoration: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: 'inherit',
-      ...(!theme.breakpoints.down('md') && { '& svg': { marginRight: theme.spacing(2) } })
+const ImgStyled = styled('img')(({ theme }) => ({
+  width: 100,
+  height: 100,
+  marginRight: theme.spacing(2),
+  borderRadius: theme.shape.borderRadius
+}))
+
+const ButtonStyled = styled(Button)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    textAlign: 'center'
+  }
+}))
+
+const ResetButtonStyled = styled(Button)(({ theme }) => ({
+  marginLeft: theme.spacing(2),
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    marginLeft: 0,
+    textAlign: 'center',
+    marginTop: theme.spacing(2)
+  }
+}))
+
+const TabAccount = () => {
+  // ** State
+  const [open, setOpen] = useState(false)
+  const [inputValue, setInputValue] = useState('')
+  const [userInput, setUserInput] = useState('yes')
+  const [formData, setFormData] = useState(initialData)
+  const [imgSrc, setImgSrc] = useState(profileImg.src)
+  const [secondDialogOpen, setSecondDialogOpen] = useState(false)
+
+  // ** Hooks
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({ defaultValues: { checkbox: false } })
+  const handleClose = () => setOpen(false)
+  const handleSecondDialogClose = () => setSecondDialogOpen(false)
+  const onSubmit = () => setOpen(true)
+
+  const handleConfirmation = value => {
+    handleClose()
+    setUserInput(value)
+    setSecondDialogOpen(true)
+  }
+
+  const handleInputImageChange = file => {
+    const reader = new FileReader()
+    const { files } = file.target
+    if (files && files.length !== 0) {
+      reader.onload = () => setImgSrc(reader.result)
+      reader.readAsDataURL(files[0])
+      if (reader.result !== null) {
+        setInputValue(reader.result)
+      }
     }
   }
-}));
 
-const AccountSettings = ({ tab, apiPricingPlanData }) => {
-  // ** State
-  // const [activeTab, setActiveTab] = useState(tab);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [isClient, setIsClient] = useState(false);
-  // const navigate = useNavigate();
-  // const hideText = useMediaQuery(theme => theme.breakpoints.down('md'));
+  const handleInputImageReset = () => {
+    setInputValue('')
+    setImgSrc(profileImg)
+  }
 
-  // useEffect(() => {
-  //   setIsClient(true);
-  // }, []);
-
-  // const handleChange = (event, value) => {
-  //   setIsLoading(true);
-  //   navigate(`/profile/${value.toLowerCase()}`);
-  // };
-
-  // useEffect(() => {
-  //   if (tab && tab !== activeTab) {
-  //     setActiveTab(tab);
-  //   }
-  //   setIsLoading(false); // Stop loading after setting the active tab
-  // }, [tab]);
-
-  // if (!isClient) {
-  //   return null;
-  // }
-  
-  // const tabContentList = {
-  //   account: <TabAccount />,
-  //   security: <TabSecurity />,
-  //   billing: <TabBilling apiPricingPlanData={apiPricingPlanData} />,
-  //   orders: <TabOrders />,
-  //   addresses: <TabAddresses />,
-  //   points: <TabPoints />
-  // };
+  const handleFormChange = (field, value) => {
+    setFormData({ ...formData, [field]: value })
+  }
 
   return (
-    <h3>ds</h3>
-    // <Container sx={{ mt: 12 }}>
-    //   <Grid container spacing={6}>
-    //     <Grid item xs={12}>
-    //       <TabContext value={activeTab}>
-    //         <Grid container spacing={3}>
-    //           <Grid item xs={12}>
-    //             <TabList
-    //               variant='scrollable'
-    //               scrollButtons='auto'
-    //               onChange={handleChange}
-    //               aria-label='customized tabs example'
-    //             >
-    //               <Tab
-    //                 value='account'
-    //                 label={
-    //                   <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 1 } }) }}>
-    //                     <Icon fontSize='1.25rem' icon='tabler:users' />
-    //                     {!hideText && 'Account'}
-    //                   </Box>
-    //                 }
-    //               />
-    //               <Tab
-    //                 value='security'
-    //                 label={
-    //                   <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 1 } }) }}>
-    //                     <Icon fontSize='1.25rem' icon='tabler:lock' />
-    //                     {!hideText && 'Security'}
-    //                   </Box>  
-    //                 }
-    //               />
-    //               <Tab
-    //                 value='billing'
-    //                 label={
-    //                   <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 1 } }) }}>
-    //                     <Icon fontSize='1.25rem' icon='tabler:file-text' />
-    //                     {!hideText && 'Billing'}
-    //                   </Box>
-    //                 }
-    //               />
-    //               <Tab
-    //                 value='orders'
-    //                 label={
-    //                   <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 1 } }) }}>
-    //                     <Icon fontSize='1.25rem' icon='tabler:shopping-cart' />
-    //                     {!hideText && 'Orders'}
-    //                   </Box>
-    //                 }
-    //               />
-    //               <Tab
-    //                 value='addresses'
-    //                 label={
-    //                   <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 1 } }) }}>
-    //                     <Icon fontSize='1.25rem' icon='mdi:address-marker-outline' />
-    //                     {!hideText && 'Addresses'}
-    //                   </Box>
-    //                 }
-    //               />
-    //               <Tab
-    //                 value='points'
-    //                 label={
-    //                   <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 1 } }) }}>
-    //                     <Icon fontSize='1.25rem' icon='mdi:address-marker-outline' />
-    //                     {!hideText && 'My Points'}
-    //                   </Box>
-    //                 }
-    //               />
-    //             </TabList>
-    //           </Grid>
-    //           <Grid item xs={12}>
-    //             {isLoading ? (
-    //               <Card sx={{ mt: 6, display: 'flex', alignItems: 'center', flexDirection: 'column', height: '50vh',
-    //               justifyContent:'center', boxShadow:5 }}>
-    //                 <CircularProgress sx={{ mb: 4 }} />
-    //                 <Typography>Loading...</Typography>
-    //               </Card>
-    //             ) : (
-    //               <TabPanel sx={{ p: 0,mb:2 }} value={activeTab}>
-    //                 {tabContentList[activeTab]}
-    //               </TabPanel>
-    //             )}
-    //           </Grid>
-    //         </Grid>
-    //       </TabContext>
-    //     </Grid>
-    //   </Grid>
-    // </Container>
-  );
-};
+    <Grid container spacing={6}>
+      {/* Account Details Card */}
+      <Grid item xs={12}>
+        <Card>
+          <CardHeader title='Profile Details' />
+          <form>
+            <CardContent>
+              <Grid container spacing={5}>
+                <Grid item xs={12} sm={6}>
+                  <CustomTextField
+                    fullWidth
+                    label='First Name'
+                    placeholder='John'
+                    value={formData.firstName}
+                    onChange={e => handleFormChange('firstName', e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <CustomTextField
+                    fullWidth
+                    label='Last Name'
+                    placeholder='Doe'
+                    value={formData.lastName}
+                    onChange={e => handleFormChange('lastName', e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <CustomTextField
+                    fullWidth
+                    type='email'
+                    label='Email'
+                    value={formData.email}
+                    placeholder='john.doe@example.com'
+                    onChange={e => handleFormChange('email', e.target.value)}
+                  />
+                </Grid>
+    
+                <Grid item xs={12} sm={6}>
+                  <CustomTextField
+                    fullWidth
+                    type='number'
+                    label='Phone Number'
+                    value={formData.number}
+                    placeholder='202 555 0111'
+                    onChange={e => handleFormChange('number', e.target.value)}
+                    InputProps={{ startAdornment: <InputAdornment position='start'>US (+1)</InputAdornment> }}
+                  />
+                </Grid>
+{/*               
+                <Grid item xs={12} sm={6}>
+                  <CustomTextField
+                    select
+                    fullWidth
+                    defaultValue=''
+                    label='Currency'
+                    SelectProps={{
+                      value: formData.currency,
+                      onChange: e => handleFormChange('currency', e.target.value)
+                    }}
+                  >
+                    <MenuItem value='usd'>USD</MenuItem>
+                    <MenuItem value='eur'>EUR</MenuItem>
+                    <MenuItem value='pound'>Pound</MenuItem>
+                    <MenuItem value='bitcoin'>Bitcoin</MenuItem>
+                  </CustomTextField>
+                </Grid> */}
 
-export default AccountSettings;
+                <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(6.5)} !important` }}>
+                  <Button variant='contained' sx={{ mr: 4 }}>
+                    Save Changes
+                  </Button>
+                  <Button type='reset' variant='outlined' color='secondary' onClick={() => setFormData(initialData)}>
+                    Reset
+                  </Button>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </form>
+        </Card>
+      </Grid>
+
+      {/* Delete Account Card */}
+      <Grid item xs={12}>
+        <Card>
+          <CardHeader title='Delete Account' />
+          <CardContent>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Box sx={{ mb: 4 }}>
+                <FormControl>
+                  <Controller
+                    name='checkbox'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <FormControlLabel
+                        label='I confirm my account deactivation'
+                        sx={{ '& .MuiTypography-root': { color: errors.checkbox ? 'error.main' : 'text.secondary' } }}
+                        control={
+                          <Checkbox
+                            {...field}
+                            size='small'
+                            name='validation-basic-checkbox'
+                            sx={errors.checkbox ? { color: 'error.main' } : null}
+                          />
+                        }
+                      />
+                    )}
+                  />
+                  {errors.checkbox && (
+                    <FormHelperText
+                      id='validation-basic-checkbox'
+                      sx={{ mx: 0, color: 'error.main', fontSize: theme => theme.typography.body2.fontSize }}
+                    >
+                      Please confirm you want to delete account
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              </Box>
+              <Button variant='contained' color='error' type='submit' disabled={errors.checkbox !== undefined}>
+                Deactivate Account
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      {/* Deactivate Account Dialogs */}
+      <Dialog fullWidth maxWidth='xs' open={open} onClose={handleClose}>
+        <DialogContent
+          sx={{
+            pb: theme => `${theme.spacing(6)} !important`,
+            px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
+            pt: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              textAlign: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              '& svg': { mb: 6, color: 'warning.main' }
+            }}
+          >
+            <Icon icon='tabler:alert-circle' fontSize='5.5rem' />
+            <Typography>Are you sure you would like to cancel your subscription?</Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions
+          sx={{
+            justifyContent: 'center',
+            px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
+            pb: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
+          }}
+        >
+          <Button variant='contained' sx={{ mr: 2 }} onClick={() => handleConfirmation('yes')}>
+            Yes
+          </Button>
+          <Button variant='outlined' color='secondary' onClick={() => handleConfirmation('cancel')}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog fullWidth maxWidth='xs' open={secondDialogOpen} onClose={handleSecondDialogClose}>
+        <DialogContent
+          sx={{
+            pb: theme => `${theme.spacing(6)} !important`,
+            px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
+            pt: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+              '& svg': {
+                mb: 8,
+                color: userInput === 'yes' ? 'success.main' : 'error.main'
+              }
+            }}
+          >
+            <Icon fontSize='5.5rem' icon={userInput === 'yes' ? 'tabler:circle-check' : 'tabler:circle-x'} />
+            <Typography variant='h4' sx={{ mb: 5 }}>
+              {userInput === 'yes' ? 'Deleted!' : 'Cancelled'}
+            </Typography>
+            <Typography>
+              {userInput === 'yes' ? 'Your subscription cancelled successfully.' : 'Unsubscription Cancelled!!'}
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions
+          sx={{
+            justifyContent: 'center',
+            px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
+            pb: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
+          }}
+        >
+          <Button variant='contained' color='success' onClick={handleSecondDialogClose}>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Grid>
+  )
+}
+
+export default TabAccount

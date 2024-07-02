@@ -31,23 +31,23 @@ const defaultValues = {
 };
 
 const BillingAddressCard = () => {
-  // const [open, setOpen] = useState(false);
-  // const handleClickOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
-  // // ** Hooks
-  // const {
-  //   control,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useForm({ defaultValues });
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  // ** Hooks
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ defaultValues });
 
-  // const onSubmit = () => {
-  //   return;
-  // };
+  const onSubmit = () => {
+    return;
+  };
 
   return (
     <>
-      {/* <Dialog
+      <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
@@ -280,7 +280,7 @@ const BillingAddressCard = () => {
             Add New Address
           </Button>
         </CardActions>
-      </Card> */}
+      </Card>
     </>
   );
 };

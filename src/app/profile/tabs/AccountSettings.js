@@ -53,46 +53,46 @@ const TabList = styled(MuiTabList)(({ theme }) => ({
 }));
 
 const AccountSettings = ({ tab, apiPricingPlanData }) => {
-  // const [activeTab, setActiveTab] = useState(tab);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [isClient, setIsClient] = useState(false);
-  // const navigate = useNavigate();
-  // const hideText = useMediaQuery(theme => theme.breakpoints.down('md'));
+  const [activeTab, setActiveTab] = useState(tab);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const navigate = useNavigate();
+  const hideText = useMediaQuery(theme => theme.breakpoints.down('md'));
 
-  // const handleChange = (event, value) => {
-  //   setIsLoading(true);
-  //   navigate(`/profile/${value.toLowerCase()}`);
-  // };
+  const handleChange = (event, value) => {
+    setIsLoading(true);
+    navigate(`/profile/${value.toLowerCase()}`);
+  };
 
-  // useEffect(() => {
-  //   if (tab && tab !== activeTab) {
-  //     setActiveTab(tab);
-  //   }
-  // }, [tab]);
+  useEffect(() => {
+    if (tab && tab !== activeTab) {
+      setActiveTab(tab);
+    }
+  }, [tab]);
 
-  // useEffect(() => {
-  //   if (isLoading) {
-  //     setIsLoading(false);
-  //   }
-  //   setIsClient(true);
-  // }, [activeTab]);
+  useEffect(() => {
+    if (isLoading) {
+      setIsLoading(false);
+    }
+    setIsClient(true);
+  }, [activeTab]);
 
-  // if (!isClient) {
-  //   return null;
-  // }
+  if (!isClient) {
+    return null;
+  }
 
-  // const tabContentList = {
-  //   // account: <TabAccount />,
-  //   // security: <TabSecurity />,
-  //   // billing: <TabBilling apiPricingPlanData={apiPricingPlanData} />,
-  //   // orders: <TabOrders />,
-  //   // addresses: <TabAddresses />,
-  //   points: <TabPoints />
-  // };
+  const tabContentList = {
+    account: <TabAccount />,
+    security: <TabSecurity />,
+    billing: <TabBilling apiPricingPlanData={apiPricingPlanData} />,
+    orders: <TabOrders />,
+    addresses: <TabAddresses />,
+    points: <TabPoints />
+  };
 
   return (
     <Container sx={{ mt: 12 }}>
-      {/* <Grid container spacing={6}>
+      <Grid container spacing={6}>
         <Grid item xs={12}>
           <TabContext value={activeTab}>
             <Grid container spacing={3}>
@@ -175,8 +175,8 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
             </Grid>
           </TabContext>
         </Grid>
-      </Grid> */}
-      hello
+      </Grid>
+      
     </Container>
   );
 };
