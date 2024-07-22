@@ -5,7 +5,6 @@ import {
   Typography,
   Container,
   Divider,
-  Link,
   Alert,
 } from "@mui/material";
 import React from "react";
@@ -15,6 +14,7 @@ import { Apple, Facebook, Google } from "@mui/icons-material";
 import ButtonLoader from "components/customs/ButtonLoader";
 import { useLogin } from "./hooks/useLogin";
 import LanguageSelector from "components/LanguageSelector";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const { errors, register, t, handleSubmit, onSubmit, loading, error } =
@@ -193,7 +193,7 @@ export default function Login() {
                 textDecoration: "underline",
                 color: "text.primary",
               }}
-              href="/forget-Password"
+              to="/forget-Password"
             >
               {t("Forget Password")}
             </Link>
@@ -212,7 +212,7 @@ export default function Login() {
                 textDecoration: "underline",
                 color: "text.primary",
               }}
-              href="/signUp"
+              to="/signUp"
             >
               {t("Register")}
             </Link>

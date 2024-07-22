@@ -5,9 +5,8 @@ import Box from "@mui/material/Box";
 import { Button, Grid } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import bg1 from "assets/images/hero-image (1).jpg";
+import bg1 from "assets/images/hero.png";
 import bg2 from "assets/images/hero-image (2).jpg";
-import bg3 from "assets/images/hero-image (3).jpg";
 import gummie from "assets/images/gummies.png";
 import AnimatedText from "../components/modules/home/AnimatedText.jsx";
 import BestSellers from "../components/modules/home/BestSellers.jsx";
@@ -15,11 +14,25 @@ import Qoute from "../components/modules/home/Qoute.jsx";
 import Partners from "../components/modules/home/Partners.jsx";
 import { Autoplay } from "swiper/modules";
 import gsap from "gsap";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-  const images = [bg1, bg2, bg3];
+  const images = [
+    {
+      image: bg1,
+      title: "Experience the Fine's Difference",
+      discription:
+        " Unparalleled Efficacy: Our supplements are meticulously formulated, ensuring that your body receives the full spectrum of benefits each ingredient has to offer.",
+    },
+    {
+      image: bg2,
+      title: "Experience the Fine's Difference",
+      discription:
+        " Unparalleled Efficacy: Our supplements are meticulously formulated, ensuring that your body receives the full spectrum of benefits each ingredient has to offer.",
+    },
+  ];
   const gummieBox = useRef(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -39,7 +52,6 @@ export default function Home() {
 
   return (
     <>
-        
       <Swiper
         autoplay={{
           delay: 2500,
@@ -63,31 +75,34 @@ export default function Home() {
               }}
             >
               <img
-                src={item}
+                src={item.image}
                 alt={`Slide ${index + 1}`}
                 style={{
                   objectFit: "cover",
                   width: "inherit",
                   height: "inherit",
-                  position:'absolute',
-               
+                  position: "absolute",
                 }}
               />
               <Box
                 sx={{
                   position: "relative",
                   zIndex: 1,
-                  width: {md:"50%",xs:"100%"},
+                  width: { md: "50%", xs: "100%" },
                 }}
               >
                 <Typography variant="h2" color="inherit">
-                  All-in-one supplement for your strength
+                  {item.title}
                 </Typography>
                 <Typography sx={{ mt: 2 }} variant="body1" color="inherit">
-                  Natural supplement filled with 33 ingredients, all working
-                  together to support your strength and healbth
+                  {item.discription}
                 </Typography>
-                <Button sx={{ mt: 4 }} color="primary" variant="contained">
+                <Button
+                  sx={{ mt: 4 }}
+                  color="primary"
+                  variant="contained"
+                  onClick={() => navigate("/store/categories/brand/fines")}
+                >
                   Get Started
                 </Button>
               </Box>
@@ -113,14 +128,14 @@ export default function Home() {
             }}
           >
             <Typography variant="body2" color="initial">
-              kfi At vero eos et accusamus et iusto{" "}
+              Unleash the Power of Nature's Finest:
             </Typography>
             <Typography
               variant="h3"
               color="initial"
               sx={{ mb: 2, fontWeight: "bold" }}
             >
-              Join our mission
+              Empowering Wellbeing. Together.
             </Typography>
             <Box
               sx={{
@@ -134,10 +149,10 @@ export default function Home() {
                   variant="h4"
                   sx={{ fontWeight: "bold", color: "text.secondary" }}
                 >
-                  544,5
+                  120
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Projects Created
+                  Employees{" "}
                 </Typography>
               </Box>
               <Box>
@@ -145,10 +160,10 @@ export default function Home() {
                   variant="h4"
                   sx={{ fontWeight: "bold", color: "text.secondary" }}
                 >
-                  544%
+                  100%
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Increase in Users
+                  Driven by Science{" "}
                 </Typography>
               </Box>
               <Box>
@@ -156,13 +171,13 @@ export default function Home() {
                   variant="h4"
                   sx={{ fontWeight: "bold", color: "text.secondary" }}
                 >
-                  15K
+                  2500
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Installs
+                  Clients
                 </Typography>
               </Box>
-              <Box>
+              {/* <Box>
                 <Typography
                   variant="h4"
                   sx={{ fontWeight: "bold", color: "text.secondary" }}
@@ -172,7 +187,7 @@ export default function Home() {
                 <Typography variant="body2" color="text.secondary">
                   Avg. Rating
                 </Typography>
-              </Box>
+              </Box> */}
             </Box>
           </Grid>
           <img
@@ -192,8 +207,7 @@ export default function Home() {
             }}
             ref={gummieBox}
           />
-          <Grid item md={5} 
-            xs={12} sx={{ height: "60vh" }}>
+          <Grid item md={5} xs={12} sx={{ height: "60vh" }}>
             <Box
               sx={{
                 background: "#6A83B0",
@@ -203,18 +217,14 @@ export default function Home() {
                 height: "100%",
               }}
             >
-              <Typography variant="h3" color="white">
-                Ready to get started?
+              <Typography variant="h4" color="white">
+                Fine's: Your Gateway to a Healthier, Happier You
               </Typography>
               <Typography variant="body1" color="white" sx={{ mt: 2 }}>
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                blanditiis praesentium voluptatum deleniti atque corrupti quos
-                dolores et quas molestiasv
-              </Typography>
-              <Typography variant="body1" color="white" sx={{ mt: 2 }}>
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                blanditiis praesentium voluptatum deleniti atque corrupti quos
-                dolores et quas molestiasv
+                Embrace a life brimming with vitality and wellness with Fine's,
+                the premier Canadian brand dedicated to crafting exceptional
+                nutritional supplements that empower you to achieve your optimal
+                health goals.
               </Typography>
             </Box>
           </Grid>
@@ -231,15 +241,18 @@ export default function Home() {
         >
           <Grid item sm="6">
             <Typography
-              variant="h3"
+              variant="h5"
               color="initial"
               sx={{ fontWeight: "bold" }}
             >
-              Ready to get started?
+              Unleash the Power of Nature's Finest:
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              At vero eos et accusamus et iusto odio dignissimos ducimus qui
-              blanditiis praesentium.
+              At Fine's, we meticulously select the purest, most potent
+              ingredients from nature's vast bounty to formulate supplements
+              that are not only science-backed but also gentle on your body. Our
+              unwavering commitment to quality ensures that every product you
+              receive is a testament to our dedication to your well-being.
             </Typography>
           </Grid>
           <Grid
@@ -250,8 +263,13 @@ export default function Home() {
               alignItems: "center",
             }}
           >
-            <Button color="primary" variant="contained" sx={{ px: 3 }}>
-              SIGN-UP
+            <Button
+              color="primary"
+              variant="contained"
+              sx={{ px: 3 }}
+              onClick={() => navigate("/store/categories")}
+            >
+              Shop Now
             </Button>
           </Grid>
         </Grid>

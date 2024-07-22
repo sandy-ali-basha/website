@@ -1,17 +1,12 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import * as yup from "yup";
-import { useMutation } from "react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form"; // Ensure this is imported
+import { useForm } from "react-hook-form";
 import { _AuthApi } from "api/auth";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/;
-
-
 
 export const useSignUp = () => {
   const [loading, setLoading] = useState(false);
@@ -61,7 +56,7 @@ export const useSignUp = () => {
       .required(t("Gender is required"))
       .oneOf(["male", "female", "other"], t("Invalid gender selection")),
   });
- 
+
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -73,29 +68,32 @@ export const useSignUp = () => {
   const onSubmit = (input) => {
     setLoading(true);
 
-  // Calculate age based on birth date
-  const today = new Date();
-  const birthDate = new Date(input.age);
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const m = today.getMonth() - birthDate.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-    age--;
-  }
+    // Calculate age based on birth date
+    const today = new Date();
+    const birthDate = new Date(input.age);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
 
-  // Add age to input object before sending to API
-  const inputData = {
-    ...input,
-    age: age
-  };
+    // Add age to input object before sending to API
+    const inputData = {
+      ...input,
+      age: age,
+      name: "name",
+    };
 
     _AuthApi
       .register(inputData)
       .then((res) => {
         console.log("res", res);
-        if (res?.code == 200) {
+        if (res.data?.code == 200) {
           setOpen(true);
+          localStorage.setItem("userData", JSON.stringify(res.data.data));
+          console.log("data", res?.data?.data);
         } else {
-          setError(res?.error || "An unexpected error occurred");
+          setError(res?.data?.error || "An unexpected error occurred");
         }
         setLoading(true);
       })
@@ -104,7 +102,6 @@ export const useSignUp = () => {
 
   useEffect(() => {
     const fields = [
-      ["name", "text"],
       ["first_name", "text"],
       ["last_name", "text"],
       ["email", "email"],

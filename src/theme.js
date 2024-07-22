@@ -95,6 +95,20 @@ const theme = createTheme({
   },
   shadows: customShadows,
   components: {
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          color: 'text.primary', // Set the desired label color
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          color: 'text.primary', // Set the desired label color
+        },
+      },
+    },
     MuiAlert: {
       styleOverrides: {
         root: ({ ownerState }) => ({
@@ -102,6 +116,13 @@ const theme = createTheme({
             backgroundColor: "#60a5fa",
           }),
         }),
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        containedPrimary: {
+          color: 'white',
+        },
       },
     },
   },

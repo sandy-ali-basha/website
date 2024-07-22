@@ -35,7 +35,7 @@ const BlogCard = ({ id, img, title, body, date }) => {
         <div>
           <Link
             style={{ textDecoration: "none" }}
-            href={`/Blog/${id}`}
+            to={`/Blog/${id}`}
             passHref
           >
             <Typography variant="h5" color="initial" sx={{ fontWeight: "600" }}>

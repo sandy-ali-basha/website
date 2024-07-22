@@ -106,11 +106,11 @@ export const useCategories = () => {
         ],
       },
       {
-        name: "Company",
+        name: "Brands",
         items: [
           {
             img: "https://picsum.photos/200",
-            link: "/brand/fines",
+            link: "brand/fines",
             label: "Fine's",
           },
           // Add more pharmaceutical items as needed

@@ -1,31 +1,55 @@
 import React from "react";
 import Card from "@mui/material/Card";
-import { CardContent, CardMedia, Link, Typography } from "@mui/material";
+import { CardContent, CardMedia, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
+import defaultImg from "assets/images/defaultImg.jpg";
+import CardShimmer from "components/customs/loaders/CardShimmer";
 
 export default function CategoryCard({ img, label, link }) {
   console.log(img);
+  const loading = true;
+
   return (
     <Card
       sx={{
         width: "-webkit-fill-available",
-        mx: 1,
-        my: { md: 2, xs: 1 },
         boxShadow: 3,
         borderRadius: 3,
       }}
     >
       <Link
-        href={"/store/categories/" + link}
+        to={"/store/categories/" + link}
         component="a"
         sx={{ textDecoration: "none" }}
       >
-        <CardMedia sx={{ height: 140 }} image={img} title={label} />
+        {loading ? (
+          <>
+            <CardShimmer
+              sx={{
+                width: "100%",
+                height: 140,
+                borderRadius: "12px",
+              }}
+            />
+          </>
+        ) : (
+          <>
+            <CardMedia
+              sx={{
+                height: 140,
+              }}
+              image={img || defaultImg}
+              title={label}
+            />
+          </>
+        )}
+
         <CardContent>
           <Typography
             gutterBottom
             variant="h6"
             color="initial"
-            sx={{ textAlign: "center" }}
+            sx={{ textAlign: "center", textDecoration: "none" }}
           >
             {label}
           </Typography>

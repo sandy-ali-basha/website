@@ -1,18 +1,17 @@
 {
   "About Us": "دەربارەی ئێمە",
-  "MILESTONES": "گەیشتنەکان",
+  "MILESTONES": "هەنگاوەکان",
   "Profile": "پرۆفایل",
-  "My account": "هەژمارەکەم",
-  "Change Password": "گۆڕینی تێپەڕوشە",
+  "My account": "هەژماری من",
+  "Change Password": "گۆڕینی ژمارەی نهێنی",
   "Billing": "پارەدان",
-  "My Orders": "داواکارییەکانم",
-  "Login": "چوونەژوورەوە",
-  "Home": "ماڵپەڕ",
-  "Products": "بەرهەمان",
-  "Careers": "کارەکان",
-  "Special Offers": "پێشنیارە تایبەتمەندەکان",
-  "Contact Us": "پەیوەندیکردن بە ئێمە",
+  "My Orders": "فەرمانەکانی من",
+  "Login": "چونه‌ ژووره‌وه‌",
+  "Home": "سەرەکی",
+  "Products": "بەرهەمەکان",
+  "Careers": "پیشە",
+  "Special Offers": "پێشنیاری تایبەت",
+  "Contact Us": "پەیوەندیمان پێوەبکە",
   "Change Language": "گۆڕینی زمان",
-  "Show Cart":"Show Cart"
-
+  "Show Cart": "سەبەتەی پیشاندان"
 }

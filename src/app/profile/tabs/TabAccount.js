@@ -1,323 +1,232 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState } from "react";
 
 // ** MUI Imports
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Card from '@mui/material/Card'
-import Dialog from '@mui/material/Dialog'
-import { styled } from '@mui/material/styles'
-import Checkbox from '@mui/material/Checkbox'
-import Typography from '@mui/material/Typography'
-import CardHeader from '@mui/material/CardHeader'
-import FormControl from '@mui/material/FormControl'
-import CardContent from '@mui/material/CardContent'
-import DialogContent from '@mui/material/DialogContent'
-import DialogActions from '@mui/material/DialogActions'
-import FormHelperText from '@mui/material/FormHelperText'
-import InputAdornment from '@mui/material/InputAdornment'
-import Button from '@mui/material/Button'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import profileImg from "assets/images/profile.png"
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
+import InputAdornment from "@mui/material/InputAdornment";
 // ** Third Party Imports
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 // ** Icon Imports
-import Icon from 'components/modules/icon'
-import CustomTextField from 'components/customs/CustomTextField'
+import { useTranslation } from "react-i18next";
+import { Alert, Button, TextField } from "@mui/material";
+import DeleteAcount from "./components/DeleteAcount";
+import { _AuthApi } from "api/auth";
+import GenderSelect from "components/customs/GenderSelect";
 
-const initialData = {
-  state: '',
-  number: '',
-  address: '',
-  zipCode: '',
-  lastName: 'Doe',
-  currency: 'usd',
-  firstName: 'John',
-  language: 'arabic',
-  timezone: 'gmt-12',
-  country: 'australia',
-  organization: 'Pixinvent',
-  email: 'john.doe@example.com'
-}
-
-const ImgStyled = styled('img')(({ theme }) => ({
-  width: 100,
-  height: 100,
-  marginRight: theme.spacing(2),
-  borderRadius: theme.shape.borderRadius
-}))
-
-const ButtonStyled = styled(Button)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-    textAlign: 'center'
-  }
-}))
-
-const ResetButtonStyled = styled(Button)(({ theme }) => ({
-  marginLeft: theme.spacing(2),
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-    marginLeft: 0,
-    textAlign: 'center',
-    marginTop: theme.spacing(2)
-  }
-}))
+const phoneRegExp =
+  /^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/;
 
 const TabAccount = () => {
   // ** State
-  const [open, setOpen] = useState(false)
-  const [inputValue, setInputValue] = useState('')
-  const [userInput, setUserInput] = useState('yes')
-  const [formData, setFormData] = useState(initialData)
-  const [imgSrc, setImgSrc] = useState(profileImg.src)
-  const [secondDialogOpen, setSecondDialogOpen] = useState(false)
+  const { t } = useTranslation("auth");
+  let schema = yup.object().shape({
+    first_name: yup.string().required(t("First name is required")),
+    last_name: yup.string().required(t("Last name is required")),
+    email: yup
+      .string()
+      .email(t("Invalid email format"))
+      .required(t("Email is required")),
+    phone_number: yup
+      .string()
+      .matches(phoneRegExp, t("Enter a valid phone number"))
+      .required(t("Phone number is required")),
+    age: yup
+      .date()
+      .required(t("Birth date is required"))
+      .test("age", t("You must be at least 18 years old"), function (value) {
+        const today = new Date();
+        const birthDate = new Date(value);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        return age >= 18;
+      })
+      .test(
+        "max-age",
+        t("Age must not be more than 200 years"),
+        function (value) {
+          const today = new Date();
+          const birthDate = new Date(value);
+          let age = today.getFullYear() - birthDate.getFullYear();
+          const m = today.getMonth() - birthDate.getMonth();
+          if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+          }
+          return age <= 200;
+        }
+      ),
+    gender: yup
+      .string()
+      .required(t("Gender is required"))
+      .oneOf(["male", "female", "other"], t("Invalid gender selection")),
+  });
 
-  // ** Hooks
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({ defaultValues: { checkbox: false } })
-  const handleClose = () => setOpen(false)
-  const handleSecondDialogClose = () => setSecondDialogOpen(false)
-  const onSubmit = () => setOpen(true)
+  const data = JSON.parse(localStorage.getItem("userData"));
+  const calculateDefaultDate = (years) => {
+    const today = new Date();
+    const defaultDate = new Date(
+      today.setFullYear(today.getFullYear() - years)
+    );
+    return defaultDate.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+  };
+  const details = [
+    {
+      head: t("first_name"),
+      type: "text",
+      placeholder: t("first_name"),
+      register: "first_name",
+      defaultValue: data?.first_name,
+    },
+    {
+      head: t("last_name"),
+      type: "text",
+      placeholder: t("last_name"),
+      register: "last_name",
+      defaultValue: data?.last_name,
+    },
+    {
+      head: t("email"),
+      type: "text",
+      placeholder: t("email"),
+      register: "email",
+      defaultValue: data?.email,
+    },
+    {
+      head: t("phone_number"),
+      type: "text",
+      InputProps: {
+        startAdornment: (
+          <InputAdornment position="start">US (+1)</InputAdornment>
+        ),
+      },
+      placeholder: t("phone_number"),
+      register: "phone_number",
+      defaultValue: data?.phone_number,
+    },
+    {
+      head: t("age"),
+      type: "date",
+      placeholder: t("age"),
+      register: "age",
+      defaultValue: calculateDefaultDate(data?.age),
+    },
+  ];
 
-  const handleConfirmation = value => {
-    handleClose()
-    setUserInput(value)
-    setSecondDialogOpen(true)
-  }
+  const [loading, setLoading] = useState("yes");
+  const [error, setError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [Message, setMessage] = useState(false);
 
-  const handleInputImageChange = file => {
-    const reader = new FileReader()
-    const { files } = file.target
-    if (files && files.length !== 0) {
-      reader.onload = () => setImgSrc(reader.result)
-      reader.readAsDataURL(files[0])
-      if (reader.result !== null) {
-        setInputValue(reader.result)
-      }
+  const onSubmit = (input) => {
+    setLoading(true);
+
+    // Calculate age based on birth date
+    const today = new Date();
+    const birthDate = new Date(input.age);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
     }
-  }
 
-  const handleInputImageReset = () => {
-    setInputValue('')
-    setImgSrc(profileImg)
-  }
+    // Add age to input object before sending to API
+    const inputData = {
+      ...input,
+      age: age,
+      name: "name",
+      user_id: data?.user_id,
+    };
 
-  const handleFormChange = (field, value) => {
-    setFormData({ ...formData, [field]: value })
-  }
+    _AuthApi
+      .update(data?.user_id, inputData)
+      .then((res) => {
+        console.log("res", res);
+        if (res?.data?.code == 200) {
+          setMessage("updated succesfully");
+        } else {
+          setError(res?.error || "An unexpected error occurred");
+        }
+        setLoading(true);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  const formOptions = { resolver: yupResolver(schema) };
+  const { register, handleSubmit, formState, control } = useForm(formOptions);
+  const { errors } = formState;
 
   return (
-    <Grid container spacing={6}>
-      {/* Account Details Card */}
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Profile Details' />
-          <form>
-            <CardContent>
-              <Grid container spacing={5}>
-                <Grid item xs={12} sm={6}>
-                  <CustomTextField
-                    fullWidth
-                    label='First Name'
-                    placeholder='John'
-                    value={formData.firstName}
-                    onChange={e => handleFormChange('firstName', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <CustomTextField
-                    fullWidth
-                    label='Last Name'
-                    placeholder='Doe'
-                    value={formData.lastName}
-                    onChange={e => handleFormChange('lastName', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <CustomTextField
-                    fullWidth
-                    type='email'
-                    label='Email'
-                    value={formData.email}
-                    placeholder='john.doe@example.com'
-                    onChange={e => handleFormChange('email', e.target.value)}
-                  />
-                </Grid>
-    
-                <Grid item xs={12} sm={6}>
-                  <CustomTextField
-                    fullWidth
-                    type='number'
-                    label='Phone Number'
-                    value={formData.number}
-                    placeholder='202 555 0111'
-                    onChange={e => handleFormChange('number', e.target.value)}
-                    InputProps={{ startAdornment: <InputAdornment position='start'>US (+1)</InputAdornment> }}
-                  />
-                </Grid>
-{/*               
-                <Grid item xs={12} sm={6}>
-                  <CustomTextField
-                    select
-                    fullWidth
-                    defaultValue=''
-                    label='Currency'
-                    SelectProps={{
-                      value: formData.currency,
-                      onChange: e => handleFormChange('currency', e.target.value)
-                    }}
-                  >
-                    <MenuItem value='usd'>USD</MenuItem>
-                    <MenuItem value='eur'>EUR</MenuItem>
-                    <MenuItem value='pound'>Pound</MenuItem>
-                    <MenuItem value='bitcoin'>Bitcoin</MenuItem>
-                  </CustomTextField>
-                </Grid> */}
-
-                <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(6.5)} !important` }}>
-                  <Button variant='contained' sx={{ mr: 4 }}>
+    <>
+      <Grid container spacing={6}>
+        {/* Account Details Card */}
+        <Grid item xs={12}>
+          <Card>
+            <CardHeader title="Profile Details" />
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <CardContent>
+                <Box onSubmit={handleSubmit(onSubmit)} component="form">
+                  <Grid container spacing={2}>
+                    {details.map((item, index) => (
+                      <Grid item xs={6} key={index}>
+                        <TextField
+                          fullWidth
+                          size="small"
+                          type={
+                            item.type === "password"
+                              ? showPassword
+                                ? "text"
+                                : "password"
+                              : item.type
+                          }
+                          placeholder={item.placeholder}
+                          label={item.placeholder}
+                          name={item.register}
+                          {...register(item.register)}
+                          error={!!errors[item.register]?.message}
+                          helperText={errors[item.register]?.message || ""}
+                          defaultValue={item.defaultValue}
+                          InputProps={item.InputProps}
+                        />
+                      </Grid>
+                    ))}
+                    <Grid xs={6} item>
+                      <GenderSelect
+                        defaultValue={data.gender}
+                        register={register}
+                        errors={errors}
+                      />
+                    </Grid>
+                  </Grid>
+                </Box>
+                <Box>
+                  {Message && (
+                    <Alert sx={{ mt: 1 }} severity="success">
+                      {Message}
+                    </Alert>
+                  )}
+                </Box>
+                <Grid item xs={12} sx={{ pt: 4 }}>
+                  <Button type="submit" variant="contained" sx={{ mr: 4 }}>
                     Save Changes
                   </Button>
-                  <Button type='reset' variant='outlined' color='secondary' onClick={() => setFormData(initialData)}>
-                    Reset
-                  </Button>
                 </Grid>
-              </Grid>
-            </CardContent>
-          </form>
-        </Card>
-      </Grid>
-
-      {/* Delete Account Card */}
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Delete Account' />
-          <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Box sx={{ mb: 4 }}>
-                <FormControl>
-                  <Controller
-                    name='checkbox'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        label='I confirm my account deactivation'
-                        sx={{ '& .MuiTypography-root': { color: errors.checkbox ? 'error.main' : 'text.secondary' } }}
-                        control={
-                          <Checkbox
-                            {...field}
-                            size='small'
-                            name='validation-basic-checkbox'
-                            sx={errors.checkbox ? { color: 'error.main' } : null}
-                          />
-                        }
-                      />
-                    )}
-                  />
-                  {errors.checkbox && (
-                    <FormHelperText
-                      id='validation-basic-checkbox'
-                      sx={{ mx: 0, color: 'error.main', fontSize: theme => theme.typography.body2.fontSize }}
-                    >
-                      Please confirm you want to delete account
-                    </FormHelperText>
-                  )}
-                </FormControl>
-              </Box>
-              <Button variant='contained' color='error' type='submit' disabled={errors.checkbox !== undefined}>
-                Deactivate Account
-              </Button>
+              </CardContent>
             </form>
-          </CardContent>
-        </Card>
+          </Card>
+        </Grid>
       </Grid>
+      <DeleteAcount />
+    </>
+  );
+};
 
-      {/* Deactivate Account Dialogs */}
-      <Dialog fullWidth maxWidth='xs' open={open} onClose={handleClose}>
-        <DialogContent
-          sx={{
-            pb: theme => `${theme.spacing(6)} !important`,
-            px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
-            pt: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              textAlign: 'center',
-              alignItems: 'center',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              '& svg': { mb: 6, color: 'warning.main' }
-            }}
-          >
-            <Icon icon='tabler:alert-circle' fontSize='5.5rem' />
-            <Typography>Are you sure you would like to cancel your subscription?</Typography>
-          </Box>
-        </DialogContent>
-        <DialogActions
-          sx={{
-            justifyContent: 'center',
-            px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
-            pb: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
-          }}
-        >
-          <Button variant='contained' sx={{ mr: 2 }} onClick={() => handleConfirmation('yes')}>
-            Yes
-          </Button>
-          <Button variant='outlined' color='secondary' onClick={() => handleConfirmation('cancel')}>
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog fullWidth maxWidth='xs' open={secondDialogOpen} onClose={handleSecondDialogClose}>
-        <DialogContent
-          sx={{
-            pb: theme => `${theme.spacing(6)} !important`,
-            px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
-            pt: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'column',
-              '& svg': {
-                mb: 8,
-                color: userInput === 'yes' ? 'success.main' : 'error.main'
-              }
-            }}
-          >
-            <Icon fontSize='5.5rem' icon={userInput === 'yes' ? 'tabler:circle-check' : 'tabler:circle-x'} />
-            <Typography variant='h4' sx={{ mb: 5 }}>
-              {userInput === 'yes' ? 'Deleted!' : 'Cancelled'}
-            </Typography>
-            <Typography>
-              {userInput === 'yes' ? 'Your subscription cancelled successfully.' : 'Unsubscription Cancelled!!'}
-            </Typography>
-          </Box>
-        </DialogContent>
-        <DialogActions
-          sx={{
-            justifyContent: 'center',
-            px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
-            pb: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
-          }}
-        >
-          <Button variant='contained' color='success' onClick={handleSecondDialogClose}>
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Grid>
-  )
-}
-
-export default TabAccount
+export default TabAccount;

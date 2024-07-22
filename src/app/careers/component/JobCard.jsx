@@ -1,8 +1,14 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import { Box, Button } from "@mui/material";
-
+import { useNavigate } from 'react-router-dom';
 export default function JobCard({ id, title, description }) {
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate(`/careers/job/${id}`);
+  };
+
   return (
     <Box
       sx={{
@@ -24,9 +30,9 @@ export default function JobCard({ id, title, description }) {
           {description}
         </Typography>
       </Box>
-      <Button href={"/careers/job/" + id} variant="contained" color="secondary">
-        View details
-      </Button>
+      <Button onClick={handleButtonClick} variant="contained" color="secondary">
+      View details
+    </Button>
     </Box>
   );
 }

@@ -98,14 +98,6 @@ const TextFieldStyled = styled(TextField)(({ theme }) => ({
     }
   },
 
-  // ** For Select
-  '& .MuiSelect-select:focus, & .MuiNativeSelect-select:focus': {
-    backgroundColor: 'transparent'
-  },
-  '& .MuiSelect-filled .MuiChip-root': {
-    height: 22
-  },
-
   // ** For Autocomplete
   '& .MuiAutocomplete-input': {
     paddingLeft: '6px !important',

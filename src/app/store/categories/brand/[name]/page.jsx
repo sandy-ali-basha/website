@@ -16,13 +16,14 @@ import Qoute from "components/modules/home/Qoute.jsx";
 import Partners from "components/modules/home/Partners.jsx";
 import { Autoplay } from "swiper/modules";
 import gsap from "gsap";
+import { useParams } from "react-router-dom";
 
 export default function Brand() {
   const images = [bg1, bg2, bg3];
-
+const params = useParams()
   return (
     <Box sx={{mb:4}}>
-      <Swiper
+        <Swiper
         autoplay={{
           delay: 2500,
           disableOnInteraction: false,
@@ -35,7 +36,7 @@ export default function Brand() {
               sx={{
                 position: "relative",
                 width: "100vw",
-                height: "80vh", // Adjust as needed
+                height: "90vh", // Adjust as needed
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -47,24 +48,27 @@ export default function Brand() {
               <img
                 src={item}
                 alt={`Slide ${index + 1}`}
-                objectFit="cover"
-                quality={100}
+                style={{
+                  objectFit: "cover",
+                  width: "inherit",
+                  height: "inherit",
+                  position:'absolute',
+                }}
               />
               <Box
                 sx={{
                   position: "relative",
-                  zIndex: 1, // Ensure content is above the image
-                  width: "50%",
+                  zIndex: 1,
+                  width: {md:"50%",xs:"100%"},
                 }}
               >
                 <Typography variant="h2" color="inherit">
-             FINE'S
+                {params.name}
                 </Typography>
                 <Typography sx={{ mt: 2 }} variant="body1" color="inherit">
                   Natural supplement filled with 33 ingredients, all working
                   together to support your strength and healbth
                 </Typography>
-               
               </Box>
             </Box>
           </SwiperSlide>

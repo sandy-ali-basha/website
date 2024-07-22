@@ -35,8 +35,8 @@ const LanguageSelector = () => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={() => handleLanguageChange('en')}>English</MenuItem>
-        <MenuItem onClick={() => handleLanguageChange('ar')}>عربي</MenuItem>
+        <MenuItem onClick={() => handleLanguageChange('en')}>عربي</MenuItem>
+        <MenuItem onClick={() => handleLanguageChange('ar')}>English</MenuItem>
         <MenuItem onClick={() => handleLanguageChange('kr')}>کوردی</MenuItem>
       </Menu>
     </Box>

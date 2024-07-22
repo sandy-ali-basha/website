@@ -29,16 +29,15 @@ export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const onSubmit = (input) => {
     setLoading(true);
-    console.log("res")
-
     _AuthApi
       .login(input)
       .then((res) => {
-        console.log("res",res)
-        if (res?.code == 200) {
+        if (res?.data?.code == 200) {
+          _AuthApi.storeToken(res?.data?.data?.token);
+          localStorage.setItem("userData", JSON.stringify(res.data.data));
           navigate("/");
         } else {
-          setError(res?.error?.message || "An unexpected error occurred");
+          setError(res?.data?.error?.message || "An unexpected error occurred");
         }
         setLoading(true);
       })

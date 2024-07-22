@@ -8,8 +8,8 @@ import {
   Grid,
   InputAdornment,
   IconButton,
-  Link,
   Alert,
+  CircularProgress,
 } from "@mui/material";
 import {
   Visibility,
@@ -27,6 +27,8 @@ import ConfirmPhoneNum from "./_components/ConfirmPhoneNum";
 import ButtonLoader from "components/customs/ButtonLoader";
 import GenderSelect from "components/customs/GenderSelect";
 import LanguageSelector from "components/LanguageSelector";
+import { Link } from "react-router-dom";
+import Loader from "components/modules/Loader";
 function SignUp() {
   const {
     register,
@@ -96,8 +98,9 @@ function SignUp() {
         >
           {t("create new account")}{" "}
         </Typography>
+
         <Box onSubmit={handleSubmit(onSubmit)} component="form">
-          <Grid container>
+          <Grid container spacing={1}>
             {details.map((item, index) => (
               <Grid
                 item
@@ -107,9 +110,6 @@ function SignUp() {
                     : "12"
                 }
                 key={index}
-                sx={{
-                  pt: 1,
-                }}
               >
                 <TextField
                   sx={{ width: "99%" }}
@@ -142,10 +142,10 @@ function SignUp() {
                 />
               </Grid>
             ))}
+            <Grid item xs={12}>
+              <GenderSelect register={register} errors={errors} />
+            </Grid>
           </Grid>
-          <Box sx={{ pt: 1 }}>
-            <GenderSelect register={register} errors={errors} />
-          </Box>
         </Box>
         {loading ? (
           <ButtonLoader
@@ -243,7 +243,7 @@ function SignUp() {
               textDecoration: "underline",
               color: "text.primary",
             }}
-            href="/Login"
+            to="/Login"
           >
             {t("Log In")}
           </Link>

@@ -1,4 +1,4 @@
-import {  Container, Grid, Typography } from "@mui/material";
+import { Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import ProductCard from "../ProductCard";
 import productImage from "assets/images/jar.png";
@@ -9,8 +9,8 @@ export default function BestSellers() {
       <Typography variant="h6" color="initial" sx={{ mb: 2 }}>
         Our best sellers
       </Typography>
-      <Grid container spacing={2}>
-        <Grid item sm="6" md="3" sx={{ height: "60vh" }}>
+      <Grid container   spacing={{ xs: 1,  md: 2, xl: 3 }}>
+        <Grid item  xs="6" md="3" >
           <ProductCard
             productImage={productImage}
             productName={" lorem lorem lorem lorem lorem lorem lorem"}
@@ -18,7 +18,7 @@ export default function BestSellers() {
             link={`store/product/0`}
           />
         </Grid>
-        <Grid item sm="6" md="3" sx={{ height: "60vh" }}>
+        <Grid item xs="6" md="3" >
           <ProductCard
             productImage={productImage}
             productName={" lorem lorem lorem lorem lorem lorem lorem"}
@@ -26,7 +26,7 @@ export default function BestSellers() {
             link={`store/product/1`}
           />
         </Grid>
-        <Grid item sm="6" md="3" sx={{ height: "60vh" }}>
+        <Grid item xs="6" md="3" >
           <ProductCard
             productImage={productImage}
             productName={" lorem lorem lorem lorem lorem lorem lorem"}
@@ -34,7 +34,7 @@ export default function BestSellers() {
             link={`store/product/2`}
           />
         </Grid>
-        <Grid item sm="6" md="3" sx={{ height: "60vh" }}>
+        <Grid item xs="6" md="3" >
           <ProductCard
             productImage={productImage}
             productName={" lorem lorem lorem lorem lorem lorem lorem"}

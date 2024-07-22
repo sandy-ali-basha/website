@@ -26,10 +26,21 @@ export default function Partners() {
       </Box>
       <Grid container sx={{ my: "2rem" }} spacing="2">
         {logos.map((item, index) => (
-          <Grid md="3" xs="6" item key={index} sx={{textAlign:"center"}}>
+          <Grid
+            md="3"
+            xs="6"
+            item
+            key={index}
+            sx={{
+              mt: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <img
               alt="logo"
-              style={{ width: "70%", objectFit: "contain" }}
+              style={{ width: "50%", objectFit: "contain" }}
               src={item}
             />
           </Grid>

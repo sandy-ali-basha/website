@@ -6,7 +6,7 @@ import "./assets/css/style.scss";
 import Home from "app/page.jsx";
 
 import LoginPage from "./app/(authentication)/Login/page.jsx";
-import About from "./app/about/page.js";
+import About from "./app/about/page.jsx";
 import BlogPage from "./app/Blog/page.jsx";
 import BlogPost from "./app/Blog/[id]/page.jsx";
 import ContactUs from "./app/ContactUs/page.jsx";
@@ -34,6 +34,7 @@ import Careers from "app/careers/page";
 import Job from "app/careers/job/page";
 import ForgetPassword from "app/(authentication)/forgetPassword/ForgetPassword";
 import ResetPassword from "app/(authentication)/forgetPassword/ResetPassword";
+import Brand from "app/store/categories/brand/[name]/page";
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -79,16 +80,20 @@ function App() {
           <Route path="/policy/privacy" element={<Privecy />} />
           <Route path="/policy/return" element={<Return />} />
           <Route path="/profile/:tab" element={<Profile />} />
-         
           <Route
             path="/store/categories"
             exact
             element={<StoreCategoriesPage />}
           />
           <Route
+            path="/store/categories/brand/:name"
+            exact
+            element={<Brand />}
+          />
+          <Route
             path="/store/categories/:category"
             element={<StoreCategoryPage />}
-          />
+          />  
           <Route path="/store/checkout" element={<StoreCheckoutPage />} />
           <Route path="/store/offers" element={<StoreOffersPage />} />
           <Route path="/store/product/:id" element={<StoreProductPage />} />

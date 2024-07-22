@@ -95,7 +95,13 @@ export default function Categories() {
           <TabPanel value={value} index={index} key={category.name}>
             <Grid container spacing={2} sx={{ mt: { xs: 2, md: 0 } }}>
               {category.items.map((item, idx) => (
-                <Grid item md={3} xs={6} key={idx}>
+                <Grid
+                  item
+                  md={3}
+                  xs={6}
+                  key={idx}
+                  spacing={{ md: 2, xs: 1, xl: 3 }}
+                >
                   <CategoryCard
                     img={item.img}
                     label={item.label}

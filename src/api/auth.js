@@ -3,13 +3,17 @@ import { _axios } from "interceptor/http-config";
 export const _AuthApi = {
   login: (data) => {
     return _axios.post("/login", data).then((res) => {
-      _AuthApi.storeToken(res?.data?.token);
       return res;
     });
   },
 
   register: (data) => {
     return _axios.post("/register", data).then((res) => {
+      return res;
+    });
+  },
+  update: (id, data) => {
+    return _axios.post("/customers/" + id, data).then((res) => {
       return res;
     });
   },
@@ -32,7 +36,9 @@ export const _AuthApi = {
   },
 
   resetPass: (token, data) => {
-    return _axios.post(`/reset-password/${token}`, data).then((res) => res?.data);
+    return _axios
+      .post(`/reset-password/${token}`, data)
+      .then((res) => res?.data);
   },
   forgetPass: (data) => {
     return _axios.post("/forgot-password", data).then((res) => res?.data);
@@ -53,9 +59,8 @@ export const _AuthApi = {
 
   passEdit: (data) => {
     return _axios
-      .post("/editPassword", data)
+      .post("/change-password", data)
       .then((res) => {
-        console.log("done");
         return res;
       })
       .catch((error) => {
