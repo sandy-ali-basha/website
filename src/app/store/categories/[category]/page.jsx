@@ -133,7 +133,6 @@ export default function Category() {
           <IconButton color="inherit" edge="start" onClick={handleDrawerToggle}>
             <MenuIcon />
           </IconButton>
-
           <SortFilter />
         </Box>
         <Drawer
@@ -145,7 +144,7 @@ export default function Category() {
           }}
           sx={{
             display: { xs: "block", md: "none" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: 250 },
+            "& .MuiDrawer-paper": { boxSizing: "border-box" },
           }}
         >
           {drawer}
@@ -153,7 +152,6 @@ export default function Category() {
         <Box
           sx={{
             display: { xs: "none", md: "block" },
-            width: { md: "30%" },
             mx: 1,
           }}
         >

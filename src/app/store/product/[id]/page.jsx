@@ -3,6 +3,7 @@ import React from "react";
 // import { Container, Grid, Box } from "@mui/material";
 import { Box, Chip, Container, Grid, Typography, Button } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
+import defualt from "assets/images/defaultImg.jpg";
 import img1 from "assets/images/categories/pic_1.png";
 import img2 from "assets/images/categories/pic_1.png";
 import img3 from "assets/images/categories/pic_1.png";
@@ -14,15 +15,17 @@ import AccordionUsage from "./_components/AccordionUsage";
 
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
-import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useProduct } from "./hooks/useProduct";
+import CardShimmer from "components/customs/loaders/CardShimmer";
+import { Link } from "react-router-dom";
 
 function Product() {
   const theme = useTheme();
-  const images = [img1, img2, img3];
-  const params = useParams();
-  const data = {
+  const testImages = [img1, img2, img3];
+
+  const testData = {
     product: {
-      id: params.id,
       name: "product",
       price: "500",
       offer: "200",
@@ -58,17 +61,37 @@ function Product() {
       ],
     },
   };
+  const { t } = useTranslation("index");
+  const { data, isLoading } = useProduct();
+
   return (
     <Container sx={{ mt: 15 }}>
       <Grid container>
         <Grid item xs={12} md={6}>
           <Swiper navigation={true} modules={[Navigation]} spaceBetween={10}>
-            {images.map((item, idx) => (
-              <SwiperSlide key={idx}>
+            {data?.images ? (
+              data?.images?.map((item, idx) => (
+                <SwiperSlide key={idx}>
+                  <Box sx={{ width: "100%", height: "100%", borderRadius: 3 }}>
+                    <img
+                      src={item}
+                      alt={`Slide`}
+                      style={{
+                        objectFit: "cover",
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "inherit",
+                      }}
+                      quality={100}
+                    />
+                  </Box>
+                </SwiperSlide>
+              ))
+            ) : (
+              <SwiperSlide>
                 <Box sx={{ width: "100%", height: "100%", borderRadius: 3 }}>
                   <img
-                    src={item}
-                    alt={`Slide`}
+                    src={defualt}
                     style={{
                       objectFit: "cover",
                       width: "100%",
@@ -79,62 +102,115 @@ function Product() {
                   />
                 </Box>
               </SwiperSlide>
-            ))}
+            )}
           </Swiper>
         </Grid>
         <Grid xs={12} md={6}>
-          <Typography
-            sx={{ px: 2 }}
-            color="initial"
-            variant="h3"
-            fontWeight={"bold"}
-          >
-            {data?.product?.name}
-          </Typography>
-          <Box sx={{ display: "flex", gap: 2, mb: 1, px: 2 }}>
+          {isLoading ? (
+            <CardShimmer />
+          ) : (
             <Typography
-              sx={{
-                textDecoration: data?.product?.offer
-                  ? "line-through"
-                  : "initial",
-
-                fontWeight: "bold",
-              }}
-              variant="h5"
-              color={data?.product?.offer ? "text.secondary" : "initial"}
+              sx={{ px: 2 }}
+              color="initial"
+              variant="h3"
+              fontWeight={"bold"}
             >
-              {data?.product?.price}
+              {data?.data?.name}
             </Typography>
-            {data?.product?.offer && (
+          )}
+          <Box sx={{ display: "flex", gap: 2, mb: 1, px: 2 }}>
+            {isLoading ? (
+              <CardShimmer />
+            ) : (
+              <Typography
+                sx={{
+                  textDecoration: data?.product?.offer
+                    ? "line-through"
+                    : "initial",
+
+                  fontWeight: "bold",
+                }}
+                variant="h5"
+                color={data?.product?.offer ? "text.secondary" : "initial"}
+              >
+                {data?.data?.price}
+              </Typography>
+            )}
+
+            {data?.data?.sale && (
               <Typography
                 color="initial"
                 variant="h5"
                 sx={{ fontWeight: "bold" }}
               >
-                {data?.product?.offer}
+                {data?.data?.sale}
               </Typography>
+            )}
+            {isLoading ? (
+              <CardShimmer />
+            ) : (
+              data?.data?.brand && (
+                <Link to={"/store/categories/brand/" + data?.data?.brand?.name}>
+                  <Chip
+                    label={data?.data?.brand?.name}
+                    sx={{
+                      m: 1,
+                      color: `alpha(${theme.palette.common.white}, 0.15)`,
+                    }}
+                  />
+                </Link>
+              )
+            )}
+            {isLoading ? (
+              <CardShimmer />
+            ) : (
+              data?.data?.product_type && (
+                // <Link
+                //   to={
+                //     "/store/categories/brand/" + data?.data?.product_type?.name
+                //   }
+                // >
+                <Chip
+                  label={data?.data?.product_type?.name}
+                  sx={{
+                    m: 1,
+                    color: `alpha(${theme.palette.common.white}, 0.15)`,
+                  }}
+                />
+                // </Link>
+              )
             )}
           </Box>
           <Typography sx={{ px: 2 }} variant="initial" fontWeight={"bold"}>
-            Description
+            {t("Description")}
           </Typography>
-          <Typography
-            sx={{ px: 2 }}
-            variant="initial"
-            dangerouslySetInnerHTML={{ __html: data?.product?.description }}
-          ></Typography>
+          <Box sx={{ mx: 2 }}>
+            {isLoading ? (
+              <CardShimmer />
+            ) : (
+              <Typography
+                variant="initial"
+                dangerouslySetInnerHTML={{ __html: data?.data?.description }}
+              ></Typography>
+            )}
+          </Box>
+
           <Box sx={{ px: 2 }}>
-            {data?.product?.properties.map((item, idx) => (
-              <Chip
-                key={idx}
-                label={item?.title}
-                icon={item?.icon}
-                sx={{
-                  m: 1,
-                  color: `alpha(${theme.palette.common.white}, 0.15)`,
-                }}
-              />
-            ))}
+            {data?.data?.properties && isLoading ? (
+              <CardShimmer />
+            ) : (
+              data?.data?.properties?.map((item, idx) => (
+                <Chip
+                  key={idx}
+                  label={item?.title}
+                  icon={item?.icon}
+                  sx={{
+                    m: 1,
+                    color: `alpha(${theme.palette.common.white}, 0.15)`,
+                  }}
+                />
+              ))
+            )}
           </Box>
           <Box display="flex" alignItems="center" justifyContent="center">
             <Button
@@ -143,34 +219,43 @@ function Product() {
               variant="contained"
               color="secondary"
             >
-              Add To Cart
+              {"Add To Cart"}
             </Button>
           </Box>
           <Typography sx={{ px: 2, mb: 2, mt: 5 }} variant="h4">
-            You May Also Like
+            {t("You May Also Like")}
           </Typography>
           <Simillar />
         </Grid>
       </Grid>
       <Box sx={{ m: 3 }}>
-        <AccordionUsage data={data?.product?.discriptionAccourdion} />
+        <AccordionUsage data={testData?.product?.discriptionAccourdion} />
       </Box>
       <Box sx={{ my: 5, px: 3 }}>
         <Swiper>
-          {images.map((item, idx) => (
-            <SwiperSlide key={idx}>
-              <Box
-                sx={{ width: "100%", height: { md: "80vh" }, borderRadius: 3 }}
-              >
-                <img
-                  src={item}
-                  alt={`Slide `}
-                  style={{ objectFit: "cover", borderRadius: "inherit",width:"100%" }}
-                  quality={100}
-                />
-              </Box>
-            </SwiperSlide>
-          ))}
+          {testImages &&
+            testImages?.map((item, idx) => (
+              <SwiperSlide key={idx}>
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: { md: "80vh" },
+                    borderRadius: 3,
+                  }}
+                >
+                  <img
+                    src={item}
+                    alt={`Slide `}
+                    style={{
+                      objectFit: "cover",
+                      borderRadius: "inherit",
+                      width: "100%",
+                    }}
+                    quality={100}
+                  />
+                </Box>
+              </SwiperSlide>
+            ))}
         </Swiper>
       </Box>
     </Container>

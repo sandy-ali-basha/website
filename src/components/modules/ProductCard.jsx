@@ -59,7 +59,7 @@ export default function ProductCard({
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            flexDirection: { xs: "column", md: "row" },
+            flexDirection: { xs: "column", lg: "row" },
             mt: 1,
           }}
         >

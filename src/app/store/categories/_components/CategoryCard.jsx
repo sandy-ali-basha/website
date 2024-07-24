@@ -5,10 +5,7 @@ import { Link } from "react-router-dom";
 import defaultImg from "assets/images/defaultImg.jpg";
 import CardShimmer from "components/customs/loaders/CardShimmer";
 
-export default function CategoryCard({ img, label, link }) {
-  console.log(img);
-  const loading = true;
-
+export default function CategoryCard({ img, label, link, loading }) {
   return (
     <Card
       sx={{
@@ -25,10 +22,9 @@ export default function CategoryCard({ img, label, link }) {
         {loading ? (
           <>
             <CardShimmer
-              sx={{
+              style={{
                 width: "100%",
                 height: 140,
-                borderRadius: "12px",
               }}
             />
           </>
@@ -45,14 +41,29 @@ export default function CategoryCard({ img, label, link }) {
         )}
 
         <CardContent>
-          <Typography
-            gutterBottom
-            variant="h6"
-            color="initial"
-            sx={{ textAlign: "center", textDecoration: "none" }}
-          >
-            {label}
-          </Typography>
+          {loading ? (
+            <>
+              <CardShimmer
+                style={{
+                  width: "100%",
+                  height: 20,
+                }}
+              />
+            </>
+          ) : (
+            <Typography
+              gutterBottom
+              variant="h6"
+              color="initial"
+              sx={{
+                textAlign: "center",
+                textDecoration: "underline !important",
+                textDecorationColor: "#fff !important",
+              }}
+            >
+              {label}
+            </Typography>
+          )}
         </CardContent>
       </Link>
     </Card>

@@ -14,6 +14,7 @@ import PropTypes from "prop-types";
 import { useCategories } from "./_hooks/useCategories";
 import CategoryCard from "./_components/CategoryCard";
 import { useTheme } from "@mui/material/styles";
+import { useBrand } from "hooks/brands/useBrand";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,9 +47,14 @@ function a11yProps(index) {
 }
 
 export default function Categories() {
-  const { value, handleChange, data } = useCategories();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { value, handleChange, data 
+    ,theme
+    ,isMobile
+    ,dataBrand
+    ,isLoadingBrand
+    ,brandsTabIndex
+  } = useCategories();
+
 
   return (
     <Container sx={{ pt: 15 }}>
@@ -90,6 +96,7 @@ export default function Categories() {
               {...a11yProps(index)}
             />
           ))}
+          <Tab label={"Brands"} {...a11yProps(brandsTabIndex)} />
         </Tabs>
         {data.categories.map((category, index) => (
           <TabPanel value={value} index={index} key={category.name}>
@@ -112,6 +119,32 @@ export default function Categories() {
             </Grid>
           </TabPanel>
         ))}
+        <TabPanel value={value} index={brandsTabIndex} key={"Brands"}>
+          <Grid container spacing={2} sx={{ mt: { xs: 2, md: 0 } }}>
+            {isLoadingBrand ? (
+              <Grid item md={3} xs={6} spacing={{ md: 2, xs: 1, xl: 3 }}>
+                <CategoryCard loading={true} />
+              </Grid>
+            ) : (
+              dataBrand &&
+              dataBrand.brands.map((item, idx) => (
+                <Grid
+                  item
+                  md={3}
+                  xs={6}
+                  key={idx}
+                  spacing={{ md: 2, xs: 1, xl: 3 }}
+                >
+                  <CategoryCard
+                    // img={item.img}  // Uncomment and set the image URL if available
+                    label={item.name}
+                    link={"brand/" + item.id}
+                  />
+                </Grid>
+              ))
+            )}
+          </Grid>
+        </TabPanel>
       </Box>
     </Container>
   );

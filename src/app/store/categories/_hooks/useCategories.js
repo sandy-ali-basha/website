@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
+import { useTheme } from "@emotion/react";
+import { useBrand } from "hooks/brands/useBrand";
 
 export const useCategories = () => {
   const [value, setValue] = useState(0);
@@ -105,19 +107,24 @@ export const useCategories = () => {
           // Add more pharmaceutical items as needed
         ],
       },
-      {
-        name: "Brands",
-        items: [
-          {
-            img: "https://picsum.photos/200",
-            link: "brand/fines",
-            label: "Fine's",
-          },
-          // Add more pharmaceutical items as needed
-        ],
-      },
+
       // Add more categories as needed
     ],
   };
-  return { value, TabPanel, a11yProps, handleChange, data };
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { data: dataBrand, isLoading: isLoadingBrand } = useBrand();
+  const brandsTabIndex = data.categories.length;
+  return {
+    value,
+    TabPanel,
+    a11yProps,
+    handleChange,
+    data,
+    theme,
+    isMobile,
+    dataBrand,
+    isLoadingBrand,
+    brandsTabIndex,
+  };
 };
