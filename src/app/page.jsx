@@ -15,6 +15,7 @@ import Partners from "../components/modules/home/Partners.jsx";
 import { Autoplay } from "swiper/modules";
 import gsap from "gsap";
 import { useNavigate } from "react-router-dom";
+import { useBrand } from "hooks/brands/useBrand.js";
 
 export default function Home() {
   const images = [
@@ -49,7 +50,6 @@ export default function Home() {
       ease: "power1.inOut",
     });
   }, []);
-
   return (
     <>
       <Swiper

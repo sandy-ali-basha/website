@@ -1,283 +1,163 @@
-// ** MUI Imports
-import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
-import InputAdornment from "@mui/material/InputAdornment";
-import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
-// ** Third Party Imports
-import { useForm, Controller } from "react-hook-form";
-
-// ** Styles Import
-import "react-credit-cards/es/styles-compiled.css";
-import CustomTextField from "components/customs/CustomTextField";
+import React, { useState } from "react";
 import {
+  Card,
+  Grid,
+  Button,
+  CardHeader,
+  CardContent,
+  Typography,
   Box,
   CardActions,
   Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Typography,
 } from "@mui/material";
-import { useState } from "react";
-
-const defaultValues = {
-  companyName: "",
-  billingEmail: "",
-};
+import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
+import "react-credit-cards/es/styles-compiled.css";
+import { useAddresses } from "hooks/addresses/useAddresses";
+import { useTranslation } from "react-i18next";
+import { EmailOutlined, PhoneOutlined } from "@mui/icons-material";
+import AddDialog from "./components/AddDialog";
+import EditDialog from "./components/EditDialog";
+import DeleteDialog from "./components/DeleteDialog";
+import Loader from "components/modules/Loader";
 
 const BillingAddressCard = () => {
+  const [id, setId] = useState();
   const [open, setOpen] = useState(false);
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  // ** Hooks
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ defaultValues });
-
-  const onSubmit = () => {
-    return;
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDel, setOpenDel] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
   };
+  const handleOpenDel = (id) => {
+    setOpenDel(true);
+    setId(id);
+  };
+  const handleOpenEdit = (id) => {
+    setOpenEdit(true);
+    setId(id);
+  };
+  const handleClose = () => setOpen(false);
+  const handleCloseEdit = () => setOpenEdit(false);
+  const handleCloseDel = () => setOpenDel(false);
+
+  const { t } = useTranslation();
+  const { data = { addresses: [] }, isLoading } = useAddresses();
 
   return (
     <>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        scroll="paper"
-        PaperProps={{
-          component: "form",
-          onSubmit: (event) => {
-            event.preventDefault();
-            handleSubmit(onSubmit);
-            handleClose();
-          },
-        }}
-      >
-        <DialogTitle id="scroll-dialog-title">Add New Address</DialogTitle>
-        <DialogContent>
-          <Grid container spacing={5}>
-            <Grid item xs={12} sm={6}>
-              <Controller
-                name="AddressName"
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    onChange={onChange}
-                    label="Address Name"
-                    placeholder="Pixinvent"
-                    error={Boolean(errors.companyName)}
-                    {...(errors.companyName && {
-                      helperText: "This field is required",
-                    })}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Controller
-                control={control}
-                name="AddressEmail"
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    type="email"
-                    value={value}
-                    onChange={onChange}
-                    label="Address Email"
-                    placeholder="john.doe@example.com"
-                    error={Boolean(errors.billingEmail)}
-                    {...(errors.billingEmail && {
-                      helperText: "This field is required",
-                    })}
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <CustomTextField
-                fullWidth
-                label="VAT Number?"
-                placeholder="Enter VAT Number"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <CustomTextField
-                fullWidth
-                type="number"
-                label="Phone Number"
-                placeholder="202 555 0111"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">US (+1)</InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <CustomTextField
-                select
-                fullWidth
-                label="Country"
-                defaultValue="australia"
-              >
-                <MenuItem value="australia">Australia</MenuItem>
-                <MenuItem value="canada">Canada</MenuItem>
-                <MenuItem value="france">France</MenuItem>
-                <MenuItem value="united-kingdom">United Kingdom</MenuItem>
-                <MenuItem value="united-states">United States</MenuItem>
-              </CustomTextField>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <CustomTextField
-                select
-                fullWidth
-                label="City"
-                defaultValue="australia"
-              >
-                <MenuItem value="australia">Australia</MenuItem>
-                <MenuItem value="canada">Canada</MenuItem>
-                <MenuItem value="france">France</MenuItem>
-                <MenuItem value="united-kingdom">United Kingdom</MenuItem>
-                <MenuItem value="united-states">United States</MenuItem>
-              </CustomTextField>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <CustomTextField
-                fullWidth
-                label="State"
-                placeholder="California"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <CustomTextField
-                fullWidth
-                label="Address"
-                placeholder="Address"
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Save</Button>
-        </DialogActions>
-      </Dialog>
-      <Card sx={{ my: 4, boxShadow: 5 ,py:2, px:1}}>
-        <CardHeader title="Billing Address" />
+      <EditDialog open={openEdit} handleClose={handleCloseEdit} id={id} />
+      <AddDialog open={open} handleClose={handleClose} />
+      <DeleteDialog open={openDel} handleClose={handleCloseDel} id={id} />
+      <Card sx={{ my: 4, boxShadow: 5, py: 2, px: 1 }}>
+        <CardHeader title={t("Billing Address")} />
         <CardContent>
-          <Grid
-            container
-            sx={{
-              border: 1,
-              borderColor: "secondary.main",
-              borderRadius: 3,
-              p: 2,
-              background: "secondary.lighter",
-            }}
-          >
-            <Grid
-              item
-              xs="2"
-              display="flex"
-              flexDirection="column"
-              justifyContent={"center"}
-              alignItems={"center"}
-              sx={{ px: 2, gap: 2 }}
-            >
-              <LocationOnRoundedIcon
-                sx={{ fontSize: "3rem" }}
-                color="secondary"
-              />
-              <Chip color="secondary" label="primary" sx={{ color: "white" }} />
-            </Grid>
-            <Grid item xs="10">
-              <Box
-                sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}
-              >
-                <Typography variant="h5">Ellen Cho</Typography>
-                <div>
-                  {" "}
-                  <Button color="secondary" onClick={handleClickOpen}>
-                    Edit
-                  </Button>
-                  <Button size="small" color="error">Delete</Button>
-
-                </div>
-              </Box>
-              <Typography variant="body1">
-                P Compound, Building 16, Floor 55, Apt 42 3273431 - First 6th of
-                October - First 6th of October - Giza Governorate{" "}
-              </Typography>
-              <Typography sx={{ mt: 2 }} variant="body2" color="text.secondary">
-                +1080749941
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            sx={{
-              border: 1,
-              my: 1,
-              borderRadius: 3,
-              p: 2,
-              borderColor: "text.secondary",
-            }}
-          >
-            <Grid
-              item
-              xs="2"
-              display="flex"
-              flexDirection="column"
-              justifyContent={"center"}
-              alignItems={"center"}
-              sx={{ px: 2, gap: 2 }}
-            >
-              <LocationOnRoundedIcon
-                sx={{ fontSize: "3rem" }}
-                color="secondary"
-              />
-            </Grid>
-            <Grid sx={{ my: 1 }} item xs="10">
-              <Box
-                sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}
-              >
-                <Typography variant="h5">Ellen Cho</Typography>
-                <div>
-                  <Button>Mark as defualt</Button>
-                  <Button color="secondary" onClick={handleClickOpen}>
-                    Edit
-                  </Button>
-                  <Button size="small" color="error">Delete</Button>
-                </div>
-              </Box>
-              <Typography variant="body1">
-                P Compound, Building 16, Floor 55, Apt 42 3273431 - First 6th of
-                October - First 6th of October - Giza Governorate{" "}
-              </Typography>
-              <Typography sx={{ mt: 2 }} variant="body2" color="text.secondary">
-                +1080749941
-              </Typography>
-            </Grid>
-          </Grid>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <>
+              {data?.addresses?.length === 0 && (
+                <Typography variant="h5">
+                  {t(
+                    "You have not added any address yet. Please add a new address."
+                  )}
+                </Typography>
+              )}{" "}
+              {data?.addresses?.map((item, idx) => (
+                <Grid
+                  container
+                  key={idx}
+                  sx={{
+                    border: 1,
+                    borderColor: item?.billing_default
+                      ? "info.main"
+                      : "text.secondary",
+                    borderRadius: 3,
+                    p: 2,
+                    m: 1,
+                    backgroundColor: item?.billing_default
+                      ? "info.lighter"
+                      : "background.paper",
+                  }}
+                >
+                  <Grid
+                    item
+                    xs="2"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    sx={{ px: 2, gap: 2 }}
+                  >
+                    <LocationOnRoundedIcon
+                      sx={{ fontSize: "3rem" }}
+                      color="secondary.light"
+                    />
+                    {item?.billing_default && (
+                      <Chip
+                        color="info"
+                        label={t("primary")}
+                        sx={{ color: "white" }}
+                      />
+                    )}
+                  </Grid>
+                  <Grid item xs="10">
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        mb: 1,
+                      }}
+                    >
+                      <Typography variant="h5">
+                        {item?.title} {item.first_name} {item.last_name}
+                      </Typography>
+                      <div>
+                        <Button
+                          color="secondary"
+                          onClick={() => handleOpenEdit(item?.id)}
+                        >
+                          {t("Edit")}
+                        </Button>
+                        <Button
+                          size="small"
+                          color="error"
+                          onClick={() => handleOpenDel(item?.id)}
+                        >
+                          {t("Delete")}
+                        </Button>
+                      </div>
+                    </Box>
+                    <Typography variant="body1">
+                      {item?.city}, {item?.state}, {item?.country},{" "}
+                      {item?.postcode}
+                    </Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        gap: 1,
+                        mt: 1,
+                      }}
+                    >
+                      <EmailOutlined color="text.secondary" />
+                      <Typography variant="body2" color="text.secondary">
+                        {item?.contact_mail}
+                      </Typography>
+                      <PhoneOutlined color="text.secondary" />
+                      <Typography variant="body2" color="text.secondary">
+                        {item?.contact_phone}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+              ))}
+            </>
+          )}
         </CardContent>
         <CardActions>
-          <Button variant="outlined" onClick={handleClickOpen}>
-            Add New Address
+          <Button variant="outlined" onClick={() => handleClickOpen()}>
+            {t("Add New Address")}
           </Button>
         </CardActions>
       </Card>

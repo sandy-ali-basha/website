@@ -9,6 +9,7 @@ import {
 import React from "react";
 import logo from "assets/images/logo_white.png";
 import { Facebook, Instagram, LinkedIn, Twitter } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 function Footer() {
   const MenuItems = [
@@ -27,6 +28,8 @@ function Footer() {
     { title: "payment methods", href: "/PaymentMethods" },
     { title: "Delivery policy", href: "/policy/delivery" },
   ];
+  const { t } = useTranslation("index");
+
   return (
     <footer style={{ background: "#6A83B0" }}>
       <Container sx={{ py: 4 }}>
@@ -34,7 +37,7 @@ function Footer() {
           <Grid item xs="6">
             <img alt="logo" src={logo} />
           </Grid>
-          <Grid
+          {/* <Grid
             item
             xs="6"
             sx={{
@@ -57,7 +60,7 @@ function Footer() {
             >
               Sign Up
             </Button>
-          </Grid>
+          </Grid> */}
 
           <Grid xs={12} item>
             <Typography color={"white"} variant={"body1"}>
@@ -75,10 +78,10 @@ function Footer() {
             sx={{
               my: "2",
               alignItems: "center",
-              justifyContent:"space-evenly",
+              justifyContent: "space-evenly",
               height: "auto",
               display: "flex",
-              flexWrap:"wrap"
+              flexWrap: "wrap",
             }}
           >
             {MenuItems.map((item, index) => (
@@ -119,14 +122,19 @@ function Footer() {
               sx={{ color: "white", fontWeight: "300" }}
               variant="body3"
             >
-              © 2024 Dawaa Alhayat. All rights reserved.
+              {t("© 2024 Dawaa Alhayat. All rights reserved.")}
             </Typography>
           </Grid>
           <Grid
             item
             xs="12"
             md="8"
-            sx={{ display: "flex", justifyContent: {md:"flex-end",xs:"space-evenly"}, mt: 2 ,flexWrap:'wrap'}}
+            sx={{
+              display: "flex",
+              justifyContent: { md: "flex-end", xs: "space-evenly" },
+              mt: 2,
+              flexWrap: "wrap",
+            }}
           >
             {ButtomMenuItems.map((item, index) => (
               <Button

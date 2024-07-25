@@ -47,14 +47,16 @@ function a11yProps(index) {
 }
 
 export default function Categories() {
-  const { value, handleChange, data 
-    ,theme
-    ,isMobile
-    ,dataBrand
-    ,isLoadingBrand
-    ,brandsTabIndex
+  const {
+    value,
+    handleChange,
+    data,
+    theme,
+    isMobile,
+    dataBrand,
+    isLoadingBrand,
+    brandsTabIndex,
   } = useCategories();
-
 
   return (
     <Container sx={{ pt: 15 }}>

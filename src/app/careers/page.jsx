@@ -5,14 +5,15 @@ import careerimg from "assets/images/careers.png";
 import careerimg1 from "assets/images/careers-img.png";
 import careerimg2 from "assets/images/pic.png";
 import careerimg3 from "assets/images/pic2.png";
-
 import { Star } from "@mui/icons-material";
 import JobCard from "./component/JobCard";
 import { useCareers } from "hooks/careers/useCreers";
-import Loader from "components/modules/Loader";
 import { LoaderIcon } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+
 export default function Careers() {
   const { data, isLoading } = useCareers();
+  const { t } = useTranslation();
   return (
     <Container sx={{ pt: 7 }}>
       <Grid container spacing={2}>
@@ -228,7 +229,11 @@ export default function Careers() {
             />
           ))
         ) : (
-          "sorry we currently have no open position poleas check out later "
+          <Typography variant="body2" my={2}>
+            {t(
+              "Sorry, we currently have no open positions. Please check back later."
+            )}
+          </Typography>
         )}
       </section>
     </Container>

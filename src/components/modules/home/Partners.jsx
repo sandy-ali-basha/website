@@ -1,16 +1,20 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
-
-import React from "react";
-import logo1 from "../../../assets/images/partners/logo.png";
-import logo2 from "../../../assets/images/partners/Logo2.png";
-import logo3 from "../../../assets/images/partners/Logo3.png";
-import logo4 from "../../../assets/images/partners/Logo4.png";
-import logo5 from "../../../assets/images/partners/Logo5.png";
-import logo6 from "../../../assets/images/partners/Logo6.png";
-import logo7 from "../../../assets/images/partners/Logo7.png";
-import logo8 from "../../../assets/images/partners/Logo5.png";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
+import DefualtLogo from "assets/images/defualtBrand.png";
+import { useTranslation } from "react-i18next";
+import { useBrand } from "hooks/brands/useBrand";
+import { Link } from "react-router-dom";
+import Loader from "../Loader";
+import CardShimmer from "components/customs/loaders/CardShimmer";
 export default function Partners() {
-  const logos = [logo1, logo2, logo3, logo4, logo5, logo6, logo7, logo8];
+  const { data: dataBrand, isLoading: isLoadingBrand } = useBrand();
+  const { t } = useTranslation("index");
+
   return (
     <Container sx={{ my: "2rem" }}>
       <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -20,33 +24,57 @@ export default function Partners() {
           variant="body2"
           color="initial"
         >
-          Our Partners
+          {t("Our Partners")}
         </Typography>
         <hr style={{ width: "100%" }} />
       </Box>
-      <Grid container sx={{ my: "2rem" }} spacing="2">
-        {logos.map((item, index) => (
-          <Grid
-            md="3"
-            xs="6"
-            item
-            key={index}
-            sx={{
-              mt: 2,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <img
-              alt="logo"
-              style={{ width: "50%", objectFit: "contain" }}
-              src={item}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      {isLoadingBrand ? (
+        <Loader />
+      ) : (
+        <Grid container sx={{ my: "2rem" }} spacing="2">
+          {dataBrand?.brands?.map((item, index) => (
+            <BrandImage key={index} item={item} />
+          ))}
+        </Grid>
+      )}
       <hr />
     </Container>
+  );
+}
+
+function BrandImage({ item }) {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleImageLoad = () => {
+    setIsLoading(false);
+  };
+
+  return (
+    <Grid xl="2" md="3" sm="4" xs="6" item mt="2">
+      <Link
+        to={"store/categories/brand/" + item.id}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {isLoading && (
+          <CardShimmer style={{ width: "100px", height: "100px" }} />
+        )}
+        {isLoading}
+        <img
+          lazyLoading
+          alt="logo"
+          style={{
+            width: "50%",
+            objectFit: "contain",
+            display: isLoading ? "none" : "block",
+          }}
+          src={item?.image || DefualtLogo}
+          onLoad={handleImageLoad}
+        />
+      </Link>
+    </Grid>
   );
 }

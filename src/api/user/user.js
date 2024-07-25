@@ -1,11 +1,11 @@
 import { _axios } from "../../interceptor/http-config";
 import { HttpRequestInterceptor } from "interceptor/http-request.interceptor";
 
-export const _User = {
+export const _addresses = {
   index: async ({ query, page, limit = 10 }) => {
     return _axios
       .get(
-        `/admin/user?page=${page}&count=${limit}${query !== "" ? `&search=${query}` : ""
+        `/admin/addresses?page=${page}&count=${limit}${query !== "" ? `&search=${query}` : ""
         }`
         , {
           headers: {
@@ -15,14 +15,14 @@ export const _User = {
       .then((res) => res.data);
   },
   post: (data, setLoading, navigate) =>
-    _axios.post("/user/user", data).then((res) => {
+    _axios.post("/addresses/addresses", data).then((res) => {
       setLoading(true);
       navigate(-1);
     }),
-  delete: (id) => _axios.delete(`/user/user/${id}`).then((res) => res.data),
+  delete: (id) => _axios.delete(`/addresses/addresses/${id}`).then((res) => res.data),
 
   update: ({ editedID, formData, loading, setLoading, setOpen }) =>
-    _axios.post(`/user/user/${editedID}`, formData).then((res) => {
+    _axios.post(`/addresses/addresses/${editedID}`, formData).then((res) => {
       setLoading(false);
       setOpen(false);
     }),

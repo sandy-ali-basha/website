@@ -1,12 +1,12 @@
 import React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  Container,
+  Button,
+} from "@mui/material";
 import logo from "assets/images/logo.svg";
 import SearchInput from "components/modules/SearchInput";
 import {
@@ -15,85 +15,10 @@ import {
 } from "@mui/icons-material";
 import { useNavBar } from "./useNavBar";
 import MenuButton from "components/modules/NavBar/MenuButton";
-import CartItem from "components/modules/cart/CartItem";
-import { useNavigate } from "react-router-dom";
 import LanguageSelector from "components/LanguageSelector";
-
+import MenuIcon from "@mui/icons-material/Menu";
 function NavBar() {
-  const { handleCloseNavMenu, t } = useNavBar();
-  const navigate = useNavigate();
-
-  const GoToCart = () => {
-    return (
-      <Button
-        sx={{ width: "100%" }}
-        variant="outlined"
-        onClick={() => navigate("/store/checkout")}
-      >
-        {t("Show Cart")}
-      </Button>
-    );
-  };
-
-  const CartMenuItems = [
-    {
-      id: 1,
-      label: <CartItem />,
-      onClick: () => navigate("/store/checkout"),
-    },
-    {
-      id: 2,
-      label: <CartItem />,
-      onClick: () => navigate("/store/checkout"),
-    },
-    {
-      id: 3,
-      label: <CartItem />,
-      onClick: () => navigate("/store/checkout"),
-    },
-    {
-      id: 4,
-      label: <GoToCart />,
-      onClick: () => navigate("/store/checkout"),
-    },
-  ];
-
-  const settings = [
-    {
-      id: 2,
-      label: t("My account"),
-      onClick: () => navigate("/profile/account"),
-    },
-    {
-      id: 3,
-      label: t("Change Password"),
-      onClick: () => navigate("/profile/security"),
-    },
-    { id: 4, label: t("Billing"), onClick: () => navigate("/profile/billing") },
-    {
-      id: 5,
-      label: t("My Orders"),
-      onClick: () => navigate("/profile/orders"),
-    },
-    { id: 6, label: t("Login"), onClick: () => navigate("/Login") },
-  ];
-
-  const pages = [
-    { id: "0", onClick: () => navigate("/"), label: t("Home") },
-    {
-      id: "1",
-      onClick: () => navigate("/store/categories"),
-      label: t("Products"),
-    },
-    { id: "2", onClick: () => navigate("/about"), label: t("About Us") },
-    { id: "3", onClick: () => navigate("/careers"), label: t("Careers") },
-    {
-      id: "4",
-      onClick: () => navigate("/store/offers"),
-      label: t("Special Offers"),
-    },
-    { id: "5", onClick: () => navigate("/contact-us"), label: t("Contact Us") },
-  ];
+  const { CartMenuItems, settings, pages } = useNavBar();
 
   return (
     <AppBar
