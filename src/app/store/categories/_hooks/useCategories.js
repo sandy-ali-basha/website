@@ -30,8 +30,6 @@ export const useCategories = () => {
     { enabled: fetchBrands } // Only fetch if fetching brands is true
   );
 
-  console.log(fetchBrands);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
     if (newValue === brandsTabIndex) {

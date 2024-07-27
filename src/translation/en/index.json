@@ -41,9 +41,19 @@
   "Defualt address for shipping": "Defualt address for shipping",
   "Edit Address": "Edit Address",
   "Are you Sure you want to Delete it ?": "Are you Sure you want to Delete it ?",
-  "Agree":"Agree",
-  "Delete Item":"Delete Item",
-  "Disagree":"Disagree",
-  "Categories":"Categories",
-  "No Data":"No Data"
+  "Agree": "Agree",
+  "Delete Item": "Delete Item",
+  "Disagree": "Disagree",
+  "Categories": "Categories",
+  "No Data": "No Data",
+  "Search": "Search",
+  "Options": "Options",
+  "Price": "Price",
+  "Sort By": "Sort By",
+  "None":"None",
+  "Price: Low to High":"Price: Low to High",
+  "Price: High to Low":"Price: High to Low",
+  "Name: A-Z":"Name: A-Z",
+  "Name: Z-A":"Name: Z-A"
+  
 }

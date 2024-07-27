@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import { useCategory } from "./_hooks/useCategory";
 import Typography from "@mui/material/Typography";
@@ -7,8 +6,6 @@ import {
   Divider,
   Box,
   Grid,
-  Slider,
-  TextField,
   Drawer,
   IconButton,
   FormControl,
@@ -16,63 +13,25 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import CAccordion from "components/modules/Accordion";
 import ProductCard from "components/modules/ProductCard";
-import { useParams } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
+import SideDrawer from "./_components/Drawer";
 
 export default function Category() {
-  const { data, isMobile } = useCategory();
-  const [value, setValue] = useState([20, 37]);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [sort, setSort] = useState("");
+  const {
+    data,
+    isLoading,
+    value,
+    sort,
+    valuetext,
+    handleChange,
+    handleSortChange,
+    handleDrawerToggle,
+    params,
+    t,
+    mobileOpen,
+  } = useCategory();
 
-  function valuetext(value) {
-    return `${value}$`;
-  }
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const handleSortChange = (event) => {
-    setSort(event.target.value);
-  };
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const params = useParams();
-
-  const drawer = (
-    <Box
-      sx={{
-        borderColor: "divider",
-        width: 250,
-        px: 2,
-      }}
-    >
-      <Typography variant="subtitle1" color="text.secondary">
-        Search:
-      </Typography>
-      <TextField size="small" sx={{ width: "100%" }} placeholder="search" />
-      <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
-        Options:
-      </Typography>
-      <CAccordion />
-      <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
-        Price
-      </Typography>
-      <Slider
-        getAriaLabel={() => "Price"}
-        value={value}
-        onChange={handleChange}
-        valueLabelDisplay="auto"
-        getAriaValueText={valuetext}
-      />
-    </Box>
-  );
   const SortFilter = () => {
     return (
       <FormControl
@@ -80,15 +39,15 @@ export default function Category() {
         size="small"
         sx={{ minWidth: 120, ml: { xs: 2, md: 0 } }}
       >
-        <InputLabel>Sort By</InputLabel>
+        <InputLabel>{t("Sort By")}</InputLabel>
         <Select value={sort} onChange={handleSortChange} label="Sort By">
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value={"priceAsc"}>Price: Low to High</MenuItem>
-          <MenuItem value={"priceDesc"}>Price: High to Low</MenuItem>
-          <MenuItem value={"nameAsc"}>Name: A-Z</MenuItem>
-          <MenuItem value={"nameDesc"}>Name: Z-A</MenuItem>
+          <MenuItem value={"priceAsc"}>{t("Price: Low to High")}</MenuItem>
+          <MenuItem value={"priceDesc"}>{t("Price: High to Low")}</MenuItem>
+          <MenuItem value={"nameAsc"}>{t("Name: A-Z")}</MenuItem>
+          <MenuItem value={"nameDesc"}>{t("Name: Z-A")}</MenuItem>
         </Select>
       </FormControl>
     );
@@ -116,14 +75,14 @@ export default function Category() {
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-start",
           my: 5,
           flexDirection: { xs: "column", md: "row" },
         }}
       >
         <Box
           sx={{
-            alignItems: "center",
+            alignItems: "flex-start",
             width: "100%",
             justifyContent: { xs: "space-between", md: "flex-start" },
             mb: { xs: 2, md: 0 },
@@ -147,7 +106,7 @@ export default function Category() {
             "& .MuiDrawer-paper": { boxSizing: "border-box" },
           }}
         >
-          {drawer}
+          <SideDrawer valuetext={valuetext} />
         </Drawer>
         <Box
           sx={{
@@ -155,7 +114,11 @@ export default function Category() {
             mx: 1,
           }}
         >
-          {drawer}
+          <SideDrawer
+            valuetext={valuetext}
+            value={value}
+            handleChange={handleChange}
+          />
         </Box>
         <Box
           component="main"
@@ -165,16 +128,24 @@ export default function Category() {
           }}
         >
           <Grid container spacing={2}>
-            {data?.Products?.items.map((item, idx) => (
-              <Grid item key={idx} xs={12} sm={6} md={4} lg={3}>
-                <ProductCard
-                  productName={item.name}
-                  Price={item.price}
-                  productImage={item.img}
-                  link={`/store/product/${item.id}`}
-                />
-              </Grid>
-            ))}
+            {isLoading &&
+              Array.from({ length: 5 }).map((_, index) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                  <ProductCard loading={true} />
+                </Grid>
+              ))}
+            {data &&
+              data?.data?.products?.map((item, idx) => (
+                <Grid item key={idx} xs={12} sm={6} md={4} lg={3}>
+                  <ProductCard
+                    productName={item.name}
+                    Price={"100"}
+                    productImage={item.img}
+                    link={`/store/product/${item.id}`}
+                    loading={false}
+                  />
+                </Grid>
+              ))}
           </Grid>
         </Box>
       </Box>

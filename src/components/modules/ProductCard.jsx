@@ -4,28 +4,30 @@ import { Box, Button, Card, CardContent, CardMedia } from "@mui/material";
 import { Link } from "react-router-dom";
 import CardShimmer from "components/customs/loaders/CardShimmer";
 import defaultImg from "assets/images/defaultImg.jpg";
+import { useTranslation } from "react-i18next";
 export default function ProductCard({
   productName,
   Price,
   productImage,
   offer,
   link,
+  loading,
 }) {
-  const loading = false;
+  const { t } = useTranslation("index");
   return (
     <Card sx={{ boxShadow: 3, borderRadius: 3 }}>
       {" "}
       <Link to={link} component="a" style={{ textDecoration: "none" }}>
         {loading ? (
-          <>
+         
             <CardShimmer
-              sx={{
+              style={{
                 width: "100%",
                 height: { xs: "30vh", md: "40vh" },
                 borderRadius: "12px",
               }}
             />
-          </>
+          
         ) : (
           <>
             <CardMedia
@@ -92,7 +94,7 @@ export default function ProductCard({
             )}
           </Box>
           <Button variant="outlined" size="small">
-            Add To Cart
+            {t("Add To Cart")}
           </Button>
         </Box>
       </CardContent>

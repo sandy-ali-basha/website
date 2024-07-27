@@ -1,12 +1,8 @@
- 
 import * as React from "react";
 import Accordion from "@mui/material/Accordion";
-import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Button from "@mui/material/Button";
-import { CheckBox } from "@mui/icons-material";
 import { Checkbox, FormControlLabel } from "@mui/material";
 
 export default function CAccordion() {
@@ -63,10 +59,6 @@ export default function CAccordion() {
                 </AccordionDetails>
               );
             })}
-            {/* <AccordionActions>
-            <Button>Cancel</Button>
-            <Button>Agree</Button>
-          </AccordionActions> */}
           </Accordion>
         );
       })}
