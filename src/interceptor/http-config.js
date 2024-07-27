@@ -8,6 +8,6 @@ const direction = settingsStore.getState().direction;
 export const _axios = axios.create({
   baseURL: REACT_APP_API_URL,
   headers: {
-    'lang': direction
-  }
+    locale: direction,
+  },
 });

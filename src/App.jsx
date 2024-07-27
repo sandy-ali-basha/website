@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { QueryClient } from "react-query";
+import { Routes, Route, Outlet } from "react-router-dom";
 import "./assets/css/style.scss";
 import Home from "app/page.jsx";
 
@@ -11,10 +11,6 @@ import BlogPage from "./app/Blog/page.jsx";
 import BlogPost from "./app/Blog/[id]/page.jsx";
 import ContactUs from "./app/ContactUs/page.jsx";
 import FAQ from "./app/faq/page.js";
-import PaymentMethods from "./app/PaymentMethods/page.jsx";
-import Delivery from "./app/policy/delivery/page.jsx";
-import Privecy from "./app/policy/privecy/page.jsx";
-import Return from "./app/policy/return/page.jsx";
 import StoreCategoriesPage from "./app/store/categories/page.jsx";
 import StoreCategoryPage from "./app/store/categories/[category]/page.jsx";
 import StoreCheckoutPage from "./app/store/checkout/page.jsx";
@@ -75,10 +71,6 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/careers/job/:id" element={<Job />} />
-          <Route path="/payment-methods" element={<PaymentMethods />} />
-          <Route path="/policy/delivery" element={<Delivery />} />
-          <Route path="/policy/privacy" element={<Privecy />} />
-          <Route path="/policy/return" element={<Return />} />
           <Route path="/profile/:tab" element={<Profile />} />
           <Route
             path="/store/categories"
@@ -93,11 +85,11 @@ function App() {
           <Route
             path="/store/categories/:category"
             element={<StoreCategoryPage />}
-          />  
+          />
           <Route path="/store/checkout" element={<StoreCheckoutPage />} />
           <Route path="/store/offers" element={<StoreOffersPage />} />
           <Route path="/store/product/:id" element={<StoreProductPage />} />
-          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/terms/:id" element={<TermsPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUp />} />

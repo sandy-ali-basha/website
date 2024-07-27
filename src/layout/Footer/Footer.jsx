@@ -10,6 +10,9 @@ import React from "react";
 import logo from "assets/images/logo_white.png";
 import { Facebook, Instagram, LinkedIn, Twitter } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { _terms } from "api/terms/terms";
+import { useQuery } from "react-query";
+import CardShimmer from "components/customs/loaders/CardShimmer";
 
 function Footer() {
   const MenuItems = [
@@ -21,6 +24,10 @@ function Footer() {
     { href: "", title: "SignUp" },
     { href: "/Blog", title: "Blog" },
   ];
+  const { data: termsData, isLoading: isLoadingTerms } = useQuery(
+    ["terms"],
+    () => _terms.getTerms().then((res) => res?.data)
+  );
   const ButtomMenuItems = [
     { title: "Terms & Conditions", href: "/Terms" },
     { title: "privecy Policy", href: "/policy/privecy" },
@@ -29,7 +36,7 @@ function Footer() {
     { title: "Delivery policy", href: "/policy/delivery" },
   ];
   const { t } = useTranslation("index");
-
+  console.log(termsData);
   return (
     <footer style={{ background: "#6A83B0" }}>
       <Container sx={{ py: 4 }}>
@@ -136,14 +143,17 @@ function Footer() {
               flexWrap: "wrap",
             }}
           >
-            {ButtomMenuItems.map((item, index) => (
+            {isLoadingTerms && (
+              <CardShimmer style={{ width: "50px", height: "10px" }} />
+            )}
+            {termsData?.terms?.map((item, index) => (
               <Button
                 sx={{ color: "#e9e9e9", fontWeight: "300" }}
                 variant={"text"}
                 key={index}
-                href={item.href}
+                href={`/terms/${item.id}`}
               >
-                {item.title}
+                {item.name}
               </Button>
             ))}
           </Grid>

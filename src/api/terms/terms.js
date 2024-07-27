@@ -11,5 +11,13 @@ export const _terms = {
       })
       .then((res) => res.data);
   },
- 
+  getTerm: async (id) => {
+    return _axios
+      .get(`/terms/${id}`, {
+        headers: {
+          ...HttpRequestInterceptor(),
+        },
+      })
+      .then((res) => res.data);
+  },
 };
