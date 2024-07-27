@@ -9,12 +9,15 @@ import {
   Tab,
   Grid,
   useMediaQuery,
+  LinearProgress,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { useCategories } from "./_hooks/useCategories";
 import CategoryCard from "./_components/CategoryCard";
-import { useTheme } from "@mui/material/styles";
-import { useBrand } from "hooks/brands/useBrand";
+import { t } from "i18next";
+import Loader from "components/modules/Loader";
+import ButtonLoader from "components/customs/ButtonLoader";
+import CardShimmer from "components/customs/loaders/CardShimmer";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,6 +59,9 @@ export default function Categories() {
     dataBrand,
     isLoadingBrand,
     brandsTabIndex,
+    isLoading,
+    AttrValuesData,
+    AttrValuesLoading,
   } = useCategories();
 
   return (
@@ -65,7 +71,7 @@ export default function Categories() {
         color="initial"
         sx={{ textAlign: "center", mb: 2 }}
       >
-        Categories
+        {t("Categories")}
       </Typography>
       <Divider />
       <Box
@@ -91,36 +97,69 @@ export default function Categories() {
             marginRight: 2,
           }}
         >
-          {data.categories.map((category, index) => (
-            <Tab
-              key={category.name}
-              label={category.name}
-              {...a11yProps(index)}
-            />
-          ))}
-          <Tab label={"Brands"} {...a11yProps(brandsTabIndex)} />
+          {isLoading && <Loader />}
+          {data &&
+            data?.product_attributes?.map((category, index) => (
+              <Tab
+                key={category.title}
+                label={category.title}
+                {...a11yProps(index)}
+              />
+            ))}
+          {isLoading || <Tab label={"Brands"} {...a11yProps(brandsTabIndex)} />}
         </Tabs>
-        {data.categories.map((category, index) => (
-          <TabPanel value={value} index={index} key={category.name}>
-            <Grid container spacing={2} sx={{ mt: { xs: 2, md: 0 } }}>
-              {category.items.map((item, idx) => (
-                <Grid
-                  item
-                  md={3}
-                  xs={6}
-                  key={idx}
-                  spacing={{ md: 2, xs: 1, xl: 3 }}
-                >
-                  <CategoryCard
-                    img={item.img}
-                    label={item.label}
-                    link={item.link}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          </TabPanel>
-        ))}
+
+        {AttrValuesLoading ? (
+          <Grid container sx={{ mt: { xs: 2, md: 0 } }} spacing={2}>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <Grid
+                item
+                md={3}
+                xs={6}
+                spacing={{ md: 2, xs: 1, xl: 3 }}
+                key={index}
+              >
+                <CategoryCard loading={true} />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          data?.product_attributes?.map((category, index) => (
+            <TabPanel value={value} index={index} key={category.title}>
+              <Grid container spacing={2} sx={{ mt: { xs: 2, md: 0 } }}>
+                {AttrValuesData?.product_attributes_values.length > 0 ? (
+                  AttrValuesData?.product_attributes_values?.map(
+                    (item, idx) => (
+                      <Grid
+                        item
+                        md={3}
+                        xs={6}
+                        key={idx}
+                        spacing={{ md: 2, xs: 1, xl: 3 }}
+                      >
+                        <CategoryCard
+                          img={item?.img}
+                          label={item.value}
+                          link={item.id}
+                          loading={AttrValuesLoading}
+                        />
+                      </Grid>
+                    )
+                  )
+                ) : (
+                  <Typography
+                    sx={{ textAlign: "center", width: "100%", my: 5 }}
+                    variant="h4"
+                    color={"text.secondary"}
+                  >
+                    {t("No Data")} {":("}
+                  </Typography>
+                )}
+              </Grid>
+            </TabPanel>
+          ))
+        )}
+
         <TabPanel value={value} index={brandsTabIndex} key={"Brands"}>
           <Grid container spacing={2} sx={{ mt: { xs: 2, md: 0 } }}>
             {isLoadingBrand ? (
@@ -138,7 +177,7 @@ export default function Categories() {
                   spacing={{ md: 2, xs: 1, xl: 3 }}
                 >
                   <CategoryCard
-                    // img={item.img}  // Uncomment and set the image URL if available
+                    img={item.img}  
                     label={item.name}
                     link={"brand/" + item.id}
                   />

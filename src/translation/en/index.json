@@ -43,5 +43,7 @@
   "Are you Sure you want to Delete it ?": "Are you Sure you want to Delete it ?",
   "Agree":"Agree",
   "Delete Item":"Delete Item",
-  "Disagree":"Disagree"
+  "Disagree":"Disagree",
+  "Categories":"Categories",
+  "No Data":"No Data"
 }
