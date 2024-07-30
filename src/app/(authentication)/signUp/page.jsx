@@ -142,9 +142,15 @@ function SignUp() {
                 />
               </Grid>
             ))}
+
             <Grid item xs={12}>
               <GenderSelect register={register} errors={errors} />
             </Grid>
+            <Alert severity="warning">
+              {t(
+                "We will handle your personal data as described in our Privacy Policy."
+              )}
+            </Alert>
           </Grid>
         </Box>
         {loading ? (

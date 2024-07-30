@@ -61,6 +61,7 @@ function Product() {
       ],
     },
   };
+
   const { t } = useTranslation("index");
   const { data, isLoading } = useProduct();
 

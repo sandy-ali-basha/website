@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import { useAttributes } from "hooks/attributes/useAttributes";
@@ -29,6 +29,12 @@ export const useCategories = () => {
     () => _Brands.getBrands().then((res) => res?.data),
     { enabled: fetchBrands } // Only fetch if fetching brands is true
   );
+  
+  useEffect(() => {
+    if (data && data.product_attributes && data.product_attributes.length > 0) {
+      setSelectedCategoryId(data.product_attributes[0].id);
+    }
+  }, [data]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -82,5 +88,6 @@ export const useCategories = () => {
     isLoading,
     AttrValuesData,
     AttrValuesLoading,
+    selectedCategoryId
   };
 };

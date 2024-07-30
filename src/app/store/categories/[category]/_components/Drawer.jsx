@@ -2,7 +2,7 @@ import { Box, Slider, TextField, Typography } from "@mui/material";
 import CAccordion from "components/modules/Accordion";
 import { useTranslation } from "react-i18next";
 
-const SideDrawer = ({ valuetext, value, handleChange }) => {
+const SideDrawer = ({ valuetext, value, handleChange, data, handleCheked }) => {
   const { t } = useTranslation("index");
   return (
     <Box
@@ -20,7 +20,9 @@ const SideDrawer = ({ valuetext, value, handleChange }) => {
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
         {t("Options")}:
       </Typography>
-      <CAccordion />
+      {/* //Accourdion */}
+      <CAccordion data={data} handleCheked={handleCheked} />
+
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
         {t("Price")}
       </Typography>

@@ -30,6 +30,9 @@ export default function Category() {
     params,
     t,
     mobileOpen,
+    Attr,
+    AttrLoading,
+    handleCheked
   } = useCategory();
 
   const SortFilter = () => {
@@ -52,6 +55,7 @@ export default function Category() {
       </FormControl>
     );
   };
+
   return (
     <Container sx={{ pt: 15 }}>
       <Typography
@@ -92,7 +96,7 @@ export default function Category() {
           <IconButton color="inherit" edge="start" onClick={handleDrawerToggle}>
             <MenuIcon />
           </IconButton>
-          <SortFilter />
+          <SortFilter data={Attr} />
         </Box>
         <Drawer
           variant="temporary"
@@ -106,7 +110,13 @@ export default function Category() {
             "& .MuiDrawer-paper": { boxSizing: "border-box" },
           }}
         >
-          <SideDrawer valuetext={valuetext} />
+          <SideDrawer
+            data={Attr}
+            value={value}
+            handleChange={handleChange}
+            valuetext={valuetext}
+            handleCheked={handleCheked}
+          />
         </Drawer>
         <Box
           sx={{
@@ -116,8 +126,10 @@ export default function Category() {
         >
           <SideDrawer
             valuetext={valuetext}
+            data={Attr}
             value={value}
             handleChange={handleChange}
+            handleCheked={handleCheked}
           />
         </Box>
         <Box

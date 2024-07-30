@@ -1,10 +1,10 @@
 import { _ProductApi } from "api/Product/product";
 import { useQuery } from "react-query";
 
-export const useProducts = ({ price0, price1 }) => {
+export const useProducts = (body) => {
   const { data, isLoading } = useQuery(
-    ["product", price0, price1],
-    () => _ProductApi.index({ price0, price1 }).then((res) => res),
+    ["product", body],
+    () => _ProductApi.filter(body).then((res) => res),
     {
       keepPreviousData: true,
     }

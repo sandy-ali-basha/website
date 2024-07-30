@@ -2,7 +2,7 @@ import { _axios } from "interceptor/http-config";
 import { HttpRequestInterceptor } from "interceptor/http-request.interceptor";
 
 export const _ProductApi = {
-  index: async ({  price0, price1 }) => {
+  index: async ({ price0, price1 }) => {
     try {
       const response = await _axios.get(
         `/product${price0 ? `&price[0]=${price0}` : ""}${
@@ -19,4 +19,8 @@ export const _ProductApi = {
       console.error(error);
     }
   },
+  filter: (data, setLoading) =>
+    _axios.post(`/filter`, data).then((res) => {
+      return res.data;
+    }),
 };

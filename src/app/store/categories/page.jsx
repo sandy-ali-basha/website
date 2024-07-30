@@ -1,24 +1,12 @@
 "use client";
 import React from "react";
 import Typography from "@mui/material/Typography";
-import {
-  Container,
-  Divider,
-  Box,
-  Tabs,
-  Tab,
-  Grid,
-  useMediaQuery,
-  LinearProgress,
-} from "@mui/material";
+import { Container, Divider, Box, Tabs, Tab, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { useCategories } from "./_hooks/useCategories";
 import CategoryCard from "./_components/CategoryCard";
 import { t } from "i18next";
 import Loader from "components/modules/Loader";
-import ButtonLoader from "components/customs/ButtonLoader";
-import CardShimmer from "components/customs/loaders/CardShimmer";
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -54,7 +42,6 @@ export default function Categories() {
     value,
     handleChange,
     data,
-    theme,
     isMobile,
     dataBrand,
     isLoadingBrand,
@@ -62,6 +49,7 @@ export default function Categories() {
     isLoading,
     AttrValuesData,
     AttrValuesLoading,
+    selectedCategoryId
   } = useCategories();
 
   return (
@@ -140,7 +128,13 @@ export default function Categories() {
                         <CategoryCard
                           img={item?.img}
                           label={item.value}
-                          link={item.id}
+                          link={
+                            item.id +
+                            "/" +
+                            item.value +
+                            "/" +
+                            selectedCategoryId
+                          }
                           loading={AttrValuesLoading}
                         />
                       </Grid>
@@ -177,7 +171,7 @@ export default function Categories() {
                   spacing={{ md: 2, xs: 1, xl: 3 }}
                 >
                   <CategoryCard
-                    img={item.img}  
+                    img={item.img}
                     label={item.name}
                     link={"brand/" + item.id}
                   />

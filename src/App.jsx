@@ -83,7 +83,7 @@ function App() {
             element={<Brand />}
           />
           <Route
-            path="/store/categories/:category"
+            path="/store/categories/:attr_value_id/:category/:attr_id"
             element={<StoreCategoryPage />}
           />
           <Route path="/store/checkout" element={<StoreCheckoutPage />} />

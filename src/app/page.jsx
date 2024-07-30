@@ -16,6 +16,8 @@ import { Autoplay } from "swiper/modules";
 import gsap from "gsap";
 import { useNavigate } from "react-router-dom";
 import { useBrand } from "hooks/brands/useBrand.js";
+import { useTranslation } from "react-i18next";
+import { settingsStore } from "store/settingsStore.js";
 
 export default function Home() {
   const images = [
@@ -32,6 +34,10 @@ export default function Home() {
         " Unparalleled Efficacy: Our supplements are meticulously formulated, ensuring that your body receives the full spectrum of benefits each ingredient has to offer.",
     },
   ];
+  const [direction, setDirection] = settingsStore((state) => [
+    state.direction,
+    state.setDirection,
+  ]);
   const gummieBox = useRef(null);
   const navigate = useNavigate();
   useEffect(() => {
@@ -44,12 +50,13 @@ export default function Home() {
     });
 
     tl.to(gummieBox.current, {
-      rotate: -40,
+      rotate: direction === "ltr" ? -40 : 40,
       duration: 1,
-      x: -100,
+      x: direction === "ltr" ? -100 : 100,
       ease: "power1.inOut",
     });
   }, []);
+  const { t } = useTranslation("index");
   return (
     <>
       <Swiper
@@ -103,7 +110,7 @@ export default function Home() {
                   variant="contained"
                   onClick={() => navigate("/store/categories/brand/fines")}
                 >
-                  Get Started
+                  {t("Get Started")}
                 </Button>
               </Box>
             </Box>
@@ -128,14 +135,14 @@ export default function Home() {
             }}
           >
             <Typography variant="body2" color="initial">
-              Unleash the Power of Nature's Finest:
+              {t("Unleash the Power of Nature's Finest:")}
             </Typography>
             <Typography
               variant="h3"
               color="initial"
               sx={{ mb: 2, fontWeight: "bold" }}
             >
-              Empowering Wellbeing. Together.
+              {t("Empowering Wellbeing. Together.")}
             </Typography>
             <Box
               sx={{
@@ -152,7 +159,7 @@ export default function Home() {
                   120
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Employees{" "}
+                  {t("Employees")}{" "}
                 </Typography>
               </Box>
               <Box>
@@ -163,7 +170,7 @@ export default function Home() {
                   100%
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Driven by Science{" "}
+                  {t("Driven by Science")}{" "}
                 </Typography>
               </Box>
               <Box>
@@ -174,7 +181,7 @@ export default function Home() {
                   2500
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Clients
+                  {t("Clients")}
                 </Typography>
               </Box>
               {/* <Box>
@@ -197,7 +204,7 @@ export default function Home() {
             quality={100}
             style={{
               position: "absolute",
-              left: "38%",
+              left: direction === "ltr" ? "38%" : "5%",
               top: "20%",
               objectFit: "contain",
               height: "50vh",
@@ -218,13 +225,12 @@ export default function Home() {
               }}
             >
               <Typography variant="h4" color="white">
-                Fine's: Your Gateway to a Healthier, Happier You
+                {t("Fine's: Your Gateway to a Healthier, Happier You")}
               </Typography>
               <Typography variant="body1" color="white" sx={{ mt: 2 }}>
-                Embrace a life brimming with vitality and wellness with Fine's,
-                the premier Canadian brand dedicated to crafting exceptional
-                nutritional supplements that empower you to achieve your optimal
-                health goals.
+                {t(
+                  "Embrace a life brimming with vitality and wellness with Fine's the premier Canadian brand dedicated to crafting exceptional nutritional supplements that empower you to achieve your optimal health goals."
+                )}
               </Typography>
             </Box>
           </Grid>
@@ -245,14 +251,12 @@ export default function Home() {
               color="initial"
               sx={{ fontWeight: "bold" }}
             >
-              Unleash the Power of Nature's Finest:
+              {t("Unleash the Power of Nature's Finest:")}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              At Fine's, we meticulously select the purest, most potent
-              ingredients from nature's vast bounty to formulate supplements
-              that are not only science-backed but also gentle on your body. Our
-              unwavering commitment to quality ensures that every product you
-              receive is a testament to our dedication to your well-being.
+              {t(
+                "At Fine's, we meticulously select the purest, most potent ingredients from nature's vast bounty to formulate supplements that are not only science-backed but also gentle on your body. Our unwavering commitment to quality ensures that every product you receive is a testament to our dedication to your well-being."
+              )}
             </Typography>
           </Grid>
           <Grid
@@ -269,7 +273,7 @@ export default function Home() {
               sx={{ px: 3 }}
               onClick={() => navigate("/store/categories")}
             >
-              Shop Now
+              {"Shop Now"}
             </Button>
           </Grid>
         </Grid>
