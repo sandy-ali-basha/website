@@ -19,15 +19,13 @@ export default function ProductCard({
       {" "}
       <Link to={link} component="a" style={{ textDecoration: "none" }}>
         {loading ? (
-         
-            <CardShimmer
-              style={{
-                width: "100%",
-                height: { xs: "30vh", md: "40vh" },
-                borderRadius: "12px",
-              }}
-            />
-          
+          <CardShimmer
+            style={{
+              width: "100%",
+              height: { xs: "30vh", md: "40vh" },
+              borderRadius: "12px",
+            }}
+          />
         ) : (
           <>
             <CardMedia

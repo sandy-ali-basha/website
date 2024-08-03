@@ -8,8 +8,10 @@ import {
 } from "@mui/material";
 import React from "react";
 import MailToLink from "./components/mailToLink";
+import { useTranslation } from "react-i18next";
 
 export default function ContactUs() {
+  const { t } = useTranslation("index");
   return (
     <Container sx={{ my: 20 }}>
       <Box sx={{ width: { md: "50%" } }}>
@@ -18,10 +20,10 @@ export default function ContactUs() {
           sx={{ fontWeight: "bold", mb: 1 }}
           color="initial"
         >
-          Talk with Dawaa Alhayat Expert
+          {t("Talk with Dawaa Alhayat Expert")}
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          We’ll help you find the right plan for your team.
+          {t("We’ll help you find the right Prodcuts for your Health.")}
         </Typography>
       </Box>
       <Grid container spacing={5}>
@@ -71,13 +73,13 @@ export default function ContactUs() {
               />
               <Box sx={{ textAlign: "center", mt: 4 }}>
                 <Button variant="contained" sx={{ mx: "auto" }}>
-                  SEND
+                  {t("SEND")}
                 </Button>
               </Box>
             </Box>
           </Box>
           <Typography sx={{ mt: 3 }} variant="caption" color="text.secondary">
-            We typically get back to all requests within 24 hours.
+            {t("We typically get back to all requests within 24 hours.")}
           </Typography>
         </Grid>
         <Grid
@@ -106,9 +108,13 @@ export default function ContactUs() {
           </Box>
           <Box sx={{ textAlign: "start", width: "100%", mt: 3, ms: 2 }}>
             <Typography variant="body1" color="initial">
-              Need white glove customer support?
+              {t("Need white glove customer support?")}
             </Typography>
-            <MailToLink text="Contact Customer Support" email="dn@gmail.com" />
+            <MailToLink
+              sx={{ mt: 2 }}
+              text="Contact Customer Support"
+              email="dn@gmail.com"
+            />
           </Box>
         </Grid>
       </Grid>

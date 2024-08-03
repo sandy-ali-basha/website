@@ -4,7 +4,7 @@ import { CardContent, CardMedia, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import CardShimmer from "components/customs/loaders/CardShimmer";
 
-export default function CategoryCard({ img, label, link, loading }) {
+export default function CategoryCard({ label, link, loading }) {
   return (
     <Card
       sx={{
@@ -22,7 +22,7 @@ export default function CategoryCard({ img, label, link, loading }) {
       <Link
         to={"/store/categories/" + link}
         component="a"
-        sx={{ textDecoration: "none", paddingBottom: "16px !important" }}
+        sx={{ textDecoration: "none" }}
       >
         <CardContent>
           {loading ? (

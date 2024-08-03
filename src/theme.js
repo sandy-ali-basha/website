@@ -83,6 +83,12 @@ const theme = createTheme({
     },
   },
   typography: {
+    fontFamily: [
+      'IBM Plex Sans Arabic', 
+      'Poppins',
+      'Reddit Sans', 
+      'sans-serif'
+    ].join(','),
     h1: {
       fontWeight: 600,
     },

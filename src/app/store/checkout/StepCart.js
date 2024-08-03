@@ -1,15 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
-import Rating from "@mui/material/Rating";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import IconButton from "@mui/material/IconButton";
-import AlertTitle from "@mui/material/AlertTitle";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import List from "@mui/material/List";
@@ -21,6 +18,8 @@ import { Chip, Container, TextField } from "@mui/material";
 import CustomTextField from "components/customs/CustomTextField";
 // ** Icon Imports
 import Icon from "components/modules/icon";
+import { useTranslation } from "react-i18next";
+import { _AuthApi } from "api/auth";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -42,20 +41,20 @@ const StyledList = styled(List)(({ theme }) => ({
     },
   },
 }));
-
 const StepCart = ({ handleNext }) => {
   // ** Hooks
   const theme = useTheme();
   const breakpointMD = useMediaQuery((theme) =>
     theme.breakpoints.between("sm", "lg")
   );
-
+  const { t } = useTranslation("index");
+  const navigate = useNavigate();
   return (
     <Container>
       <Grid container spacing={2}>
         <Grid item xs={12} lg={8}>
           <Typography variant="h5" sx={{ mb: 2 }}>
-            My Shopping Bag (2 Items)
+            {t("My Shopping Bag")} (2 {t("Items")})
           </Typography>
           <StyledList>
             <ListItem sx={{ boxShadow: 3, borderRadius: 3, my: 2 }}>
@@ -89,19 +88,19 @@ const StepCart = ({ handleNext }) => {
                   <ListItemText primary="Google - Google Home - White" />
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Typography sx={{ mr: 2, color: "text.disabled" }}>
-                      Sold By:
+                      {t("Sold By")}:
                     </Typography>
                     <Typography
                       href="/"
                       component={Link}
-                      onClick={(e) => e.preventDefault()}
+                      onClick={(e) => navigate("/store/categories/brand/6")}
                       sx={{
                         mr: 2,
                         color: "primary.main",
                         textDecoration: "none",
                       }}
                     >
-                      Google
+                      google
                     </Typography>
                     <Chip
                       rounded
@@ -144,18 +143,13 @@ const StepCart = ({ handleNext }) => {
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
-                      mt:"2",
+                      mt: "2",
                       alignItems: "flex-end",
                     }}
                   >
-                    <TextField
-                      size="small"
-                      type="number"
-                      defaultValue="1"
-                      
-                    />
+                    <TextField size="small" type="number" defaultValue="1" />
                     <Button variant="outlined" size="small" color="secondary">
-                      Move to wishlist
+                      {t("Move to wishlist")}
                     </Button>
                   </Box>
                 </Grid>
@@ -185,13 +179,13 @@ const StepCart = ({ handleNext }) => {
                 "&:hover": { color: "primary.main" },
               }}
             >
-              Add more products from wishlist
+              {t("Add more products from wishlist")}
             </Typography>
             <Icon
               icon={
                 theme.direction === "ltr"
-                  ? "tabler:chevron-right"
-                  : "tabler:chevron-left"
+                  ? "tabler:chevron-left"
+                  : "tabler:chevron-right"
               }
             />
           </Box>
@@ -205,38 +199,8 @@ const StepCart = ({ handleNext }) => {
             }}
           >
             <CardContent>
-              <Typography sx={{ mb: 1 }} variant="h6">
-                coupon
-              </Typography>
-              <Box sx={{ mb: 1, display: "flex", alignItems: "center" }}>
-                <CustomTextField
-                  fullWidth
-                  size="small"
-                  sx={{ mr: 2 }}
-                  placeholder="Enter Promo Code"
-                />
-                <Button variant="outlined">Apply</Button>
-              </Box>
-            </CardContent>
-            <CardContent>
-              <Typography sx={{ mb: 1 }} variant="h6">
-                Points
-              </Typography>
-              <Box sx={{ mb: 1, display: "flex", alignItems: "center" }}>
-                <CustomTextField
-                  fullWidth
-                  size="small"
-                  sx={{ mr: 2 }}
-                  type="number"
-                  placeholder="Enter points"
-                />
-                <Button variant="outlined">Apply</Button>
-              </Box>
-            </CardContent>
-            <Divider sx={{ my: "0 !important" }} />
-            <CardContent>
               <Typography sx={{ mb: 2 }} variant="h6">
-                Price Details
+                {t("Price Details")}
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <Box
@@ -264,7 +228,7 @@ const StepCart = ({ handleNext }) => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography>Coupon Discount</Typography>
+                  <Typography>{t("Coupon Discount")}</Typography>
                   <Typography
                     href="/"
                     variant="h6"
@@ -272,7 +236,7 @@ const StepCart = ({ handleNext }) => {
                     onClick={(e) => e.preventDefault()}
                     sx={{ color: "primary.main", textDecoration: "none" }}
                   >
-                    Apply Coupon
+                    {t("Apply Coupon")}
                   </Typography>
                 </Box>
                 <Box
@@ -299,7 +263,7 @@ const StepCart = ({ handleNext }) => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography>Delivery Charges</Typography>
+                  <Typography>{t("Delivery Charges")}</Typography>
                   <Box
                     sx={{
                       display: "flex",
@@ -327,6 +291,36 @@ const StepCart = ({ handleNext }) => {
                 </Box>
               </Box>
             </CardContent>
+
+            <Divider sx={{ my: "0 !important" }} />
+            <CardContent>
+              <Typography sx={{ mb: 1 }} variant="h6">
+                {t("coupon")}
+              </Typography>
+              <Box sx={{ mb: 1, display: "flex", alignItems: "center" }}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  sx={{ mr: 2 }}
+                  placeholder="Enter Promo Code"
+                />
+                <Button variant="outlined">{t("Apply")}</Button>
+              </Box>
+              <Typography sx={{ mb: 1 }} variant="h6">
+                {t("Points")}
+              </Typography>
+              <Box sx={{ mb: 1, display: "flex", alignItems: "center" }}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  sx={{ mr: 2 }}
+                  type="number"
+                  placeholder="Enter points"
+                />
+                <Button variant="outlined">{t("Apply")}</Button>
+              </Box>
+            </CardContent>
+
             <Divider sx={{ my: "0 !important" }} />
             <CardContent
               sx={{ py: (theme) => `${theme.spacing(3.5)} !important` }}
@@ -340,7 +334,7 @@ const StepCart = ({ handleNext }) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Typography sx={{ fontWeight: 500 }}>Total</Typography>
+                <Typography sx={{ fontWeight: 500 }}>{t("Total")}</Typography>
                 <Typography sx={{ fontWeight: 500 }}>$1198.00</Typography>
               </Box>
             </CardContent>
@@ -351,15 +345,27 @@ const StepCart = ({ handleNext }) => {
               ...(breakpointMD ? { justifyContent: "flex-end" } : {}),
             }}
           >
-            <Button
-              fullWidth={!breakpointMD}
-              variant="contained"
-              onClick={handleNext}
-              sx={{ borderRadius: 3 }}
-              color="secondary"
-            >
-              Place Order
-            </Button>
+            {_AuthApi.getToken() ? (
+              <Button
+                fullWidth={!breakpointMD}
+                variant="contained"
+                onClick={handleNext}
+                sx={{ borderRadius: 3 }}
+                color="secondary"
+              >
+                {t("Place Order")}
+              </Button>
+            ) : (
+              <Button
+                fullWidth={!breakpointMD}
+                variant="contained"
+                onClick={() => navigate("/login")}
+                sx={{ borderRadius: 3 }}
+                color="secondary"
+              >
+                {t("Pleas Log in to checkout")}
+              </Button>
+            )}
           </Box>
         </Grid>
       </Grid>

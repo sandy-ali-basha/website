@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 export const useCategory = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [value, setValue] = useState([20, 37]);
+  const [value, setValue] = useState([0, 1000]);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sort, setSort] = useState("");
   const { t } = useTranslation("index");
@@ -25,6 +25,8 @@ export const useCategory = () => {
     filters: {
       [attr]: attValue,
     },
+    min_price: price0,
+    max_price: price1,
     // brand_id: "null",
     // product_type_id: "null",
   };

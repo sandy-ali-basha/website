@@ -117,8 +117,7 @@ const StepConfirmation = () => {
             with your order confirmation and receipt.
           </Typography>
           <Typography sx={{ mb: 4, color: "text.secondary" }}>
-            If the email hasn't arrived within two minutes, please check your
-            spam folder to see if the email was routed there.
+           {(" If the email hasn't arrived within two minutes, please check your spam folder to see if the email was routed there.")}
           </Typography>
           <Box
             sx={{
@@ -133,7 +132,7 @@ const StepConfirmation = () => {
                 component="span"
                 sx={{ fontWeight: 500, color: "text.secondary" }}
               >
-                Time placed:
+                {("Time placed")}:
               </Typography>{" "}
               25/05/2020 13:35pm
             </Typography>

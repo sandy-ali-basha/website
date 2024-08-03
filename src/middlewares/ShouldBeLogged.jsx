@@ -4,10 +4,11 @@ import { Navigate, useLocation } from "react-router-dom";
 const ShouldBeLogged = ({ children }) => {
   let location = useLocation();
 
-  if (!_AuthApi.getToken()) {
-    return <Navigate to="/" state={location.pathname} replace />;
+  if (_AuthApi.getToken()) {
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
   return children;
 };
+
 
 export default ShouldBeLogged

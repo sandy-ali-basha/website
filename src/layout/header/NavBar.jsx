@@ -17,8 +17,9 @@ import { useNavBar } from "./useNavBar";
 import MenuButton from "components/modules/NavBar/MenuButton";
 import LanguageSelector from "components/LanguageSelector";
 import MenuIcon from "@mui/icons-material/Menu";
+import { _AuthApi } from "api/auth";
 function NavBar() {
-  const { CartMenuItems, settings, pages } = useNavBar();
+  const { CartMenuItems, settings, pages,navigate ,t} = useNavBar();
 
   return (
     <AppBar
@@ -111,6 +112,7 @@ function NavBar() {
             />
           </Box>
           <Box sx={{ mx: "10px" }}>
+            {_AuthApi.getToken()?
             <MenuButton
               badgeNumber={4}
               icon={<PersonOutlineOutlined sx={{ color: "white" }} />}
@@ -118,7 +120,13 @@ function NavBar() {
                 ...item,
                 key: item.id,
               }))}
-            />
+            />: <Button
+            onClick={()=> navigate("/login")}
+            sx={{ my: 2, color: "white", display: "block" }}
+          >
+            {t("sign in")}
+          </Button>
+            }
           </Box>
         </Toolbar>
       </Container>

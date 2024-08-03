@@ -20,23 +20,15 @@ function Footer() {
     { href: "/about", title: "About" },
     { href: "/contact-us", title: "Contact" },
     { href: "/careers", title: "Career" },
-    { href: "", title: "Faqs" },
-    { href: "", title: "SignUp" },
     { href: "/Blog", title: "Blog" },
   ];
   const { data: termsData, isLoading: isLoadingTerms } = useQuery(
     ["terms"],
     () => _terms.getTerms().then((res) => res?.data)
   );
-  const ButtomMenuItems = [
-    { title: "Terms & Conditions", href: "/Terms" },
-    { title: "privecy Policy", href: "/policy/privecy" },
-    { title: "Return policy", href: "/policy/return" },
-    { title: "payment methods", href: "/PaymentMethods" },
-    { title: "Delivery policy", href: "/policy/delivery" },
-  ];
+
   const { t } = useTranslation("index");
-  console.log(termsData);
+
   return (
     <footer style={{ background: "#6A83B0" }}>
       <Container sx={{ py: 4 }}>

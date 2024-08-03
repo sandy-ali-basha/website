@@ -14,6 +14,23 @@
   "Contact Us": "Contact Us",
   "Change Language": "Change Language",
   "Show Cart": "Show Cart",
-
-  "My Addresses": "My Addresses"
+  "Orders": "Orders",
+  "My Addresses": "My Addresses",
+  "sign in": "sign in",
+  "Log out": "Log out",
+  "Place Order": "Place Order",
+  "Pleas Log in to checkout": "Pleas Log in to checkout",
+  "My Shopping Bag": "My Shopping Bag",
+  "Items": "Items",
+  "Sold By": "Sold By",
+  "Move to wishlist": "Move to wishlist",
+  "Add more products from wishlist": "Add more products from wishlist",
+  "Price Details": "Price Details",
+  "Coupon Discount": "Coupon Discount",
+  "Apply Coupon": "Apply Coupon",
+  "Delivery Charges": "Delivery Charges",
+  "Apply": "Apply",
+  "Points": "Points",
+  "Total":"Total"
+  
 }

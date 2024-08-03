@@ -31,10 +31,10 @@ import Job from "app/careers/job/page";
 import ForgetPassword from "app/(authentication)/forgetPassword/ForgetPassword";
 import ResetPassword from "app/(authentication)/forgetPassword/ResetPassword";
 import Brand from "app/store/categories/brand/[name]/page";
+import ShouldNotBeLogged from "middlewares/ShouldNotBeLogged";
+import NotFound from "components/NotFound";
 
 function App() {
-  const [queryClient] = useState(() => new QueryClient());
-
   useEffect(() => {
     const storedSessionId = localStorage.getItem("session_id");
     if (!storedSessionId) {
@@ -56,6 +56,42 @@ function App() {
       </Helmet>
 
       <Routes>
+        <Route
+          path="/login"
+          element={
+            <ShouldNotBeLogged>
+              <LoginPage />
+            </ShouldNotBeLogged>
+          }
+        />
+
+        <Route
+          path="/signup"
+          element={
+            <ShouldNotBeLogged>
+              <SignUp />
+            </ShouldNotBeLogged>
+          }
+        />
+
+        <Route
+          path="/forget-password"
+          element={
+            <ShouldNotBeLogged>
+              <ForgetPassword />
+            </ShouldNotBeLogged>
+          }
+        />
+
+        <Route
+          path="/reset-password"
+          element={
+            <ShouldNotBeLogged>
+              <ResetPassword />
+            </ShouldNotBeLogged>
+          }
+        />
+
         <Route
           element={
             <Layout>
@@ -91,10 +127,7 @@ function App() {
           <Route path="/store/product/:id" element={<StoreProductPage />} />
           <Route path="/terms/:id" element={<TermsPage />} />
         </Route>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/forget-password" element={<ForgetPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </ThemeProviderWrapper>
   );

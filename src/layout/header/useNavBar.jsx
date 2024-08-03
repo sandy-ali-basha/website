@@ -6,10 +6,7 @@ import CartItem from "components/modules/cart/CartItem";
 import { useNavigate } from "react-router-dom";
 
 export const useNavBar = () => {
-  const [anchorElCart, setAnchorElCart] = useState(null);
   const { t } = useTranslation("navbar");
-
-  const openCart = Boolean(anchorElCart);
 
   const navigate = useNavigate();
 
@@ -61,16 +58,28 @@ export const useNavBar = () => {
     },
     { id: 4, label: t("Billing"), onClick: () => navigate("/profile/billing") },
     {
+      id: 6,
+      label: t("My Orders"),
+      onClick: () => navigate("/profile/orders"),
+    },
+    {
       id: 5,
       label: t("My Addresses"),
       onClick: () => navigate("/profile/addresses"),
     },
     {
-      id: 6,
-      label: t("My Orders"),
-      onClick: () => navigate("/profile/orders"),
+      id: 5,
+      label: t("My Points"),
+      onClick: () => navigate("/profile/points"),
     },
-    { id: 7, label: t("Login"), onClick: () => navigate("/Login") },
+    {
+      id: 5,
+      label: t("Log out"),
+      onClick: () => {
+        localStorage.clear();
+        window.location.reload();
+      },
+    },
   ];
 
   const pages = [
@@ -94,5 +103,7 @@ export const useNavBar = () => {
     CartMenuItems,
     settings,
     pages,
+    navigate,
+    t,
   };
 };

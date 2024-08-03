@@ -20,6 +20,7 @@ import BusinessRoundedIcon from "@mui/icons-material/BusinessRounded";
 import CreditScoreRoundedIcon from "@mui/icons-material/CreditScoreRounded";
 import ReceiptLongRoundedIcon from "@mui/icons-material/ReceiptLongRounded";
 import KeyboardDoubleArrowRightRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowRightRounded";
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 // ** Step Components
 import StepCart from "./StepCart";
 import StepAddress from "./StepAddress";
@@ -28,25 +29,9 @@ import StepConfirmation from "./StepConfirmation";
 
 // ** Styled Components
 import StepperWrapper from "./_components/StepperWrapper";
-
-const steps = [
-  {
-    title: "Cart",
-    icon: <ShoppingCartRoundedIcon />,
-  },
-  {
-    title: "Address",
-    icon: <BusinessRoundedIcon />,
-  },
-  {
-    title: "Payment",
-    icon: <CreditScoreRoundedIcon />,
-  },
-  {
-    title: "Confermation",
-    icon: <ReceiptLongRoundedIcon />,
-  },
-];
+import { _AuthApi } from "api/auth";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "@emotion/react";
 
 const Stepper = styled(MuiStepper)(({ theme }) => ({
   margin: "auto",
@@ -102,28 +87,46 @@ const Stepper = styled(MuiStepper)(({ theme }) => ({
 const Checkout = () => {
   // ** States
   const [activeStep, setActiveStep] = useState(0);
-
-  // ** Hooks & Var
-  const smallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
-
+  const { t } = useTranslation("index");
+  const steps = [
+    {
+      title: t("Cart"),
+      icon: <ShoppingCartRoundedIcon />,
+    },
+    {
+      title: t("Address"),
+      icon: <BusinessRoundedIcon />,
+    },
+    {
+      title: t("Payment"),
+      icon: <CreditScoreRoundedIcon />,
+    },
+    {
+      title: t("Confermation"),
+      icon: <ReceiptLongRoundedIcon />,
+    },
+  ];
   // Handle Stepper
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
+  const theme = useTheme();
 
   const getStepContent = (step) => {
-    switch (step) {
-      case 0:
-        return <StepCart handleNext={handleNext} />;
-      case 1:
-        return <StepAddress handleNext={handleNext} />;
-      case 2:
-        return <StepPayment handleNext={handleNext} />;
-      case 3:
-        return <StepConfirmation />;
-      default:
-        return null;
-    }
+    if (_AuthApi.getToken()) {
+      switch (step) {
+        case 0:
+          return <StepCart handleNext={handleNext} />;
+        case 1:
+          return <StepAddress handleNext={handleNext} />;
+        case 2:
+          return <StepPayment handleNext={handleNext} />;
+        case 3:
+          return <StepConfirmation />;
+        default:
+          return null;
+      }
+    } else return <StepCart handleNext={handleNext} />;
   };
 
   const renderContent = () => {
@@ -136,23 +139,34 @@ const Checkout = () => {
         <StepperWrapper>
           <Stepper
             activeStep={activeStep}
-            connector={<KeyboardDoubleArrowRightRoundedIcon />}
+            connector={
+              theme.direction === "ltr" ? (
+                <KeyboardDoubleArrowRightRoundedIcon />
+              ) : (
+                <KeyboardDoubleArrowLeftIcon />
+              )
+            }
           >
-            {steps.map((step, index) => {
-              return (
-                <Step key={index} onClick={() => setActiveStep(index)} sx={{}}>
-                  <StepLabel icon={<></>}>
-                    {step.icon}
-                    <Typography
-                      className="step-title"
-                      sx={{ display: { md: "block", xs: "none" } }}
-                    >
-                      {step.title}
-                    </Typography>
-                  </StepLabel>
-                </Step>
-              );
-            })}
+            {_AuthApi.getToken() &&
+              steps.map((step, index) => {
+                return (
+                  <Step
+                    key={index}
+                    onClick={() => setActiveStep(index)}
+                    sx={{}}
+                  >
+                    <StepLabel icon={<></>}>
+                      {step.icon}
+                      <Typography
+                        className="step-title"
+                        sx={{ display: { md: "block", xs: "none" } }}
+                      >
+                        {step.title}
+                      </Typography>
+                    </StepLabel>
+                  </Step>
+                );
+              })}
           </Stepper>
         </StepperWrapper>
       </CardContent>

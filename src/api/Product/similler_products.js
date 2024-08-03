@@ -6,7 +6,7 @@ export const _similler_product = {
     index: async (id) => {
         return _axios
             .get(
-                `user/product/similar/${id}`, {
+                `product/similar/${id}`, {
                 headers: {
                     ...HttpRequestInterceptor()
                 }

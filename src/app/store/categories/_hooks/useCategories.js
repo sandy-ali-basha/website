@@ -5,6 +5,7 @@ import { useAttributes } from "hooks/attributes/useAttributes";
 import { useQuery } from "react-query";
 import { _Attributes } from "api/attributes/attributes";
 import { _Brands } from "api/brand/brands";
+import { useTranslation } from "react-i18next";
 
 export const useCategories = () => {
   const [value, setValue] = useState(0);
@@ -14,7 +15,7 @@ export const useCategories = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { data, isLoading } = useAttributes();
   const brandsTabIndex = data?.product_attributes?.length;
-
+  const { t } = useTranslation("index");
   const { data: AttrValuesData, isLoading: AttrValuesLoading } = useQuery(
     ["_Attributes_values", selectedCategoryId],
     () =>
@@ -29,7 +30,7 @@ export const useCategories = () => {
     () => _Brands.getBrands().then((res) => res?.data),
     { enabled: fetchBrands } // Only fetch if fetching brands is true
   );
-  
+
   useEffect(() => {
     if (data && data.product_attributes && data.product_attributes.length > 0) {
       setSelectedCategoryId(data.product_attributes[0].id);
@@ -88,6 +89,7 @@ export const useCategories = () => {
     isLoading,
     AttrValuesData,
     AttrValuesLoading,
-    selectedCategoryId
+    selectedCategoryId,
+    t,
   };
 };

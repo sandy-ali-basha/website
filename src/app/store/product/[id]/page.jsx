@@ -18,7 +18,7 @@ import { Navigation } from "swiper/modules";
 import { useTranslation } from "react-i18next";
 import { useProduct } from "./hooks/useProduct";
 import CardShimmer from "components/customs/loaders/CardShimmer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Product() {
   const theme = useTheme();
@@ -64,7 +64,7 @@ function Product() {
 
   const { t } = useTranslation("index");
   const { data, isLoading } = useProduct();
-
+  const navigate = useNavigate();
   return (
     <Container sx={{ mt: 15 }}>
       <Grid container>
@@ -119,7 +119,7 @@ function Product() {
               {data?.data?.name}
             </Typography>
           )}
-          <Box sx={{ display: "flex", gap: 2, mb: 1, px: 2 }}>
+          <Box sx={{ display: "flex", gap: 2, mb: 1, px: 2, flexWrap: "wrap" }}>
             {isLoading ? (
               <CardShimmer />
             ) : (
@@ -134,7 +134,7 @@ function Product() {
                 variant="h5"
                 color={data?.product?.offer ? "text.secondary" : "initial"}
               >
-                {data?.data?.price}
+                {data?.data?.price?.value} {data?.data?.price?.currency?.name}
               </Typography>
             )}
 
@@ -147,55 +147,89 @@ function Product() {
                 {data?.data?.sale}
               </Typography>
             )}
-            {isLoading ? (
-              <CardShimmer />
-            ) : (
-              data?.data?.brand && (
-                <Link to={"/store/categories/brand/" + data?.data?.brand?.name}>
+            <Box>
+              {isLoading ? (
+                <CardShimmer />
+              ) : (
+                data?.data?.brand && (
                   <Chip
+                    onClick={() =>
+                      navigate(
+                        `/store/categories/brand/${data?.data?.brand?.id}`
+                      )
+                    }
                     label={data?.data?.brand?.name}
                     sx={{
-                      m: 1,
-                      color: `alpha(${theme.palette.common.white}, 0.15)`,
+                      m: "5px",
+                      bgColor: `primary.lighter`,
                     }}
                   />
-                </Link>
-              )
-            )}
-            {isLoading ? (
-              <CardShimmer />
-            ) : (
-              data?.data?.product_type && (
-                // <Link
-                //   to={
-                //     "/store/categories/brand/" + data?.data?.product_type?.name
-                //   }
-                // >
-                <Chip
-                  label={data?.data?.product_type?.name}
-                  sx={{
-                    m: 1,
-                    color: `alpha(${theme.palette.common.white}, 0.15)`,
+                )
+              )}
+              {isLoading ? (
+                <CardShimmer
+                  style={{
+                    width: "100px",
+                    height: "15px",
+                    borderRadius: "50px",
                   }}
                 />
-                // </Link>
-              )
-            )}
-          </Box>
-          <Typography sx={{ px: 2 }} variant="initial" fontWeight={"bold"}>
-            {t("Description")}
-          </Typography>
-          <Box sx={{ mx: 2 }}>
-            {isLoading ? (
-              <CardShimmer />
-            ) : (
-              <Typography
-                variant="initial"
-                dangerouslySetInnerHTML={{ __html: data?.data?.description }}
-              ></Typography>
-            )}
+              ) : (
+                data?.data?.product_type && (
+                  <Chip
+                    label={data?.data?.product_type?.name}
+                    sx={{
+                      m: "5px",
+                    }}
+                    variant="outlined"
+                  />
+                )
+              )}
+              {isLoading ? (
+                <CardShimmer
+                  style={{
+                    width: "100px",
+                    height: "15px",
+                    borderRadius: "50px",
+                  }}
+                />
+              ) : (
+                data?.data?.attributes &&
+                data?.data?.attributes?.map((item, idx) => (
+                  <Link key={idx} to={"/store/categories/" + item?.id}>
+                    <Chip
+                      label={item.value}
+                      sx={{
+                        m: 1,
+                      }}
+                      color="primary"
+                      variant="outlined"
+                    />
+                  </Link>
+                ))
+              )}
+            </Box>
           </Box>
 
+          <Box sx={{ mx: 2 }}>
+            {isLoading ? (
+              <CardShimmer style={{ width: "80%", height: "50px" }} />
+            ) : (
+              <>
+                <Typography
+                  sx={{ px: 2 }}
+                  variant="initial"
+                  fontWeight={"bold"}
+                >
+                  {t("Description")}
+                </Typography>
+                <Typography
+                  variant="initial"
+                  dangerouslySetInnerHTML={{ __html: data?.data?.description }}
+                ></Typography>
+              </>
+            )}
+          </Box>
           <Box sx={{ px: 2 }}>
             {data?.data?.properties && isLoading ? (
               <CardShimmer />
@@ -223,10 +257,8 @@ function Product() {
               {"Add To Cart"}
             </Button>
           </Box>
-          <Typography sx={{ px: 2, mb: 2, mt: 5 }} variant="h4">
-            {t("You May Also Like")}
-          </Typography>
-          <Simillar />
+          
+          <Simillar id={data?.data?.id} />
         </Grid>
       </Grid>
       <Box sx={{ m: 3 }}>

@@ -5,7 +5,6 @@ import { Container, Divider, Box, Tabs, Tab, Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import { useCategories } from "./_hooks/useCategories";
 import CategoryCard from "./_components/CategoryCard";
-import { t } from "i18next";
 import Loader from "components/modules/Loader";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,7 +48,8 @@ export default function Categories() {
     isLoading,
     AttrValuesData,
     AttrValuesLoading,
-    selectedCategoryId
+    selectedCategoryId,
+    t
   } = useCategories();
 
   return (

@@ -5,7 +5,7 @@ import { _similler_product } from "api/Product/similler_products";
 
 export const useSimillerProduct = (id) => {
     const { data, isLoading } = useQuery(
-        [`similler_product-${id}`],
+        [`product-similar-${id}`],
         () => _similler_product.index(id).then((res) => res),
         {
             keepPreviousData: true,

@@ -20,7 +20,7 @@ const SideDrawer = ({ valuetext, value, handleChange, data, handleCheked }) => {
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
         {t("Options")}:
       </Typography>
-      {/* //Accourdion */}
+      {/* // * Accourdion */}
       <CAccordion data={data} handleCheked={handleCheked} />
 
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
