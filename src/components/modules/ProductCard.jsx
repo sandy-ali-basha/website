@@ -1,10 +1,19 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
-import { Box, Button, Card, CardContent, CardMedia } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  CircularProgress,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import CardShimmer from "components/customs/loaders/CardShimmer";
 import defaultImg from "assets/images/defaultImg.jpg";
 import { useTranslation } from "react-i18next";
+import { useAddToCart } from "hooks/cart/useAddToCart";
+import Loader from "./Loader";
 export default function ProductCard({
   productName,
   Price,
@@ -12,7 +21,9 @@ export default function ProductCard({
   offer,
   link,
   loading,
+  id,
 }) {
+  const { handleAddToCart, loadingCart } = useAddToCart();
   const { t } = useTranslation("index");
   return (
     <Card sx={{ boxShadow: 3, borderRadius: 3 }}>
@@ -91,9 +102,19 @@ export default function ProductCard({
               </Typography>
             )}
           </Box>
-          <Button variant="outlined" size="small">
-            {t("Add To Cart")}
-          </Button>
+          {!loading && (
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => handleAddToCart(id)}
+            >
+              {loadingCart ? (
+                <CircularProgress sx={{ width: "10px" }} />
+              ) : (
+                t("Add To Cart")
+              )}
+            </Button>
+          )}
         </Box>
       </CardContent>
       {/* Uncomment and use the Image component if necessary

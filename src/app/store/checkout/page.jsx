@@ -147,26 +147,21 @@ const Checkout = () => {
               )
             }
           >
-            {_AuthApi.getToken() &&
-              steps.map((step, index) => {
-                return (
-                  <Step
-                    key={index}
-                    onClick={() => setActiveStep(index)}
-                    sx={{}}
-                  >
-                    <StepLabel icon={<></>}>
-                      {step.icon}
-                      <Typography
-                        className="step-title"
-                        sx={{ display: { md: "block", xs: "none" } }}
-                      >
-                        {step.title}
-                      </Typography>
-                    </StepLabel>
-                  </Step>
-                );
-              })}
+            {steps.map((step, index) => {
+              return (
+                <Step key={index} onClick={() => setActiveStep(index)} sx={{}}>
+                  <StepLabel icon={<></>}>
+                    {step.icon}
+                    <Typography
+                      className="step-title"
+                      sx={{ display: { md: "block", xs: "none" } }}
+                    >
+                      {step.title}
+                    </Typography>
+                  </StepLabel>
+                </Step>
+              );
+            })}
           </Stepper>
         </StepperWrapper>
       </CardContent>

@@ -16,7 +16,7 @@ export default function Job() {
   const { id } = useParams();
   const { t } = useTranslation("index");
   const { data, isLoading } = useCareer(id);
-  console.log("params.data", data);
+
   return (
     <Container sx={{ my: 22 }}>
       <Grid container spacing={5}>

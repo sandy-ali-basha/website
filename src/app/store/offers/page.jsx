@@ -39,6 +39,7 @@ export default function Offers() {
           {data?.Products?.items.map((item, idx) => (
             <Grid item md={3} sm={6} xs={12} key={idx}>
               <ProductCard
+              
                 productName={item.name}
                 Price={item.price}
                 productImage={item.img}

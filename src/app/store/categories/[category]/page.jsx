@@ -16,6 +16,7 @@ import {
 import ProductCard from "components/modules/ProductCard";
 import MenuIcon from "@mui/icons-material/Menu";
 import SideDrawer from "./_components/Drawer";
+import { CloseFullscreen, CloseRounded } from "@mui/icons-material";
 
 export default function Category() {
   const {
@@ -32,9 +33,8 @@ export default function Category() {
     mobileOpen,
     Attr,
     AttrLoading,
-    handleCheked
+    handleCheked,
   } = useCategory();
-
   const SortFilter = () => {
     return (
       <FormControl
@@ -139,6 +139,22 @@ export default function Category() {
             width: { xs: "100%", md: `calc(100% - 30%)` },
           }}
         >
+          {" "}
+          {data?.data?.products?.length === 0 && (
+            <Typography
+              variant="body1"
+              sx={{
+                my: 10,
+                textAlign: "center",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap:2
+              }}
+            >
+              {t("No Product Found")} <CloseRounded  />
+            </Typography>
+          )}
           <Grid container spacing={2}>
             {isLoading &&
               Array.from({ length: 5 }).map((_, index) => (
@@ -146,10 +162,12 @@ export default function Category() {
                   <ProductCard loading={true} />
                 </Grid>
               ))}
+
             {data &&
               data?.data?.products?.map((item, idx) => (
                 <Grid item key={idx} xs={12} sm={6} md={4} lg={3}>
                   <ProductCard
+                    id={item?.id}
                     productName={item.name}
                     Price={"100"}
                     productImage={item.img}

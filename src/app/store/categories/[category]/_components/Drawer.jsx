@@ -26,13 +26,27 @@ const SideDrawer = ({ valuetext, value, handleChange, data, handleCheked }) => {
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
         {t("Price")}
       </Typography>
-      <Slider
-        getAriaLabel={() => "Price"}
-        value={value}
-        onChange={handleChange}
-        valueLabelDisplay="auto"
-        getAriaValueText={valuetext}
-      />
+      <Box dir="ltr">
+        <Slider
+          getAriaLabel={() => "Price"}
+          value={value}
+          onChange={handleChange}
+          valueLabelDisplay="auto"
+          getAriaValueText={valuetext}
+          sx={{
+            '& .MuiSlider-thumb': {
+              direction: 'ltr',
+            },
+            '& .MuiSlider-track': {
+              direction: 'ltr',
+            },
+            '& .MuiSlider-rail': {
+              direction: 'ltr',
+            },
+          }}
+        />
+
+      </Box>
     </Box>
   );
 };

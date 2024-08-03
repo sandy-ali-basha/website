@@ -17,6 +17,7 @@ export default function Terms() {
       {isLoading ? (
         <Box
           sx={{
+            minHeight: "60vh",
             width: "100%",
             py: 10,
             display: "flex",
@@ -30,7 +31,7 @@ export default function Terms() {
         <Box sx={{ mt: 15 }}>
           <Chip
             sx={{ background: "rgba(194, 238, 252, 1)" }}
-            label="Terms of service"
+            label={data?.name}
           ></Chip>
           <Typography variant="h2" sx={{ fontWeight: "bold", mt: 3 }}>
             {data?.name}

@@ -345,27 +345,15 @@ const StepCart = ({ handleNext }) => {
               ...(breakpointMD ? { justifyContent: "flex-end" } : {}),
             }}
           >
-            {_AuthApi.getToken() ? (
-              <Button
-                fullWidth={!breakpointMD}
-                variant="contained"
-                onClick={handleNext}
-                sx={{ borderRadius: 3 }}
-                color="secondary"
-              >
-                {t("Place Order")}
-              </Button>
-            ) : (
-              <Button
-                fullWidth={!breakpointMD}
-                variant="contained"
-                onClick={() => navigate("/login")}
-                sx={{ borderRadius: 3 }}
-                color="secondary"
-              >
-                {t("Pleas Log in to checkout")}
-              </Button>
-            )}
+            <Button
+              fullWidth={!breakpointMD}
+              variant="contained"
+              onClick={handleNext}
+              sx={{ borderRadius: 3 }}
+              color="secondary"
+            >
+              {t("Place Order")}
+            </Button>
           </Box>
         </Grid>
       </Grid>

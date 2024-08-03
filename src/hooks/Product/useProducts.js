@@ -7,6 +7,7 @@ export const useProducts = (body) => {
     () => _ProductApi.filter(body).then((res) => res),
     {
       keepPreviousData: true,
+      enabled: !!body,
     }
   );
   return {

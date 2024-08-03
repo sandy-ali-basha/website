@@ -10,22 +10,28 @@ import indexKu from "./translation/kr/index.json";
 import authAr from "./translation/ar/auth.json";
 import authEn from "./translation/en/auth.json";
 import authKu from "./translation/kr/auth.json";
+import aboutEn from "./translation/en/about.json";
+import aboutAr from "./translation/ar/about.json";
+import aboutku from "./translation/kr/about.json";
 
 let resources = {
   en: {
     navbar: { ...navbarEn },
     index: { ...indexEn },
-    auth: { ...authAr },
+    auth: { ...authEn },
+    about: { ...aboutEn },
   },
   ar: {
     navbar: { ...navbarAr },
     index: { ...indexAr },
-    auth: { ...authEn },
+    auth: { ...authAr },
+    about: { ...aboutAr },
   },
   kr: {
     navbar: { ...navbarKu },
     index: { ...indexKu },
     auth: { ...authKu },
+    about: { ...aboutku },
   },
 };
 
@@ -36,7 +42,7 @@ i18n
     fallbackLng: "en",
     resources,
     debug: true,
-    ns: ["navbar", "index"],
+    ns: ["navbar", "index", "auth", "about"],
     defaultNS: "navbar",
     interpolation: {
       escapeValue: false,

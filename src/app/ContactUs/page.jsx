@@ -113,7 +113,7 @@ export default function ContactUs() {
             <MailToLink
               sx={{ mt: 2 }}
               text="Contact Customer Support"
-              email="dn@gmail.com"
+              email="support@dawaaalhayat.com"
             />
           </Box>
         </Grid>
