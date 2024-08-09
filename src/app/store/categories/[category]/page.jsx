@@ -169,7 +169,7 @@ export default function Category() {
                   <ProductCard
                     id={item?.id}
                     productName={item.name}
-                    Price={"100"}
+                    Price={item?.price}
                     productImage={item.img}
                     link={`/store/product/${item.id}`}
                     loading={false}

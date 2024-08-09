@@ -48,6 +48,7 @@
     "react-scripts": "5.0.1",
     "react-shimmer": "^3.2.0",
     "react-simple-star-rating": "^5.1.7",
+    "react-wheel-of-prizes": "^1.1.0",
     "sass": "^1.77.6",
     "sort-by": "^1.2.0",
     "stylis": "^4.3.0",

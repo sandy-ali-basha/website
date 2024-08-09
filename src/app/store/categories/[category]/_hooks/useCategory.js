@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 export const useCategory = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [value, setValue] = useState([0, 1000]);
+  const [value, setValue] = useState([]);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sort, setSort] = useState("");
   const { t } = useTranslation("index");

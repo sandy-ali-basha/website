@@ -19,51 +19,17 @@ import { useTranslation } from "react-i18next";
 import { useProduct } from "./hooks/useProduct";
 import CardShimmer from "components/customs/loaders/CardShimmer";
 import { Link, useNavigate } from "react-router-dom";
+import { useAccourdion } from "./hooks/useAccourdion";
+import { Shimmer } from "react-shimmer";
+import { useSlider } from "./hooks/useSlider";
 
 function Product() {
   const theme = useTheme();
-  const testImages = [img1, img2, img3];
-
-  const testData = {
-    product: {
-      name: "product",
-      price: "500",
-      offer: "200",
-      description:
-        "<ul><li><em>California Gold Nutrition</em> CoQ10 with BioPerine®</li><li>Featuring Fermented, USP-Verified Coenzyme Q10 (CoQ10) or Ubiquinone*</li><li>Plus BioPerine® Black Pepper Extract</li><li>Supports Healthy Mitochondrial Function*</li><li>Supports a Healthy Cardiovascular System*</li><li>Suitable for Vegetarians and Vegans&nbsp;</li><li>Formulated without Gluten, GMOs, or Soy&nbsp;</li><li>Produced in a 3rd Party Audited cGMP Registered (Certified) Facility</li><li>100% Gold Guarantee</li></ul> ",
-      properties: [
-        { icon: <AddTaskRoundedIcon />, title: "add more save more" },
-        { icon: <ShoppingCartRoundedIcon />, title: "fast shipping" },
-        { icon: <AddTaskRoundedIcon />, title: "add more save more" },
-        { icon: <AddTaskRoundedIcon />, title: "add more save more" },
-      ],
-      discriptionAccourdion: [
-        {
-          title: "Suggested use",
-          description:
-            "For best results, place 1/2 to 1 lozenge in mouth upon waking, allow to slowly dissolve, then swallow. May also be taken prior to, or during, exercise. Always use away from food by at least 1 hour. Use as directed by your healthcare professional. Do not use with 5 hours of bedtime.",
-        },
-        {
-          title: "Suggested use",
-          description:
-            "For best results, place 1/2 to 1 lozenge in mouth upon waking, allow to slowly dissolve, then swallow. May also be taken prior to, or during, exercise. Always use away from food by at least 1 hour. Use as directed by your healthcare professional. Do not use with 5 hours of bedtime.",
-        },
-        {
-          title: "Suggested use",
-          description:
-            "For best results, place 1/2 to 1 lozenge in mouth upon waking, allow to slowly dissolve, then swallow. May also be taken prior to, or during, exercise. Always use away from food by at least 1 hour. Use as directed by your healthcare professional. Do not use with 5 hours of bedtime.",
-        },
-        {
-          title: "Suggested use",
-          description:
-            "For best results, place 1/2 to 1 lozenge in mouth upon waking, allow to slowly dissolve, then swallow. May also be taken prior to, or during, exercise. Always use away from food by at least 1 hour. Use as directed by your healthcare professional. Do not use with 5 hours of bedtime.",
-        },
-      ],
-    },
-  };
 
   const { t } = useTranslation("index");
   const { data, isLoading } = useProduct();
+  const { data: Acc, isLoading: AccLoading } = useAccourdion();
+  const { data: Slider, isLoading: SliderLoading } = useSlider();
   const navigate = useNavigate();
   return (
     <Container sx={{ mt: 15 }}>
@@ -257,17 +223,18 @@ function Product() {
               {"Add To Cart"}
             </Button>
           </Box>
-          
+
           <Simillar id={data?.data?.id} />
         </Grid>
       </Grid>
       <Box sx={{ m: 3 }}>
-        <AccordionUsage data={testData?.product?.discriptionAccourdion} />
+        <AccordionUsage data={Acc} isLoading={AccLoading} />
       </Box>
       <Box sx={{ my: 5, px: 3 }}>
+        {SliderLoading && <Shimmer style={{ width: "100%", height: "100%" }} />}
         <Swiper>
-          {testImages &&
-            testImages?.map((item, idx) => (
+          {Slider &&
+            Slider?.data?.images?.map((item, idx) => (
               <SwiperSlide key={idx}>
                 <Box
                   sx={{
@@ -277,7 +244,7 @@ function Product() {
                   }}
                 >
                   <img
-                    src={item}
+                    src={item?.image_path}
                     alt={`Slide `}
                     style={{
                       objectFit: "cover",

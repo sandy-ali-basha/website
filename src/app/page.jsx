@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useBrand } from "hooks/brands/useBrand.js";
 import { useTranslation } from "react-i18next";
 import { settingsStore } from "store/settingsStore.js";
+// import SpinAndWin from "components/SpinAndWin.jsx";
 
 export default function Home() {
   const images = [
@@ -59,6 +60,7 @@ export default function Home() {
   const { t } = useTranslation("index");
   return (
     <>
+      {/* <SpinAndWin/> */}
       <Swiper
         autoplay={{
           delay: 2500,
