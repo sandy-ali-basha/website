@@ -18,8 +18,9 @@ import MenuButton from "components/modules/NavBar/MenuButton";
 import LanguageSelector from "components/LanguageSelector";
 import MenuIcon from "@mui/icons-material/Menu";
 import { _AuthApi } from "api/auth";
+import Categories from "app/store/categories/page";
 function NavBar() {
-  const { CartMenuItems, settings, pages,navigate ,t} = useNavBar();
+  const { CartMenuItems, settings, pages, navigate, t } = useNavBar();
 
   return (
     <AppBar
@@ -32,6 +33,7 @@ function NavBar() {
         backdropFilter: "blur(5px)",
       }}
     >
+   
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -112,24 +114,29 @@ function NavBar() {
             />
           </Box>
           <Box sx={{ mx: "10px" }}>
-            {_AuthApi.getToken()?
-            <MenuButton
-              badgeNumber={4}
-              icon={<PersonOutlineOutlined sx={{ color: "white" }} />}
-              menuItems={settings.map((item) => ({
-                ...item,
-                key: item.id,
-              }))}
-            />: <Button
-            onClick={()=> navigate("/login")}
-            sx={{ my: 2, color: "white", display: "block" }}
-          >
-            {t("sign in")}
-          </Button>
-            }
+            {_AuthApi.getToken() ? (
+              <MenuButton
+                badgeNumber={4}
+                icon={<PersonOutlineOutlined sx={{ color: "white" }} />}
+                menuItems={settings.map((item) => ({
+                  ...item,
+                  key: item.id,
+                }))}
+              />
+            ) : (
+              <Button
+                onClick={() => navigate("/login")}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                {t("sign in")}
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </Container>
+      {/* <Box sx={{ background: "#ffffff9c" }}>
+        <Categories />
+      </Box> */}
     </AppBar>
   );
 }

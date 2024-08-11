@@ -1,42 +1,45 @@
-"use client";
-
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Button, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-import bg1 from "assets/images/hero-image (1).jpg";
-import bg2 from "assets/images/hero-image (2).jpg";
-import bg3 from "assets/images/hero-image (3).jpg";
-import gummie from "assets/images/gummies.png";
+import { Autoplay } from "swiper/modules";
+import { useParams } from "react-router-dom";
+import { useBrandPage, useBrandSlider } from "hooks/brands/useBrand";
 import AnimatedText from "components/modules/home/AnimatedText.jsx";
 import BestSellers from "components/modules/home/BestSellers.jsx";
-import Qoute from "components/modules/home/Qoute.jsx";
-import Partners from "components/modules/home/Partners.jsx";
-import { Autoplay } from "swiper/modules";
-import gsap from "gsap";
-import { useParams } from "react-router-dom";
+import Loader from "components/modules/Loader";
 
 export default function Brand() {
-  const images = [bg1, bg2, bg3];
-const params = useParams()
+  const { id } = useParams(); // Get the brand ID from the URL params
+  const lang = localStorage.getItem("i18nextLng") || "en"; // Fallback to "en" if no language is set
+
+  const { data, isLoading } = useBrandPage(id);
+
+  if (isLoading)
+    return (
+      <>
+        <Loader />
+      </>
+    );
+
   return (
-    <Box sx={{mb:4}}>
-        <Swiper
+    <Box sx={{ mb: 4 }}>
+      <Swiper
         autoplay={{
           delay: 2500,
           disableOnInteraction: false,
         }}
         modules={[Autoplay]}
       >
-        {images.map((item, index) => (
+        {data?.slides?.map((item, index) => (
           <SwiperSlide key={index}>
             <Box
               sx={{
                 position: "relative",
                 width: "100vw",
-                height: "90vh", // Adjust as needed
+                height: "90vh",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -46,28 +49,27 @@ const params = useParams()
               }}
             >
               <img
-                src={item}
+                src={item?.image_path}
                 alt={`Slide ${index + 1}`}
                 style={{
                   objectFit: "cover",
                   width: "inherit",
                   height: "inherit",
-                  position:'absolute',
+                  position: "absolute",
                 }}
               />
               <Box
                 sx={{
                   position: "relative",
                   zIndex: 1,
-                  width: {md:"50%",xs:"100%"},
+                  width: { md: "50%", xs: "100%" },
                 }}
               >
                 <Typography variant="h2" color="inherit">
-                {params.name}
+                  {item?.translations?.find((t) => t.locale === lang)?.title}
                 </Typography>
                 <Typography sx={{ mt: 2 }} variant="body1" color="inherit">
-                  Natural supplement filled with 33 ingredients, all working
-                  together to support your strength and healbth
+                  {item?.translations?.find((t) => t.locale === lang)?.text}
                 </Typography>
               </Box>
             </Box>
@@ -75,24 +77,19 @@ const params = useParams()
         ))}
       </Swiper>
       <Container>
-
-      <Grid container sx={{my:6}}>
-        <Grid item md="6" >
-          <Typography variant="h5" color="initial">
-            Our expertise is derived from a variety of fields from nutrient
-            research.
-          </Typography>
+        <Grid container sx={{ my: 6 }}>
+          <Grid item md={6}>
+            <Typography variant="h5">{data?.name}</Typography>
+          </Grid>
+          <Grid item md={6}>
+            <Typography
+              variant="body1"
+              dangerouslySetInnerHTML={{ __html: data?.text }}
+            ></Typography>
+          </Grid>
         </Grid>
-        <Grid item md="6">
-          <Typography variant="body1">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, alias!
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, alias!
-          </Typography>
-        </Grid>
-      </Grid>
-      <AnimatedText></AnimatedText>
-
-      <BestSellers />
+        <AnimatedText />
+        <BestSellers data={data?.products} />
       </Container>
     </Box>
   );

@@ -1,23 +1,20 @@
-import { HttpRequestInterceptor } from "interceptor/http-request.interceptor";
 import { _axios } from "../../interceptor/http-config";
+import { HttpRequestInterceptor } from "interceptor/http-request.interceptor";
 
 export const _Brands = {
-  getBrands: async (id) => {
+  getBrands: async () => {
     return _axios
       .get(`/brand`, {
-        headers: {
-          ...HttpRequestInterceptor(),
-        },
+        headers: HttpRequestInterceptor(),
       })
       .then((res) => res.data);
   },
-  getBrand: async (id) => {
+  getBrandPage: async (id) => {
     return _axios
-      .get(`/brand/${id}`, {
-        headers: {
-          ...HttpRequestInterceptor(),
-        },
+      .get(`/brand_pages/${id}`, {
+        headers: HttpRequestInterceptor(),
       })
       .then((res) => res.data);
   },
+
 };

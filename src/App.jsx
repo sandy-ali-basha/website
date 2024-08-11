@@ -114,7 +114,7 @@ function App() {
             element={<StoreCategoriesPage />}
           />
           <Route
-            path="/store/categories/brand/:name"
+            path="/store/categories/brand/:id"
             exact
             element={<Brand />}
           />

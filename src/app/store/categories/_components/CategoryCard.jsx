@@ -6,25 +6,26 @@ import CardShimmer from "components/customs/loaders/CardShimmer";
 
 export default function CategoryCard({ label, link, loading }) {
   return (
-    <Card
-      sx={{
-        width: "-webkit-fill-available",
-        boxShadow: 3,
-        borderRadius: 3,
-        borderLeft: "4px solid",
-        borderColor: "primary.light",
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+    <Link
+      to={"/store/categories/" + link}
+      component="a"
+      style={{ textDecoration: "none" }}
     >
-      <Link
-        to={"/store/categories/" + link}
-        component="a"
-        sx={{ textDecoration: "none" }}
+      {" "}
+      <Card
+        sx={{
+          width: "-webkit-fill-available",
+          boxShadow: 3,
+          borderRadius: 3,
+          borderLeft: "2px solid",
+          borderColor: "primary.light",
+          height: "10vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
-        <CardContent>
+        <CardContent sx={{ p: "0px !important" }}>
           {loading ? (
             <>
               <CardShimmer
@@ -38,19 +39,21 @@ export default function CategoryCard({ label, link, loading }) {
           ) : (
             <Typography
               gutterBottom
-              variant="h6"
+              variant="body1"
               color="initial"
               sx={{
                 textAlign: "center",
                 textDecoration: "underline !important",
                 textDecorationColor: "#fff !important",
+                fontSize: 17,
+                p: 0,
               }}
             >
               {label}
             </Typography>
           )}
         </CardContent>
-      </Link>
-    </Card>
+      </Card>
+    </Link>
   );
 }

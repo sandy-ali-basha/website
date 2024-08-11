@@ -63,7 +63,7 @@ export default function Category() {
         color="initial"
         sx={{ mb: 2, overflowWrap: "break-word" }}
       >
-        {params.category}
+        {params.category || t("All Products")}
       </Typography>
       <Divider />
       <Box
@@ -149,10 +149,10 @@ export default function Category() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap:2
+                gap: 2,
               }}
             >
-              {t("No Product Found")} <CloseRounded  />
+              {t("No Product Found")} <CloseRounded />
             </Typography>
           )}
           <Grid container spacing={2}>
