@@ -1,9 +1,20 @@
 import React from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-  
+import { htmlToText } from "html-to-text";
 
-const BlogCard = ({ id, img, title, body, date }) => {
+const BlogCard = ({ id, image, title, text, date }) => {
+  const truncateText = (text, wordLimit) => {
+    const words = text.split(" ");
+    if (words.length <= wordLimit) {
+      return text;
+    }
+    return words.slice(0, wordLimit).join(" ") + "...";
+  };
+
+  const plainText = htmlToText(text);
+  const truncatedText = truncateText(plainText, 20);
+
   return (
     <Box
       sx={{
@@ -16,11 +27,10 @@ const BlogCard = ({ id, img, title, body, date }) => {
       }}
     >
       <img
-        src={img}
+        src={image}
         style={{
-          width: "10%",
+          width: "20%",
           borderRadius: 4,
-          aspectRatio: "4/4",
           height: "100%",
         }}
         alt="alt text"
@@ -33,17 +43,16 @@ const BlogCard = ({ id, img, title, body, date }) => {
         }}
       >
         <div>
-          <Link
-            style={{ textDecoration: "none" }}
-            to={`/Blog/${id}`}
-            passHref
-          >
+          <Link style={{ textDecoration: "none" }} to={`/Blog/${id}`}>
             <Typography variant="h5" color="initial" sx={{ fontWeight: "600" }}>
               {title}
             </Typography>
           </Link>
-          <Typography variant="body1" color="text.secondary">
-            {body}
+          <Typography
+            variant="body1"
+            color="text.secondary"
+          >
+            {truncatedText}
           </Typography>
         </div>
         <Typography
@@ -57,4 +66,5 @@ const BlogCard = ({ id, img, title, body, date }) => {
     </Box>
   );
 };
+
 export default BlogCard;

@@ -10,7 +10,7 @@ export const useAddToCart = (coupon_code) => {
   const [loadingCart, setLoading] = useState(false); // Initialize state properly
   const handleAddToCart = (id) => {
     const data = {
-      user_id, // Ensure user_id is defined and valid
+      // user_id, // Ensure user_id is defined and valid
       products: {
         [id]: {
           qty: 1,

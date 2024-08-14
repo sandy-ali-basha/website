@@ -83,5 +83,9 @@
   "index": "index",
   "No Product Found": "No Product Found",
   "Our best sellers": "Our best sellers",
-  "All Products":"All Products"
+  "All Products": "All Products",
+  "first name is required": "first name is required",
+  "last name is required": "last name is required",
+  "email is required": "email is required",
+  "message is required": "message is required"
 }

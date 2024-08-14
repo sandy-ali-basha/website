@@ -1,70 +1,58 @@
 import { Box, Chip, Container, Typography } from "@mui/material";
-  
+
 import React from "react";
-import img from "../../../assets/images/careers-img.png";
+import { useParams } from "react-router-dom";
+import CardShimmer from "components/customs/loaders/CardShimmer";
+import { useBlog } from "hooks/blog/useBlog";
 
 export default function BlogPost() {
+  const { id } = useParams();
+  const { data, isLoading } = useBlog(id);
+
   return (
     <Container sx={{ my: 20 }}>
       <Chip sx={{ background: "rgba(194, 238, 252, 1)" }} label="Blog"></Chip>
       <Typography variant="h2" sx={{ fontWeight: "bold", mt: 3 }}>
-        Courtside: Dawaa Alhayat Blog
+        {isLoading ? (
+          <CardShimmer style={{ width: "100%", height: "20px" }} />
+        ) : (
+          data?.title
+        )}
       </Typography>
-      <Box sx={{ mt: 6, width: "80%" }}>
+      <Box sx={{ mt: 6, mb: 5, width: "80%" }}>
         <Typography variant="body2" color="text.secondary">
-          December 21, 2022
+          {isLoading ? (
+            <CardShimmer style={{ width: "100%", height: "20px" }} />
+          ) : (
+            data?.date
+          )}
         </Typography>
-        <Typography variant="h3" sx={{ fontWight: "bold", mb: 2 }}>
-          Freelancers: Should You Show Up as You or a Company?
-        </Typography>
-        <img
-          style={{
-            width: "80vw",
-            borderRadius: "10px",
-            height: "70vh",
-            objectFit: "cover",
-          }}
-          alt="should you show up"
-          src={img}
-        />
+
+        {isLoading ? (
+          <CardShimmer
+            style={{ width: "80vw", borderRadius: "10px", height: "70vh" }}
+          />
+        ) : (
+          <img
+            style={{
+              width: "80vw",
+              borderRadius: "10px",
+              height: "70vh",
+              objectFit: "cover",
+            }}
+            src={data?.image}
+            alt="company"
+          />
+        )}
+
         <Typography
-          sx={{ mt: 2, fontWeight: "300" }}
-          variant="body1"
-          color="initial"
-        >
-          What to call your design business is one of the biggest questions
-          freelance designers face. As a designer you are running a business,
-          whether you have an LLC that clients write checks out to or not. But
-          you are also a person who designs, and your reputation is likely tied
-          to your first and last name. (Unless you’re so famous people only
-          refer to you by one of themz.)
-        </Typography>
-        <Typography
-          sx={{ mt: 2 }}
-          variant="body1"
+          variant="body2"
           color="initial"
           sx={{ fontWeight: "300" }}
-        >
-          What to call your design business is one of the biggest questions
-          freelance designers face. As a designer you are running a business,
-          whether you have an LLC that clients write checks out to or not. But
-          you are also a person who designs, and your reputation is likely tied
-          to your first and last name. (Unless you’re so famous people only
-          refer to you by one of themz.)
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{ mt: 2 }}
-          color="initial"
-          sx={{ fontWeight: "300" }}
-        >
-          What to call your design business is one of the biggest questions
-          freelance designers face. As a designer you are running a business,
-          whether you have an LLC that clients write checks out to or not. But
-          you are also a person who designs, and your reputation is likely tied
-          to your first and last name. (Unless you’re so famous people only
-          refer to you by one of themz.)
-        </Typography>
+          dangerouslySetInnerHTML={{ __html: data?.text }}
+        ></Typography>
+        {isLoading && <CardShimmer style={{ width: "100%", height: "20px" }} />}
+        {isLoading && <CardShimmer style={{ width: "90%", height: "20px" }} />}
       </Box>
     </Container>
   );

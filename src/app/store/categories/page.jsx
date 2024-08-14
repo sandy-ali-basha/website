@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { useCategories } from "./_hooks/useCategories";
 import CategoryCard from "./_components/CategoryCard";
 import Loader from "components/modules/Loader";
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
