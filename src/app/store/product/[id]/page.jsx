@@ -1,7 +1,15 @@
 "use client";
 import React from "react";
 // import { Container, Grid, Box } from "@mui/material";
-import { Box, Chip, Container, Grid, Typography, Button } from "@mui/material";
+import {
+  Box,
+  Chip,
+  Container,
+  Grid,
+  Typography,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import defualt from "assets/images/defaultImg.jpg";
 import img1 from "assets/images/categories/pic_1.png";
@@ -22,6 +30,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAccourdion } from "./hooks/useAccourdion";
 import { Shimmer } from "react-shimmer";
 import { useSlider } from "./hooks/useSlider";
+import { useAddToCart } from "hooks/cart/useAddToCart";
 
 function Product() {
   const theme = useTheme();
@@ -30,6 +39,8 @@ function Product() {
   const { data, isLoading } = useProduct();
   const { data: Acc, isLoading: AccLoading } = useAccourdion();
   const { data: Slider, isLoading: SliderLoading } = useSlider();
+  const { handleAddToCart, loadingCart } = useAddToCart();
+
   const navigate = useNavigate();
   return (
     <Container sx={{ mt: 15 }}>
@@ -213,16 +224,23 @@ function Product() {
               ))
             )}
           </Box>
-          <Box display="flex" alignItems="center" justifyContent="center">
-            <Button
-              size="large"
-              sx={{ width: "90%", p: 1, mt: 2, borderRadius: 3 }}
-              variant="contained"
-              color="secondary"
-            >
-              {"Add To Cart"}
-            </Button>
-          </Box>
+          {!isLoading && (
+            <Box display="flex" alignItems="center" justifyContent="center">
+              <Button
+                size="large"
+                sx={{ width: "90%", p: 1, mt: 2, borderRadius: 3 }}
+                variant="contained"
+                color="secondary"
+                onClick={() => handleAddToCart(data?.data?.id)}
+              >
+                {loadingCart ? (
+                  <CircularProgress sx={{ width: "10px" }} />
+                ) : (
+                  t("Add To Cart")
+                )}
+              </Button>
+            </Box>
+          )}
 
           <Simillar id={data?.data?.id} />
         </Grid>

@@ -25,6 +25,7 @@ export default function ProductCard({
 }) {
   const { handleAddToCart, loadingCart } = useAddToCart();
   const { t } = useTranslation("index");
+  
   return (
     <Card sx={{ boxShadow: 3, borderRadius: 3 }}>
       {" "}
