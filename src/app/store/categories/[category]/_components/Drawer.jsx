@@ -10,7 +10,7 @@ const SideDrawer = ({ valuetext, value, handleChange, data, handleCheked }) => {
         borderColor: "divider",
         width: 250,
         px: 2,
-        py: 3,
+        pb: 3,
       }}
     >
       <Typography variant="subtitle1" color="text.secondary">
@@ -34,18 +34,17 @@ const SideDrawer = ({ valuetext, value, handleChange, data, handleCheked }) => {
           valueLabelDisplay="auto"
           getAriaValueText={valuetext}
           sx={{
-            '& .MuiSlider-thumb': {
-              direction: 'ltr',
+            "& .MuiSlider-thumb": {
+              direction: "ltr",
             },
-            '& .MuiSlider-track': {
-              direction: 'ltr',
+            "& .MuiSlider-track": {
+              direction: "ltr",
             },
-            '& .MuiSlider-rail': {
-              direction: 'ltr',
+            "& .MuiSlider-rail": {
+              direction: "ltr",
             },
           }}
         />
-
       </Box>
     </Box>
   );

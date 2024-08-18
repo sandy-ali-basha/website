@@ -1,14 +1,18 @@
 import { _axios } from "../../interceptor/http-config";
 import { HttpRequestInterceptor } from "interceptor/http-request.interceptor";
 export const _cart = {
-  index: async ({ id }) => {
-    return _axios
-      .get(`/user/cart?city_id=${id}`, {
+  index: async (id) => {
+    try {
+      const response = await _axios.get(`/cart/${id}`, {
         headers: {
           ...HttpRequestInterceptor(),
         },
-      })
-      .then((res) => res.data);
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+      throw error;
+    }
   },
 
   uploadData: async ({ data, quantity, product_id, color, size }) => {
@@ -20,9 +24,11 @@ export const _cart = {
       )
       .then((res) => res.data);
   },
-  AddToCart: async ({ data }) => {
-    console.log('Sending data:', data);
-    return _axios.post(`cart`, data).then((res) => res.data);
+
+  AddToCart: async ({ data, cart_id }) => {
+    return _axios
+      .post(`cart${cart_id ? "/" + cart_id : ""}`, data)
+      .then((res) => res.data);
   },
 
   delete: async ({ id, color, size }) => {

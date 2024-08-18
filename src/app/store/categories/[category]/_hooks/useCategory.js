@@ -14,9 +14,9 @@ export const useCategory = () => {
   const [sort, setSort] = useState("");
   const { t } = useTranslation("index");
   const params = useParams();
-  const [attr, setAttr] = useState(params.attr_id);
-  const [attValue, setAttrValue] = useState(params.attr_value_id);
   const { data: Attr, isLoading: AttrLoading } = useAttributes();
+  const [attr, setAttr] = useState();
+  const [attValue, setAttrValue] = useState();
 
   const price0 = value[0];
   const price1 = value[1];
@@ -69,5 +69,6 @@ export const useCategory = () => {
     Attr,
     AttrLoading,
     handleCheked,
+    attr
   };
 };

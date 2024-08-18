@@ -86,7 +86,7 @@ export const useNavBar = () => {
     { id: "0", onClick: () => navigate("/"), label: t("Home") },
     {
       id: "1",
-      onClick: () => navigate("/store/categories"),
+      onClick: () => navigate("/store"),
       label: t("Products"),
     },
     { id: "2", onClick: () => navigate("/about"), label: t("About Us") },

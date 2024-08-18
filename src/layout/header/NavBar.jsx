@@ -18,7 +18,6 @@ import MenuButton from "components/modules/NavBar/MenuButton";
 import LanguageSelector from "components/LanguageSelector";
 import MenuIcon from "@mui/icons-material/Menu";
 import { _AuthApi } from "api/auth";
-import Categories from "app/store/categories/page";
 function NavBar() {
   const { CartMenuItems, settings, pages, navigate, t } = useNavBar();
 

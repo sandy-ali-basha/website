@@ -25,9 +25,9 @@ export default function ProductCard({
 }) {
   const { handleAddToCart, loadingCart } = useAddToCart();
   const { t } = useTranslation("index");
-  
+
   return (
-    <Card sx={{ boxShadow: 3, borderRadius: 3 }}>
+    <Card sx={{ boxShadow: 3, borderRadius: 3, height: "100%" }}>
       {" "}
       <Link to={link} component="a" style={{ textDecoration: "none" }}>
         {loading ? (
@@ -93,13 +93,13 @@ export default function ProductCard({
                   }}
                 />
               ) : (
-                <>{Price} $</>
+                <>{Price} ID</>
               )}
             </Typography>
 
             {offer && (
               <Typography variant="body1" color="initial">
-                {Price} $
+                {Price} ID
               </Typography>
             )}
           </Box>

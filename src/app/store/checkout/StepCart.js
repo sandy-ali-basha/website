@@ -20,6 +20,7 @@ import CustomTextField from "components/customs/CustomTextField";
 import Icon from "components/modules/icon";
 import { useTranslation } from "react-i18next";
 import { _AuthApi } from "api/auth";
+import { useCart } from "hooks/cart/useCart";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -49,6 +50,10 @@ const StepCart = ({ handleNext }) => {
   );
   const { t } = useTranslation("index");
   const navigate = useNavigate();
+  const cart_id = localStorage.getItem("cart_id");
+  const { data, isLoading } = useCart(cart_id);
+  console.log(data);
+  console.log("cart_id", cart_id);
   return (
     <Container>
       <Grid container spacing={2}>
@@ -57,104 +62,114 @@ const StepCart = ({ handleNext }) => {
             {t("My Shopping Bag")} (2 {t("Items")})
           </Typography>
           <StyledList>
-            <ListItem sx={{ boxShadow: 3, borderRadius: 3, my: 2 }}>
-              <ListItemAvatar
-                sx={{
-                  display: "flex",
-                  borderRadius: 3,
-                  width: "15%",
-                }}
-              >
-                <img
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    borderRadius: "inherit",
+            {data?.data?.products?.map((item, idx) => (
+              <ListItem sx={{ boxShadow: 3, borderRadius: 3, my: 2 }}>
+                <ListItemAvatar
+                  key={item?.product_id}
+                  sx={{
+                    display: "flex",
+                    borderRadius: 3,
+                    width: "15%",
                   }}
-                  src="https://picsum.photos/150"
-                  alt="Google Home"
-                />
-              </ListItemAvatar>
-              <IconButton
-                size="small"
-                className="remove-item"
-                sx={{ color: "text.primary" }}
-              >
-                <Icon icon="tabler:x" fontSize={20} />
-              </IconButton>
-              <Grid container sx={{ mx: 2 }}>
-                <Grid item xs={12} md={8}>
-                  <ListItemText primary="Google - Google Home - White" />
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Typography sx={{ mr: 2, color: "text.disabled" }}>
-                      {t("Sold By")}:
-                    </Typography>
-                    <Typography
-                      href="/"
-                      component={Link}
-                      onClick={(e) => navigate("/store/categories/brand/6")}
-                      sx={{
-                        mr: 2,
-                        color: "primary.main",
-                        textDecoration: "none",
-                      }}
-                    >
-                      google
-                    </Typography>
-                    <Chip
-                      rounded
-                      size="small"
-                      skin="light"
-                      color="success"
-                      label="In Stock"
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={4} sx={{ mt: [4, 4, 6] }}>
-                  <Box
-                    sx={{
-                      gap: 3,
+                >
+                  <img
+                    style={{
+                      width: "100%",
                       height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      alignItems: { xs: "flex-start", md: "flex-end" },
+                      objectFit: "cover",
+                      borderRadius: "inherit",
                     }}
-                  >
-                    <Box sx={{ display: "flex" }}>
-                      <Typography sx={{ color: "primary.main" }}>
-                        $299
+                    src={item?.image}
+                    alt="Google Home"
+                  />
+                </ListItemAvatar>
+                <IconButton
+                  size="small"
+                  className="remove-item"
+                  sx={{ color: "text.primary" }}
+                >
+                  <Icon icon="tabler:x" fontSize={20} />
+                </IconButton>
+                <Grid container sx={{ mx: 1 }}>
+                  <Grid item xs={12} md={8}>
+                    <Link
+                      to={`/store/product/${item?.id}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <ListItemText primary={item?.name} />
+                    </Link>
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <Typography sx={{ mr: 1, color: "text.disabled" }}>
+                        {t("Sold By")}:
                       </Typography>
                       <Typography
+                        href="/"
+                        component={Link}
+                        onClick={(e) =>
+                          navigate(`/store/categories/brand/${item?.brand?.id}`)
+                        }
                         sx={{
-                          color: "text.disabled",
-                          textDecoration: "line-through",
-                          mx: 1,
+                          mr: 2,
+                          color: "primary.main",
+                          textDecoration: "none",
                         }}
                       >
-                        /$359
+                        {item?.brand?.name}
                       </Typography>
+                      <Chip
+                        rounded
+                        size="small"
+                        skin="light"
+                        color="success"
+                        label="In Stock"
+                      />
                     </Box>
-                  </Box>
+                  </Grid>
+                  <Grid item xs={12} md={4} sx={{ mt: [4, 4, 6] }}>
+                    <Box
+                      sx={{
+                        gap: 1,
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        alignItems: { xs: "flex-start", md: "flex-end" },
+                      }}
+                    >
+                      <Box sx={{ display: "flex" }}>
+                        <Typography sx={{ color: "primary.main" }}>
+                          {item?.price}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "text.disabled",
+                            textDecoration: "line-through",
+                            mx: 1,
+                          }}
+                        >
+                          /{item?.price}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Grid>
+                  {/* <Grid item xs={12}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        mt: 1,
+                        alignItems: "flex-end",
+                      }}
+                    >
+                      <TextField size="small" type="number" defaultValue="1" />
+                      <Button variant="outlined" size="small" color="secondary">
+                        {t("Move to wishlist")}
+                      </Button>
+                    </Box>
+                  </Grid> */}
                 </Grid>
-                <Grid item xs={12}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      mt: "2",
-                      alignItems: "flex-end",
-                    }}
-                  >
-                    <TextField size="small" type="number" defaultValue="1" />
-                    <Button variant="outlined" size="small" color="secondary">
-                      {t("Move to wishlist")}
-                    </Button>
-                  </Box>
-                </Grid>
-              </Grid>
-            </ListItem>
+              </ListItem>
+            ))}
           </StyledList>
           <Box
             sx={{

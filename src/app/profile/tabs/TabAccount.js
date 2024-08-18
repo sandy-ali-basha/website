@@ -71,13 +71,20 @@ const TabAccount = () => {
   });
 
   const data = JSON.parse(localStorage.getItem("userData"));
-  const calculateDefaultDate = (years) => {
+  const calculateDefaultDate = (age) => {
+    if (!age) return ""; // Return an empty string or a default date if age is not provided
+
     const today = new Date();
+    const birthDate = new Date(age);
+
+    if (isNaN(birthDate)) return ""; // Return an empty string if birthDate is invalid
+
     const defaultDate = new Date(
-      today.setFullYear(today.getFullYear() - years)
+      today.setFullYear(today.getFullYear() - birthDate.getFullYear())
     );
     return defaultDate.toISOString().split("T")[0]; // Format as YYYY-MM-DD
   };
+
   const details = [
     {
       head: t("first_name"),
@@ -200,7 +207,7 @@ const TabAccount = () => {
                     ))}
                     <Grid xs={6} item>
                       <GenderSelect
-                        defaultValue={data.gender}
+                        defaultValue={data?.gender}
                         register={register}
                         errors={errors}
                       />
@@ -216,7 +223,7 @@ const TabAccount = () => {
                 </Box>
                 <Grid item xs={12} sx={{ pt: 4 }}>
                   <Button type="submit" variant="contained" sx={{ mr: 4 }}>
-                    Save Changes
+                    {t("Save Changes")}
                   </Button>
                 </Grid>
               </CardContent>

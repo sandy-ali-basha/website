@@ -29,9 +29,6 @@ import visa from "assets/images/visa.png";
 import Payment from "payment";
 import Cards from "react-credit-cards";
 
-// ** Custom Components Imports
-import CustomTextField from "components/customs/CustomTextField";
-
 // ** Styled Component Imports
 import CardWrapper from "components/react-credit-cards";
 
@@ -44,7 +41,7 @@ import {
 
 // ** Styles Import
 import "react-credit-cards/es/styles-compiled.css";
-import { Chip } from "@mui/material";
+import { Chip, TextField } from "@mui/material";
 
 const CreditCardWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -194,7 +191,7 @@ const PaymentMethodCard = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <FormControl fullWidth>
-                        <CustomTextField
+                        <TextField
                           fullWidth
                           name="cardNumber"
                           value={cardNumber}
@@ -208,7 +205,7 @@ const PaymentMethodCard = () => {
                       </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <CustomTextField
+                      <TextField
                         fullWidth
                         name="name"
                         value={name}
@@ -221,7 +218,7 @@ const PaymentMethodCard = () => {
                       />
                     </Grid>
                     <Grid item xs={6} sm={3}>
-                      <CustomTextField
+                      <TextField
                         fullWidth
                         name="expiry"
                         label="Expiry"
@@ -234,7 +231,7 @@ const PaymentMethodCard = () => {
                       />
                     </Grid>
                     <Grid item xs={6} sm={3}>
-                      <CustomTextField
+                      <TextField
                         fullWidth
                         name="cvc"
                         label="CVC"
@@ -408,7 +405,7 @@ const PaymentMethodCard = () => {
                 <Grid item xs={12}>
                   <Grid container spacing={6}>
                     <Grid item xs={12}>
-                      <CustomTextField
+                      <TextField
                         fullWidth
                         autoComplete="off"
                         label="Card Number"
@@ -426,7 +423,7 @@ const PaymentMethodCard = () => {
                       />
                     </Grid>
                     <Grid item xs={12} sm={8}>
-                      <CustomTextField
+                      <TextField
                         fullWidth
                         name="nameDialog"
                         autoComplete="off"
@@ -449,7 +446,7 @@ const PaymentMethodCard = () => {
                       />
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                      <CustomTextField
+                      <TextField
                         fullWidth
                         label="Expiry"
                         placeholder="MM/YY"
@@ -467,7 +464,7 @@ const PaymentMethodCard = () => {
                       />
                     </Grid>
                     <Grid item xs={12} sm={8}>
-                      <CustomTextField
+                      <TextField
                         select
                         fullWidth
                         label="Card Status"
@@ -481,10 +478,10 @@ const PaymentMethodCard = () => {
                         <MenuItem value="Primary">Primary</MenuItem>
                         <MenuItem value="Expired">Expired</MenuItem>
                         <MenuItem value="Active">Active</MenuItem>
-                      </CustomTextField>
+                      </TextField>
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                      <CustomTextField
+                      <TextField
                         fullWidth
                         label="CVC"
                         name="cvcDialog"

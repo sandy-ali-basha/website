@@ -14,6 +14,8 @@ import TabSecurity from './TabSecurity';
 import TabOrders from './TabOrders';
 import TabAddresses from './TabAddresses';
 import TabPoints from './TabPoints';
+import { useAnimate } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const TabList = styled(MuiTabList)(({ theme }) => ({
   border: '0 !important',
@@ -58,7 +60,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
   const [isClient, setIsClient] = useState(false);
   const navigate = useNavigate();
   const hideText = useMediaQuery(theme => theme.breakpoints.down('md'));
-
+const {t}=useTranslation('index')
   const handleChange = (event, value) => {
     setIsLoading(true);
     navigate(`/profile/${value.toLowerCase()}`);
@@ -152,7 +154,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                     value='points'
                     label={
                       <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 1 } }) }}>
-                        <Icon fontSize='1.25rem' icon='mdi:address-marker-outline' />
+                        <Icon fontSize='1.25rem' icon='mdi:point-outline' />
                         {!hideText && 'My Points'}
                       </Box>
                     }
@@ -164,7 +166,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                   <Card sx={{ mt: 6, display: 'flex', alignItems: 'center', flexDirection: 'column', height: '50vh',
                   justifyContent:'center', boxShadow:5 }}>
                     <CircularProgress sx={{ mb: 4 }} />
-                    <Typography>Loading...</Typography>
+                    <Typography>{t("Loading...")}</Typography>
                   </Card>
                 ) : (
                   <TabPanel sx={{ p: 0,mb:2 }} value={activeTab}>

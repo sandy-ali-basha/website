@@ -87,5 +87,10 @@
   "first name is required": "first name is required",
   "last name is required": "last name is required",
   "email is required": "email is required",
-  "message is required": "message is required"
+  "message is required": "message is required",
+  "Added To Cart Successfully":"Added To Cart Successfully",
+  "An error occurred":"An error occurred",
+  "An unexpected error occurred. Please try again.":"An unexpected error occurred. Please try again.",
+  "Products based on ":"Products based on ",
+  "Loading...":"Loading..."
 }

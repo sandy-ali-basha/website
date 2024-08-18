@@ -34,6 +34,7 @@ export default function Category() {
     Attr,
     AttrLoading,
     handleCheked,
+    attr,
   } = useCategory();
   const SortFilter = () => {
     return (
@@ -61,9 +62,9 @@ export default function Category() {
       <Typography
         variant="h3"
         color="initial"
-        sx={{ mb: 2, overflowWrap: "break-word" }}
+        sx={{ mb: 1, overflowWrap: "break-word" }}
       >
-        {params.category || t("All Products")}
+        {t("Products")}
       </Typography>
       <Divider />
       <Box

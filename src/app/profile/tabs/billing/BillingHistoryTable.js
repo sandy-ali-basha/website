@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 // ** MUI Imports
 import { styled } from "@mui/material/styles";
 import { DataGrid } from "@mui/x-data-grid";
-import { useStore } from "store/invoice";
-import CustomTextField from "components/customs/CustomTextField";
 import {
   Box,
   MenuItem,
@@ -18,6 +16,7 @@ import {
   Tooltip,
   Avatar,
   Icon,
+  TextField,
 } from "@mui/material";
 
 const LinkStyled = styled(Link)(({ theme }) => ({
@@ -1000,12 +999,12 @@ const BillingHistoryTable = () => {
               alignItems: "center",
             }}
           >
-            <CustomTextField
+            <TextField
               value={value}
               placeholder="Search Invoice"
               onChange={(e) => handleFilter(e.target.value)}
             />
-            <CustomTextField
+            <TextField
               select
               sx={{
                 pr: 4,
@@ -1025,7 +1024,7 @@ const BillingHistoryTable = () => {
               <MenuItem value="partial payment">Partial Payment</MenuItem>
               <MenuItem value="past due">Past Due</MenuItem>
               <MenuItem value="sent">Sent</MenuItem>
-            </CustomTextField>
+            </TextField>
           </Box>
         </Box>
       </CardContent>

@@ -11,10 +11,8 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import InputAdornment from "@mui/material/InputAdornment";
 import * as yup from "yup";
-import toast from "react-hot-toast";
 import Icon from "components/modules/icon";
-import CustomTextField from "components/customs/CustomTextField";
-import { Alert } from "@mui/material";
+import { Alert, TextField } from "@mui/material";
 import { _AuthApi } from "api/auth";
 
 const defaultValues = {
@@ -80,7 +78,7 @@ const ChangePasswordCard = () => {
     }));
   };
   const onPasswordFormSubmit = (data) => {
-    console.log(data)
+    console.log(data);
     setLoading(true);
     _AuthApi
       .passEdit(data)
@@ -107,7 +105,7 @@ const ChangePasswordCard = () => {
                 name="currentPassword"
                 control={control}
                 render={({ field: { value, onChange } }) => (
-                  <CustomTextField
+                  <TextField
                     fullWidth
                     value={value}
                     onChange={onChange}
@@ -148,7 +146,7 @@ const ChangePasswordCard = () => {
                 name="newPassword"
                 control={control}
                 render={({ field: { value, onChange } }) => (
-                  <CustomTextField
+                  <TextField
                     fullWidth
                     value={value}
                     onChange={onChange}
@@ -187,7 +185,7 @@ const ChangePasswordCard = () => {
                 name="confirmNewPassword"
                 control={control}
                 render={({ field: { value, onChange } }) => (
-                  <CustomTextField
+                  <TextField
                     fullWidth
                     value={value}
                     onChange={onChange}
