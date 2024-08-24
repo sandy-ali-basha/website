@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // ** MUI Imports
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -11,22 +11,37 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 // ** Custom Components Imports
-import { Card, Chip, Container } from "@mui/material";
+import {
+  Card,
+  Chip,
+  Container,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+} from "@mui/material";
 import CustomRadioBasic from "components/customs/custom-radio/basic";
 import CustomRadioIcons from "components/customs/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useAddresses } from "hooks/addresses/useAddresses";
 import Loader from "components/modules/Loader";
 import { useTranslation } from "react-i18next";
+import { useCart } from "hooks/cart/useCart";
+import CardShimmer from "components/customs/loaders/CardShimmer";
 
-const StepAddress = ({ handleNext }) => {
+const StepAddress = ({
+  handleNext,
+  selectedBasicRadio,
+  setSelectedBasicRadio,
+}) => {
+  const [selectedIconRadio, setSelectedIconRadio] = useState("standard");
   const { data = { addresses: [] }, isLoading } = useAddresses();
   const { t } = useTranslation("index");
   const addresses = data?.addresses || [];
 
   const addressData = addresses.map((address, index) => ({
     value: address.id,
-    isSelected: index === 0,
+    isSelected: address.id === selectedBasicRadio,
     title: `${address.title} ${address.first_name} ${address.last_name} ${
       address.billing_default ? "(Default)" : ""
     }`,
@@ -59,6 +74,14 @@ const StepAddress = ({ handleNext }) => {
     ),
   }));
 
+  useEffect(() => {
+    const defaultAddress = addresses.find(
+      (address) => address.shipping_default
+    );
+    if (defaultAddress) {
+      setSelectedBasicRadio(defaultAddress.id);
+    }
+  }, [addresses, setSelectedBasicRadio]);
   const dataIcons = [
     {
       isSelected: true,
@@ -132,17 +155,6 @@ const StepAddress = ({ handleNext }) => {
     },
   ];
 
-  const initialBasicSelected = addressData.find(
-    (item) => item.isSelected
-  )?.value;
-  const initialIconSelected = dataIcons.find((item) => item.isSelected)?.value;
-
-  // ** States
-  const [selectedIconRadio, setSelectedIconRadio] =
-    useState(initialIconSelected);
-  const [selectedBasicRadio, setSelectedBasicRadio] =
-    useState(initialBasicSelected);
-
   // ** Hook
   const theme = useTheme();
   const navigate = useNavigate();
@@ -175,27 +187,15 @@ const StepAddress = ({ handleNext }) => {
     },
   ];
 
-  const handleBasicRadioChange = (prop) => {
-    const value = typeof prop === "string" ? prop : prop?.target?.value;
-    if (value) {
-      setSelectedBasicRadio(value);
-    }
-  };
+  const handleBasicRadioChange = (prop) => setSelectedBasicRadio(prop);
+  const handleIconRadioChange = (prop) => setSelectedIconRadio(prop);
+  const handleAddNewAddress = () => navigate("/profile/addresses");
 
-  const handleIconRadioChange = (prop) => {
-    const value = typeof prop === "string" ? prop : prop?.target?.value;
-    if (value) {
-      setSelectedIconRadio(value);
-    }
-  };
-
-  const handleAddNewAddress = () => {
-    navigate("/profile/addresses");
-  };
-
+  const cart_id = localStorage.getItem("cart_id");
+  const { data: cartData, isLoading: cartIsLoading } = useCart(cart_id);
   if (isLoading) {
     return (
-      <Typography sx={{ textAlign: "center" }}>
+      <Typography sx={{ textAlign: "center", minHeight: "50vh" }}>
         <Loader />
       </Typography>
     );
@@ -213,7 +213,7 @@ const StepAddress = ({ handleNext }) => {
               <CustomRadioBasic
                 key={index}
                 data={item}
-                name="custom-radios-address"
+                name={`custom-radios-address ${index}`}
                 selected={selectedBasicRadio}
                 gridProps={{ sm: 6, xs: 12 }}
                 handleChange={handleBasicRadioChange}
@@ -223,7 +223,8 @@ const StepAddress = ({ handleNext }) => {
           <Button variant="tonal" sx={{ mt: 4 }} onClick={handleAddNewAddress}>
             {t("Add new address")}
           </Button>
-          <Typography variant="h6" sx={{ mt: 6, mb: 4 }}>
+          {/* //*Delivery */}
+          {/* <Typography variant="h6" sx={{ mt: 6, mb: 4 }}>
             {t("Choose Delivery Speed")}
           </Typography>
           <Grid container spacing={4}>
@@ -239,7 +240,7 @@ const StepAddress = ({ handleNext }) => {
                 handleChange={handleIconRadioChange}
               />
             ))}
-          </Grid>
+          </Grid> */}
         </Grid>
         <Grid item xs={12} lg={4}>
           <Card sx={{ mb: 4, borderRadius: 3, boxShadow: 3 }}>
@@ -247,40 +248,68 @@ const StepAddress = ({ handleNext }) => {
               <Typography sx={{ mb: 4 }} variant="h6">
                 {t("Estimated Delivery Date")}
               </Typography>
-              <Box sx={{ mb: 4, display: "flex", alignItems: "center" }}>
-                <Box sx={{ mr: 4, display: "flex", "& img": { m: 2.5 } }}>
-                  <img
-                    height={50}
-                    src="/images/products/google-home.png"
-                    alt="Google Home"
-                  />
-                </Box>
-                <div>
-                  <Typography sx={{ color: "text.secondary" }}>
-                    Google - Google Home - White
-                  </Typography>
-                  <Typography sx={{ fontWeight: 500, color: "text.secondary" }}>
-                    18th Nov 2021
-                  </Typography>
-                </div>
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Box sx={{ mr: 4, display: "flex", "& img": { m: 2.5 } }}>
-                  <img
-                    height={50}
-                    src="/images/products/iphone-11.png"
-                    alt="iphone 11"
-                  />
-                </Box>
-                <div>
-                  <Typography sx={{ color: "text.secondary" }}>
-                    Apple iPhone 11 (64GB, Black)
-                  </Typography>
-                  <Typography sx={{ fontWeight: 500, color: "text.secondary" }}>
-                    20th Nov 2021
-                  </Typography>
-                </div>
-              </Box>
+              <List>
+                {cartIsLoading ? (
+                  <ListItem sx={{ my: 2 }}>
+                    <Grid container sx={{ mx: 1 }}>
+                      <Grid item xs={12} md={4}>
+                        <CardShimmer
+                          style={{ width: "10vh", height: "10vh" }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={8}>
+                        <CardShimmer
+                          style={{ width: "100%", height: "10vh" }}
+                        />
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                ) : (
+                  cartData?.data?.products?.length > 0 &&
+                  cartData?.data?.products?.map((item, idx) => (
+                    <ListItem
+                      key={idx}
+                      sx={{ boxShadow: 1, borderRadius: 3, my: 2 }}
+                    >
+                      <ListItemAvatar
+                        key={item?.id}
+                        sx={{
+                          display: "flex",
+                          borderRadius: 3,
+                          width: "20%",
+                        }}
+                      >
+                        <img
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            borderRadius: "inherit",
+                          }}
+                          src={item?.image}
+                          alt={item?.name}
+                        />
+                      </ListItemAvatar>
+                      <Grid container sx={{ mx: 1 }}>
+                        <Grid item xs={12} md={8}>
+                          <Link
+                            to={`/store/product/${item?.id}`}
+                            style={{ textDecoration: "none" }}
+                          >
+                            <ListItemText primary={item?.name} />
+                          </Link>
+
+                          <Box sx={{ display: "flex" }}>
+                            <Typography sx={{ color: "text.main" }}>
+                              {item?.price}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    </ListItem>
+                  ))
+                )}
+              </List>
             </CardContent>
             <Divider sx={{ m: "0 !important" }} />
             <CardContent>
@@ -354,7 +383,7 @@ const StepAddress = ({ handleNext }) => {
                 }}
               >
                 <Typography sx={{ fontWeight: 500 }}>{t("Total")}</Typography>
-                <Typography sx={{ fontWeight: 500 }}>$1198.00</Typography>
+                <Typography sx={{ fontWeight: 500 }}>{cartData?.data?.sub_total}</Typography>
               </Box>
             </CardContent>
           </Card>

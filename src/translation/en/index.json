@@ -88,9 +88,13 @@
   "last name is required": "last name is required",
   "email is required": "email is required",
   "message is required": "message is required",
-  "Added To Cart Successfully":"Added To Cart Successfully",
-  "An error occurred":"An error occurred",
-  "An unexpected error occurred. Please try again.":"An unexpected error occurred. Please try again.",
-  "Products based on ":"Products based on ",
-  "Loading...":"Loading..."
-}
+  "Added To Cart Successfully": "Added To Cart Successfully",
+  "An error occurred": "An error occurred",
+  "An unexpected error occurred. Please try again.": "An unexpected error occurred. Please try again.",
+  "Products based on ": "Products based on ",
+  "Loading...": "Loading...",
+  "In Stock": "In Stock",
+  "Out Of Stock": "Out Of Stock",
+  "Sold By":"Sold By",
+  "Bag Total":"Bag Total",
+  "Your shopping cart is empty.":"Your shopping cart is empty."}

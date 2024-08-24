@@ -32,6 +32,10 @@ import StepperWrapper from "./_components/StepperWrapper";
 import { _AuthApi } from "api/auth";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@emotion/react";
+import { _addresses } from "api/addresses/addresses";
+
+import emptyCart from "assets/images/empty-cart.webp";
+import Swal from "sweetalert2";
 
 const Stepper = styled(MuiStepper)(({ theme }) => ({
   margin: "auto",
@@ -88,6 +92,8 @@ const Checkout = () => {
   // ** States
   const [activeStep, setActiveStep] = useState(0);
   const { t } = useTranslation("index");
+  const [selectedBasicRadio, setSelectedBasicRadio] = useState();
+
   const steps = [
     {
       title: t("Cart"),
@@ -106,10 +112,7 @@ const Checkout = () => {
       icon: <ReceiptLongRoundedIcon />,
     },
   ];
-  // Handle Stepper
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
-  };
+
   const theme = useTheme();
 
   const getStepContent = (step) => {
@@ -118,7 +121,13 @@ const Checkout = () => {
         case 0:
           return <StepCart handleNext={handleNext} />;
         case 1:
-          return <StepAddress handleNext={handleNext} />;
+          return (
+            <StepAddress
+              handleNext={handleNext}
+              selectedBasicRadio={selectedBasicRadio}
+              setSelectedBasicRadio={setSelectedBasicRadio}
+            />
+          );
         case 2:
           return <StepPayment handleNext={handleNext} />;
         case 3:
@@ -128,12 +137,60 @@ const Checkout = () => {
       }
     } else return <StepCart handleNext={handleNext} />;
   };
+  const handleNext = async () => {
+    if (activeStep === 1) {
+      // StepAddress is active
+      const addressId = selectedBasicRadio; // Assuming selectedBasicRadio holds the selected address ID
+      const userData = JSON.parse(localStorage.getItem("userData"));
 
+      const orderData = {
+        address_id: addressId,
+        first_name: userData?.first_name,
+        last_name: userData?.last_name,
+        email: userData?.email,
+        message: "message",
+      };
+
+      await _addresses.order(orderData).then((res) => {
+        if (res?.code === 200) {
+          setActiveStep(activeStep + 1); // Move to the next step on success
+          localStorage.removeItem("cart_id");
+        } else
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: res?.error?.message,
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+          });
+      });
+    } else {
+      setActiveStep(activeStep + 1); // Move to the next step for other steps
+    }
+  };
   const renderContent = () => {
     return getStepContent(activeStep);
   };
+  const cart_id = localStorage.getItem("cart_id");
 
-  return (
+  return !cart_id ? (
+    <Card
+      sx={{
+        minHeight: "80vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      {" "}
+      <img src={emptyCart} style={{ width: "40vw" }} />
+      <Typography>Your shoping pag is empty</Typography>
+    </Card>
+  ) : (
     <Card>
       <CardContent sx={{ pt: 11, pb: 5 }}>
         <StepperWrapper>
@@ -149,7 +206,8 @@ const Checkout = () => {
           >
             {steps.map((step, index) => {
               return (
-                <Step key={index} onClick={() => setActiveStep(index)} sx={{}}>
+                //onClick={() => setActiveStep(index)}
+                <Step key={index}>
                   <StepLabel icon={<></>}>
                     {step.icon}
                     <Typography

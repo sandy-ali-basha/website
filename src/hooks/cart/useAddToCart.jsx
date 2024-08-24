@@ -4,25 +4,23 @@ import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 
 export const useAddToCart = (coupon_code) => {
-  // const userData = JSON.parse(localStorage.getItem("userData")); // Assuming userData is stored as JSON
-  // const user_id = userData?.user_id; // Extract user_id safely
   const { t } = useTranslation("index");
   const [loadingCart, setLoading] = useState(false);
   const cart_id = localStorage.getItem("cart_id");
   const handleAddToCart = (id) => {
     const data = {
-      // user_id, // Ensure user_id is defined and valid
       products: {
         [id]: {
           qty: 1,
         },
       },
     };
-
-    setLoading(true); // Start loading
+    console.log("cart_id", cart_id);
+    setLoading(true);
     _cart
       .AddToCart({ data, cart_id })
       .then((res) => {
+        console.log("res?.data?.id", res?.data?.id);
         if (!cart_id) localStorage.setItem("cart_id", res?.data?.id);
 
         if (res?.code === 200) {

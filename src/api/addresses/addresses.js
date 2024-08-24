@@ -20,7 +20,7 @@ export const _addresses = {
       })
       .then((res) => res.data);
   },
-  post: (data) =>_axios.post("/addresses", data).then((res) => res.data),
+  order: (data) =>_axios.post("/order", data).then((res) => res.data),
 
   delete: (id) => _axios.delete(`/addresses/${id}`).then((res) => res.data),
 

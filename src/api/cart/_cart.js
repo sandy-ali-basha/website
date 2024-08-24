@@ -24,20 +24,38 @@ export const _cart = {
       )
       .then((res) => res.data);
   },
-
   AddToCart: async ({ data, cart_id }) => {
+    try {
+      const response = await _axios.post(
+        `cart${cart_id ? "/" + cart_id : ""}`,
+        data,
+        {
+          headers: {
+            ...HttpRequestInterceptor(),
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      // Handle or throw the error as needed
+      console.error("Error adding to cart:", error);
+      throw error;
+    }
+  },
+  UpdateCart: async ({ data, cart_id }) => {
     return _axios
       .post(`cart${cart_id ? "/" + cart_id : ""}`, data)
       .then((res) => res.data);
   },
 
-  delete: async ({ id, color, size }) => {
-    const encodedColor = encodeURIComponent(color);
+  delete: async ({ id, cart_id }) => {
     return _axios
-      .delete(
-        `/user/cart/removeProduct/${id}?color=${encodedColor}&size=${size}`
-      )
-      .then((res) => res.data);
+    .delete(`cart/${cart_id}`, {
+      data: {
+        product_id: id,
+      },
+    })
+    .then((res) => res.data);
   },
   increas: async ({ id, color, size }) => {
     const encodedColor = encodeURIComponent(color);
