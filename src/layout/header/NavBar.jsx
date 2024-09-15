@@ -32,7 +32,6 @@ function NavBar() {
         backdropFilter: "blur(5px)",
       }}
     >
-   
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -103,14 +102,20 @@ function NavBar() {
           </Box>
           <LanguageSelector />
           <Box sx={{ mx: "10px" }}>
-            <MenuButton
+            {/* <MenuButton
               badgeNumber={4}
               icon={<ShoppingCartOutlined sx={{ color: "white" }} />}
               menuItems={CartMenuItems.map((item) => ({
                 ...item,
                 key: item.id,
               }))}
-            />
+            /> */}
+            <Button
+              onClick={() => navigate("/store/checkout")}
+              sx={{ color: "white", display: "block" }}
+            >
+              <ShoppingCartOutlined sx={{ color: "white" }} />
+            </Button>
           </Box>
           <Box sx={{ mx: "10px" }}>
             {_AuthApi.getToken() ? (

@@ -95,6 +95,8 @@
   "Loading...": "Loading...",
   "In Stock": "In Stock",
   "Out Of Stock": "Out Of Stock",
-  "Sold By":"Sold By",
-  "Bag Total":"Bag Total",
-  "Your shopping cart is empty.":"Your shopping cart is empty."}
+  "Sold By": "Sold By",
+  "Bag Total": "Bag Total",
+  "Your shopping cart is empty.": "Your shopping cart is empty.",
+  "Favorite Items": "Favorite Items"
+}

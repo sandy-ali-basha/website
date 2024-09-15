@@ -50,28 +50,17 @@ export const _cart = {
 
   delete: async ({ id, cart_id }) => {
     return _axios
-    .delete(`cart/${cart_id}`, {
-      data: {
-        product_id: id,
-      },
-    })
-    .then((res) => res.data);
-  },
-  increas: async ({ id, color, size }) => {
-    const encodedColor = encodeURIComponent(color);
-    return _axios
-      .delete(
-        `/user/cart/increaseProduct/${id}?color=${encodedColor}&size=${size}`
-      )
+      .delete(`cart/${cart_id}`, {
+        data: {
+          product_id: id,
+        },
+      })
       .then((res) => res.data);
   },
-
-  Minus: async ({ id, color, size }) => {
-    const encodedColor = encodeURIComponent(color);
-    return _axios
-      .get(
-        `/user/cart/decreaseProduct/${id}?color=${encodedColor}&size=${size}`
-      )
-      .then((res) => res.data);
+  coupon: async ({ data }) => {
+    return _axios.post(`/coupon`, data).then((res) => res.data);
+  },
+  points: async ({ data }) => {
+    return _axios.post(`/use-points`, data).then((res) => res.data);
   },
 };

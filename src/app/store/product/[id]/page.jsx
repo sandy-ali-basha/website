@@ -42,17 +42,18 @@ function Product() {
   const { handleAddToCart, loadingCart } = useAddToCart();
 
   const navigate = useNavigate();
+  console.log("data?.data?.images",data?.data?.images)
   return (
     <Container sx={{ mt: 15 }}>
       <Grid container>
         <Grid item xs={12} md={6}>
           <Swiper navigation={true} modules={[Navigation]} spaceBetween={10}>
-            {data?.images ? (
-              data?.images?.map((item, idx) => (
+            {data?.data?.images ? (
+              data?.data?.images?.map((item, idx) => (
                 <SwiperSlide key={idx}>
                   <Box sx={{ width: "100%", height: "100%", borderRadius: 3 }}>
                     <img
-                      src={item}
+                      src={item?.image_path}
                       alt={`Slide`}
                       style={{
                         objectFit: "cover",
@@ -77,6 +78,7 @@ function Product() {
                       borderRadius: "inherit",
                     }}
                     quality={100}
+                    alt=""
                   />
                 </Box>
               </SwiperSlide>

@@ -165,18 +165,21 @@ export default function Category() {
               ))}
 
             {data &&
-              data?.data?.products?.map((item, idx) => (
-                <Grid item key={idx} xs={12} sm={6} md={4} lg={3}>
-                  <ProductCard
-                    id={item?.id}
-                    productName={item.name}
-                    Price={item?.price}
-                    productImage={item.img}
-                    link={`/store/product/${item.id}`}
-                    loading={false}
-                  />
-                </Grid>
-              ))}
+              data?.data?.products?.map((item, idx) => {
+                console.log(idx, item?.images[0]?.image_path);
+                return (
+                  <Grid item key={idx} xs={12} sm={6} md={4} lg={3}>
+                    <ProductCard
+                      id={item?.id}
+                      productName={item.name}
+                      Price={item?.price}
+                      productImage={item?.images[0]?.image_path}
+                      link={`/store/product/${item.id}`}
+                      loading={false}
+                    />
+                  </Grid>
+                );
+              })}
           </Grid>
         </Box>
       </Box>

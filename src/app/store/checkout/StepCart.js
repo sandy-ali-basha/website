@@ -25,6 +25,9 @@ import CardShimmer from "components/customs/loaders/CardShimmer";
 import { _cart } from "api/cart/_cart";
 import { useQueryClient } from "react-query";
 import Swal from "sweetalert2";
+import ApplyCoupone from "./_components/ApplyCoupon";
+import ApplyCoupon from "./_components/ApplyCoupon";
+import ApplyPoints from "./_components/ApplyPoints";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -57,29 +60,32 @@ const StepCart = ({ handleNext }) => {
   const handleDeleteItem = (id) => {
     _cart.delete({ id, cart_id }).then((res) => {
       // Invalidate the "cart" query to refetch the updated cart data
-      if (res?.code === 200) {queryClient.invalidateQueries("cart");
+      if (res?.code === 200) {
+        queryClient.invalidateQueries("cart");
         Swal.fire({
-          icon: 'success',
-          title: 'Success',
+          icon: "success",
+          title: "Success",
           text: "Deleted successfully",
           toast: true,
-          position: 'top-end',
+          position: "top-end",
           showConfirmButton: false,
           timer: 3000,
           timerProgressBar: true,
-        });}
-      else Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: res?.error?.message,
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-      });
+        });
+      } else
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: res?.error?.message,
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+        });
     });
   };
+
   return (
     <Container>
       <Grid container spacing={2}>
@@ -341,31 +347,8 @@ const StepCart = ({ handleNext }) => {
 
               <Divider sx={{ my: "0 !important" }} />
               <CardContent>
-                <Typography sx={{ mb: 1 }} variant="h6">
-                  {t("coupon")}
-                </Typography>
-                <Box sx={{ mb: 1, display: "flex", alignItems: "center" }}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    sx={{ mr: 2 }}
-                    placeholder="Enter Promo Code"
-                  />
-                  <Button variant="outlined">{t("Apply")}</Button>
-                </Box>
-                <Typography sx={{ mb: 1 }} variant="h6">
-                  {t("Points")}
-                </Typography>
-                <Box sx={{ mb: 1, display: "flex", alignItems: "center" }}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    sx={{ mr: 2 }}
-                    type="number"
-                    placeholder="Enter points"
-                  />
-                  <Button variant="outlined">{t("Apply")}</Button>
-                </Box>
+                <ApplyCoupon id={data?.id} />
+                <ApplyPoints id={data?.id} />
               </CardContent>
 
               <Divider sx={{ my: "0 !important" }} />

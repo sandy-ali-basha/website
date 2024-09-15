@@ -13,7 +13,6 @@ import CardShimmer from "components/customs/loaders/CardShimmer";
 import defaultImg from "assets/images/defaultImg.jpg";
 import { useTranslation } from "react-i18next";
 import { useAddToCart } from "hooks/cart/useAddToCart";
-import Loader from "./Loader";
 export default function ProductCard({
   productName,
   Price,
@@ -25,11 +24,16 @@ export default function ProductCard({
 }) {
   const { handleAddToCart, loadingCart } = useAddToCart();
   const { t } = useTranslation("index");
-
+  console.log("productImage", productImage);
   return (
     <Card sx={{ boxShadow: 3, borderRadius: 3, height: "100%" }}>
       {" "}
-      <Link to={link} component="a" style={{ textDecoration: "none" }}>
+      <Link
+        disabled={!loading}
+        to={link}
+        component="a"
+        style={{ textDecoration: "none" }}
+      >
         {loading ? (
           <CardShimmer
             style={{
@@ -45,8 +49,9 @@ export default function ProductCard({
                 width: "100%",
                 height: { xs: "30vh", md: "40vh" },
                 borderRadius: "12px",
+                backgroundSize: "contain",
               }}
-              image={productImage?.src || defaultImg}
+              image={productImage || defaultImg}
               title={productName}
             />
           </>

@@ -6,7 +6,7 @@ import { Grid } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { useParams } from "react-router-dom";
-import { useBrandPage, useBrandSlider } from "hooks/brands/useBrand";
+import { useBrandPage } from "hooks/brands/useBrand";
 import AnimatedText from "components/modules/home/AnimatedText.jsx";
 import BestSellers from "components/modules/home/BestSellers.jsx";
 import Loader from "components/modules/Loader";
@@ -19,9 +19,17 @@ export default function Brand() {
 
   if (isLoading)
     return (
-      <>
+      <Box
+        sx={{
+          minHeight: "70vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Loader />
-      </>
+      </Box>
     );
 
   return (
@@ -78,10 +86,10 @@ export default function Brand() {
       </Swiper>
       <Container>
         <Grid container sx={{ my: 6 }}>
-          <Grid item md={6}>
+          <Grid item md={12}>
             <Typography variant="h5">{data?.name}</Typography>
           </Grid>
-          <Grid item md={6}>
+          <Grid item md={12}>
             <Typography
               variant="body1"
               dangerouslySetInnerHTML={{ __html: data?.text }}
