@@ -34,9 +34,10 @@ const StepAddress = ({
   selectedBasicRadio,
   setSelectedBasicRadio,
 }) => {
-  const [selectedIconRadio, setSelectedIconRadio] = useState("standard");
+  // const [selectedIconRadio, setSelectedIconRadio] = useState("standard");
   const { data = { addresses: [] }, isLoading } = useAddresses();
   const { t } = useTranslation("index");
+
   const addresses = data?.addresses || [];
 
   const addressData = addresses.map((address, index) => ({
@@ -82,113 +83,113 @@ const StepAddress = ({
       setSelectedBasicRadio(defaultAddress.id);
     }
   }, [addresses, setSelectedBasicRadio]);
-  const dataIcons = [
-    {
-      isSelected: true,
-      value: "standard",
-      title: (
-        <Typography variant="h6" sx={{ mb: 1 }}>
-          Standard
-        </Typography>
-      ),
-      content: (
-        <>
-          <Chip
-            rounded
-            size="small"
-            skin="light"
-            label="Free"
-            color="success"
-            sx={{ top: 12, right: 12, position: "absolute" }}
-          />
-          <Typography variant="body2" sx={{ my: "auto", textAlign: "center" }}>
-            Get your product in 1 Week.
-          </Typography>
-        </>
-      ),
-    },
-    {
-      value: "express",
-      title: (
-        <Typography variant="h6" sx={{ mb: 1 }}>
-          Express
-        </Typography>
-      ),
-      content: (
-        <>
-          <Chip
-            rounded
-            label="$10"
-            size="small"
-            skin="light"
-            color="secondary"
-            sx={{ top: 12, right: 12, position: "absolute" }}
-          />
-          <Typography variant="body2" sx={{ my: "auto", textAlign: "center" }}>
-            Get your product in 3-4 days.
-          </Typography>
-        </>
-      ),
-    },
-    {
-      value: "overnight",
-      title: (
-        <Typography variant="h6" sx={{ mb: 1 }}>
-          Overnight
-        </Typography>
-      ),
-      content: (
-        <>
-          <Chip
-            rounded
-            label="$15"
-            size="small"
-            skin="light"
-            color="secondary"
-            sx={{ top: 12, right: 12, position: "absolute" }}
-          />
-          <Typography variant="body2" sx={{ my: "auto", textAlign: "center" }}>
-            Get your product in 1 day.
-          </Typography>
-        </>
-      ),
-    },
-  ];
+  // const dataIcons = [
+  //   {
+  //     isSelected: true,
+  //     value: "standard",
+  //     title: (
+  //       <Typography variant="h6" sx={{ mb: 1 }}>
+  //         Standard
+  //       </Typography>
+  //     ),
+  //     content: (
+  //       <>
+  //         <Chip
+  //           rounded
+  //           size="small"
+  //           skin="light"
+  //           label="Free"
+  //           color="success"
+  //           sx={{ top: 12, right: 12, position: "absolute" }}
+  //         />
+  //         <Typography variant="body2" sx={{ my: "auto", textAlign: "center" }}>
+  //           Get your product in 1 Week.
+  //         </Typography>
+  //       </>
+  //     ),
+  //   },
+  //   {
+  //     value: "express",
+  //     title: (
+  //       <Typography variant="h6" sx={{ mb: 1 }}>
+  //         Express
+  //       </Typography>
+  //     ),
+  //     content: (
+  //       <>
+  //         <Chip
+  //           rounded
+  //           label="$10"
+  //           size="small"
+  //           skin="light"
+  //           color="secondary"
+  //           sx={{ top: 12, right: 12, position: "absolute" }}
+  //         />
+  //         <Typography variant="body2" sx={{ my: "auto", textAlign: "center" }}>
+  //           Get your product in 3-4 days.
+  //         </Typography>
+  //       </>
+  //     ),
+  //   },
+  //   {
+  //     value: "overnight",
+  //     title: (
+  //       <Typography variant="h6" sx={{ mb: 1 }}>
+  //         Overnight
+  //       </Typography>
+  //     ),
+  //     content: (
+  //       <>
+  //         <Chip
+  //           rounded
+  //           label="$15"
+  //           size="small"
+  //           skin="light"
+  //           color="secondary"
+  //           sx={{ top: 12, right: 12, position: "absolute" }}
+  //         />
+  //         <Typography variant="body2" sx={{ my: "auto", textAlign: "center" }}>
+  //           Get your product in 1 day.
+  //         </Typography>
+  //       </>
+  //     ),
+  //   },
+  // ];
 
   // ** Hook
   const theme = useTheme();
   const navigate = useNavigate();
   const breakpointMD = useMediaQuery(theme.breakpoints.between("sm", "lg"));
 
-  const icons = [
-    {
-      icon: "tabler:users",
-      iconProps: {
-        fontSize: "2.125rem",
-        style: { marginBottom: 8 },
-        color: theme.palette.text.secondary,
-      },
-    },
-    {
-      icon: "tabler:crown",
-      iconProps: {
-        fontSize: "2.125rem",
-        style: { marginBottom: 8 },
-        color: theme.palette.text.secondary,
-      },
-    },
-    {
-      icon: "tabler:brand-telegram",
-      iconProps: {
-        fontSize: "2.125rem",
-        style: { marginBottom: 8 },
-        color: theme.palette.text.secondary,
-      },
-    },
-  ];
+  // const icons = [
+  //   {
+  //     icon: "tabler:users",
+  //     iconProps: {
+  //       fontSize: "2.125rem",
+  //       style: { marginBottom: 8 },
+  //       color: theme.palette.text.secondary,
+  //     },
+  //   },
+  //   {
+  //     icon: "tabler:crown",
+  //     iconProps: {
+  //       fontSize: "2.125rem",
+  //       style: { marginBottom: 8 },
+  //       color: theme.palette.text.secondary,
+  //     },
+  //   },
+  //   {
+  //     icon: "tabler:brand-telegram",
+  //     iconProps: {
+  //       fontSize: "2.125rem",
+  //       style: { marginBottom: 8 },
+  //       color: theme.palette.text.secondary,
+  //     },
+  //   },
+  // ];
 
   const handleBasicRadioChange = (prop) => setSelectedBasicRadio(prop);
-  const handleIconRadioChange = (prop) => setSelectedIconRadio(prop);
+  // const handleIconRadioChange = (prop) => setSelectedIconRadio(prop);
   const handleAddNewAddress = () => navigate("/profile/addresses");
 
   const cart_id = localStorage.getItem("cart_id");
@@ -286,7 +287,7 @@ const StepAddress = ({
                             objectFit: "cover",
                             borderRadius: "inherit",
                           }}
-                          src={item?.image}
+                          src={item?.images[0]?.image_path}
                           alt={item?.name}
                         />
                       </ListItemAvatar>
@@ -383,7 +384,9 @@ const StepAddress = ({
                 }}
               >
                 <Typography sx={{ fontWeight: 500 }}>{t("Total")}</Typography>
-                <Typography sx={{ fontWeight: 500 }}>{cartData?.data?.sub_total}</Typography>
+                <Typography sx={{ fontWeight: 500 }}>
+                  {cartData?.data?.sub_total}
+                </Typography>
               </Box>
             </CardContent>
           </Card>

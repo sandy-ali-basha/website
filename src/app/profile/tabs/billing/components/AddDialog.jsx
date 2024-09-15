@@ -20,7 +20,7 @@ import { useAddressDialog } from "./hooks/useAddressDialog";
 
 const AddDialog = ({ open, handleClose }) => {
   const {
-    hanldeCreate,
+    handleCreate,
     register,
     errors,
     handleChange,
@@ -43,10 +43,7 @@ const AddDialog = ({ open, handleClose }) => {
       scroll="paper"
       PaperProps={{
         component: "form",
-        onSubmit: (event) => {
-          event.preventDefault();
-          handleSubmit(hanldeCreate)();
-        },
+        onSubmit: handleSubmit(handleCreate),
       }}
     >
       <DialogTitle id="scroll-dialog-title">{t("Add New Address")}</DialogTitle>

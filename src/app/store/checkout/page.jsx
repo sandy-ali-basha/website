@@ -137,11 +137,13 @@ const Checkout = () => {
       }
     } else return <StepCart handleNext={handleNext} />;
   };
+
   const handleNext = async () => {
-    if (activeStep === 1) {
+    if (activeStep === 2) {
       // StepAddress is active
       const addressId = selectedBasicRadio; // Assuming selectedBasicRadio holds the selected address ID
       const userData = JSON.parse(localStorage.getItem("userData"));
+      const cart_id = JSON.parse(localStorage.getItem("cart_id"));
 
       const orderData = {
         address_id: addressId,
@@ -149,6 +151,8 @@ const Checkout = () => {
         last_name: userData?.last_name,
         email: userData?.email,
         message: "message",
+        cart_id: cart_id,
+        payment_method: "cash-in-hand",
       };
 
       await _addresses.order(orderData).then((res) => {
