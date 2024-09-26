@@ -91,5 +91,12 @@
   "An error occurred": "حدث خطأ",
   "An unexpected error occurred. Please try again.": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
   "Products based on ": "المنتجات بناءً على ",
-  "Loading...": "جاري التحميل..."
+  "Loading...": "جاري التحميل...",
+  "In Stock": "متوفر في المخزون",
+  "Out Of Stock": "غير متوفر في المخزون",
+  "Sold By": "مباع بواسطة",
+  "Bag Total": "إجمالي الحقيبة",
+  "Your shopping cart is empty.": "سلة التسوق الخاصة بك فارغة.",
+  "Favorite Items": "العناصر المفضلة",
+  "change city": "تغيير المدينة"
 }

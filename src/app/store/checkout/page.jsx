@@ -1,98 +1,48 @@
-"use client";
-// ** React Imports
-import { useState } from "react";
-
-// ** MUI Imports
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import Step from "@mui/material/Step";
 import Divider from "@mui/material/Divider";
 import StepLabel from "@mui/material/StepLabel";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
-import { styled } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import StepCart from "./StepCart";
+import StepAddress from "./StepAddress";
+import StepPayment from "./StepPayment";
+import StepConfirmation from "./StepConfirmation";
 import MuiStepper from "@mui/material/Stepper";
-
-// ** Icon Imports
-import Icon from "components/modules/icon";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import BusinessRoundedIcon from "@mui/icons-material/BusinessRounded";
 import CreditScoreRoundedIcon from "@mui/icons-material/CreditScoreRounded";
 import ReceiptLongRoundedIcon from "@mui/icons-material/ReceiptLongRounded";
 import KeyboardDoubleArrowRightRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowRightRounded";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-// ** Step Components
-import StepCart from "./StepCart";
-import StepAddress from "./StepAddress";
-import StepPayment from "./StepPayment";
-import StepConfirmation from "./StepConfirmation";
-
-// ** Styled Components
-import StepperWrapper from "./_components/StepperWrapper";
+import Swal from "sweetalert2";
 import { _AuthApi } from "api/auth";
+import { _addresses } from "api/addresses/addresses";
+import emptyCart from "assets/images/empty-cart.webp";
+import { ValueStore } from "store/categoryStore";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@emotion/react";
-import { _addresses } from "api/addresses/addresses";
+import StepperWrapper from "./_components/StepperWrapper";
 
-import emptyCart from "assets/images/empty-cart.webp";
-import Swal from "sweetalert2";
-
+// ** Styled Stepper Component
 const Stepper = styled(MuiStepper)(({ theme }) => ({
   margin: "auto",
   maxWidth: 800,
   justifyContent: "space-around",
   flexDirection: "row !important",
-  "& .MuiStep-root": {
-    cursor: "pointer",
-    textAlign: "center",
-    "&:not(:last-child)": {
-      paddingBottom: theme.spacing(8),
-    },
-    "&.Mui-completed + svg": {
-      color: theme.palette.primary.main,
-    },
-    "& + svg": {
-      display: "none",
-      color: theme.palette.text.disabled,
-    },
-    "& .MuiStepLabel-label": {
-      display: "flex",
-      cursor: "pointer",
-      alignItems: "center",
-      svg: {
-        marginRight: theme.spacing(1),
-        marginBottom: theme.spacing(0.75),
-        fill: theme.palette.text.primary,
-      },
-      "&.Mui-active, &.Mui-completed": {
-        "& .MuiTypography-root": {
-          color: theme.palette.primary.main,
-        },
-        "& svg": {
-          fill: theme.palette.primary.main,
-        },
-      },
-    },
-    "& .step-title": {
-      fontWeight: 400,
-    },
-    [theme.breakpoints.up("md")]: {
-      paddingBottom: "0 !important",
-      "& + svg": {
-        display: "block",
-      },
-      "& .MuiStepLabel-label": {
-        display: "block",
-      },
-    },
-  },
 }));
 
 const Checkout = () => {
   // ** States
   const [activeStep, setActiveStep] = useState(0);
-  const { t } = useTranslation("index");
   const [selectedBasicRadio, setSelectedBasicRadio] = useState();
+  const [orderResponse, setOrderResponse] = useState(null); // New state for storing order response
+  const { t } = useTranslation("index");
+  const theme = useTheme();
+  const [value] = ValueStore((state) => [state.value]);
 
   const steps = [
     {
@@ -108,40 +58,15 @@ const Checkout = () => {
       icon: <CreditScoreRoundedIcon />,
     },
     {
-      title: t("Confermation"),
+      title: t("Confirmation"),
       icon: <ReceiptLongRoundedIcon />,
     },
   ];
 
-  const theme = useTheme();
-
-  const getStepContent = (step) => {
-    if (_AuthApi.getToken()) {
-      switch (step) {
-        case 0:
-          return <StepCart handleNext={handleNext} />;
-        case 1:
-          return (
-            <StepAddress
-              handleNext={handleNext}
-              selectedBasicRadio={selectedBasicRadio}
-              setSelectedBasicRadio={setSelectedBasicRadio}
-            />
-          );
-        case 2:
-          return <StepPayment handleNext={handleNext} />;
-        case 3:
-          return <StepConfirmation />;
-        default:
-          return null;
-      }
-    } else return <StepCart handleNext={handleNext} />;
-  };
-
   const handleNext = async () => {
     if (activeStep === 2) {
       // StepAddress is active
-      const addressId = selectedBasicRadio; // Assuming selectedBasicRadio holds the selected address ID
+      const addressId = selectedBasicRadio;
       const userData = JSON.parse(localStorage.getItem("userData"));
       const cart_id = JSON.parse(localStorage.getItem("cart_id"));
 
@@ -152,14 +77,24 @@ const Checkout = () => {
         email: userData?.email,
         message: "message",
         cart_id: cart_id,
-        payment_method: "cash-in-hand",
+        payment_method: value,
       };
 
       await _addresses.order(orderData).then((res) => {
         if (res?.code === 200) {
+          setOrderResponse(res.data); // Store the order response
           setActiveStep(activeStep + 1); // Move to the next step on success
           localStorage.removeItem("cart_id");
-        } else
+          Swal.fire({
+            title: 'pleas scan the QR code with your mobile app',
+            text: 'This is a custom alert with an image.',
+            imageUrl: res?.data?.payment?.qrCode,
+            imageWidth: 150,
+            imageHeight: 150,
+            imageAlt: 'Custom image',
+            confirmButtonText: 'Cool',
+          });
+        } else {
           Swal.fire({
             icon: "error",
             title: "Error",
@@ -170,14 +105,34 @@ const Checkout = () => {
             timer: 3000,
             timerProgressBar: true,
           });
+        }
       });
     } else {
       setActiveStep(activeStep + 1); // Move to the next step for other steps
     }
   };
-  const renderContent = () => {
-    return getStepContent(activeStep);
+
+  const getStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return <StepCart handleNext={handleNext} />;
+      case 1:
+        return (
+          <StepAddress
+            handleNext={handleNext}
+            selectedBasicRadio={selectedBasicRadio}
+            setSelectedBasicRadio={setSelectedBasicRadio}
+          />
+        );
+      case 2:
+        return <StepPayment handleNext={handleNext} />;
+      case 3:
+        return <StepConfirmation orderResponse={orderResponse} />; // Pass the order response to the last step
+      default:
+        return null;
+    }
   };
+
   const cart_id = localStorage.getItem("cart_id");
 
   return !cart_id ? (
@@ -190,9 +145,8 @@ const Checkout = () => {
         flexDirection: "column",
       }}
     >
-      {" "}
-      <img src={emptyCart} style={{ width: "40vw" }} />
-      <Typography>Your shoping pag is empty</Typography>
+      <img alt=" " src={emptyCart} style={{ width: "40vw" }} />
+      <Typography>Your shopping page is empty</Typography>
     </Card>
   ) : (
     <Card>
@@ -210,7 +164,6 @@ const Checkout = () => {
           >
             {steps.map((step, index) => {
               return (
-                //onClick={() => setActiveStep(index)}
                 <Step key={index}>
                   <StepLabel icon={<></>}>
                     {step.icon}
@@ -227,7 +180,7 @@ const Checkout = () => {
           </Stepper>
         </StepperWrapper>
       </CardContent>
-      <CardContent>{renderContent()}</CardContent>
+      <CardContent>{getStepContent(activeStep)}</CardContent>
     </Card>
   );
 };

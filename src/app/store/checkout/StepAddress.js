@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 // ** MUI Imports
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -21,7 +21,6 @@ import {
   ListItemText,
 } from "@mui/material";
 import CustomRadioBasic from "components/customs/custom-radio/basic";
-import CustomRadioIcons from "components/customs/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useAddresses } from "hooks/addresses/useAddresses";
 import Loader from "components/modules/Loader";
@@ -83,113 +82,11 @@ const StepAddress = ({
       setSelectedBasicRadio(defaultAddress.id);
     }
   }, [addresses, setSelectedBasicRadio]);
-  // const dataIcons = [
-  //   {
-  //     isSelected: true,
-  //     value: "standard",
-  //     title: (
-  //       <Typography variant="h6" sx={{ mb: 1 }}>
-  //         Standard
-  //       </Typography>
-  //     ),
-  //     content: (
-  //       <>
-  //         <Chip
-  //           rounded
-  //           size="small"
-  //           skin="light"
-  //           label="Free"
-  //           color="success"
-  //           sx={{ top: 12, right: 12, position: "absolute" }}
-  //         />
-  //         <Typography variant="body2" sx={{ my: "auto", textAlign: "center" }}>
-  //           Get your product in 1 Week.
-  //         </Typography>
-  //       </>
-  //     ),
-  //   },
-  //   {
-  //     value: "express",
-  //     title: (
-  //       <Typography variant="h6" sx={{ mb: 1 }}>
-  //         Express
-  //       </Typography>
-  //     ),
-  //     content: (
-  //       <>
-  //         <Chip
-  //           rounded
-  //           label="$10"
-  //           size="small"
-  //           skin="light"
-  //           color="secondary"
-  //           sx={{ top: 12, right: 12, position: "absolute" }}
-  //         />
-  //         <Typography variant="body2" sx={{ my: "auto", textAlign: "center" }}>
-  //           Get your product in 3-4 days.
-  //         </Typography>
-  //       </>
-  //     ),
-  //   },
-  //   {
-  //     value: "overnight",
-  //     title: (
-  //       <Typography variant="h6" sx={{ mb: 1 }}>
-  //         Overnight
-  //       </Typography>
-  //     ),
-  //     content: (
-  //       <>
-  //         <Chip
-  //           rounded
-  //           label="$15"
-  //           size="small"
-  //           skin="light"
-  //           color="secondary"
-  //           sx={{ top: 12, right: 12, position: "absolute" }}
-  //         />
-  //         <Typography variant="body2" sx={{ my: "auto", textAlign: "center" }}>
-  //           Get your product in 1 day.
-  //         </Typography>
-  //       </>
-  //     ),
-  //   },
-  // ];
-
-  // ** Hook
   const theme = useTheme();
   const navigate = useNavigate();
   const breakpointMD = useMediaQuery(theme.breakpoints.between("sm", "lg"));
 
-  // const icons = [
-  //   {
-  //     icon: "tabler:users",
-  //     iconProps: {
-  //       fontSize: "2.125rem",
-  //       style: { marginBottom: 8 },
-  //       color: theme.palette.text.secondary,
-  //     },
-  //   },
-  //   {
-  //     icon: "tabler:crown",
-  //     iconProps: {
-  //       fontSize: "2.125rem",
-  //       style: { marginBottom: 8 },
-  //       color: theme.palette.text.secondary,
-  //     },
-  //   },
-  //   {
-  //     icon: "tabler:brand-telegram",
-  //     iconProps: {
-  //       fontSize: "2.125rem",
-  //       style: { marginBottom: 8 },
-  //       color: theme.palette.text.secondary,
-  //     },
-  //   },
-  // ];
-
   const handleBasicRadioChange = (prop) => setSelectedBasicRadio(prop);
-  // const handleIconRadioChange = (prop) => setSelectedIconRadio(prop);
   const handleAddNewAddress = () => navigate("/profile/addresses");
 
   const cart_id = localStorage.getItem("cart_id");
@@ -224,24 +121,7 @@ const StepAddress = ({
           <Button variant="tonal" sx={{ mt: 4 }} onClick={handleAddNewAddress}>
             {t("Add new address")}
           </Button>
-          {/* //*Delivery */}
-          {/* <Typography variant="h6" sx={{ mt: 6, mb: 4 }}>
-            {t("Choose Delivery Speed")}
-          </Typography>
-          <Grid container spacing={4}>
-            {dataIcons.map((item, index) => (
-              <CustomRadioIcons
-                key={index}
-                data={item}
-                icon={icons[index].icon}
-                selected={selectedIconRadio}
-                name="custom-radios-delivery"
-                gridProps={{ sm: 4, xs: 12 }}
-                iconProps={icons[index].iconProps}
-                handleChange={handleIconRadioChange}
-              />
-            ))}
-          </Grid> */}
+      
         </Grid>
         <Grid item xs={12} lg={4}>
           <Card sx={{ mb: 4, borderRadius: 3, boxShadow: 3 }}>

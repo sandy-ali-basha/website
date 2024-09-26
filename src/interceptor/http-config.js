@@ -9,5 +9,6 @@ export const _axios = axios.create({
   baseURL: REACT_APP_API_URL,
   headers: {
     locale: direction,
+    city: localStorage.getItem("city"),
   },
 });

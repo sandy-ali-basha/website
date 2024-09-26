@@ -2,14 +2,14 @@ import { _cart } from "api/cart/_cart";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
-import Swal from "sweetalert2";
 
-const { Typography, Box, TextField, Button } = require("@mui/material");
+const { Typography, Box, TextField, Button, Alert } = require("@mui/material");
 
 const ApplyCoupon = () => {
   const { t } = useTranslation("index");
   const [couponCode, setCouponCode] = useState();
   const queryClient = useQueryClient();
+  const [alert, setAlert] = useState();
 
   const applyCoupone = () => {
     const data = {
@@ -19,27 +19,8 @@ const ApplyCoupon = () => {
     _cart.coupon({ data }).then((res) => {
       if (res?.code === 200) {
         queryClient.invalidateQueries("cart");
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "applied successfully",
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-        });
-      } else
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: res?.errors?.errors?.coupon_code[0],
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-        });
+      }
+      setAlert(res?.error?.errors?.coupon_code[0] || "something went wrong");
     });
   };
   return (
@@ -64,6 +45,7 @@ const ApplyCoupon = () => {
           {t("Apply")}
         </Button>
       </Box>
+      {alert && <Alert severity="error">{alert}</Alert>}
     </>
   );
 };

@@ -1,13 +1,13 @@
 
-import { HttpRequestInterceptor } from "interceptor/http-request.interceptor";
-import { _axios } from "../../interceptor/http-config";
+    import { HttpRequestInterceptor } from "interceptor/http-request.interceptor";
+    import { _axios } from "../../interceptor/http-config";
 
-export const _country = {
+export const _cities = {
 
-    viewCountry: async (id) => {
+    index: async (id) => {
         return _axios
             .get(
-                `/user/country`, {
+                `/cities`, {
                 headers: {
                     ...HttpRequestInterceptor()
                 }

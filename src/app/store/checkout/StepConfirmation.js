@@ -75,7 +75,7 @@ const HorizontalList = styled(List)(({ theme }) => ({
   },
 }));
 
-const StepConfirmation = () => {
+const StepConfirmation = (orderResponse) => {
   return (
     <Container>
 

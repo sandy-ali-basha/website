@@ -3,7 +3,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Badge, IconButton, Tooltip } from "@mui/material";
 import styled from "@emotion/styled";
-import { ShoppingCartOutlined } from "@mui/icons-material";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -14,7 +13,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-export default function MenuButton({ badgeNumber, icon, menuItems }) {
+export default function MenuButton({ badgeNumber, icon, menuItems, tooltip }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -28,7 +27,7 @@ export default function MenuButton({ badgeNumber, icon, menuItems }) {
 
   return (
     <div>
-      <Tooltip title="cart">
+      <Tooltip title={tooltip}>
         <IconButton
           id="basic-button"
           aria-controls={open ? "basic-menu" : undefined}

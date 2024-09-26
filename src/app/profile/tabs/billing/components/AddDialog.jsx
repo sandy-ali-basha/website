@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
 import {
   Dialog,
@@ -13,10 +13,13 @@ import {
   Grid,
   Checkbox,
   Typography,
+  FormControl,
+  Box,
+  FormHelperText,
 } from "@mui/material";
-import { _addresses } from "api/addresses/addresses";
 import ButtonLoader from "components/customs/ButtonLoader";
 import { useAddressDialog } from "./hooks/useAddressDialog";
+import { _cities } from "api/country/country";
 
 const AddDialog = ({ open, handleClose }) => {
   const {
@@ -29,6 +32,14 @@ const AddDialog = ({ open, handleClose }) => {
     control,
     t,
   } = useAddressDialog({ handleClose });
+  const [cities, setCiteies] = useState();
+  useMemo(() => {
+    _cities.index().then((response) => {
+      if (response.code === 200) {
+        setCiteies(response.data);
+      }
+    });
+  }, []);
 
   return (
     <Dialog
@@ -119,7 +130,9 @@ const AddDialog = ({ open, handleClose }) => {
               }
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+
+          {/* <Grid item xs={12} sm={6}>
+            
             <TextField
               fullWidth
               label="City"
@@ -128,6 +141,28 @@ const AddDialog = ({ open, handleClose }) => {
               error={!!errors.city}
               helperText={errors.city ? errors.city.message : ""}
             />
+          </Grid> */}
+          <Grid item xs={6} sx={{ p: "10px" }}>
+            {cities ? (
+              <FormControl fullWidth>
+                <Select
+                  sx={{ color: "text.main", borderColor: "text.main" }}
+                  {...register("city")}
+                  label="Age"
+                >
+                  {cities?.state?.map((item) => (
+                    <MenuItem value={item.value} key={item.id}>
+                      <Box style={{ color: "text.main" }}>{item.name}</Box>
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText error>{errors.city?.message}</FormHelperText>
+              </FormControl>
+            ) : (
+              <Typography variant="body2" color="text.main">
+                pleas add cities
+              </Typography>
+            )}
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField

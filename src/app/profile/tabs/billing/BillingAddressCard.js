@@ -42,7 +42,7 @@ const BillingAddressCard = () => {
 
   const { t } = useTranslation();
   const { data = { addresses: [] }, isLoading } = useAddresses();
-
+ 
   return (
     <>
       <EditDialog open={openEdit} handleClose={handleCloseEdit} id={id} />

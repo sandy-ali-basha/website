@@ -1,9 +1,11 @@
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { settingsStore } from "store/settingsStore";
 import CartItem from "components/modules/cart/CartItem";
 import { useNavigate } from "react-router-dom";
+import { _cities } from "api/country/country";
+import axios from "axios";
 
 export const useNavBar = () => {
   const { t } = useTranslation("navbar");
@@ -82,6 +84,25 @@ export const useNavBar = () => {
     },
   ];
 
+  const [cities, setCities] = useState([]);
+  const getCities = async () => {
+    _cities.index().then((response) => {
+      console.log(response);
+      if (response.data.state) {
+        const formattedCities = response.data.state.map((city) => ({
+          id: city.id,
+          label: city.name,
+          onClick: () => localStorage.setItem("city", city.id),
+        }));
+        setCities(formattedCities);
+      }
+    });
+  };
+
+  useMemo(() => {
+    getCities();
+  }, []);
+
   const pages = [
     { id: "0", onClick: () => navigate("/"), label: t("Home") },
     {
@@ -98,12 +119,13 @@ export const useNavBar = () => {
     },
     { id: "5", onClick: () => navigate("/contact-us"), label: t("Contact Us") },
   ];
-
+  console.log("cities", cities);
   return {
     CartMenuItems,
     settings,
     pages,
     navigate,
+    cities,
     t,
   };
 };

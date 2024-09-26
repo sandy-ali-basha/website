@@ -6,10 +6,13 @@ import {
   Typography,
   Container,
   Button,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import logo from "assets/images/logo.svg";
 import SearchInput from "components/modules/SearchInput";
 import {
+  Flag,
   PersonOutlineOutlined,
   ShoppingCartOutlined,
 } from "@mui/icons-material";
@@ -19,7 +22,7 @@ import LanguageSelector from "components/LanguageSelector";
 import MenuIcon from "@mui/icons-material/Menu";
 import { _AuthApi } from "api/auth";
 function NavBar() {
-  const { CartMenuItems, settings, pages, navigate, t } = useNavBar();
+  const { settings, pages, navigate, cities, t } = useNavBar();
 
   return (
     <AppBar
@@ -100,6 +103,16 @@ function NavBar() {
           <Box sx={{ display: { xs: "none", md: "initial" } }}>
             <SearchInput />
           </Box>
+          <Box>
+            <MenuButton
+              tooltip={t("change city")}
+              icon={<Flag sx={{ color: "white" }} />}
+              menuItems={cities.map((item) => ({
+                ...item,
+                key: item.id,
+              }))}
+            />
+          </Box>
           <LanguageSelector />
           <Box sx={{ mx: "10px" }}>
             {/* <MenuButton
@@ -110,12 +123,15 @@ function NavBar() {
                 key: item.id,
               }))}
             /> */}
-            <Button
-              onClick={() => navigate("/store/checkout")}
-              sx={{ color: "white", display: "block" }}
-            >
-              <ShoppingCartOutlined sx={{ color: "white" }} />
-            </Button>
+
+            <Tooltip title={t("Show Cart")}>
+              <IconButton
+                id="basic-button"
+                onClick={() => navigate("/store/checkout")}
+              >
+                <ShoppingCartOutlined sx={{ color: "white" }} />
+              </IconButton>
+            </Tooltip>
           </Box>
           <Box sx={{ mx: "10px" }}>
             {_AuthApi.getToken() ? (
