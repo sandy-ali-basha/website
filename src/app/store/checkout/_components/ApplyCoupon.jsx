@@ -10,6 +10,7 @@ const ApplyCoupon = () => {
   const [couponCode, setCouponCode] = useState();
   const queryClient = useQueryClient();
   const [alert, setAlert] = useState();
+  const [success, setSuccess] = useState();
 
   const applyCoupone = () => {
     const data = {
@@ -17,10 +18,12 @@ const ApplyCoupon = () => {
       coupon_code: couponCode,
     };
     _cart.coupon({ data }).then((res) => {
+      console.log(res);
       if (res?.code === 200) {
         queryClient.invalidateQueries("cart");
-      }
-      setAlert(res?.error?.errors?.coupon_code[0] || "something went wrong");
+        setSuccess(true);
+      } else
+        setAlert(res?.error?.errors?.coupon_code[0] || "something went wrong");
     });
   };
   return (
@@ -35,10 +38,11 @@ const ApplyCoupon = () => {
           sx={{ mr: 2 }}
           placeholder="Enter Promo Code"
           onChange={(e) => setCouponCode(e.target.value)}
+          disabled={success}
         />
 
         <Button
-          disabled={!couponCode}
+          disabled={!couponCode || success}
           onClick={() => applyCoupone()}
           variant="outlined"
         >
@@ -46,6 +50,11 @@ const ApplyCoupon = () => {
         </Button>
       </Box>
       {alert && <Alert severity="error">{alert}</Alert>}
+      {success && (
+        <Alert severity="success">
+          {t("Coupon applied successfully! You have received a discount.")}
+        </Alert>
+      )}
     </>
   );
 };

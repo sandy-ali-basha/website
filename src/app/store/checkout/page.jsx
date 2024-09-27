@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import Step from "@mui/material/Step";
-import Divider from "@mui/material/Divider";
 import StepLabel from "@mui/material/StepLabel";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
@@ -19,10 +17,9 @@ import ReceiptLongRoundedIcon from "@mui/icons-material/ReceiptLongRounded";
 import KeyboardDoubleArrowRightRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowRightRounded";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import Swal from "sweetalert2";
-import { _AuthApi } from "api/auth";
 import { _addresses } from "api/addresses/addresses";
-import emptyCart from "assets/images/empty-cart.webp";
-import { ValueStore } from "store/categoryStore";
+
+import { orderStore, ValueStore } from "store/categoryStore";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@emotion/react";
 import StepperWrapper from "./_components/StepperWrapper";
@@ -83,17 +80,22 @@ const Checkout = () => {
       await _addresses.order(orderData).then((res) => {
         if (res?.code === 200) {
           setOrderResponse(res.data); // Store the order response
-          setActiveStep(activeStep + 1); // Move to the next step on success
+
           localStorage.removeItem("cart_id");
-          Swal.fire({
-            title: 'pleas scan the QR code with your mobile app',
-            text: 'This is a custom alert with an image.',
-            imageUrl: res?.data?.payment?.qrCode,
-            imageWidth: 150,
-            imageHeight: 150,
-            imageAlt: 'Custom image',
-            confirmButtonText: 'Cool',
-          });
+          if (value === "fib") {
+            Swal.fire({
+              title: "Please scan the QR code with your FIB mobile app",
+              imageUrl: res?.data?.payment_details?.qrCode,
+              imageWidth: 150,
+              imageHeight: 150,
+              imageAlt: "QR Code",
+              confirmButtonText: "Cool",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                setActiveStep(activeStep + 1); // Move to the next step after confirming
+              }
+            });
+          } else setActiveStep(activeStep + 1);
         } else {
           Swal.fire({
             icon: "error",
@@ -133,22 +135,7 @@ const Checkout = () => {
     }
   };
 
-  const cart_id = localStorage.getItem("cart_id");
-
-  return !cart_id ? (
-    <Card
-      sx={{
-        minHeight: "80vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <img alt=" " src={emptyCart} style={{ width: "40vw" }} />
-      <Typography>Your shopping page is empty</Typography>
-    </Card>
-  ) : (
+  return (
     <Card>
       <CardContent sx={{ pt: 11, pb: 5 }}>
         <StepperWrapper>

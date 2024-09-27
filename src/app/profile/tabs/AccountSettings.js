@@ -1,57 +1,66 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { 
-  Tab, Box, Grid, Typography, CircularProgress, Button, Card, Container, 
-  useMediaQuery, styled 
-} from '@mui/material';
-import TabPanel from '@mui/lab/TabPanel';
-import TabContext from '@mui/lab/TabContext';
-import MuiTabList from '@mui/lab/TabList';
-import Icon from 'components/modules/icon';
-import TabAccount from './TabAccount';
-import TabBilling from './TabBilling';
-import TabSecurity from './TabSecurity';
-import TabOrders from './TabOrders';
-import TabAddresses from './TabAddresses';
-import TabPoints from './TabPoints';
-import { useAnimate } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Tab,
+  Box,
+  Grid,
+  Typography,
+  CircularProgress,
+  Button,
+  Card,
+  Container,
+  useMediaQuery,
+  styled,
+} from "@mui/material";
+import TabPanel from "@mui/lab/TabPanel";
+import TabContext from "@mui/lab/TabContext";
+import MuiTabList from "@mui/lab/TabList";
+import Icon from "components/modules/icon";
+import TabAccount from "./TabAccount";
+import TabBilling from "./TabBilling";
+import TabSecurity from "./TabSecurity";
+import TabOrders from "./TabOrders";
+import TabAddresses from "./TabAddresses";
+import TabPoints from "./TabPoints";
+import { useTranslation } from "react-i18next";
 
 const TabList = styled(MuiTabList)(({ theme }) => ({
-  border: '0 !important',
-  '&, & .MuiTabs-scroller': {
-    boxSizing: 'content-box',
+  border: "0 !important",
+  "&, & .MuiTabs-scroller": {
+    boxSizing: "content-box",
     padding: theme.spacing(1.25, 1.25, 2),
-    margin: `${theme.spacing(-1.25, -1.25, -2)} !important`
+    margin: `${theme.spacing(-1.25, -1.25, -2)} !important`,
   },
-  '& .MuiTabs-indicator': {
-    display: 'none'
+  "& .MuiTabs-indicator": {
+    display: "none",
   },
-  '& .Mui-selected': {
+  "& .Mui-selected": {
     boxShadow: theme.shadows[2],
     backgroundColor: theme.palette.primary.main,
-    color: `${theme.palette.common.white} !important`
+    color: `${theme.palette.common.white} !important`,
   },
-  '& .MuiTab-root': {
+  "& .MuiTab-root": {
     minWidth: 65,
     minHeight: 38,
     lineHeight: 1,
     borderRadius: theme.shape.borderRadius,
-    [theme.breakpoints.up('md')]: {
-      minWidth: 130
+    [theme.breakpoints.up("md")]: {
+      minWidth: 130,
     },
-    '&:hover': {
-      color: theme.palette.primary.main
+    "&:hover": {
+      color: theme.palette.primary.main,
     },
-    '& .MuiLink-root': {
-      textDecoration: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: 'inherit',
-      ...(!theme.breakpoints.down('md') && { '& svg': { marginRight: theme.spacing(2) } })
-    }
-  }
+    "& .MuiLink-root": {
+      textDecoration: "none",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "inherit",
+      ...(!theme.breakpoints.down("md") && {
+        "& svg": { marginRight: theme.spacing(2) },
+      }),
+    },
+  },
 }));
 
 const AccountSettings = ({ tab, apiPricingPlanData }) => {
@@ -59,8 +68,8 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const navigate = useNavigate();
-  const hideText = useMediaQuery(theme => theme.breakpoints.down('md'));
-const {t}=useTranslation('index')
+  const hideText = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const { t } = useTranslation("index");
   const handleChange = (event, value) => {
     setIsLoading(true);
     navigate(`/profile/${value.toLowerCase()}`);
@@ -70,14 +79,14 @@ const {t}=useTranslation('index')
     if (tab && tab !== activeTab) {
       setActiveTab(tab);
     }
-  }, [tab]);
+  }, [tab, setActiveTab, activeTab]);
 
   useEffect(() => {
     if (isLoading) {
       setIsLoading(false);
     }
     setIsClient(true);
-  }, [activeTab]);
+  }, [activeTab, isLoading]);
 
   if (!isClient) {
     return null;
@@ -89,7 +98,7 @@ const {t}=useTranslation('index')
     billing: <TabBilling apiPricingPlanData={apiPricingPlanData} />,
     orders: <TabOrders />,
     addresses: <TabAddresses />,
-    points: <TabPoints />
+    points: <TabPoints />,
   };
 
   return (
@@ -100,62 +109,105 @@ const {t}=useTranslation('index')
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TabList
-                  variant='scrollable'
-                  scrollButtons='auto'
+                  variant="scrollable"
+                  scrollButtons="auto"
                   onChange={handleChange}
-                  aria-label='customized tabs example'
+                  aria-label="customized tabs example"
                 >
                   <Tab
-                    value='account'
+                    value="account"
                     label={
-                      <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 1 } }) }}>
-                        <Icon fontSize='1.25rem' icon='tabler:users' />
-                        {!hideText && 'Account'}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          ...(!hideText && { "& svg": { mr: 1 } }),
+                        }}
+                      >
+                        <Icon fontSize="1.25rem" icon="tabler:users" />
+                        {!hideText && "Account"}
                       </Box>
                     }
                   />
                   <Tab
-                    value='security'
+                    value="security"
                     label={
-                      <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 1 } }) }}>
-                        <Icon fontSize='1.25rem' icon='tabler:lock' />
-                        {!hideText && 'Security'}
-                      </Box>  
-                    }
-                  />
-                  <Tab
-                    value='billing'
-                    label={
-                      <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 1 } }) }}>
-                        <Icon fontSize='1.25rem' icon='tabler:file-text' />
-                        {!hideText && 'Billing'}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          ...(!hideText && { "& svg": { mr: 1 } }),
+                        }}
+                      >
+                        <Icon fontSize="1.25rem" icon="tabler:lock" />
+                        {!hideText && "Security"}
                       </Box>
                     }
                   />
                   <Tab
-                    value='orders'
+                    value="billing"
                     label={
-                      <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 1 } }) }}>
-                        <Icon fontSize='1.25rem' icon='tabler:shopping-cart' />
-                        {!hideText && 'Orders'}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          ...(!hideText && { "& svg": { mr: 1 } }),
+                        }}
+                      >
+                        <Icon fontSize="1.25rem" icon="tabler:file-text" />
+                        {!hideText && "Billing"}
                       </Box>
                     }
                   />
                   <Tab
-                    value='addresses'
+                    value="orders"
                     label={
-                      <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 1 } }) }}>
-                        <Icon fontSize='1.25rem' icon='mdi:address-marker-outline' />
-                        {!hideText && 'Addresses'}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          ...(!hideText && { "& svg": { mr: 1 } }),
+                        }}
+                      >
+                        <Icon fontSize="1.25rem" icon="tabler:shopping-cart" />
+                        {!hideText && "Orders"}
                       </Box>
                     }
                   />
                   <Tab
-                    value='points'
+                    value="addresses"
                     label={
-                      <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 1 } }) }}>
-                        <Icon fontSize='1.25rem' icon='mdi:point-outline' />
-                        {!hideText && 'My Points'}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          ...(!hideText && { "& svg": { mr: 1 } }),
+                        }}
+                      >
+                        <Icon
+                          fontSize="1.25rem"
+                          icon="mdi:address-marker-outline"
+                        />
+                        {!hideText && "Addresses"}
+                      </Box>
+                    }
+                  />
+
+                  <Tab
+                    value="points"
+                    label={
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          ...(!hideText && { "& svg": { mr: 1 } }),
+                        }}
+                      >
+                        <Icon
+                          fontSize="1.25rem"
+                          icon="mdi:dollar"
+                        />
+                        {!hideText && "My Points"}
                       </Box>
                     }
                   />
@@ -163,13 +215,22 @@ const {t}=useTranslation('index')
               </Grid>
               <Grid item xs={12}>
                 {isLoading ? (
-                  <Card sx={{ mt: 6, display: 'flex', alignItems: 'center', flexDirection: 'column', height: '50vh',
-                  justifyContent:'center', boxShadow:5 }}>
+                  <Card
+                    sx={{
+                      mt: 6,
+                      display: "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      height: "50vh",
+                      justifyContent: "center",
+                      boxShadow: 5,
+                    }}
+                  >
                     <CircularProgress sx={{ mb: 4 }} />
                     <Typography>{t("Loading...")}</Typography>
                   </Card>
                 ) : (
-                  <TabPanel sx={{ p: 0,mb:2 }} value={activeTab}>
+                  <TabPanel sx={{ p: 0, mb: 2 }} value={activeTab}>
                     {tabContentList[activeTab]}
                   </TabPanel>
                 )}
@@ -178,7 +239,6 @@ const {t}=useTranslation('index')
           </TabContext>
         </Grid>
       </Grid>
-      
     </Container>
   );
 };

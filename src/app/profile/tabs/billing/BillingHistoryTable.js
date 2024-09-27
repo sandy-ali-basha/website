@@ -93,7 +93,7 @@ const defaultColumns = [
     renderCell: ({ row }) => (
       <Typography sx={{ color: "text.secondary" }}>
         {new Date(row.lines[0].created_at).toLocaleDateString()}
-      </Typography> 
+      </Typography>
     ),
   },
   {
@@ -204,7 +204,7 @@ const BillingHistoryTable = () => {
           </Box>
         </Box>
       </CardContent>
-      {isLoading && <Typography>Loading...</Typography>}
+      {isLoading && <Typography sx={{ p: 5 }}>Loading...</Typography>}
       {error && <Typography color="error">Error loading data.</Typography>}
       {data?.data && (
         <DataGrid

@@ -1,6 +1,3 @@
-// ** React Imports
-import { useState } from "react";
-
 import { Link } from "react-router-dom";
 
 // ** MUI Imports
@@ -16,7 +13,7 @@ import Chip from "@mui/material/Chip";
 import Tabs from "@mui/material/Tabs";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
-import { Container } from "@mui/material";
+import { Container, TextField } from "@mui/material";
 import { ValueStore } from "store/categoryStore";
 
 const CustomTabList = styled(Tabs)(({ theme }) => ({
@@ -113,7 +110,7 @@ const StepPayment = ({ handleNext }) => {
                   </Button>
                 </TabPanel>
                 {/*//* Gift Card  */}
-                {/* <TabPanel
+                <TabPanel
                 value="gc"
                 sx={{ px: 3, borderRadius: 3, boxShadow: 3 }}
               >
@@ -143,7 +140,7 @@ const StepPayment = ({ handleNext }) => {
                     </Button>
                   </Grid>
                 </Grid>
-              </TabPanel> */}
+              </TabPanel>
               </Grid>
             </Grid>
           </TabContext>

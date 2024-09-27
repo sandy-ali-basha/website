@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
@@ -13,21 +13,20 @@ import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import { styled, useTheme } from "@mui/material/styles";
-import { Chip, Container, TextField } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { Card, Chip, Container } from "@mui/material";
 // ** Icon Imports
 import Icon from "components/modules/icon";
 import { useTranslation } from "react-i18next";
-import { _AuthApi } from "api/auth";
 import { useCart } from "hooks/cart/useCart";
 import QuantityInput from "./_components/QuantityInput";
 import CardShimmer from "components/customs/loaders/CardShimmer";
 import { _cart } from "api/cart/_cart";
 import { useQueryClient } from "react-query";
 import Swal from "sweetalert2";
-import ApplyCoupone from "./_components/ApplyCoupon";
 import ApplyCoupon from "./_components/ApplyCoupon";
 import ApplyPoints from "./_components/ApplyPoints";
+import emptyCart from "assets/images/empty-cart.webp";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -86,7 +85,20 @@ const StepCart = ({ handleNext }) => {
     });
   };
 
-  return (
+  return !cart_id ? (
+    <Card
+      sx={{
+        minHeight: "80vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      <img alt=" " src={emptyCart} style={{ width: "40vw" }} />
+      <Typography>{t("Your shopping page is empty")}</Typography>
+    </Card>
+  ) : (
     <Container>
       <Grid container spacing={2}>
         <Grid item xs={12} lg={8}>
@@ -140,8 +152,8 @@ const StepCart = ({ handleNext }) => {
                             objectFit: "cover",
                             borderRadius: "inherit",
                           }}
-                          src={item?.image}
-                          alt="Google Home"
+                          src={item?.images[0]?.image_path}
+                          alt={item?.name}
                         />
                       </ListItemAvatar>
                       <IconButton
@@ -270,7 +282,7 @@ const StepCart = ({ handleNext }) => {
                   >
                     <Typography>{t("Bag Total")}</Typography>
                     <Typography sx={{ color: "text.secondary" }}>
-                      $1198.00
+                      {data?.data?.sub_total}IQD
                     </Typography>
                   </Box>
                   <Box
@@ -304,10 +316,10 @@ const StepCart = ({ handleNext }) => {
                   >
                     <Typography>{t("Order Total")}</Typography>
                     <Typography sx={{ color: "text.secondary" }}>
-                      {data?.data?.sub_total}
+                      {data?.data?.sub_total}IQD
                     </Typography>
                   </Box>
-                  <Box
+                  {/* <Box
                     sx={{
                       gap: 2,
                       display: "flex",
@@ -341,7 +353,7 @@ const StepCart = ({ handleNext }) => {
                         label="Free"
                       />
                     </Box>
-                  </Box>
+                  </Box> */}
                 </Box>
               </CardContent>
 
