@@ -131,17 +131,14 @@ export default function About() {
         >
           <img src={leadership} alt="" />
           <Typography variant="h4" color="initial">
-            Market Leadership
+           {t("Market Leadership")}
           </Typography>
           <Typography
             variant="body1"
             color="initial"
             sx={{ textAlign: "center" }}
           >
-            Strive to become the undisputed leader in pharmaceutical
-            distribution within the Iraqi market. Achieve a premium position by
-            consistently delivering exceptional service and maintaining a
-            diverse portfolio of high-quality products.
+           {("Strive to become the undisputed leader in pharmaceutical distribution within the Iraqi market. Achieve a premium position by consistently delivering exceptional service and maintaining a diverse portfolio of high-quality products.")}
           </Typography>
         </Grid>
         <Grid
@@ -157,16 +154,14 @@ export default function About() {
           <img src={Expansion} alt="Expansion and Growth" />
 
           <Typography variant="h4" color="initial">
-            Expansion and Growth
+           {t("Expansion and Growth")}
           </Typography>
           <Typography
             variant="body1"
             color="initial"
             sx={{ textAlign: "center" }}
           >
-            Expand the company's reach beyond its current three main offices in
-            Baghdad, Erbil, and Sulimanya. Increase market share by establishing
-            a strong presence in all major Iraqi regions.
+            {t("Expand the company's reach beyond its current three main offices in Baghdad, Erbil, and Sulimanya. Increase market share by establishing a strong presence in all major Iraqi regions.")}
           </Typography>
         </Grid>
         <Grid
@@ -182,16 +177,14 @@ export default function About() {
           <img src={Product} alt=" Product Innovation" />
 
           <Typography variant="h4" color="initial">
-            Product Innovation{" "}
+            {t("Product Innovation")}{" "}
           </Typography>
           <Typography
             variant="body1"
             color="initial"
             sx={{ textAlign: "center" }}
           >
-            Explore opportunities to introduce innovative new products to the
-            Iraqi market. Partner with leading pharmaceutical companies to bring
-            cutting-edge treatments and supplements to Iraqi patients.
+           {("Explore opportunities to introduce innovative new products to the Iraqi market. Partner with leading pharmaceutical companies to bring cutting-edge treatments and supplements to Iraqi patients.")}
           </Typography>
         </Grid>
         <Grid sx={{ justifyContent: "center" }} container>
@@ -208,17 +201,14 @@ export default function About() {
             <img src={Investing} alt="Expansion and Growth" />
 
             <Typography variant="h4" color="initial">
-              Investing in People{" "}
+             {t("Investing in People")}{" "}
             </Typography>
             <Typography
               variant="body1"
               color="initial"
               sx={{ textAlign: "center" }}
             >
-              Continue to invest in the training and development of its
-              employees. Foster a highly qualified and knowledgeable workforce
-              capable of achieving the company's goals with the highest quality
-              and performance.
+              {t("Continue to invest in the training and development of its employees. Foster a highly qualified and knowledgeable workforce capable of achieving the company's goals with the highest quality and performance.")}
             </Typography>
           </Grid>
           <Grid
@@ -234,17 +224,13 @@ export default function About() {
             <img src={Community} alt="Expansion and Growth" />
 
             <Typography variant="h4" color="initial">
-              Community Impact
+              {t("Community Impact")}
             </Typography>
             <Typography
               variant="body1"
               color="initial"
               sx={{ textAlign: "center" }}
-            >
-              Consider initiatives that contribute positively to public health
-              in Iraq. Partner with healthcare organizations to raise awareness
-              about important health issues and promote healthy living
-              practices.
+            > {("Consider initiatives that contribute positively to public health in Iraq. Partner with healthcare organizations to raise awareness about important health issues and promote healthy living practices.")}
             </Typography>
           </Grid>
         </Grid>
@@ -258,7 +244,7 @@ export default function About() {
           }}
         >
           <Typography variant="h2" color="initial">
-            Our Values
+            {t("Our Values")}
           </Typography>
           <img src={values} alt="" />
         </Grid>
@@ -332,7 +318,7 @@ export default function About() {
                 <Typography variant="body1">
                   <ul>
                     <li>
-                      <span style={{ fontWeight: "bold" }}>People:</span>{" "}
+                      <span style={{ fontWeight: "bold" }}>{("People")}:</span>{" "}
                       {t(
                         "Recruiting Impartially - Training effectively – Encouraging creative ideas."
                       )}
@@ -346,7 +332,7 @@ export default function About() {
                       )}
                     </li>
                     <li>
-                      <span style={{ fontWeight: "bold" }}>Place:</span>{" "}
+                      <span style={{ fontWeight: "bold" }}>{("Place")}:</span>{" "}
                       {t(
                         "Expanding market’s share – Entering new markets – Exploring future markets."
                       )}
@@ -577,7 +563,7 @@ export default function About() {
           <Typography variant="body1">
             <strong>{t("Established Reputation:")}</strong>
             {t(
-              " We have built strong relationships with Iraqi regulatory bodies, ensuring efficient processes, competitive pricing, and consistent growth."
+              "We have built strong relationships with Iraqi regulatory bodies, ensuring efficient processes, competitive pricing, and consistent growth."
             )}
           </Typography>
           <Typography variant="body1">
@@ -590,14 +576,14 @@ export default function About() {
             <strong>
               {t("Digital Expertise:")}
               {t(
-                " Our dedicated Digital Marketing team leverages social media to increase brand awareness, sales, and customer engagement."
+                "Our dedicated Digital Marketing team leverages social media to increase brand awareness, sales, and customer engagement."
               )}
             </strong>
           </Typography>
           <Typography variant="body1">
             <strong>{t("Thriving E-commerce:")}</strong>
             {
-              "Recognizing the growing trend of online shopping, our E-commerce department is rapidly expanding Dawaa Al Hayat's digital presence and sales channels across Iraq."
+              t("Recognizing the growing trend of online shopping, our E-commerce department is rapidly expanding Dawaa Al Hayat's digital presence and sales channels across Iraq.")
             }
           </Typography>
         </Grid>
@@ -636,7 +622,7 @@ export default function About() {
               "A Leading Healthcare Distributor in Iraq For over 12 years, Dawaa Al Hayat has been a trusted name in Iraqi healthcare market. We specialize in delivering pharmaceuticals, nutraceuticals and health food throughout the country."
             )}
           </Typography>
-          <Typography variant="h6">Expanding our reach:</Typography>
+          <Typography variant="h6">{t("Expanding our reach")}:</Typography>
           <Typography variant="body1">
             {t(
               "We strategically partner with other companies in the healthcare industry (horizontal integration) to bring our products to a wider audience."
@@ -652,7 +638,7 @@ export default function About() {
           </Typography>
           <Typography variant="body1">
             {
-              "This combined approach, fueled by our cutting-edge technology and a team of passionate experts, empowers us to deliver exceptional operational efficiency and drive consumer growth. As the healthcare market continues to evolve, our focus on quality and certified brands ensures you can shop with complete confidence."
+              t("This combined approach, fueled by our cutting-edge technology and a team of passionate experts, empowers us to deliver exceptional operational efficiency and drive consumer growth. As the healthcare market continues to evolve, our focus on quality and certified brands ensures you can shop with complete confidence.")
             }
           </Typography>
         </Grid>
