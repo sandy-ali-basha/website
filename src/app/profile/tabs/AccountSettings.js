@@ -125,7 +125,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                         }}
                       >
                         <Icon fontSize="1.25rem" icon="tabler:users" />
-                        {!hideText && "Account"}
+                        {!hideText && t("Account")}
                       </Box>
                     }
                   />
@@ -140,7 +140,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                         }}
                       >
                         <Icon fontSize="1.25rem" icon="tabler:lock" />
-                        {!hideText && "Security"}
+                        {!hideText && t("Security")}
                       </Box>
                     }
                   />
@@ -155,7 +155,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                         }}
                       >
                         <Icon fontSize="1.25rem" icon="tabler:file-text" />
-                        {!hideText && "Billing"}
+                        {!hideText && t("Billing")}
                       </Box>
                     }
                   />
@@ -188,7 +188,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                           fontSize="1.25rem"
                           icon="mdi:address-marker-outline"
                         />
-                        {!hideText && "Addresses"}
+                        {!hideText && t("Addresses")}
                       </Box>
                     }
                   />
@@ -203,11 +203,8 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                           ...(!hideText && { "& svg": { mr: 1 } }),
                         }}
                       >
-                        <Icon
-                          fontSize="1.25rem"
-                          icon="mdi:dollar"
-                        />
-                        {!hideText && "My Points"}
+                        <Icon fontSize="1.25rem" icon="mdi:dollar" />
+                        {!hideText && t("My Points")}
                       </Box>
                     }
                   />

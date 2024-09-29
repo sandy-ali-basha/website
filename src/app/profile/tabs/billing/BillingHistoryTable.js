@@ -3,17 +3,26 @@ import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { DataGrid } from "@mui/x-data-grid";
 import {
-  Box,
-  MenuItem,
+  // Box,
+  // MenuItem,
   CardHeader,
   CardContent,
   Typography,
   Chip,
   Card,
   Tooltip,
-  TextField,
+  // TextField,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Button,
 } from "@mui/material";
 import { useOrders } from "hooks/orders/useOrders";
+import CloseIcon from "@mui/icons-material/Close"; // For close button in modal
+import OrderReview from "./components/OrderReview";
+import { Eye } from "react-feather";
+import { useTranslation } from "react-i18next";
 
 const LinkStyled = styled(Link)(({ theme }) => ({
   textDecoration: "none",
@@ -29,7 +38,7 @@ const invoiceStatusObj = {
   "awaiting-payment": { color: "warning", icon: "tabler:chart-pie" },
 };
 
-const defaultColumns = [
+const defaultColumns = (handleOrderClick) => [
   {
     flex: 0.1,
     field: "reference",
@@ -121,6 +130,17 @@ const defaultColumns = [
       </Typography>
     ),
   },
+  {
+    field: "actions",
+    headerName: "view",
+    flex: 0.1,
+    minWidth: 100,
+    renderCell: ({ row }) => (
+      <Button onClick={() => handleOrderClick(row)}>
+        <Eye />
+      </Button>
+    ),
+  },
 ];
 
 const BillingHistoryTable = () => {
@@ -130,20 +150,31 @@ const BillingHistoryTable = () => {
     page: 0,
     pageSize: 10,
   });
+  const { t } = useTranslation("index");
+  const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
+  const [open, setOpen] = useState(false); // State for controlling modal visibility
 
   const { data, isLoading, error } = useOrders();
-  console.log(data);
-  const handleFilter = (val) => {
-    setValue(val);
+
+  // const handleFilter = (val) => {
+  //   setValue(val);
+  // };
+
+  // const handleStatusValue = (e) => {
+  //   setStatusValue(e.target.value);
+  // };
+
+  const handleOrderClick = (order) => {
+    setSelectedOrder(order); // Set the selected order
+    setOpen(true); // Open the modal
   };
 
-  const handleStatusValue = (e) => {
-    setStatusValue(e.target.value);
+  const handleClose = () => {
+    setOpen(false); // Close the modal
   };
 
-  const columns = [...defaultColumns];
+  const columns = defaultColumns(handleOrderClick);
 
-  // Ensure data.orders is defined before applying filter
   const filteredRows = (data?.data?.orders || []).filter((order) => {
     const matchesSearch = order.reference
       .toLowerCase()
@@ -156,9 +187,9 @@ const BillingHistoryTable = () => {
 
   return (
     <Card>
-      <CardHeader title="Orders History" />
+      <CardHeader title={t("Orders History")} />
       <CardContent sx={{ pb: 4 }}>
-        <Box
+        {/* <Box
           sx={{
             gap: 4,
             display: "flex",
@@ -166,21 +197,18 @@ const BillingHistoryTable = () => {
             alignItems: "center",
             justifyContent: "space-between",
           }}
-        >
-          <Box
+        >  <Box
             sx={{
               gap: 4,
               display: "flex",
               flexWrap: "wrap",
               alignItems: "center",
             }}
-          >
-            <TextField
+          >  <TextField
               value={value}
               placeholder="Search Invoice"
               onChange={(e) => handleFilter(e.target.value)}
-            />
-            <TextField
+            />  <TextField
               select
               sx={{
                 pr: 4,
@@ -200,12 +228,12 @@ const BillingHistoryTable = () => {
                   {status}
                 </MenuItem>
               ))}
-            </TextField>
-          </Box>
-        </Box>
+            </TextField> </Box>  </Box> */}
       </CardContent>
-      {isLoading && <Typography sx={{ p: 5 }}>Loading...</Typography>}
-      {error && <Typography color="error">Error loading data.</Typography>}
+      {isLoading && <Typography sx={{ p: 5 }}>{t("Loading")}...</Typography>}
+      {error && (
+        <Typography color="error">{t("Error loading data")}.</Typography>
+      )}
       {data?.data && (
         <DataGrid
           sx={{ mx: 2 }}
@@ -220,6 +248,28 @@ const BillingHistoryTable = () => {
           getRowId={(row) => row.reference}
         />
       )}
+
+      {/* Order Review Modal */}
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+        <DialogTitle>
+          Order Review
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          {selectedOrder && <OrderReview item={selectedOrder} />}
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 };

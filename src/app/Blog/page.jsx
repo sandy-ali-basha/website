@@ -7,13 +7,7 @@ import { useBlogs } from "hooks/blog/useBlog";
 import CardShimmer from "components/customs/loaders/CardShimmer";
 
 export default function Blog() {
-  const blogPost = {
-    id: "2",
-    img: img,
-    title: "Freelancers: Should You Show Up as You or a Company?",
-    body: "lorem ipsum lorem ipsum lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum",
-    date: "12/05/2026",
-  };
+
   const { data, isLoading } = useBlogs();
   console.log(data);
   return (
