@@ -48,6 +48,7 @@ const StyledList = styled(List)(({ theme }) => ({
     },
   },
 }));
+
 const StepCart = ({ handleNext }) => {
   const breakpointMD = useMediaQuery((theme) =>
     theme.breakpoints.between("sm", "lg")
@@ -56,6 +57,7 @@ const StepCart = ({ handleNext }) => {
   const cart_id = localStorage.getItem("cart_id");
   const { data, isLoading } = useCart(cart_id);
   const queryClient = useQueryClient();
+  const userData = localStorage.getItem("userData");
   const handleDeleteItem = (id) => {
     _cart.delete({ id, cart_id }).then((res) => {
       // Invalidate the "cart" query to refetch the updated cart data
@@ -282,86 +284,102 @@ const StepCart = ({ handleNext }) => {
                   >
                     <Typography>{t("Bag Total")}</Typography>
                     <Typography sx={{ color: "text.secondary" }}>
-                      {data?.data?.sub_total}IQD
+                      {data?.data?.discount_amount > 0
+                        ? data?.data?.sub_total_after_points
+                        : data?.data?.sub_total}{" "}
+                      IQD
                     </Typography>
                   </Box>
-                  <Box
-                    sx={{
-                      mb: 2,
-                      gap: 2,
-                      display: "flex",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography>{t("Coupon Discount")}</Typography>
-                    <Typography
-                      variant="h6"
-                      onClick={(e) => e.preventDefault()}
-                      sx={{ color: "primary.main", textDecoration: "none" }}
+
+                  {data?.data?.discount_amount > 0 && (
+                    <Box
+                      sx={{
+                        mb: 2,
+                        gap: 2,
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
                     >
-                      {t("Apply Coupon")}
-                    </Typography>
-                  </Box>
+                      <Typography>{t("Coupon Discount")}</Typography>
+                      <Typography variant="h6" sx={{ color: "primary.main" }}>
+                        {data?.data?.discount_amount}
+                      </Typography>
+                    </Box>
+                  )}
+
+                  {data?.data?.points_used > 0 && (
+                    <Box
+                      sx={{
+                        mb: 2,
+                        gap: 2,
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography>{t("Points Used")}</Typography>
+                      <Typography variant="body2" color="secondary">
+                        {data?.data?.points_used}
+                      </Typography>
+                    </Box>
+                  )}
+
                   <Box
                     sx={{
                       mb: 2,
                       gap: 2,
                       display: "flex",
                       flexWrap: "wrap",
-                      alignItems: "center",
+                      alignItems: "start",
                       justifyContent: "space-between",
                     }}
                   >
                     <Typography>{t("Order Total")}</Typography>
-                    <Typography sx={{ color: "text.secondary" }}>
-                      {data?.data?.sub_total}IQD
-                    </Typography>
-                  </Box>
-                  {/* <Box
-                    sx={{
-                      gap: 2,
-                      display: "flex",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography>{t("Delivery Charges")}</Typography>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "flex-end",
-                      }}
-                    >
+                    <Box>
                       <Typography
                         sx={{
-                          mr: 2,
-                          textDecoration: "line-through",
-                          color: "text.disabled",
+                          color: "text.secondary",
+                          textDecoration:
+                            data?.data?.discount_amount > 0 ||
+                            data?.data?.points_used > 0
+                              ? "line-through"
+                              : "none",
+                          fontSize:
+                            data?.data?.discount_amount > 0 ||
+                            data?.data?.points_used > 0
+                              ? "small"
+                              : "initial",
                         }}
                       >
-                        {data?.data?.sub_total}
+                        {data?.data?.sub_total} IQD
                       </Typography>
-                      <Chip
-                        rounded
-                        size="small"
-                        skin="light"
-                        color="success"
-                        label="Free"
-                      />
+
+                      {data?.data?.points_used > 0 && (
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            color: "secondary.main",
+                            textDecoration: "none",
+                          }}
+                        >
+                          {data?.data?.sub_total_after_points} IQD
+                        </Typography>
+                      )}
                     </Box>
-                  </Box> */}
+                  </Box>
                 </Box>
               </CardContent>
 
               <Divider sx={{ my: "0 !important" }} />
-              <CardContent>
-                <ApplyCoupon id={data?.id} />
-                <ApplyPoints id={data?.id} />
-              </CardContent>
+              {userData && (
+                <CardContent>
+                  <ApplyCoupon  />
+                  <ApplyPoints />
+                </CardContent>
+              )}
 
               <Divider sx={{ my: "0 !important" }} />
               <CardContent
@@ -395,8 +413,9 @@ const StepCart = ({ handleNext }) => {
                 onClick={handleNext}
                 sx={{ borderRadius: 3 }}
                 color="secondary"
+                disabled={!userData}
               >
-                {t("Place Order")}
+                {userData ? t("Place Order") : t("pleas Log in to order")}
               </Button>
             </Box>
           </Grid>

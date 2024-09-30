@@ -3,7 +3,6 @@ import {
   Button,
   TextField,
   Typography,
-  Container,
   Divider,
   Alert,
 } from "@mui/material";
@@ -17,8 +16,18 @@ import LanguageSelector from "components/LanguageSelector";
 import { Link } from "react-router-dom";
 
 export default function Login() {
-  const { errors, register, t, handleSubmit, onSubmit, loading, error } =
-    useLogin();
+  const {
+    errors,
+    register,
+    t,
+    handleSubmit,
+    onSubmit,
+    loading,
+    error,
+    GoogleLogin,
+    twitterLogin,
+    facebookLogin,
+  } = useLogin();
   return (
     <Box
       sx={{
@@ -62,7 +71,7 @@ export default function Login() {
         <img
           style={{ margin: "auto", width: "100%", height: "100px" }}
           src={logo}
-          aly="logo"
+          alt="logo"
         />
         <Typography
           variant="h5"
@@ -135,6 +144,7 @@ export default function Login() {
             ))}
           </div>
         )}
+        {error && <Alert severity="error">{error}</Alert>}
         <Divider>OR</Divider>
         <Button
           variant="outlined"
@@ -147,6 +157,7 @@ export default function Login() {
             py: 1,
           }}
           startIcon={<Google />}
+          onClick={() => GoogleLogin()}
         >
           {t("Sign Up With Google")}
         </Button>
@@ -161,8 +172,9 @@ export default function Login() {
             py: 1,
           }}
           startIcon={<Apple />}
+          onClick={() => twitterLogin()}
         >
-          {t("Sign Up With Apple")}
+          {t("Sign Up With Twitter")}
         </Button>
         <Button
           variant="outlined"
@@ -175,6 +187,7 @@ export default function Login() {
             py: 1,
           }}
           startIcon={<Facebook />}
+          onClick={() => facebookLogin()}
         >
           {t("Sign Up With Facebook")}
         </Button>

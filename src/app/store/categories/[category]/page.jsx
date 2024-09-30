@@ -22,41 +22,39 @@ export default function Category() {
   const {
     data,
     isLoading,
-    value,
-    sort,
+    // sort,
     valuetext,
-    handleChange,
-    handleSortChange,
+    minValue,
+    maxValue,
+    handleMinChange,
+    handleMaxChange,
     handleDrawerToggle,
-    params,
     t,
     mobileOpen,
     Attr,
-    AttrLoading,
     handleCheked,
-    attr,
   } = useCategory();
-  const SortFilter = () => {
-    return (
-      <FormControl
-        variant="outlined"
-        size="small"
-        sx={{ minWidth: 120, ml: { xs: 2, md: 0 } }}
-      >
-        <InputLabel>{t("Sort By")}</InputLabel>
-        <Select value={sort} onChange={handleSortChange} label="Sort By">
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={"priceAsc"}>{t("Price: Low to High")}</MenuItem>
-          <MenuItem value={"priceDesc"}>{t("Price: High to Low")}</MenuItem>
-          <MenuItem value={"nameAsc"}>{t("Name: A-Z")}</MenuItem>
-          <MenuItem value={"nameDesc"}>{t("Name: Z-A")}</MenuItem>
-        </Select>
-      </FormControl>
-    );
-  };
-
+  // const SortFilter = () => {
+  //   return (
+  //     <FormControl
+  //       variant="outlined"
+  //       size="small"
+  //       sx={{ minWidth: 120, ml: { xs: 2, md: 0 } }}
+  //     >
+  //       <InputLabel>{t("Sort By")}</InputLabel>
+  //       <Select value={sort} onChange={handleSortChange} label="Sort By">
+  //         <MenuItem value="">
+  //           <em>None</em>
+  //         </MenuItem>
+  //         <MenuItem value={"priceAsc"}>{t("Price: Low to High")}</MenuItem>
+  //         <MenuItem value={"priceDesc"}>{t("Price: High to Low")}</MenuItem>
+  //         <MenuItem value={"nameAsc"}>{t("Name: A-Z")}</MenuItem>
+  //         <MenuItem value={"nameDesc"}>{t("Name: Z-A")}</MenuItem>
+  //       </Select>
+  //     </FormControl>
+  //   );
+  // };
+  const [searchResults, setSearchResults] = useState([]);
   return (
     <Container sx={{ pt: 15 }}>
       <Typography
@@ -66,8 +64,8 @@ export default function Category() {
       >
         {t("Products")}
       </Typography>
-      <Divider />
-      <Box
+      {/* <Divider /> */}
+      {/* <Box
         sx={{
           display: { md: "flex", xs: "none" },
           justifyContent: "flex-end",
@@ -76,7 +74,7 @@ export default function Category() {
         }}
       >
         <SortFilter />
-      </Box>
+      </Box> */}
       <Box
         sx={{
           display: "flex",
@@ -97,7 +95,7 @@ export default function Category() {
           <IconButton color="inherit" edge="start" onClick={handleDrawerToggle}>
             <MenuIcon />
           </IconButton>
-          <SortFilter data={Attr} />
+          {/* <SortFilter data={Attr} /> */}
         </Box>
         <Drawer
           variant="temporary"
@@ -113,10 +111,14 @@ export default function Category() {
         >
           <SideDrawer
             data={Attr}
-            value={value}
-            handleChange={handleChange}
+            minValue={minValue}
+            maxValue={maxValue}
+            handleMinChange={handleMinChange}
+            handleMaxChange={handleMaxChange}
             valuetext={valuetext}
             handleCheked={handleCheked}
+            searchResults={searchResults}
+            setSearchResults={setSearchResults}
           />
         </Drawer>
         <Box
@@ -128,8 +130,10 @@ export default function Category() {
           <SideDrawer
             valuetext={valuetext}
             data={Attr}
-            value={value}
-            handleChange={handleChange}
+            minValue={minValue}
+            maxValue={maxValue}
+            handleMinChange={handleMinChange}
+            handleMaxChange={handleMaxChange}
             handleCheked={handleCheked}
           />
         </Box>
@@ -141,7 +145,9 @@ export default function Category() {
           }}
         >
           {" "}
-          {data?.data?.products?.length === 0 && (
+          {searchResults?.data?.products?.length === 0 ||
+          (data?.data?.products?.length === 0 &&
+            !searchResults?.data?.products) ? (
             <Typography
               variant="body1"
               sx={{
@@ -155,7 +161,7 @@ export default function Category() {
             >
               {t("No Product Found")} <CloseRounded />
             </Typography>
-          )}
+          ) : null}
           <Grid container spacing={2}>
             {isLoading &&
               Array.from({ length: 5 }).map((_, index) => (
@@ -164,9 +170,24 @@ export default function Category() {
                 </Grid>
               ))}
 
-            {data &&
+            {searchResults?.data?.products &&
+              searchResults?.data?.products?.map((item, idx) => {
+                return (
+                  <Grid item key={idx} xs={12} sm={6} md={4} lg={3}>
+                    <ProductCard
+                      id={item?.id}
+                      productName={item.name}
+                      Price={item?.price}
+                      productImage={item?.images[0]?.image_path}
+                      link={`/store/product/${item.id}`}
+                      loading={false}
+                    />
+                  </Grid>
+                );
+              })}
+            {data?.data?.products &&
+              !searchResults?.data?.products &&
               data?.data?.products?.map((item, idx) => {
-                console.log(idx, item?.images[0]?.image_path);
                 return (
                   <Grid item key={idx} xs={12} sm={6} md={4} lg={3}>
                     <ProductCard

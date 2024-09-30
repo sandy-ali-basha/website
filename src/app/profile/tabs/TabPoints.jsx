@@ -3,12 +3,15 @@ import dollar from "assets/images/dollar.png";
 import { useTranslation } from "react-i18next";
 
 const TabPoints = () => {
-  const points = localStorage.getItem("userData");
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  console.log("userData",userData?.points)
   const {t}=useTranslation("index")
   return (
+    
     <Card sx={{ boxShadow: 5, p: 3 }}>
-      <Typography sx={{ textAlign: "center" }} variant="h4">
-        MY POINTS
+      {userData? <>
+        <Typography sx={{ textAlign: "center" }} variant="h4">
+        {t("MY POINTS")}
       </Typography>
 
       <Box
@@ -23,12 +26,17 @@ const TabPoints = () => {
         <img src={dollar} style={{ width: "10vw", height: "10vw" }} alt="" />
         <Typography variant="h1">
           {" "}
-          {points?.points ? points?.points : 0}{" "}
+          {userData?.points}{" "}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {t("Point")}
         </Typography>
-      </Box>
+      </Box></>:<>
+      <Typography variant="h1">
+          {" "}
+      {t("pleas Login to view your points")}
+        </Typography>   </>}
+      
       <Box sx={{ my: 1 }}>
         <Typography variant="h5" color="initial">
         {t("How to Earn Points?:")}

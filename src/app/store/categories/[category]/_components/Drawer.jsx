@@ -1,9 +1,21 @@
-import { Box, Slider, TextField, Typography } from "@mui/material";
+import { Box, Grid, Slider, TextField, Typography } from "@mui/material";
 import CAccordion from "components/modules/Accordion";
+import SearchInput from "components/modules/SearchInput";
 import { useTranslation } from "react-i18next";
 
-const SideDrawer = ({ valuetext, value, handleChange, data, handleCheked }) => {
+const SideDrawer = ({
+  valuetext,
+  minValue,
+  maxValue,
+  handleMinChange,
+  handleMaxChange,
+  data,
+  handleCheked,
+  searchResults,
+  setSearchResults,
+}) => {
   const { t } = useTranslation("index");
+
   return (
     <Box
       sx={{
@@ -13,10 +25,11 @@ const SideDrawer = ({ valuetext, value, handleChange, data, handleCheked }) => {
         pb: 3,
       }}
     >
-      <Typography variant="subtitle1" color="text.secondary">
-        {t("Search")}:
-      </Typography>
-      <TextField size="small" sx={{ width: "100%" }} placeholder="search" />
+      <SearchInput
+        searchResults={searchResults}
+        setSearchResults={setSearchResults}
+      />
+
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
         {t("Options")}:
       </Typography>
@@ -27,24 +40,31 @@ const SideDrawer = ({ valuetext, value, handleChange, data, handleCheked }) => {
         {t("Price")}
       </Typography>
       <Box dir="ltr">
-        <Slider
-          getAriaLabel={() => "Price"}
-          value={value}
-          onChange={handleChange}
-          valueLabelDisplay="auto"
-          getAriaValueText={valuetext}
-          sx={{
-            "& .MuiSlider-thumb": {
-              direction: "ltr",
-            },
-            "& .MuiSlider-track": {
-              direction: "ltr",
-            },
-            "& .MuiSlider-rail": {
-              direction: "ltr",
-            },
-          }}
-        />
+        <Grid container spacing={2} alignItems="center">
+          {/* Input for Minimum Value */}
+          <Grid item xs={6}>
+            <TextField
+              label="Min Price"
+              type="number"
+              value={minValue}
+              onChange={handleMinChange}
+              inputProps={{ min: 0, max: maxValue }} // Ensure min doesn't go beyond max
+              fullWidth
+            />
+          </Grid>
+
+          {/* Input for Maximum Value */}
+          <Grid item xs={6}>
+            <TextField
+              label="Max Price"
+              type="number"
+              value={maxValue}
+              onChange={handleMaxChange}
+              inputProps={{ min: minValue }} // Ensure max doesn't go below min
+              fullWidth
+            />
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );

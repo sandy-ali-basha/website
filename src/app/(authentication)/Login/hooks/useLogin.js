@@ -32,17 +32,81 @@ export const useLogin = () => {
     _AuthApi
       .login(input)
       .then((res) => {
-        if (res?.data?.code == 200) {
+        if (res?.data?.code === 200) {
           _AuthApi.storeToken(res?.data?.data?.token);
           localStorage.setItem("userData", JSON.stringify(res.data.data));
           navigate("/");
         } else {
-          setError(res?.data?.error?.message || "An unexpected error occurred");
+          setError(
+            res?.data?.error?.message ||
+              res?.data?.error ||
+              "An unexpected error occurred"
+          );
         }
         setLoading(true);
       })
 
       .finally(() => setLoading(false));
+  };
+  const GoogleLogin = (input) => {
+    setLoading(true);
+    _AuthApi.GoogleLogin(input);
+    // .then((res) => {
+    //   if (res?.data?.code === 200) {
+    //     _AuthApi.storeToken(res?.data?.data?.token);
+    //     localStorage.setItem("userData", JSON.stringify(res.data.data));
+    //     navigate("/");
+    //   } else {
+    //     setError(
+    //       res?.data?.error?.message ||
+    //         res?.data?.error ||
+    //         "An unexpected error occurred"
+    //     );
+    //   }
+    //   setLoading(true);
+    // })
+
+    // .finally(() => setLoading(false));
+  };
+  const twitterLogin = (input) => {
+    setLoading(true);
+    _AuthApi.twitterLogin(input);
+    // .then((res) => {
+    //   if (res?.data?.code === 200) {
+    //     _AuthApi.storeToken(res?.data?.data?.token);
+    //     localStorage.setItem("userData", JSON.stringify(res.data.data));
+    //     navigate("/");
+    //   } else {
+    //     setError(
+    //       res?.data?.error?.message ||
+    //         res?.data?.error ||
+    //         "An unexpected error occurred"
+    //     );
+    //   }
+    //   setLoading(true);
+    // })
+
+    // .finally(() => setLoading(false));
+  };
+  const facebookLogin = (input) => {
+    setLoading(true);
+    _AuthApi.facebookLogin(input);
+    // .then((res) => {
+    //   if (res?.data?.code === 200) {
+    //     _AuthApi.storeToken(res?.data?.data?.token);
+    //     localStorage.setItem("userData", JSON.stringify(res.data.data));
+    //     navigate("/");
+    //   } else {
+    //     setError(
+    //       res?.data?.error?.message ||
+    //         res?.data?.error ||
+    //         "An unexpected error occurred"
+    //     );
+    //   }
+    //   setLoading(true);
+    // })
+
+    // .finally(() => setLoading(false));
   };
   return {
     register,
@@ -50,6 +114,9 @@ export const useLogin = () => {
     onSubmit,
     loading,
     handleSubmit,
+    GoogleLogin,
+    twitterLogin,
+    facebookLogin,
     t,
     error,
   };

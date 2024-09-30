@@ -100,9 +100,7 @@ function NavBar() {
               </Button>
             ))}
           </Box>
-          <Box sx={{ display: { xs: "none", md: "initial" } }}>
-            <SearchInput />
-          </Box>
+     
           <Box>
             <MenuButton
               tooltip={t("change city")}

@@ -4,7 +4,7 @@ import { _axios } from "../../interceptor/http-config";
 export const _Attributes = {
   getAttributes: async (id) => {
     return _axios
-      .get(`/product_attributes`, {
+      .get(`/product_attributes?all=false`, {
         headers: {
           ...HttpRequestInterceptor(),
         },
