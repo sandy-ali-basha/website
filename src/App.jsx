@@ -33,6 +33,7 @@ import ResetPassword from "app/(authentication)/forgetPassword/ResetPassword";
 import Brand from "app/store/categories/brand/[name]/page";
 import ShouldNotBeLogged from "middlewares/ShouldNotBeLogged";
 import NotFound from "components/NotFound";
+import ShouldBeLogged from "middlewares/ShouldBeLogged";
 
 function App() {
   useEffect(() => {
@@ -65,6 +66,17 @@ function App() {
           }
         />
 
+        <Route
+          path="/profile/:tab"
+          element={
+            <ShouldBeLogged>
+              <Layout>
+                <Profile />
+              </Layout>
+            </ShouldBeLogged>
+          }
+        />
+        
         <Route
           path="/signup"
           element={
@@ -107,21 +119,14 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/careers/job/:id" element={<Job />} />
-          <Route path="/profile/:tab" element={<Profile />} />
+
           <Route
             path="/store/categories"
             exact
             element={<StoreCategoriesPage />}
           />
-          <Route
-            path="/store/categories/brand/:id"
-            exact
-            element={<Brand />}
-          />
-          <Route
-            path="/store"
-            element={<StoreCategoryPage />}
-          />
+          <Route path="/store/categories/brand/:id" exact element={<Brand />} />
+          <Route path="/store" element={<StoreCategoryPage />} />
           <Route path="/store/checkout" element={<StoreCheckoutPage />} />
           <Route path="/store/offers" element={<StoreOffersPage />} />
           <Route path="/store/product/:id" element={<StoreProductPage />} />

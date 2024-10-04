@@ -181,6 +181,7 @@ export default function Category() {
                       productImage={item?.images[0]?.image_path}
                       link={`/store/product/${item.id}`}
                       loading={false}
+                      purchasable={item?.purchasable === "always"}
                     />
                   </Grid>
                 );
@@ -197,6 +198,7 @@ export default function Category() {
                       productImage={item?.images[0]?.image_path}
                       link={`/store/product/${item.id}`}
                       loading={false}
+                      purchasable={item?.purchasable === "always"}
                     />
                   </Grid>
                 );

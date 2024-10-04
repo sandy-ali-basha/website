@@ -6,6 +6,8 @@ import { Grid } from "@mui/material";
 import MoodRoundedIcon from "@mui/icons-material/MoodRounded";
 import chars from "assets/images/chars.png";
 import image2 from "assets/images/aboutsUs3.jpg";
+import vision from "assets/images/vision.avif";
+import misiion from "assets/images/misiion.avif";
 import image3 from "assets/images/logo.svg";
 import leadership from "assets/images/leadership.avif";
 import Expansion from "assets/images/Expansion.avif";
@@ -29,8 +31,7 @@ export default function About() {
         {t("Welcome to Dawaa Al Hayat")}
       </Typography>
       <Grid container spacing={3}>
-        <Grid item md="1"></Grid>
-        <Grid item md="10" textAlign={"center"}>
+        <Grid item md="6">
           <Typography variant="h5">{t("About Us:")}</Typography>
           <Typography variant="body1" sx={{ mt: 1 }}>
             {t(
@@ -48,8 +49,6 @@ export default function About() {
             )}
           </Typography>
         </Grid>
-        <Grid item md="1"></Grid>
-
         <Grid item md="6">
           <Box>
             <img
@@ -64,25 +63,41 @@ export default function About() {
           </Box>
         </Grid>
 
-        <Grid md="6" item>
-          <Grid container spacing={2}>
+        <Grid md="12" item>
+          <Grid container spacing={2} sx={{ mb: 5 }}>
             <Grid md="6" item>
               <Box
                 sx={{
                   p: 2,
-                  backgroundColor: "rgba(0, 0, 0, 0.04)",
+                  backgroundColor: "primary.main",
                   borderRadius: 3,
-                  height: "96%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-evenly",
+                  gap: 2,
+                  height: "100%",
                 }}
               >
+                <img
+                  src={misiion}
+                  style={{
+                    borderRadius: "12px",
+                    objectFit: "contain",
+                    height: "25%",
+                    margin: "0 auto",
+                  }}
+                  alt=""
+                />
                 <Typography
                   variant="h6"
-                  color="initial"
-                  sx={{ textAlign: "center" }}
+                  sx={{ textAlign: "center", color: "white" }}
                 >
                   {t("Vision")}
                 </Typography>
-                <Typography variant="body1" sx={{ textAlign: "center" }}>
+                <Typography
+                  variant="body1"
+                  sx={{ color: "white", textAlign: "center" }}
+                >
                   {t(
                     "“ Being a leader in the pharma business to make people’s life better by providing excellent & Innovative products”."
                   )}
@@ -93,19 +108,35 @@ export default function About() {
               <Box
                 sx={{
                   p: 2,
-                  backgroundColor: "rgba(0, 0, 0, 0.04)",
+                  backgroundColor: "primary.main",
                   borderRadius: 3,
-                  height: "96%",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
+                  height: "100%",
+                  justifyContent: "space-evenly",
                 }}
               >
+                <img
+                  src={vision}
+                  style={{
+                    borderRadius: "12px",
+                    objectFit: "contain",
+                    height: "25%",
+                    margin: "0 auto",
+                  }}
+                  alt=""
+                />
                 <Typography
                   variant="h6"
-                  color="initial"
-                  sx={{ textAlign: "center" }}
+                  sx={{ color: "white", textAlign: "center" }}
                 >
                   {t("Mission")}
                 </Typography>
-                <Typography variant="body1" sx={{ textAlign: "center" }}>
+                <Typography
+                  variant="body1"
+                  sx={{ color: "white", textAlign: "center" }}
+                >
                   {t(
                     "“Matching the health community requirements, by applying the highest standards of selecting, importing, storing, & distributing the products, to ensure the health care providers and people”."
                   )}
@@ -120,7 +151,7 @@ export default function About() {
           </Typography>
         </Grid>
         <Grid
-          md="4"
+          md="6"
           item
           sx={{
             display: "flex",
@@ -131,18 +162,20 @@ export default function About() {
         >
           <img src={leadership} alt="" />
           <Typography variant="h4" color="initial">
-           {t("Market Leadership")}
+            {t("Market Leadership")}
           </Typography>
           <Typography
             variant="body1"
             color="initial"
             sx={{ textAlign: "center" }}
           >
-           {("Strive to become the undisputed leader in pharmaceutical distribution within the Iraqi market. Achieve a premium position by consistently delivering exceptional service and maintaining a diverse portfolio of high-quality products.")}
+            {
+              "Strive to become the undisputed leader in pharmaceutical distribution within the Iraqi market. Achieve a premium position by consistently delivering exceptional service and maintaining a diverse portfolio of high-quality products."
+            }
           </Typography>
         </Grid>
         <Grid
-          md="4"
+          md="6"
           item
           sx={{
             display: "flex",
@@ -154,18 +187,20 @@ export default function About() {
           <img src={Expansion} alt="Expansion and Growth" />
 
           <Typography variant="h4" color="initial">
-           {t("Expansion and Growth")}
+            {t("Expansion and Growth")}
           </Typography>
           <Typography
             variant="body1"
             color="initial"
             sx={{ textAlign: "center" }}
           >
-            {t("Expand the company's reach beyond its current three main offices in Baghdad, Erbil, and Sulimanya. Increase market share by establishing a strong presence in all major Iraqi regions.")}
+            {t(
+              "Expand the company's reach beyond its current three main offices in Baghdad, Erbil, and Sulimanya. Increase market share by establishing a strong presence in all major Iraqi regions."
+            )}
           </Typography>
         </Grid>
         <Grid
-          md="4"
+          md="6"
           item
           sx={{
             display: "flex",
@@ -184,35 +219,39 @@ export default function About() {
             color="initial"
             sx={{ textAlign: "center" }}
           >
-           {("Explore opportunities to introduce innovative new products to the Iraqi market. Partner with leading pharmaceutical companies to bring cutting-edge treatments and supplements to Iraqi patients.")}
+            {
+              "Explore opportunities to introduce innovative new products to the Iraqi market. Partner with leading pharmaceutical companies to bring cutting-edge treatments and supplements to Iraqi patients."
+            }
           </Typography>
         </Grid>
-        <Grid sx={{ justifyContent: "center" }} container>
-          <Grid
-            md="4"
-            item
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "column",
-              gap: "1rem",
-            }}
-          >
-            <img src={Investing} alt="Expansion and Growth" />
+        <Grid
+          md="6"
+          item
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+        >
+          <img src={Investing} alt="Expansion and Growth" />
 
-            <Typography variant="h4" color="initial">
-             {t("Investing in People")}{" "}
-            </Typography>
-            <Typography
-              variant="body1"
-              color="initial"
-              sx={{ textAlign: "center" }}
-            >
-              {t("Continue to invest in the training and development of its employees. Foster a highly qualified and knowledgeable workforce capable of achieving the company's goals with the highest quality and performance.")}
-            </Typography>
-          </Grid>
+          <Typography variant="h4" color="initial">
+            {t("Investing in People")}{" "}
+          </Typography>
+          <Typography
+            variant="body1"
+            color="initial"
+            sx={{ textAlign: "center" }}
+          >
+            {t(
+              "Continue to invest in the training and development of its employees. Foster a highly qualified and knowledgeable workforce capable of achieving the company's goals with the highest quality and performance."
+            )}
+          </Typography>
+        </Grid>
+        <Grid sx={{ justifyContent: "center", mb: 5 }} container>
           <Grid
-            md="4"
+            md="6"
             item
             sx={{
               display: "flex",
@@ -230,7 +269,11 @@ export default function About() {
               variant="body1"
               color="initial"
               sx={{ textAlign: "center" }}
-            > {("Consider initiatives that contribute positively to public health in Iraq. Partner with healthcare organizations to raise awareness about important health issues and promote healthy living practices.")}
+            >
+              {" "}
+              {
+                "Consider initiatives that contribute positively to public health in Iraq. Partner with healthcare organizations to raise awareness about important health issues and promote healthy living practices."
+              }
             </Typography>
           </Grid>
         </Grid>
@@ -246,44 +289,71 @@ export default function About() {
           <Typography variant="h2" color="initial">
             {t("Our Values")}
           </Typography>
-          <img src={values} alt="" />
+          <img src={values} style={{ width: "100%" }} alt="" />
         </Grid>
+
         <Grid md="12" item>
           <Box
             sx={{
-              p: 2,
-              backgroundColor: "rgba(0, 0, 0, 0.04)",
               borderRadius: 3,
+              height: "70vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative",
             }}
           >
-            <Typography
-              variant="h4"
-              sx={{ textAlign: "center", fontWeight: "Typography " }}
-            >
-              {t("Our culture")}
-            </Typography>
-            <Typography variant="h6" sx={{ textAlign: "center", mt: 2 }}>
-              {t(
-                "“Implementing the values that govern Dawaa Al Hayat’s people behaviours and harmonize their efforts in an energised joyful atmosphere to reach the company strategies”."
-              )}
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid md="12" item>
-          <Box sx={{ borderRadius: 3, height: "60vh" }}>
-            <img
-              src={image2}
-              style={{
-                borderRadius: "inherit",
+            <Box>
+              <Typography
+                variant="h3"
+                sx={{
+                  textAlign: "center",
+                  fontWeight: "Typography ",
+                  color: "white",
+                }}
+              >
+                {t("Our culture")}
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  textAlign: "center",
+                  mt: 2,
+                  color: "white",
+                  width: "75%",
+                  mx: "auto",
+                }}
+              >
+                {t(
+                  "“Implementing the values that govern Dawaa Al Hayat’s people behaviours and harmonize their efforts in an energised joyful atmosphere to reach the company strategies”."
+                )}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                position: "absolute",
+                zIndex: "-1",
+                top: "0px",
+                left: "0px",
                 width: "100%",
                 height: "100%",
-                objectFit: "cover",
+                filter: "brightness(0.5)",
               }}
-              alt=""
-            />
+            >
+              <img
+                src={image2}
+                style={{
+                  borderRadius: "inherit",
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+                alt=""
+              />
+            </Box>
           </Box>
         </Grid>
-        <Grid md="12" item>
+        {/* <Grid md="12" item>
           <Typography
             variant="h4"
             sx={{ textAlign: "center", fontWeight: "Typography ", my: 3 }}
@@ -318,7 +388,7 @@ export default function About() {
                 <Typography variant="body1">
                   <ul>
                     <li>
-                      <span style={{ fontWeight: "bold" }}>{("People")}:</span>{" "}
+                      <span style={{ fontWeight: "bold" }}>{"People"}:</span>{" "}
                       {t(
                         "Recruiting Impartially - Training effectively – Encouraging creative ideas."
                       )}
@@ -332,7 +402,7 @@ export default function About() {
                       )}
                     </li>
                     <li>
-                      <span style={{ fontWeight: "bold" }}>{("Place")}:</span>{" "}
+                      <span style={{ fontWeight: "bold" }}>{"Place"}:</span>{" "}
                       {t(
                         "Expanding market’s share – Entering new markets – Exploring future markets."
                       )}
@@ -515,40 +585,8 @@ export default function About() {
               </Box>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item md="12">
-          <Typography variant="h4" color="initial" sx={{ textAlign: "center" }}>
-            {t("Our Partners")}
-          </Typography>
-          <Typography
-            variant="body1"
-            color="initial"
-            sx={{ textAlign: "center" }}
-          >
-            {t(
-              "We understand the importance of forging key collaborations with vendors and partners alike as we aim to ensure providing our clients with the best value propositions possible. Therefore, we continue to establish strategic alliances with other reputable players in the market."
-            )}
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 2,
-              my: 2,
-            }}
-          >
-            <img src={partner3} alt="partner logo" />
-            <img src={partner2} alt="partner logo" />
-            <img src={partner1} alt="partner logo" />
-            <img src={partner0} alt="partner logo" />
-          </Box>
-        </Grid>
-        <Grid item md="12">
-          <Typography sx={{ textAlign: "center" ,mb:2}} variant="h4">
-            {t("Company Strategy")}
-          </Typography>
-        </Grid>
+        </Grid> */}
+
         <Grid item md="6">
           <Typography variant="h6">{t("A solution for everyone")}:</Typography>
           <Typography variant="body1">
@@ -582,9 +620,9 @@ export default function About() {
           </Typography>
           <Typography variant="body1">
             <strong>{t("Thriving E-commerce:")}</strong>
-            {
-              t("Recognizing the growing trend of online shopping, our E-commerce department is rapidly expanding Dawaa Al Hayat's digital presence and sales channels across Iraq.")
-            }
+            {t(
+              "Recognizing the growing trend of online shopping, our E-commerce department is rapidly expanding Dawaa Al Hayat's digital presence and sales channels across Iraq."
+            )}
           </Typography>
         </Grid>
         <Grid item md="6">
@@ -616,10 +654,15 @@ export default function About() {
           </Box>
         </Grid>
         <Grid item md="6">
-          <Typography variant="h6">{t("Dawaa Al Hayat")}:</Typography>
+          <Typography variant="h4" color="initial">
+            {t("Company Strategy")}
+          </Typography>
+          <Typography variant="h6">
+            {t("Dawaa Al Hayat: Powering Growth in Healthcare.")}
+          </Typography>
           <Typography variant="body1">
             {t(
-              "A Leading Healthcare Distributor in Iraq For over 12 years, Dawaa Al Hayat has been a trusted name in Iraqi healthcare market. We specialize in delivering pharmaceuticals, nutraceuticals and health food throughout the country."
+              "At Dawaa Al Hayat, we're committed to two key strategies for success"
             )}
           </Typography>
           <Typography variant="h6">{t("Expanding our reach")}:</Typography>
@@ -637,10 +680,39 @@ export default function About() {
             )}
           </Typography>
           <Typography variant="body1">
-            {
-              t("This combined approach, fueled by our cutting-edge technology and a team of passionate experts, empowers us to deliver exceptional operational efficiency and drive consumer growth. As the healthcare market continues to evolve, our focus on quality and certified brands ensures you can shop with complete confidence.")
-            }
+            {t(
+              "This combined approach, fueled by our cutting-edge technology and a team of passionate experts, empowers us to deliver exceptional operational efficiency and drive consumer growth. As the healthcare market continues to evolve, our focus on quality and certified brands ensures you can shop with complete confidence."
+            )}
           </Typography>
+        </Grid>
+        <Grid item md="12">
+          <Typography variant="h4" color="initial" sx={{ textAlign: "center" }}>
+            {t("Our Partners")}
+          </Typography>
+          <Typography
+            variant="body1"
+            color="initial"
+            sx={{ textAlign: "center" }}
+          >
+            {t(
+              "We understand the importance of forging key collaborations with vendors and partners alike as we aim to ensure providing our clients with the best value propositions possible. Therefore, we continue to establish strategic alliances with other reputable players in the market."
+            )}
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 2,
+              my: 2,
+              flexDirection: { md: "row", xs: "column"  },
+            }}
+          >
+            <img src={partner3} alt="partner logo" />
+            <img src={partner2} alt="partner logo" />
+            <img src={partner1} alt="partner logo" />
+            <img src={partner0} alt="partner logo" />
+          </Box>
         </Grid>
       </Grid>
     </Container>

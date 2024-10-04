@@ -1,9 +1,4 @@
-import {
-  Box,
-  Container,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
 import DefualtLogo from "assets/images/defualtBrand.png";
 import { useTranslation } from "react-i18next";
@@ -62,7 +57,7 @@ function BrandImage({ item }) {
         {isLoading && (
           <CardShimmer style={{ width: "100px", height: "100px" }} />
         )}
-        {isLoading}
+
         <img
           lazyLoading
           alt="logo"
@@ -71,7 +66,11 @@ function BrandImage({ item }) {
             objectFit: "contain",
             display: isLoading ? "none" : "block",
           }}
-          src={item?.image || DefualtLogo}
+          src={
+            item?.images && item?.images.length > 0
+              ? item?.images[0]
+              : DefualtLogo
+          }
           onLoad={handleImageLoad}
         />
       </Link>

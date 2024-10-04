@@ -24,6 +24,7 @@ export default function Simillar({ id }) {
                   productName={item?.name}
                   Price={item?.price?.value}
                   link={`/store/product/${item?.id}`}
+                  purchasable={item?.purchasable === "always"}
                 />
               ))}
             </Grid>

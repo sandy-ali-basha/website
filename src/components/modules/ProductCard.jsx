@@ -21,10 +21,11 @@ export default function ProductCard({
   link,
   loading,
   id,
+  purchasable,
 }) {
   const { handleAddToCart, loadingCart } = useAddToCart();
   const { t } = useTranslation("index");
-  console.log("productImage", productImage);
+
   return (
     <Card sx={{ boxShadow: 3, borderRadius: 3, height: "100%" }}>
       {" "}
@@ -108,7 +109,7 @@ export default function ProductCard({
               </Typography>
             )}
           </Box>
-          {!loading && (
+          {purchasable && !loading && (
             <Button
               variant="outlined"
               size="small"

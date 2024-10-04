@@ -45,6 +45,7 @@ export default function Offers() {
                 productImage={item.img}
                 offer={item.offer}
                 link={`/store/product/${item.id}`}
+                purchasable={item?.purchasable === "always"}
               />
             </Grid>
           ))}

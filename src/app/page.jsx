@@ -1,8 +1,16 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Button, Grid } from "@mui/material";
+import fineLogo from "assets/images/fineLogo.png";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  Grid,
+} from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import bg1 from "assets/images/hero.png";
@@ -15,12 +23,19 @@ import Partners from "../components/modules/home/Partners.jsx";
 import { Autoplay } from "swiper/modules";
 import gsap from "gsap";
 import { useNavigate } from "react-router-dom";
-import { useBrand } from "hooks/brands/useBrand.js";
 import { useTranslation } from "react-i18next";
 import { settingsStore } from "store/settingsStore.js";
 // import SpinAndWin from "components/SpinAndWin.jsx";
 
 export default function Home() {
+  const [open, setOpen] = useState(
+    localStorage.getItem("opendDialog") ? false : true
+  );
+  const handleClose = () => {
+    setOpen(false);
+    localStorage.setItem("opendDialog", false);
+  };
+
   const images = [
     {
       image: bg1,
@@ -56,7 +71,8 @@ export default function Home() {
       x: direction === "ltr" ? -100 : 100,
       ease: "power1.inOut",
     });
-  }, []);
+ 
+  }, [direction]);
   const { t } = useTranslation("index");
   return (
     <>
@@ -284,6 +300,39 @@ export default function Home() {
       <BestSellers />
       <Qoute />
       <Partners />
+      <Dialog open={open} onClose={handleClose} py="6">
+        <DialogContent
+          py="6"
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <img
+            style={{ width: "50%", margin: "1rem auto" }}
+            src={fineLogo}
+            alt=""
+          />
+          <DialogContentText textAlign={"center"} sx={{ fontSize: "1.5rem" }}>
+            You can now shop Canadian Fine products through the website of the
+            Life Medicine Company, the exclusive agent of the Canadian company
+            Fine in Iraq
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+            display: "flex",
+          }}
+        >
+          <Button onClick={handleClose} sx={{ color: "#a7275d" }} mx="auto">
+            buy now
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

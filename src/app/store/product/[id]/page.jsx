@@ -42,7 +42,6 @@ function Product() {
   const { handleAddToCart, loadingCart } = useAddToCart();
 
   const navigate = useNavigate();
-  console.log("data?.data?.images",data?.data?.images)
   return (
     <Container sx={{ mt: 15 }}>
       <Grid container>
@@ -226,7 +225,7 @@ function Product() {
               ))
             )}
           </Box>
-          {!isLoading && (
+          {data?.data?.purchasable === "always" && (
             <Box display="flex" alignItems="center" justifyContent="center">
               <Button
                 size="large"
@@ -234,6 +233,7 @@ function Product() {
                 variant="contained"
                 color="secondary"
                 onClick={() => handleAddToCart(data?.data?.id)}
+                disabled={isLoading}
               >
                 {loadingCart ? (
                   <CircularProgress sx={{ width: "10px" }} />

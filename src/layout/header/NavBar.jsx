@@ -10,7 +10,6 @@ import {
   Tooltip,
 } from "@mui/material";
 import logo from "assets/images/logo.svg";
-import SearchInput from "components/modules/SearchInput";
 import {
   Flag,
   PersonOutlineOutlined,
@@ -22,6 +21,7 @@ import LanguageSelector from "components/LanguageSelector";
 import MenuIcon from "@mui/icons-material/Menu";
 import { _AuthApi } from "api/auth";
 function NavBar() {
+
   const { settings, pages, navigate, cities, t } = useNavBar();
 
   return (
@@ -100,7 +100,7 @@ function NavBar() {
               </Button>
             ))}
           </Box>
-     
+
           <Box>
             <MenuButton
               tooltip={t("change city")}
@@ -111,17 +111,9 @@ function NavBar() {
               }))}
             />
           </Box>
+
           <LanguageSelector />
           <Box sx={{ mx: "10px" }}>
-            {/* <MenuButton
-              badgeNumber={4}
-              icon={<ShoppingCartOutlined sx={{ color: "white" }} />}
-              menuItems={CartMenuItems.map((item) => ({
-                ...item,
-                key: item.id,
-              }))}
-            /> */}
-
             <Tooltip title={t("Show Cart")}>
               <IconButton
                 id="basic-button"

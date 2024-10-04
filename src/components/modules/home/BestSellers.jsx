@@ -23,6 +23,7 @@ export default function BestSellers(data) {
                   productName={item?.translations?.name[lang]}
                   Price={item?.price}
                   link={`store/product/${item?.id}`}
+                  purchasable={item?.purchasable === "always"}
                 />
               </Grid>
             ))}
