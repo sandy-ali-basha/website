@@ -23,6 +23,20 @@ import CloseIcon from "@mui/icons-material/Close"; // For close button in modal
 import OrderReview from "./components/OrderReview";
 import { Eye } from "react-feather";
 import { useTranslation } from "react-i18next";
+import {
+  AssignmentTurnedInRounded,
+  CancelRounded,
+  CancelScheduleSendRounded,
+  CheckCircleOutlineRounded,
+  DeleteRounded,
+  LocalShippingRounded,
+  PaymentRounded,
+  PlaylistAddCheckCircleRounded,
+  ShoppingCartCheckoutRounded,
+  TimelapseRounded,
+} from "@mui/icons-material";
+import { _axios } from "interceptor/http-config";
+import Swal from "sweetalert2";
 
 const LinkStyled = styled(Link)(({ theme }) => ({
   textDecoration: "none",
@@ -30,118 +44,15 @@ const LinkStyled = styled(Link)(({ theme }) => ({
 }));
 
 const invoiceStatusObj = {
-  Paid: { color: "success", icon: "tabler:circle-half-2" },
-  Sent: { color: "secondary", icon: "tabler:circle-check" },
-  Draft: { color: "primary", icon: "tabler:device-floppy" },
-  "Past Due": { color: "error", icon: "tabler:alert-circle" },
-  Downloaded: { color: "info", icon: "tabler:arrow-down-circle" },
-  "awaiting-payment": { color: "warning", icon: "tabler:chart-pie" },
+  order_delivered: { color: "success", icon: <CheckCircleOutlineRounded /> },
+  order_under_delivery: { color: "secondary", icon: <LocalShippingRounded /> },
+  order_processing: { color: "secondary", icon: <TimelapseRounded /> },
+  order_processed: { color: "secondary", icon: <AssignmentTurnedInRounded /> },
+  canceled: { color: "primary", icon: <CancelRounded /> },
+  cancel_requested: { color: "error", icon: <CancelScheduleSendRounded /> },
+  order_requested: { color: "info", icon: <ShoppingCartCheckoutRounded /> },
+  "awaiting-payment": { color: "warning", icon: <PaymentRounded /> },
 };
-
-const defaultColumns = (handleOrderClick) => [
-  {
-    flex: 0.1,
-    field: "reference",
-    minWidth: 100,
-    headerName: "Order Reference",
-    renderCell: ({ row }) => (
-      <Typography
-        component={LinkStyled}
-        href={`/apps/invoice/preview/${row.reference}`}
-      >
-        {`#${row.reference}`}
-      </Typography>
-    ),
-  },
-  {
-    flex: 0.1,
-    minWidth: 140,
-    field: "status",
-    renderHeader: () => <>Order Status</>,
-    renderCell: ({ row }) => {
-      const { status } = row;
-      const color = invoiceStatusObj[status]
-        ? invoiceStatusObj[status].color
-        : "primary";
-      return (
-        <Tooltip
-          title={
-            <div>
-              <Typography
-                variant="caption"
-                sx={{ color: "common.white", fontWeight: 600 }}
-              >
-                {status}
-              </Typography>
-              <br />
-              <Typography
-                variant="caption"
-                sx={{ color: "common.white", fontWeight: 600 }}
-              >
-                Subtotal:
-              </Typography>{" "}
-              {row.sub_total}
-            </div>
-          }
-        >
-          <Chip
-            color={color}
-            variant="outlined"
-            sx={{ width: "100%" }}
-            label={status}
-          />
-        </Tooltip>
-      );
-    },
-  },
-  {
-    flex: 0.15,
-    minWidth: 100,
-    field: "issuedDate",
-    headerName: "Issued Date",
-    renderCell: ({ row }) => (
-      <Typography sx={{ color: "text.secondary" }}>
-        {new Date(row.lines[0].created_at).toLocaleDateString()}
-      </Typography>
-    ),
-  },
-  {
-    flex: 0.2,
-    minWidth: 160,
-    field: "lines",
-    headerName: "Order Items",
-    renderCell: ({ row }) => (
-      <Typography sx={{ color: "text.secondary" }}>
-        {row.lines.map((line) => line.description).join(", ")}
-      </Typography>
-    ),
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    field: "sub_total",
-    headerName: "Subtotal",
-    renderCell: ({ row }) => (
-      <Typography sx={{ color: "text.secondary" }}>
-        {row.sub_total.toLocaleString("en-US", {
-          style: "currency",
-          currency: "USD",
-        })}
-      </Typography>
-    ),
-  },
-  {
-    field: "actions",
-    headerName: "view",
-    flex: 0.1,
-    minWidth: 100,
-    renderCell: ({ row }) => (
-      <Button onClick={() => handleOrderClick(row)}>
-        <Eye />
-      </Button>
-    ),
-  },
-];
 
 const BillingHistoryTable = () => {
   const [value, setValue] = useState("");
@@ -150,19 +61,165 @@ const BillingHistoryTable = () => {
     page: 0,
     pageSize: 10,
   });
-  const { t } = useTranslation("index");
   const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
   const [open, setOpen] = useState(false); // State for controlling modal visibility
+  const { t } = useTranslation("index");
+  const handleCancel = (id) => {
+    Swal.fire({
+      title: t("Are you sure?"),
+      text: t("You won't be able to revert this!"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: t("Yes, cancel it!"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        _axios
+          .post(`/order/${id}/cancel`)
+          .then((res) => {
+            // Show a success message
+            Swal.fire({
+              icon: "success",
+              title: t("Order Cancellation Requested"),
+              text: t(
+                "Your order cancellation has been requested and needs acceptance."
+              ),
+              confirmButtonText: "Okay",
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+            // Optionally show an error message
+            Swal.fire({
+              icon: t("error"),
+              title: t("Oops..."),
+              text: t("Something went wrong. Please try again."),
+            });
+          });
+      }
+    });
+  };
+  const defaultColumns = (handleOrderClick) => [
+    {
+      flex: 0.1,
+      field: "reference",
+      minWidth: 100,
+      headerName: "Order Reference",
+      renderCell: ({ row }) => (
+        <Typography
+          component={LinkStyled}
+          href={`/apps/invoice/preview/${row.reference}`}
+        >
+          {`#${row.reference}`}
+        </Typography>
+      ),
+    },
+    {
+      flex: 0.1,
+      minWidth: 200,
+      field: "status",
+      renderHeader: () => <>Order Status</>,
+      renderCell: ({ row }) => {
+        const { status } = row;
+
+        const color = invoiceStatusObj[status]
+          ? invoiceStatusObj[status].color
+          : "primary";
+        const Rowicon = invoiceStatusObj[status].icon ? (
+          invoiceStatusObj[status].icon
+        ) : (
+          <PlaylistAddCheckCircleRounded />
+        );
+        return (
+          <Tooltip
+            title={
+              <div>
+                <Typography
+                  variant="caption"
+                  sx={{ color: "common.white", fontWeight: 600 }}
+                >
+                  {status}
+                </Typography>
+                <br />
+                <Typography
+                  variant="caption"
+                  sx={{ color: "common.white", fontWeight: 600 }}
+                >
+                  Subtotal:
+                </Typography>{" "}
+                {row.sub_total}
+              </div>
+            }
+          >
+            <Chip
+              color={color}
+              variant="outlined"
+              sx={{ width: "100%", px: 1 }}
+              label={status}
+              icon={Rowicon}
+            />
+          </Tooltip>
+        );
+      },
+    },
+    {
+      flex: 0.15,
+      minWidth: 100,
+      field: "issuedDate",
+      headerName: "Issued Date",
+      renderCell: ({ row }) => (
+        <Typography sx={{ color: "text.secondary" }}>
+          {new Date(row.lines[0].created_at).toLocaleDateString()}
+        </Typography>
+      ),
+    },
+    {
+      flex: 0.2,
+      minWidth: 160,
+      field: "lines",
+      headerName: "Order Items",
+      renderCell: ({ row }) => (
+        <Typography sx={{ color: "text.secondary" }}>
+          {row.lines.map((line) => line.description).join(", ")}
+        </Typography>
+      ),
+    },
+    {
+      flex: 0.1,
+      minWidth: 100,
+      field: "sub_total",
+      headerName: "Subtotal",
+      renderCell: ({ row }) => (
+        <Typography sx={{ color: "text.secondary" }}>
+          {row.sub_total.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          })}
+        </Typography>
+      ),
+    },
+    {
+      field: "actions",
+      headerName: "view",
+      flex: 0.1,
+      minWidth: 100,
+      renderCell: ({ row }) => (
+        <>
+          {row?.canCancel && (
+            <Button onClick={() => handleCancel(row?.id)}>
+              <DeleteRounded />
+            </Button>
+          )}
+          <Button onClick={() => handleOrderClick(row)}>
+            <Eye />
+          </Button>
+        </>
+      ),
+    },
+  ];
 
   const { data, isLoading, error } = useOrders();
-
-  // const handleFilter = (val) => {
-  //   setValue(val);
-  // };
-
-  // const handleStatusValue = (e) => {
-  //   setStatusValue(e.target.value);
-  // };
 
   const handleOrderClick = (order) => {
     setSelectedOrder(order); // Set the selected order
@@ -188,48 +245,7 @@ const BillingHistoryTable = () => {
   return (
     <Card>
       <CardHeader title={t("Orders History")} />
-      <CardContent sx={{ pb: 4 }}>
-        {/* <Box
-          sx={{
-            gap: 4,
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >  <Box
-            sx={{
-              gap: 4,
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-            }}
-          >  <TextField
-              value={value}
-              placeholder="Search Invoice"
-              onChange={(e) => handleFilter(e.target.value)}
-            />  <TextField
-              select
-              sx={{
-                pr: 4,
-                "& .MuiFilledInput-input.MuiSelect-select": {
-                  width: "8rem !important",
-                },
-              }}
-              SelectProps={{
-                displayEmpty: true,
-                value: statusValue,
-                onChange: (e) => handleStatusValue(e),
-              }}
-            >
-              <MenuItem value="">Select Status</MenuItem>
-              {Object.keys(invoiceStatusObj).map((status) => (
-                <MenuItem key={status} value={status.toLowerCase()}>
-                  {status}
-                </MenuItem>
-              ))}
-            </TextField> </Box>  </Box> */}
-      </CardContent>
+      <CardContent sx={{ pb: 4 }}></CardContent>
       {isLoading && <Typography sx={{ p: 5 }}>{t("Loading")}...</Typography>}
       {error && (
         <Typography color="error">{t("Error loading data")}.</Typography>

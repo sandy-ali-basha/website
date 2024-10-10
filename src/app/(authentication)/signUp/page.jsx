@@ -21,7 +21,7 @@ import {
 import React from "react";
 
 import img from "../../../assets/images/hero-image (3).jpg";
-import logo from "../../../assets/images/logo.svg";
+import logo from "../../../assets/images/logo.png";
 import { useSignUp } from "./_hooks/useSignUp";
 import ConfirmPhoneNum from "./_components/ConfirmPhoneNum";
 import ButtonLoader from "components/customs/ButtonLoader";
@@ -29,6 +29,7 @@ import GenderSelect from "components/customs/GenderSelect";
 import LanguageSelector from "components/LanguageSelector";
 import { Link } from "react-router-dom";
 import Loader from "components/modules/Loader";
+import LoginComponent from "../loginGoogle";
 function SignUp() {
   const {
     register,
@@ -165,7 +166,7 @@ function SignUp() {
             disabled={loading}
             fullWidth
           >
-            Waiting..
+            {t("Waiting..")}
           </ButtonLoader>
         ) : (
           <Button
@@ -193,48 +194,7 @@ function SignUp() {
           </div>
         )}
         <Divider>{t("OR")}</Divider>
-        <Button
-          variant="outlined"
-          sx={{
-            color: "text.primary",
-            borderColor: "white",
-            boxShadow: 3,
-            width: "100%",
-            mt: 1,
-            py: 1,
-          }}
-          startIcon={<Google />}
-        >
-          {t("Sign Up With Google")}
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{
-            color: "text.primary",
-            borderColor: "white",
-            boxShadow: 3,
-            width: "100%",
-            mt: 1,
-            py: 1,
-          }}
-          startIcon={<Apple />}
-        >
-          {t("Sign Up With Apple")}
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{
-            color: "text.primary",
-            borderColor: "white",
-            boxShadow: 3,
-            width: "100%",
-            mt: 1,
-            py: 1,
-          }}
-          startIcon={<Facebook />}
-        >
-          {t("Sign Up With Facebook")}
-        </Button>
+        <LoginComponent />
         <Box>
           <Typography
             sx={{ textAlign: "center", mt: 2 }}
@@ -255,7 +215,7 @@ function SignUp() {
           </Link>
         </Box>
       </Box>
-      <ConfirmPhoneNum open={open} setOpen={setOpen} id={2} />
+      {/* <ConfirmPhoneNum open={open} setOpen={setOpen} id={2} /> */}
       <Box sx={{ position: "fixed", bottom: "10px", right: "10px" }}>
         <LanguageSelector />
       </Box>

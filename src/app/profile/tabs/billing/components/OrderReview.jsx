@@ -13,7 +13,7 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 const OrderReview = ({ item }) => {
-  console.log("item", item);
+
   const { t } = useTranslation("index");
 
   const columns = useMemo(() => {

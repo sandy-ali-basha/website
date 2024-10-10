@@ -173,7 +173,7 @@ website
    │  │  │  ├─ share.svg
    │  │  │  └─ tweeter.svg
    │  │  ├─ jar.png
-   │  │  ├─ logo.svg
+   │  │  ├─ logo.png
    │  │  ├─ logo_white.png
    │  │  ├─ mastercard.png
    │  │  ├─ offers.avif
@@ -246,7 +246,7 @@ website
    │  │  ├─ NavBar.jsx
    │  │  └─ useNavBar.jsx
    │  └─ Layout.js
-   ├─ logo.svg
+   ├─ logo.png
    ├─ middlewares
    │  ├─ ShouldBeLogged.jsx
    │  └─ ShouldNotBeLogged.jsx

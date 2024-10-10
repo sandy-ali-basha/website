@@ -1,13 +1,12 @@
 import { Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import ProductCard from "../ProductCard";
-import productImage from "assets/images/jar.png";
 import { useTranslation } from "react-i18next";
 
 export default function BestSellers(data) {
   const { t } = useTranslation("index");
   const lang = localStorage.getItem("i18nextLng") || "en"; // Fallback to "en" if no language is set
-  console.log(data);
+ 
   return (
     data && (
       <Container>
@@ -24,6 +23,7 @@ export default function BestSellers(data) {
                   Price={item?.price}
                   link={`store/product/${item?.id}`}
                   purchasable={item?.purchasable === "always"}
+                  offer={item?.compare_price}
                 />
               </Grid>
             ))}

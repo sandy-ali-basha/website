@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { _AuthApi } from "api/auth";
 import { useTranslation } from "react-i18next";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/;
@@ -64,7 +65,7 @@ export const useSignUp = () => {
   const formOptions = { resolver: yupResolver(schema) };
   const { register, handleSubmit, formState, setValue } = useForm(formOptions);
   const { errors } = formState;
-
+  const navigate = useNavigate();
   const onSubmit = (input) => {
     setLoading(true);
 
@@ -88,10 +89,12 @@ export const useSignUp = () => {
       .register(inputData)
       .then((res) => {
         console.log("res", res);
-        if (res.data?.code == 200) {
-          setOpen(true);
+        if (res.data?.code === 200) {
           localStorage.setItem("userData", JSON.stringify(res.data.data));
           console.log("data", res?.data?.data);
+          _AuthApi.storeToken(res?.data?.data?.token);
+
+          navigate("/");
         } else {
           setError(res?.data?.error || "An unexpected error occurred");
         }

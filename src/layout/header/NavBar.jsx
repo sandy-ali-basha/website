@@ -9,7 +9,7 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import logo from "assets/images/logo.svg";
+import logo from "assets/images/logo.png";
 import {
   Flag,
   PersonOutlineOutlined,

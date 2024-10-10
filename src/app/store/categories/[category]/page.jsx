@@ -1,22 +1,11 @@
 import React, { useState } from "react";
 import { useCategory } from "./_hooks/useCategory";
 import Typography from "@mui/material/Typography";
-import {
-  Container,
-  Divider,
-  Box,
-  Grid,
-  Drawer,
-  IconButton,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import { Container, Box, Grid, Drawer, IconButton } from "@mui/material";
 import ProductCard from "components/modules/ProductCard";
 import MenuIcon from "@mui/icons-material/Menu";
 import SideDrawer from "./_components/Drawer";
-import { CloseFullscreen, CloseRounded } from "@mui/icons-material";
+import { CloseRounded } from "@mui/icons-material";
 
 export default function Category() {
   const {
@@ -64,17 +53,7 @@ export default function Category() {
       >
         {t("Products")}
       </Typography>
-      {/* <Divider /> */}
-      {/* <Box
-        sx={{
-          display: { md: "flex", xs: "none" },
-          justifyContent: "flex-end",
-          width: "100%",
-          mt: 1,
-        }}
-      >
-        <SortFilter />
-      </Box> */}
+    
       <Box
         sx={{
           display: "flex",
@@ -182,6 +161,7 @@ export default function Category() {
                       link={`/store/product/${item.id}`}
                       loading={false}
                       purchasable={item?.purchasable === "always"}
+                      offer={item?.compare_price}
                     />
                   </Grid>
                 );
@@ -199,6 +179,7 @@ export default function Category() {
                       link={`/store/product/${item.id}`}
                       loading={false}
                       purchasable={item?.purchasable === "always"}
+                      offer={item?.compare_price}
                     />
                   </Grid>
                 );

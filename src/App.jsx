@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { QueryClient } from "react-query";
 import { Routes, Route, Outlet } from "react-router-dom";
 import "./assets/css/style.scss";
 import Home from "app/page.jsx";
@@ -23,7 +22,6 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { HttpRequestInterceptor } from "interceptor/http-request.interceptor";
 import ThemeProviderWrapper from "./ThemeProviderWrapper";
-import { v4 as uuidv4 } from "uuid";
 import Layout from "layout/Layout";
 import Profile from "app/profile/Profile";
 import Careers from "app/careers/page";
@@ -34,19 +32,13 @@ import Brand from "app/store/categories/brand/[name]/page";
 import ShouldNotBeLogged from "middlewares/ShouldNotBeLogged";
 import NotFound from "components/NotFound";
 import ShouldBeLogged from "middlewares/ShouldBeLogged";
+import GoogleCallback from "app/(authentication)/Login/GoogleCallback";
 
 function App() {
   useEffect(() => {
-    const storedSessionId = localStorage.getItem("session_id");
-    if (!storedSessionId) {
-      const newSessionId = uuidv4();
-      localStorage.setItem("session_id", newSessionId);
-    }
-  }, []);
-
-  useEffect(() => {
     HttpRequestInterceptor();
     window.scrollTo(0, 0);
+    localStorage.setItem("i18nextLng", "en");
   }, []);
 
   return (
@@ -76,7 +68,7 @@ function App() {
             </ShouldBeLogged>
           }
         />
-        
+
         <Route
           path="/signup"
           element={
@@ -103,6 +95,7 @@ function App() {
             </ShouldNotBeLogged>
           }
         />
+        <Route path="/auth/google" element={<GoogleCallback />}></Route>
 
         <Route
           element={

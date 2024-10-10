@@ -8,12 +8,13 @@ import {
 } from "@mui/material";
 import React from "react";
 import img from "../../../assets/images/hero-image (3).jpg";
-import logo from "../../../assets/images/logo.svg";
-import { Apple, Facebook, Google } from "@mui/icons-material";
+import logo from "../../../assets/images/logo.png";
+import { Google } from "@mui/icons-material";
 import ButtonLoader from "components/customs/ButtonLoader";
 import { useLogin } from "./hooks/useLogin";
 import LanguageSelector from "components/LanguageSelector";
 import { Link } from "react-router-dom";
+import LoginComponent from "../loginGoogle";
 
 export default function Login() {
   const {
@@ -25,8 +26,8 @@ export default function Login() {
     loading,
     error,
     GoogleLogin,
-    twitterLogin,
-    facebookLogin,
+    loginUrl,
+    navigate,
   } = useLogin();
   return (
     <Box
@@ -146,51 +147,8 @@ export default function Login() {
         )}
         {error && <Alert severity="error">{error}</Alert>}
         <Divider>OR</Divider>
-        <Button
-          variant="outlined"
-          sx={{
-            color: "text.primary",
-            borderColor: "white",
-            boxShadow: 3,
-            width: "100%",
-            mt: 1,
-            py: 1,
-          }}
-          startIcon={<Google />}
-          onClick={() => GoogleLogin()}
-        >
-          {t("Sign Up With Google")}
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{
-            color: "text.primary",
-            borderColor: "white",
-            boxShadow: 3,
-            width: "100%",
-            mt: 1,
-            py: 1,
-          }}
-          startIcon={<Apple />}
-          onClick={() => twitterLogin()}
-        >
-          {t("Sign Up With Twitter")}
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{
-            color: "text.primary",
-            borderColor: "white",
-            boxShadow: 3,
-            width: "100%",
-            mt: 1,
-            py: 1,
-          }}
-          startIcon={<Facebook />}
-          onClick={() => facebookLogin()}
-        >
-          {t("Sign Up With Facebook")}
-        </Button>
+
+        <LoginComponent />
         <Box sx={{ display: "flex", justifyContent: "space-around", mt: 2 }}>
           <Box>
             <Typography

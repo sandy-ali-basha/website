@@ -8,7 +8,7 @@ import chars from "assets/images/chars.png";
 import image2 from "assets/images/aboutsUs3.jpg";
 import vision from "assets/images/vision.avif";
 import misiion from "assets/images/misiion.avif";
-import image3 from "assets/images/logo.svg";
+import image3 from "assets/images/logo.png";
 import leadership from "assets/images/leadership.avif";
 import Expansion from "assets/images/Expansion.avif";
 import Product from "assets/images/product.avif";

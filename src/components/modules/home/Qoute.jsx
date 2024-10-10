@@ -1,7 +1,9 @@
 import { Box, Container, Typography } from "@mui/material";
 import React from "react";
 
-export default function Qoute() {
+export default function Qoute({ data, video }) {
+  const lang = localStorage.getItem("i18nextLng");
+
   return (
     <Container>
       <Box
@@ -27,16 +29,8 @@ export default function Qoute() {
           autoPlay
           loop
           muted
-          data-poster="https://static.vecteezy.com/system/resources/thumbnails/040/532/569/original/a-bunch-of-green-and-blue-balloons-floating-in-the-air-loop-animation-video.jpg"
         >
-          <source
-            src="https://static.vecteezy.com/system/resources/previews/040/532/569/mp4/a-bunch-of-green-and-blue-balloons-floating-in-the-air-loop-animation-video.mp4"
-            type="video/mp4"
-          ></source>
-          <source
-            src="https://static.vecteezy.com/system/resources/previews/040/532/569/a-bunch-of-green-and-blue-balloons-floating-in-the-air-loop-animation-video.webm"
-            type="video/webm"
-          ></source>
+          <source src={video} type="video/mp4"></source>
           Your browser does not support the video tag.
         </video>
         <Box
@@ -51,8 +45,7 @@ export default function Qoute() {
           }}
         >
           <Typography variant="h4" color="initial" sx={{ fontWeight: "bold" }}>
-            Each of our gummy vitamin supplements are vegan, halal, and free of
-            lactose and gluten.
+            {data?.value?.[lang]}
           </Typography>
         </Box>
       </Box>

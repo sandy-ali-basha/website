@@ -105,7 +105,7 @@ export default function ProductCard({
 
             {offer && (
               <Typography variant="body1" color="initial">
-                {Price} ID
+                {offer} ID
               </Typography>
             )}
           </Box>

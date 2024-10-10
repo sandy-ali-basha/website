@@ -127,5 +127,16 @@
   "Addresses": "Addresses",
   "My Points": "My Points",
   "MY POINTS": "MY POINTS",
-  "pleas Login to view your points": "pleas Login to view your points"
+  "pleas Login to view your points": "pleas Login to view your points",
+  "Special Offers": "Special Offers",
+ 
+  "Something went wrong. Please try again.": "Something went wrong. Please try again.",
+  "Oops...": "Oops...",
+  "error": "error",
+  "Your order cancellation has been requested and needs acceptance.": "Your order cancellation has been requested and needs acceptance.",
+  "Order Cancellation Requested": "Order Cancellation Requested",
+  "success": "success",
+  "Yes, cancel it!": "Yes, cancel it!",
+  "You won't be able to revert this!": "You won't be able to revert this!",
+  "Are you sure?": "Are you sure?"
 }

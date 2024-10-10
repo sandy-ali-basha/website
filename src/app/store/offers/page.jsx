@@ -1,54 +1,58 @@
 "use client";
 import React, { useState } from "react";
-import { useOffers } from "./_hooks/useOffers";
+
 import Typography from "@mui/material/Typography";
-import {
-  Container,
-  Divider,
-  Box,
-  Grid
-} from "@mui/material";
-import CAccordion from "components/modules/Accordion";
-import ProductCard from "components/modules/ProductCard";
+import { Container, Divider, Box, Grid } from "@mui/material";
 import img from "assets/images/offers.avif";
+import ProductCard from "components/modules/ProductCard";
+import { useOffersPage } from "./_hooks/useOffersPage";
 
 export default function Offers() {
-  const { data, isMobile } = useOffers();
+  const { data,isLoading, isMobile, t } = useOffersPage();
 
   return (
     <Container sx={{ pt: 15 }}>
-      <img src={img} style={{ width: "100%" }} />
+      <img src={img} style={{ width: "100%" }} alt="img" />
       <Typography
         variant="h3"
         color="initial"
         sx={{ my: 2, textAlign: "center" }}
       >
-        Special Offers
+        {t("Special Offers")}
       </Typography>
       <Divider />
       <Box
         sx={{
           flexGrow: 1,
-          bgcolor: "background.paper",
+
           display: "flex",
           my: 5,
           flexDirection: isMobile ? "column" : "row",
         }}
       >
         <Grid container spacing={2}>
-          {data?.Products?.items.map((item, idx) => (
-            <Grid item md={3} sm={6} xs={12} key={idx}>
-              <ProductCard
-              
-                productName={item.name}
-                Price={item.price}
-                productImage={item.img}
-                offer={item.offer}
-                link={`/store/product/${item.id}`}
-                purchasable={item?.purchasable === "always"}
-              />
-            </Grid>
-          ))}
+          {isLoading &&
+            Array.from({ length: 5 }).map((_, index) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                <ProductCard loading={true} />
+              </Grid>
+            ))}
+
+          {data &&
+            data?.data?.products?.map((item, idx) => (
+              <Grid item md={3} sm={6} xs={12} key={idx}>
+                <ProductCard
+                  id={item?.id}
+                  productName={item.name}
+                  Price={item?.price}
+                  productImage={item?.images[0]?.image_path}
+                  link={`/store/product/${item.id}`}
+                  loading={false}
+                  purchasable={item?.purchasable === "always"}
+                  offer={item?.compare_price}
+                />
+              </Grid>
+            ))}
         </Grid>
       </Box>
     </Container>

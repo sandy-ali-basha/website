@@ -12,11 +12,6 @@ import {
 } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import defualt from "assets/images/defaultImg.jpg";
-import img1 from "assets/images/categories/pic_1.png";
-import img2 from "assets/images/categories/pic_1.png";
-import img3 from "assets/images/categories/pic_1.png";
-import AddTaskRoundedIcon from "@mui/icons-material/AddTaskRounded";
-import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import { useTheme } from "@emotion/react";
 import Simillar from "./_components/Simllar";
 import AccordionUsage from "./_components/AccordionUsage";
@@ -50,12 +45,12 @@ function Product() {
             {data?.data?.images ? (
               data?.data?.images?.map((item, idx) => (
                 <SwiperSlide key={idx}>
-                  <Box sx={{ width: "100%", height: "100%", borderRadius: 3 }}>
+                  <Box sx={{ width: "100%", height: "80vh", borderRadius: 3 }}>
                     <img
                       src={item?.image_path}
                       alt={`Slide`}
                       style={{
-                        objectFit: "cover",
+                        objectFit: "contain",
                         width: "100%",
                         height: "100%",
                         borderRadius: "inherit",
@@ -91,40 +86,63 @@ function Product() {
             <Typography
               sx={{ px: 2 }}
               color="initial"
-              variant="h3"
+              variant="h5"
               fontWeight={"bold"}
             >
               {data?.data?.name}
             </Typography>
           )}
-          <Box sx={{ display: "flex", gap: 2, mb: 1, px: 2, flexWrap: "wrap" }}>
+
+          <Box
+            sx={{
+              display: "flex",
+              my: 1,
+              px: 2,
+              flexWrap: "wrap",
+              gap: 1,
+              alignItems: "center",
+            }}
+          >
             {isLoading ? (
               <CardShimmer />
             ) : (
-              <Typography
-                sx={{
-                  textDecoration: data?.product?.offer
-                    ? "line-through"
-                    : "initial",
-
-                  fontWeight: "bold",
-                }}
-                variant="h5"
-                color={data?.product?.offer ? "text.secondary" : "initial"}
-              >
-                {data?.data?.price?.value} {data?.data?.price?.currency?.name}
-              </Typography>
+              data?.data?.compare_price > 0 && (
+                <Typography
+                  sx={{
+                    textDecoration: "line-through",
+                    fontWeight: "bold",
+                  }}
+                  variant="h5"
+                  color="text.secondary"
+                >
+                  {data?.data?.compare_price}
+                </Typography>
+              )
             )}
-
-            {data?.data?.sale && (
-              <Typography
-                color="initial"
-                variant="h5"
-                sx={{ fontWeight: "bold" }}
-              >
-                {data?.data?.sale}
-              </Typography>
+            {isLoading ? (
+              <CardShimmer />
+            ) : (
+              data?.data?.price && (
+                <Typography
+                  color="initial"
+                  variant="h4"
+                  sx={{ fontWeight: "bold" }}
+                >
+                  {data?.data?.price}
+                </Typography>
+              )
             )}
+            {data?.data?.compare_price > 0 && (
+              <Chip
+                color="success"
+                size="small"
+                sx={{ px: "1" }}
+                label={` - ${data?.data?.compare_price - data?.data?.price}`}
+              />
+            )}{" "}
+          </Box>
+          <hr />
+          <Box sx={{ display: "flex", my: 1, px: 2, flexWrap: "wrap" }}>
             <Box>
               {isLoading ? (
                 <CardShimmer />

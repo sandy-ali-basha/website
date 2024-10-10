@@ -9,11 +9,11 @@ import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
 
 // ** Icon Imports
 import Icon from "components/modules/icon";
 import { Chip, Container } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -74,16 +74,14 @@ const HorizontalList = styled(List)(({ theme }) => ({
 }));
 
 const StepConfirmation = ({ orderResponse }) => {
-  // const orderDate = new Date(orderResponse.created_at).toLocaleString();
-
   const billingAddress = orderResponse.address.find(
     (addr) => addr.type === "billing"
   );
   const shippingAddress = orderResponse.address.find(
     (addr) => addr.type === "shipping"
   );
-  const customer = orderResponse.customer[0];
   const items = orderResponse.lines;
+  const { t } = useTranslation("index");
 
   return (
     <Container>
@@ -98,7 +96,7 @@ const StepConfirmation = ({ orderResponse }) => {
             }}
           >
             <Typography variant="h4" sx={{ mb: 4 }}>
-              Thank You! 😇
+              {t("Thank You!")} 😇
             </Typography>
             <Typography sx={{ mb: 4, color: "text.secondary" }}>
               Your order{" "}
@@ -110,10 +108,10 @@ const StepConfirmation = ({ orderResponse }) => {
               >
                 #{orderResponse.reference}
               </Box>{" "}
-              has been placed!
+              {t("has been placed!")}
             </Typography>
-            <Typography sx={{ color: "text.secondary" }}>
-              We sent an email to{" "}
+            {/* <Typography sx={{ color: "text.secondary" }}>
+             {t("We sent an email to")}{" "}
               <Box
                 href="/"
                 component={Link}
@@ -123,10 +121,10 @@ const StepConfirmation = ({ orderResponse }) => {
                 {billingAddress.contact_email}
               </Box>{" "}
               with your order confirmation and receipt.
-            </Typography>
-            <Typography sx={{ mb: 4, color: "text.secondary" }}>
+            </Typography> */}
+            {/* <Typography sx={{ mb: 4, color: "text.secondary" }}>
               {` If the email hasn't arrived within two minutes, please check your spam folder to see if the email was routed there.`}
-            </Typography>
+            </Typography> */}
             <Box
               sx={{
                 display: "flex",

@@ -1,12 +1,5 @@
 import { _axios } from "interceptor/http-config";
 
-// Define the size and position of the popup window
-const width = 600;
-const height = 500;
-const left = window.innerWidth / 2 - width / 2;
-const top = window.innerHeight / 2 - height / 2;
-const googleLoginUrl = "https://dawaaalhayat.com/api";
-
 export const _AuthApi = {
   login: (data) => {
     return _axios.post("/login", data).then((res) => {
@@ -14,26 +7,16 @@ export const _AuthApi = {
     });
   },
   GoogleLogin: () => {
-    window.open(
-      googleLoginUrl + "/auth/google/redirect",
-      "Google Login",
-      `width=${width},height=${height},top=${top},left=${left}`
-    );
+    _axios
+      .get("/auth/google/redirect")
+      .then((res) => res.data);
   },
-  twitterLogin: () => {
-    window.open(
-      googleLoginUrl + "/auth/twitter/redirect",
-      "twitter Login",
-      `width=${width},height=${height},top=${top},left=${left}`
-    );
+  getUserData: () => {
+    _axios
+      .get("/user/data")
+      .then((res) => res.data);
   },
-  facebookLogin: () => {
-    window.open(
-      googleLoginUrl + "/auth/facebook/redirect",
-      "facebook Login",
-      `width=${width},height=${height},top=${top},left=${left}`
-    );
-  },
+
 
   register: (data) => {
     return _axios.post("/register", data).then((res) => {
