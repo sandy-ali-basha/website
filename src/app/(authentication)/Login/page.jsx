@@ -69,11 +69,7 @@ export default function Login() {
         component="form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <img
-          style={{ margin: "auto", width: "100%", height: "100px" }}
-          src={logo}
-          alt="logo"
-        />
+        <img style={{ margin: "auto", width: "30%" }} src={logo} alt="logo" />
         <Typography
           variant="h5"
           color="initial"

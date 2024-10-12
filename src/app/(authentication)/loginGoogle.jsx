@@ -1,40 +1,66 @@
-import { _AuthApi } from "api/auth";
-import React, { useState } from "react";
+import React from "react";
+import {
+  useGoogleLogin,
+  hasGrantedAllScopesGoogle,
+  hasGrantedAnyScopeGoogle,
+} from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
+import { _AuthApi } from "api/auth";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 
-const LoginComponent = () => {
-  const [loading, setLoading] = useState(false);
+function LoginButton() {
   const navigate = useNavigate();
 
-  const responseGoogle = (credentialResponse) => {
-    setLoading(true);
-    console.log("response", credentialResponse);
-    const token = credentialResponse?.credential; // Use credential from the response
-    _AuthApi.storeToken(token);
-    navigate("/");
-    // _AuthApi
-    //   .getUserData()
-    //   .then((res) => {
-    //     localStorage.setItem("userData", JSON.stringify(res.data.data));
-    //   })
-    setLoading(false);
-  };
+  const login = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      console.log(tokenResponse);
 
-  const onError = (error) => {
-    console.error("Google login failed:", error);
-    // Handle error case
-  };
+      const token = tokenResponse?.access_token; // Use the access token from response
 
-  return loading ? (
-    <p>Loading...</p>
-  ) : (
-    <GoogleLogin
-      onSuccess={responseGoogle}
-      onFailure={onError}
-      cookiePolicy={"single_host_origin"}
-    />
+      // Check if the user has granted the required scopes
+      const allScopesGranted = hasGrantedAllScopesGoogle(
+        tokenResponse,
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/userinfo.profile"
+      );
+
+      const anyScopeGranted = hasGrantedAnyScopeGoogle(
+        tokenResponse,
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/userinfo.profile"
+      );
+
+      if (allScopesGranted) {
+        console.log("All required scopes granted");
+
+        // Store token and navigate
+        _AuthApi.storeToken(token);
+        navigate("/");
+
+        _AuthApi.getUserData(tokenResponse).then((res) => {
+          localStorage.setItem("userData", JSON.stringify(res.data.data));
+        });
+      } else if (anyScopeGranted) {
+        console.log("Some required scopes granted");
+        // Handle cases where some but not all required scopes are granted
+      } else {
+        console.log("Required scopes not granted");
+        // Handle case when no required scopes are granted
+      }
+    },
+    onError: (error) => {
+      console.log("Login Failed:", error);
+    },
+    scope:
+      "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
+  });
+
+  return (
+    <>
+      <GoogleLogin onSuccess={login()} />
+    </>
   );
-};
+}
 
-export default LoginComponent;
+export default LoginButton;

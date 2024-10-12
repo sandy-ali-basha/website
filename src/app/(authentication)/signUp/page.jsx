@@ -88,7 +88,7 @@ function SignUp() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <img
-          style={{ margin: "auto", width: "100%", height: "100px" }}
+          style={{ margin: "auto", width: "30%", height: "100px" }}
           src={logo}
           alt="logo"
         />

@@ -21,7 +21,6 @@ import LanguageSelector from "components/LanguageSelector";
 import MenuIcon from "@mui/icons-material/Menu";
 import { _AuthApi } from "api/auth";
 function NavBar() {
-
   const { settings, pages, navigate, cities, t } = useNavBar();
 
   return (
@@ -47,7 +46,7 @@ function NavBar() {
               display: { xs: "none", md: "flex" },
             }}
           >
-            <img alt="logo" src={logo} />
+            <img alt="logo" src={logo} style={{ width: "6vw" }} />
           </Typography>
           <Box
             sx={{
@@ -81,7 +80,7 @@ function NavBar() {
               textDecoration: "none",
             }}
           >
-            <img alt="logo" src={logo} />
+            <img alt="logo" style={{ width: "10vw" }} src={logo} />
           </Typography>
           <Box
             sx={{

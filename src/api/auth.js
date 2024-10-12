@@ -11,9 +11,9 @@ export const _AuthApi = {
       .get("/auth/google/redirect")
       .then((res) => res.data);
   },
-  getUserData: () => {
+  getUserData: (data) => {
     _axios
-      .get("/user/data")
+      .post("/auth/google/callback",data)
       .then((res) => res.data);
   },
 

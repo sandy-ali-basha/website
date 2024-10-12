@@ -62,13 +62,19 @@ export default function Home() {
   const { data, isLoading } = useHome();
   const { data: slider, isLoading: sliderLoading } = useHomeSlider();
 
-  console.log(" das;jfpd's ", data?.["home.page.video"]?.video);
-
   return (
     <>
       {/* <SpinAndWin/> */}
       {isLoading && sliderLoading && (
-        <Box sx={{ my: 5, height: "50vh" }}>
+        <Box
+          sx={{
+            my: 5,
+            height: "50vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Loader />
         </Box>
       )}
@@ -163,7 +169,7 @@ export default function Home() {
                   variant="body2"
                   color="initial"
                   dangerouslySetInnerHTML={{
-                    __html: data?.["home.page.stats"]?.value?.[lang].title1,
+                    __html: data?.["home.page.status"]?.value?.[lang].title1,
                   }}
                 ></Typography>
                 <Typography
@@ -171,7 +177,7 @@ export default function Home() {
                   color="initial"
                   sx={{ mb: 2, fontWeight: "bold" }}
                   dangerouslySetInnerHTML={{
-                    __html: data?.["home.page.stats"]?.value?.[lang].subtitle1,
+                    __html: data?.["home.page.status"]?.value?.[lang].subtitle1,
                   }}
                 ></Typography>
                 <Box
@@ -181,7 +187,7 @@ export default function Home() {
                     alignItems: "center",
                   }}
                 >
-                  {data?.["home.page.stats"]?.value?.info?.map(
+                  {data?.["home.page.status"]?.value?.info?.map(
                     (item, index) => (
                       <Box key={index}>
                         <Typography
@@ -215,7 +221,7 @@ export default function Home() {
                 }}
                 ref={gummieBox}
               />
-              {data?.["home.page.stats"] && (
+              {data?.["home.page.status"] && (
                 <Grid item md={5} xs={12} sx={{ height: "60vh" }}>
                   <Box
                     sx={{
@@ -230,7 +236,7 @@ export default function Home() {
                       variant="h4"
                       color="white"
                       dangerouslySetInnerHTML={{
-                        __html: data?.["home.page.stats"]?.value?.[lang].title2,
+                        __html: data?.["home.page.status"]?.value?.[lang].title2,
                       }}
                     ></Typography>
                     <Typography
@@ -239,7 +245,7 @@ export default function Home() {
                       sx={{ mt: 2 }}
                       dangerouslySetInnerHTML={{
                         __html:
-                          data?.["home.page.stats"]?.value?.[lang].subtitle2,
+                          data?.["home.page.status"]?.value?.[lang].subtitle2,
                       }}
                     ></Typography>
                   </Box>
@@ -296,9 +302,16 @@ export default function Home() {
                 ></Typography>
               </Grid>
               <Grid md="6">
-                <img src={data?.["home.page.textSectionOne"]?.image} alt="" />
+                <img
+                  src={data?.["home.page.textSectionOne"]?.image}
+                  alt=""
+                  style={{ width: "100%" }}
+                />
               </Grid>
             </Grid>
+          </Container>
+          <AnimatedText></AnimatedText>
+          <Container>
             <Grid container sx={{ py: 2 }}>
               <Grid md="6">
                 <Typography
@@ -317,7 +330,6 @@ export default function Home() {
               </Grid>
             </Grid>
           </Container>
-          <AnimatedText></AnimatedText>
           {/* <BestSellers /> */}
           <Qoute
             data={data?.["home.page.videoText"]}
