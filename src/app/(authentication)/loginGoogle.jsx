@@ -4,7 +4,6 @@ import {
   hasGrantedAllScopesGoogle,
   hasGrantedAnyScopeGoogle,
 } from "@react-oauth/google";
-import { GoogleLogin } from "@react-oauth/google";
 import { _AuthApi } from "api/auth";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
@@ -57,9 +56,12 @@ function LoginButton() {
   });
 
   return (
-    <>
-      <GoogleLogin onSuccess={login()} />
-    </>
+    <Button
+      sx={{ background: "white", color: "text.primary" }}
+      onClick={() => login()}
+    >
+      Login with Google
+    </Button>
   );
 }
 
