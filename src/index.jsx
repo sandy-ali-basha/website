@@ -27,7 +27,7 @@ root.render(
     <SnackbarProvider>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <GoogleOAuthProvider clientId="467243834760-7vjblpv9ksm46sj56e3nolqqcgqecq37.apps.googleusercontent.com">
+          <GoogleOAuthProvider clientId="550372663662-7s215nkgja3v99be8evnckbt7q464cr5.apps.googleusercontent.com">
             <App />
           </GoogleOAuthProvider>
           
