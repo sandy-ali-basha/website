@@ -59,7 +59,7 @@ function Footer() {
             )}
           </Grid>
 
-          <Grid xs={12} item>
+          {/* <Grid xs={12} item>
             <Typography color={"white"} variant={"body1"}>
               Our Mission
             </Typography>
@@ -67,7 +67,7 @@ function Footer() {
               Lorem ipsum footer text not to be read but for placement only. FPO
               text.
             </Typography>
-          </Grid>
+          </Grid> */}
           <Grid
             xs={12}
             md={6}

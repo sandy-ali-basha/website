@@ -30,7 +30,6 @@ root.render(
           <GoogleOAuthProvider clientId="550372663662-7s215nkgja3v99be8evnckbt7q464cr5.apps.googleusercontent.com">
             <App />
           </GoogleOAuthProvider>
-          
         </BrowserRouter>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
