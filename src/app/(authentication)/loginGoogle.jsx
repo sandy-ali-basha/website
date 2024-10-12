@@ -7,6 +7,7 @@ import {
 import { _AuthApi } from "api/auth";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
+import { Google } from "@mui/icons-material";
 
 function LoginButton() {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ function LoginButton() {
   return (
     <Button
       sx={{ background: "white", color: "text.primary" }}
+      startIcon={<Google />}
       onClick={() => login()}
     >
       Login with Google
