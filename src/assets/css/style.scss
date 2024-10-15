@@ -66,18 +66,18 @@
     position: absolute;
   }
   .floatingGar {
-    transform: translate(80px, 40px);
+    transform: translate(0px, 40px);
     object-fit: contain;
-    width: 300px;
+    width: 40vw;
     filter: drop-shadow(0 10px 0.3rem #4d4d4d52);
     @media only screen and (max-width: 600px) {
       width: 30vw;
     }
   }
   .floatingGar2 {
-    transform: translate(-80px, -80px);
+    transform: translate(0px, -80px);
     object-fit: contain;
-    width: 350px;
+    width: 550px;
     filter: drop-shadow(0 10px 0.3rem #4d4d4d52);
     @media only screen and (max-width: 600px) {
       width: 30vw;

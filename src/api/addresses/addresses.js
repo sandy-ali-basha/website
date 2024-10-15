@@ -24,12 +24,8 @@ export const _addresses = {
 
   delete: (id) => _axios.delete(`/addresses/${id}`).then((res) => res.data),
 
-  update: ({ editedID, formData, loading, setLoading, setOpen }) =>
-    _axios.post(`/addresses/${editedID}`, formData).then((res) => {
-      setLoading(false);
-      setOpen(false);
-    }),
+  update: ({ id, data }) =>
+    _axios.post(`/addresses/${id}`, data).then((res) => res?.data),
 
-  post: ( data ) =>
-    _axios.post(`/addresses`, data).then((res) => res?.data),
+  post: (data) => _axios.post(`/addresses`, data).then((res) => res?.data),
 };

@@ -14,10 +14,10 @@ import { useMutation } from "react-query";
 import { useForm } from "react-hook-form";
 import { _contact } from "api/contact/contact";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
 import ButtonLoader from "components/customs/ButtonLoader";
 import Swal from "sweetalert2";
-import zIndex from "@mui/material/styles/zIndex";
+import { LocationCity } from "@mui/icons-material";
+import { MapPin } from "react-feather";
 
 export default function ContactUs() {
   const { t } = useTranslation("index");
@@ -30,8 +30,7 @@ export default function ContactUs() {
   });
 
   const formOptions = { resolver: yupResolver(schema) };
-  const { register, handleSubmit, formState, setValue, control, reset } =
-    useForm(formOptions);
+  const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
   const { mutate } = useMutation((data) => createPost(data));
 
@@ -180,7 +179,8 @@ export default function ContactUs() {
         >
           <Box sx={{ width: { md: "45vw", sm: "90vw" } }}>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3219.1563795604266!2d44.0297013!3d36.211393799999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4007239623882d59%3A0x168fa754f4658b3b!2z2LTYsdmD2Kkg2K_ZiNin2KEg2KfZhNit2YrYp9ipIC0gRGF3YWEgQWxoYXlhdCBjb21wYW55!5e0!3m2!1sar!2seg!4v1717020932521!5m2!1sar!2seg"
+              title="map"
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d43592.783752407915!2d44.029617!3d36.21132!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4007239623882d59%3A0x168fa754f4658b3b!2z2LTYsdmD2Kkg2K_ZiNin2KEg2KfZhNit2YrYp9ipIC0gRGF3YWEgQWxoYXlhdCBjb21wYW55!5e1!3m2!1sar!2seg!4v1728900655861!5m2!1sar!2seg"
               allowfullscreen=""
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
@@ -191,16 +191,29 @@ export default function ContactUs() {
                 height: "70vh",
               }}
             ></iframe>
-          </Box>
-          <Box sx={{ textAlign: "start", width: "100%", mt: 3, ms: 2 }}>
             <Typography variant="body1" color="initial">
-              {t("Need white glove customer support?")}
+              Erbil Office: <br />
+              Dawaa Alhayat Company <br />
+              Shoresh Street,Khanzad، 2nd Floor , Building 206، Erbil، Erbil IQ
             </Typography>
-            <MailToLink
-              sx={{ mt: 2 }}
-              text="Contact Customer Support"
-              email="support@dawaaalhayat.com"
-            />
+          </Box>
+          <Box sx={{ width: "100%", mt: 3, display: "flex", gap: 1 }}>
+            <MapPin sx={{ px: 1 }} />{" "}
+            <Typography variant="body1" color="initial">
+              Baghdad Office:
+            </Typography>
+            <a href="https://maps.app.goo.gl/NgbhGFS5KkDjLGXDA" color="initial">
+              Dawaa Alhayat Scientific bureau Al Amiriya, Baghdad, Iraq
+            </a>
+          </Box>
+          <Box sx={{ width: "100%", mt: 3, display: "flex", gap: 1 }}>
+            <MapPin />{" "}
+            <Typography variant="body1" color="initial">
+              Sulaymaniya office:
+            </Typography>
+            <a href="https://maps.app.goo.gl/bBXyAZ89f1pXREmJ7" color="initial">
+              Al sulaymaniya , German Village 1 , Villa No.47
+            </a>
           </Box>
         </Grid>
       </Grid>

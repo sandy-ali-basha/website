@@ -103,6 +103,9 @@ function Product() {
               alignItems: "center",
             }}
           >
+            <Typography variant="h5" color="text.primary">
+              {t("Price")}:
+            </Typography>
             {isLoading ? (
               <CardShimmer />
             ) : (
@@ -115,7 +118,7 @@ function Product() {
                   variant="h5"
                   color="text.secondary"
                 >
-                  {data?.data?.compare_price}
+                  {data?.data?.compare_price} {t("currency")}
                 </Typography>
               )
             )}
@@ -128,7 +131,7 @@ function Product() {
                   variant="h4"
                   sx={{ fontWeight: "bold" }}
                 >
-                  {data?.data?.price}
+                  {data?.data?.price} {t("currency")}
                 </Typography>
               )
             )}

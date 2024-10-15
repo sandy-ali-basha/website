@@ -179,7 +179,7 @@ export default function Category() {
                       link={`/store/product/${item.id}`}
                       loading={false}
                       purchasable={item?.purchasable === "always"}
-                      offer={item?.compare_price}
+                      offer={item?.compare_price }
                     />
                   </Grid>
                 );

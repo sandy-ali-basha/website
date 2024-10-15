@@ -13,8 +13,11 @@ import Chip from "@mui/material/Chip";
 import Tabs from "@mui/material/Tabs";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
-import { Container, TextField } from "@mui/material";
+import { Card, Container, TextField } from "@mui/material";
 import { ValueStore } from "store/categoryStore";
+import { useTranslation } from "react-i18next";
+import { CreditCard, Money } from "@mui/icons-material";
+import { useCart } from "hooks/cart/useCart";
 
 const CustomTabList = styled(Tabs)(({ theme }) => ({
   borderBottom: "0 !important",
@@ -52,6 +55,9 @@ const StepPayment = ({ handleNext }) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const { t } = useTranslation("index");
+  const cart_id = localStorage.getItem("cart_id");
+  const { data: cartData, isLoading: cartIsLoading } = useCart(cart_id);
 
   return (
     <Container>
@@ -87,60 +93,62 @@ const StepPayment = ({ handleNext }) => {
                   value="fib"
                   sx={{ px: 3, borderRadius: 3, boxShadow: 3 }}
                 >
+                  <CreditCard />
                   <Typography sx={{ mb: 4 }}>
-                    card is a type of payment method where the recipient make
-                    payment for the order at the time of delivery rather than in
-                    advance.
+                    {t(
+                      "card is a type of payment method where the recipient make payment for the order at the time of delivery rather than in advance."
+                    )}
                   </Typography>
                   <Button variant="contained" onClick={handleNext}>
-                    Pay On Delivery
+                    {t("Pay With Card")}
                   </Button>
                 </TabPanel>
                 <TabPanel
                   value="cash-in-hand"
                   sx={{ px: 3, borderRadius: 3, boxShadow: 3 }}
                 >
+                  <Money />
                   <Typography sx={{ mb: 4 }}>
                     Cash on Delivery is a type of payment method where the
                     recipient make payment for the order at the time of delivery
                     rather than in advance.
                   </Typography>
                   <Button variant="contained" onClick={handleNext}>
-                    Pay On Delivery
+                    {t("Pay On Delivery")}
                   </Button>
                 </TabPanel>
                 {/*//* Gift Card  */}
                 <TabPanel
-                value="gc"
-                sx={{ px: 3, borderRadius: 3, boxShadow: 3 }}
-              >
-                <Typography sx={{ mb: 4, fontWeight: 500 }}>
-                  Enter Gift Card Details
-                </Typography>
-                <Grid container spacing={4}>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      type="number"
-                      label="Gift Card Number"
-                      placeholder="Gift Card Number"
-                    />
+                  value="gc"
+                  sx={{ px: 3, borderRadius: 3, boxShadow: 3 }}
+                >
+                  <Typography sx={{ mb: 4, fontWeight: 500 }}>
+                    Enter Gift Card Details
+                  </Typography>
+                  <Grid container spacing={4}>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        type="number"
+                        label="Gift Card Number"
+                        placeholder="Gift Card Number"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        type="number"
+                        label="Gift Card Pin"
+                        placeholder="Gift Card Pin"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Button variant="contained" onClick={handleNext}>
+                        Redeem Gift Card
+                      </Button>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      type="number"
-                      label="Gift Card Pin"
-                      placeholder="Gift Card Pin"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Button variant="contained" onClick={handleNext}>
-                      Redeem Gift Card
-                    </Button>
-                  </Grid>
-                </Grid>
-              </TabPanel>
+                </TabPanel>
               </Grid>
             </Grid>
           </TabContext>
@@ -154,59 +162,82 @@ const StepPayment = ({ handleNext }) => {
           >
             <CardContent>
               <Typography sx={{ mb: 4 }} variant="h6">
-                Price Details
+                {t("Price Details")}
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
+                {/* bag total */}
                 <Box
                   sx={{
-                    mb: 4,
-                    rowGap: 1,
-                    columnGap: 4,
+                    mb: 2,
+                    gap: 2,
                     display: "flex",
                     flexWrap: "wrap",
                     alignItems: "center",
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography>Order Total</Typography>
+                  <Typography>{t("Bag Total")}</Typography>
                   <Typography sx={{ color: "text.secondary" }}>
-                    $1198.00
+                    {cartData?.data?.discount_amount > 0
+                      ? cartData?.data?.sub_total_after_points
+                      : cartData?.data?.sub_total}{" "}
+                    IQD
                   </Typography>
                 </Box>
+                {/* discount_amount */}
+                {cartData?.data?.discount_amount > 0 && (
+                  <Box
+                    sx={{
+                      mb: 2,
+                      gap: 2,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography>{t("Coupon Discount")}</Typography>
+                    <Typography variant="h6" sx={{ color: "primary.main" }}>
+                      {cartData?.data?.sub_total_after_discount}
+                    </Typography>
+                  </Box>
+                )}
+                {/* points_used */}
+                {cartData?.data?.points_used > 0 && (
+                  <Box
+                    sx={{
+                      mb: 2,
+                      gap: 2,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography>{t("Points Used")}</Typography>
+                    <Typography variant="body2" color="secondary">
+                      {cartData?.data?.sub_total_after_points}
+                    </Typography>
+                  </Box>
+                )}
+
                 <Box
                   sx={{
-                    rowGap: 1,
-                    columnGap: 4,
+                    gap: 2,
                     display: "flex",
                     flexWrap: "wrap",
                     alignItems: "center",
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography>Delivery Charges</Typography>
+                  <Typography>{t("Delivery Charges")}</Typography>
                   <Box
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "flex-end",
                     }}
                   >
-                    <Typography
-                      sx={{
-                        mr: 2,
-                        textDecoration: "line-through",
-                        color: "text.disabled",
-                      }}
-                    >
-                      $5.00
-                    </Typography>
-                    <Chip
-                      rounded
-                      size="small"
-                      skin="light"
-                      color="success"
-                      label="Free"
-                    />
+                    {t("well be calculating in the next step")}
                   </Box>
                 </Box>
               </Box>
@@ -254,14 +285,6 @@ const StepPayment = ({ handleNext }) => {
                 <Typography>4135 Parkway Street,</Typography>
                 <Typography>Los Angeles, CA, 90017.</Typography>
                 <Typography sx={{ mb: 4 }}>Mobile : +1 906 568 2332</Typography>
-                <Typography
-                  href="/"
-                  component={Link}
-                  onClick={(e) => e.preventDefault()}
-                  sx={{ color: "primary.main", textDecoration: "none" }}
-                >
-                  Change address
-                </Typography>
               </Box>
             </CardContent>
           </Box>

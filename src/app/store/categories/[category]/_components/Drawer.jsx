@@ -37,7 +37,8 @@ const SideDrawer = ({
       <CAccordion data={data} handleCheked={handleCheked} />
 
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
-        {t("Price")}
+        {t("Price")}{" "}
+        {t("currency")}
       </Typography>
       <Box dir="ltr">
         <Grid container spacing={2} alignItems="center">

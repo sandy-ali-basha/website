@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
 import {
   Dialog,
@@ -13,16 +13,21 @@ import {
   Grid,
   Checkbox,
   Typography,
+  FormControl,
+  Box,
+  FormHelperText,
 } from "@mui/material";
 import { _addresses } from "api/addresses/addresses";
 import ButtonLoader from "components/customs/ButtonLoader";
 import { useAddressDialog } from "./hooks/useAddressDialog";
 import { useQuery } from "react-query";
 import Loader from "components/modules/Loader";
+import { _cities } from "api/country/country";
+import { useEditAddress } from "./hooks/useEditAddress";
 
 const EditDialog = ({ open, handleClose, id }) => {
   const {
-    hanldeCreate,
+    handleCreate, // Fixed typo here
     register,
     errors,
     handleChange,
@@ -31,20 +36,31 @@ const EditDialog = ({ open, handleClose, id }) => {
     control,
     t,
     setChecked,
-  } = useAddressDialog({ handleClose });
+    setValue
+  } = useEditAddress({ handleClose, id });
+
+  const [cities, setCiteies] = useState();
+  useMemo(() => {
+    _cities.index().then((response) => {
+      if (response.code === 200) {
+        setCiteies(response.data);
+      }
+    });
+  }, []);
 
   const { data, isLoading } = useQuery(
     ["addresses", `id-${id}`],
-    () => _addresses.get(id).then((res) => res), // Ensure you return the data here
+    () =>
+      _addresses.get(id).then((res) => {
+        setValue("first_name", data.data.first_name);
+        return res;
+      }), // Ensure you return the data here
     {}
   );
 
   useEffect(() => {
     setChecked(data?.data?.shipping_default);
-  }, []);
-
-  console.log("data", data);
-  console.log("isLoading", isLoading);
+  }, [data?.data?.shipping_default, setChecked]);
 
   return (
     <Dialog
@@ -61,12 +77,12 @@ const EditDialog = ({ open, handleClose, id }) => {
         component: "form",
         onSubmit: (event) => {
           event.preventDefault();
-          handleSubmit(hanldeCreate)();
+          handleSubmit(handleCreate)(); // Correct reference here
         },
       }}
     >
       <DialogTitle id="scroll-dialog-title">{t("Edit Address")}</DialogTitle>
-      <DialogContent sx={{ minHeight: "50vh"}}>
+      <DialogContent sx={{ minHeight: "50vh" }}>
         {isLoading && <Loader />}
         {data && (
           <Grid container spacing={2} sx={{ pt: 1 }}>
@@ -130,17 +146,29 @@ const EditDialog = ({ open, handleClose, id }) => {
                 defaultValue={data?.data?.last_name}
               />
             </Grid>
-           
+
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="City"
-                placeholder="City"
-                {...register("city")}
-                error={!!errors.city}
-                helpertext={errors.city ? errors.city.message : ""}
-                defaultValue={data?.data?.city}
-              />
+              {cities ? (
+                <FormControl fullWidth>
+                  <Select
+                    sx={{ borderColor: "text.main" }}
+                    {...register("city")}
+                    label="city"
+                    value={data?.data?.city}
+                  >
+                    {cities?.state?.map((item) => (
+                      <MenuItem value={item.value} key={item.id}>
+                        <Box style={{ color: "text.main" }}>{item.name}</Box>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText error>{errors.city?.message}</FormHelperText>
+                </FormControl>
+              ) : (
+                <Typography variant="body2" color="text.main">
+                  {t("pleas add city")}
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -164,18 +192,7 @@ const EditDialog = ({ open, handleClose, id }) => {
                 defaultValue={data?.data?.line_one}
               />
             </Grid>
-            
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Postcode"
-                placeholder="Postcode"
-                {...register("postcode")}
-                error={!!errors.postcode}
-                helpertext={errors.postcode ? errors.postcode.message : ""}
-                defaultValue={data?.data?.postcode}
-              />
-            </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -208,7 +225,7 @@ const EditDialog = ({ open, handleClose, id }) => {
                 defaultValue={data?.data?.contact_phone}
               />
             </Grid>
-   
+
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -228,7 +245,7 @@ const EditDialog = ({ open, handleClose, id }) => {
             <Grid item xs={12}>
               <Checkbox variant="soft" onChange={handleChange} />
               <Typography variant="text.primary">
-                {t("Defualt address for shipping")}
+                {t("Default address for shipping")}
               </Typography>
             </Grid>
           </Grid>

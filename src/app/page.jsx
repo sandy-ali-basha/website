@@ -2,40 +2,30 @@ import React, { useEffect, useRef, useState } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import fineLogo from "assets/images/fineLogo.png";
+import logo from "assets/images/logo.png";
 import {
   Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
   Grid,
 } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-import bg1 from "assets/images/hero.png";
-import bg2 from "assets/images/hero-image (2).jpg";
 import gummie from "assets/images/gummies.png";
 import AnimatedText from "../components/modules/home/AnimatedText.jsx";
-import BestSellers from "../components/modules/home/BestSellers.jsx";
 import Qoute from "../components/modules/home/Qoute.jsx";
 import Partners from "../components/modules/home/Partners.jsx";
 import { Autoplay } from "swiper/modules";
 import gsap from "gsap";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { settingsStore } from "store/settingsStore.js";
 import { useHome, useHomeSlider } from "hooks/home/useHome.js";
 import Loader from "components/modules/Loader.jsx";
-// import SpinAndWin from "components/SpinAndWin.jsx";
+import ChooseCity from "components/ChooseCity.jsx";
+import imageOfStats from "assets/images/home.jpg";
 
 export default function Home() {
-  const [open, setOpen] = useState(
-    localStorage.getItem("opendDialog") ? false : true
-  );
-  const handleClose = () => {
-    setOpen(false);
-    localStorage.setItem("opendDialog", false);
-  };
+  const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
 
   const [direction] = settingsStore((state) => [state.direction]);
   const gummieBox = useRef(null);
@@ -145,6 +135,23 @@ export default function Home() {
       {data && (
         <>
           <Container>
+            <Grid container sx={{ py: 2 }}>
+              <Grid md="6">
+                <img
+                  src={data?.["home.page.textSectionOne"]?.image}
+                  alt=""
+                  style={{ width: "100%" }}
+                />
+              </Grid>
+              <Grid md="6">
+                <Typography
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      data?.["home.page.textSectionOne"]?.value?.text?.[lang],
+                  }}
+                ></Typography>
+              </Grid>
+            </Grid>
             <Grid
               sx={{
                 mt: 3,
@@ -225,18 +232,19 @@ export default function Home() {
                 <Grid item md={5} xs={12} sx={{ height: "60vh" }}>
                   <Box
                     sx={{
-                      background: "#6A83B0",
+                      // background: "#6A83B0",
                       borderRadius: 2,
-                      p: 2,
+                      // p: 2,
                       boxShadow: 3,
                       height: "100%",
                     }}
                   >
-                    <Typography
+                    {/* <Typography
                       variant="h4"
                       color="white"
                       dangerouslySetInnerHTML={{
-                        __html: data?.["home.page.status"]?.value?.[lang].title2,
+                        __html:
+                          data?.["home.page.status"]?.value?.[lang].title2,
                       }}
                     ></Typography>
                     <Typography
@@ -247,7 +255,8 @@ export default function Home() {
                         __html:
                           data?.["home.page.status"]?.value?.[lang].subtitle2,
                       }}
-                    ></Typography>
+                    ></Typography> */}
+                    <img src={imageOfStats} style={{ width: "100%" }} alt="" />
                   </Box>
                 </Grid>
               )}
@@ -292,23 +301,6 @@ export default function Home() {
                 </Button>
               </Grid>
             </Grid>
-            <Grid container sx={{ py: 2 }}>
-              <Grid md="6">
-                <Typography
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      data?.["home.page.textSectionOne"]?.value?.text?.[lang],
-                  }}
-                ></Typography>
-              </Grid>
-              <Grid md="6">
-                <img
-                  src={data?.["home.page.textSectionOne"]?.image}
-                  alt=""
-                  style={{ width: "100%" }}
-                />
-              </Grid>
-            </Grid>
           </Container>
           <AnimatedText></AnimatedText>
           <Container>
@@ -336,7 +328,7 @@ export default function Home() {
             video={data?.["home.page.video"]?.video}
           />
           <Partners />
-          <Dialog open={open} onClose={handleClose} py="6">
+          <Dialog open={open} py="6">
             <DialogContent
               py="6"
               sx={{
@@ -348,29 +340,17 @@ export default function Home() {
             >
               <img
                 style={{ width: "50%", margin: "1rem auto" }}
-                src={fineLogo}
+                src={logo}
                 alt=""
               />
               <DialogContentText
                 textAlign={"center"}
                 sx={{ fontSize: "1.5rem" }}
               >
-                {t(
-                  "You can now shop Canadian Fine products through the website of the Life Medicine Company, the exclusive agent of the Canadian company Fine in Iraq"
-                )}
+                {t("pleas choose city to continue")}
+                <ChooseCity />
               </DialogContentText>
             </DialogContent>
-            <DialogActions
-              sx={{
-                alignItems: "center",
-                justifyContent: "center",
-                display: "flex",
-              }}
-            >
-              <Button onClick={handleClose} sx={{ color: "#a7275d" }} mx="auto">
-                {t("buy now")}
-              </Button>
-            </DialogActions>
           </Dialog>
         </>
       )}

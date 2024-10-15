@@ -99,16 +99,18 @@ export default function ProductCard({
                   }}
                 />
               ) : (
-                <>{Price} ID</>
+                <>
+                  {Price} {t("currency")}
+                </>
               )}
             </Typography>
-
-            {offer && (
+            {offer > 0 && (
               <Typography variant="body1" color="initial">
-                {offer} ID
+                {offer} {t("currency")}
               </Typography>
             )}
           </Box>
+          
           {purchasable && !loading && (
             <Button
               variant="outlined"

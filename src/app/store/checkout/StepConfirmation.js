@@ -14,6 +14,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Icon from "components/modules/icon";
 import { Chip, Container } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { useCart } from "hooks/cart/useCart";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -248,7 +249,7 @@ const StepConfirmation = ({ orderResponse }) => {
                     }}
                   >
                     <Typography sx={{ color: "primary.main" }}>
-                      ${item.unit_price.value / 100}
+                      {item.unit_price.value / 100} {t("currency")}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -269,7 +270,7 @@ const StepConfirmation = ({ orderResponse }) => {
           >
             <CardContent>
               <Typography sx={{ mb: 4 }} variant="h6">
-                Price Details
+                {t("Price Details")}
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <Box
@@ -284,7 +285,8 @@ const StepConfirmation = ({ orderResponse }) => {
                 >
                   <Typography>Order Total</Typography>
                   <Typography sx={{ color: "text.secondary" }}>
-                    ${orderResponse.sub_total / 100}
+                    {t("currency")}
+                    {orderResponse.sub_total / 100}
                   </Typography>
                 </Box>
                 <Box

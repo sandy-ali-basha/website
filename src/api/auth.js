@@ -6,17 +6,11 @@ export const _AuthApi = {
       return res;
     });
   },
-  GoogleLogin: () => {
-    _axios
-      .get("/auth/google/redirect")
-      .then((res) => res.data);
-  },
-  getUserData: (data) => {
-    _axios
-      .post("/auth/google/callback",data)
-      .then((res) => res.data);
-  },
 
+  getUserData: (data) => {
+    return _axios.post("/auth/google/callback", data).then((res) => res.data);
+  },
+  
 
   register: (data) => {
     return _axios.post("/register", data).then((res) => {

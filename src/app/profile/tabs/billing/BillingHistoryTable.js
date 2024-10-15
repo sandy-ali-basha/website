@@ -51,7 +51,8 @@ const invoiceStatusObj = {
   canceled: { color: "primary", icon: <CancelRounded /> },
   cancel_requested: { color: "error", icon: <CancelScheduleSendRounded /> },
   order_requested: { color: "info", icon: <ShoppingCartCheckoutRounded /> },
-  "awaiting-payment": { color: "warning", icon: <PaymentRounded /> },
+  awaiting_payment: { color: "warning", icon: <PaymentRounded /> },
+  order_canceled: { color: "success", icon: <CloseIcon /> },
 };
 
 const BillingHistoryTable = () => {

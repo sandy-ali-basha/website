@@ -10,7 +10,7 @@ import gummie4 from "assets/images/animatedText/gummy (4).png";
 import gummie5 from "assets/images/animatedText/gummy (5).png";
 import gummie6 from "assets/images/animatedText/gummy (6).png";
 import gummie7 from "assets/images/animatedText/gummy (7).png";
-import gar1 from "assets/images/animatedText/gummyGar.png";
+import gar1 from "assets/images/jar.png";
 import gar2 from "assets/images/animatedText/gummyGar2.png";
 //*GSAP
 import { useRef, useEffect } from "react";
@@ -96,11 +96,12 @@ export default function AnimatedText() {
           alt={`gummie ${index + 1}`}
         />
       ))}
-      <img
+      {/* <img
         src={gar2}
         ref={gsr2}
         className="floatingGar2"
         style={{ zIndex: "3" }}
+        alt=""
       />
       <Typography
         variant="h2"
@@ -109,21 +110,22 @@ export default function AnimatedText() {
         sx={{ zIndex: "4", position: "relative" }}
       >
         EASILY DIGESTIBLE
-      </Typography>
+      </Typography> */}
       <img
         src={gar1}
         className="floatingGar"
         style={{ zIndex: "1" }}
         ref={gar}
+        alt=""
       />
-      <Typography
+      {/* <Typography
         variant="h2"
         color="initial"
         className="text"
-        sx={{ zIndex: "2", position: "relative" }}
+        sx={{ zIndex  : "2", position: "relative" }}
       >
         GUMMY BEAR
-      </Typography>
+      </Typography> */}
     </Box>
   );
 }

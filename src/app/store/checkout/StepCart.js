@@ -203,17 +203,8 @@ const StepCart = ({ handleNext }) => {
                           </Box>
                           <Box sx={{ display: "flex" }}>
                             <Typography sx={{ color: "text.main" }}>
-                              {item?.price}
+                              {item?.price} {t("currency")}
                             </Typography>
-                            {/* <Typography
-                              sx={{
-                                color: "text.disabled",
-                                textDecoration: "line-through",
-                                mx: 1,
-                              }}
-                            >
-                              /{item?.price}
-                            </Typography> */}
                           </Box>
                         </Grid>
                         <Grid item xs={12} md={4} sx={{ mt: [4, 4, 6] }}>
@@ -235,21 +226,6 @@ const StepCart = ({ handleNext }) => {
                             />
                           </Box>
                         </Grid>
-                        {/* <Grid item xs={12}>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        mt: 1,
-                        alignItems: "flex-end",
-                      }}
-                    >
-                      <TextField size="small" type="number" defaultValue="1" />
-                      <Button variant="outlined" size="small" color="secondary">
-                        {t("Move to wishlist")}
-                      </Button>
-                    </Box>
-                  </Grid> */}
                       </Grid>
                     </ListItem>
                   ))
@@ -376,7 +352,7 @@ const StepCart = ({ handleNext }) => {
               <Divider sx={{ my: "0 !important" }} />
               {userData && (
                 <CardContent>
-                  <ApplyCoupon  />
+                  <ApplyCoupon />
                   <ApplyPoints />
                 </CardContent>
               )}

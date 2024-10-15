@@ -131,24 +131,13 @@ const AddDialog = ({ open, handleClose }) => {
             />
           </Grid>
 
-          {/* <Grid item xs={12} sm={6}>
-            
-            <TextField
-              fullWidth
-              label="City"
-              placeholder="City"
-              {...register("city")}
-              error={!!errors.city}
-              helperText={errors.city ? errors.city.message : ""}
-            />
-          </Grid> */}
           <Grid item xs={6} sx={{ p: "10px" }}>
             {cities ? (
               <FormControl fullWidth>
                 <Select
                   sx={{ color: "text.main", borderColor: "text.main" }}
                   {...register("city")}
-                  label="Age"
+                  label="city"
                 >
                   {cities?.state?.map((item) => (
                     <MenuItem value={item.value} key={item.id}>
@@ -174,16 +163,7 @@ const AddDialog = ({ open, handleClose }) => {
               helperText={errors.state ? errors.state.message : ""}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Postcode"
-              placeholder="Postcode"
-              {...register("postcode")}
-              error={!!errors.postcode}
-              helperText={errors.postcode ? errors.postcode.message : ""}
-            />
-          </Grid>
+        
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth

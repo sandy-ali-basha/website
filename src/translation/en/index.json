@@ -129,7 +129,7 @@
   "MY POINTS": "MY POINTS",
   "pleas Login to view your points": "pleas Login to view your points",
   "Special Offers": "Special Offers",
- 
+
   "Something went wrong. Please try again.": "Something went wrong. Please try again.",
   "Oops...": "Oops...",
   "error": "error",
@@ -138,5 +138,11 @@
   "success": "success",
   "Yes, cancel it!": "Yes, cancel it!",
   "You won't be able to revert this!": "You won't be able to revert this!",
-  "Are you sure?": "Are you sure?"
+  "Are you sure?": "Are you sure?",
+  "pleas choose city to continue": "pleas choose city to continue",
+  "Login with Google": "Login with Google",
+  "currency": "I.Q.D",
+  "card is a type of payment method where the recipient make payment for the order at the time of delivery rather than in advance.": "card is a type of payment method where the recipient make payment for the order at the time of delivery rather than in advance.",
+  "pleas add city": "pleas add city",
+  "well be calculating in the next step":"well be calculating in the next step"
 }

@@ -5,6 +5,7 @@ import {
   Button,
   Container,
   Link,
+  Box,
 } from "@mui/material";
 import React from "react";
 import logo from "assets/images/logo_white.png";
@@ -36,7 +37,9 @@ function Footer() {
       <Container sx={{ py: 4 }}>
         <Grid container>
           <Grid item xs="6">
-            <img alt="logo" src={logo} />
+            <Box sx={{ width: "10vw" }}>
+              <img alt="logo" src={logo} style={{ width: "100%" }} />
+            </Box>
           </Grid>
           <Grid
             item
@@ -59,15 +62,6 @@ function Footer() {
             )}
           </Grid>
 
-          {/* <Grid xs={12} item>
-            <Typography color={"white"} variant={"body1"}>
-              Our Mission
-            </Typography>
-            <Typography variant="body3" sx={{ mt: 2, color: "#e9e9e9" }}>
-              Lorem ipsum footer text not to be read but for placement only. FPO
-              text.
-            </Typography>
-          </Grid> */}
           <Grid
             xs={12}
             md={6}
@@ -98,16 +92,23 @@ function Footer() {
             sx={{ display: "flex", justifyContent: "end", my: 2, gap: 1 }}
             item
           >
-            <IconButton aria-label="facebook">
+            <IconButton
+              href="https://web.facebook.com/Dawaaalhayatco?_rdc=1&_rdr"
+              aria-label="facebook"
+            >
               <Facebook style={{ color: "white" }} size="large" />
             </IconButton>
-            <IconButton aria-label="facebook">
+            <IconButton
+              href="https://www.instagram.com/dawaa_alhayat"
+              aria-label="instagram"
+            >
               <Instagram style={{ color: "white" }} size="large" />
             </IconButton>
-            <IconButton aria-label="facebook">
-              <Twitter style={{ color: "white" }} size="large" />
-            </IconButton>
-            <IconButton aria-label="facebook">
+
+            <IconButton
+              href="https://www.linkedin.com/company/dawaa-alhayat/"
+              aria-label="linkedin"
+            >
               <LinkedIn style={{ color: "white" }} size="large" />
             </IconButton>
           </Grid>

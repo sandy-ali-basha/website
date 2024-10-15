@@ -82,6 +82,7 @@ const StepAddress = ({
       setSelectedBasicRadio(defaultAddress.id);
     }
   }, [addresses, setSelectedBasicRadio]);
+
   const theme = useTheme();
   const navigate = useNavigate();
   const breakpointMD = useMediaQuery(theme.breakpoints.between("sm", "lg"));
@@ -91,6 +92,7 @@ const StepAddress = ({
 
   const cart_id = localStorage.getItem("cart_id");
   const { data: cartData, isLoading: cartIsLoading } = useCart(cart_id);
+
   if (isLoading) {
     return (
       <Typography sx={{ textAlign: "center", minHeight: "50vh" }}>
@@ -121,7 +123,6 @@ const StepAddress = ({
           <Button variant="tonal" sx={{ mt: 4 }} onClick={handleAddNewAddress}>
             {t("Add new address")}
           </Button>
-      
         </Grid>
         <Grid item xs={12} lg={4}>
           <Card sx={{ mb: 4, borderRadius: 3, boxShadow: 3 }}>
@@ -182,7 +183,7 @@ const StepAddress = ({
 
                           <Box sx={{ display: "flex" }}>
                             <Typography sx={{ color: "text.main" }}>
-                              {item?.price}
+                              {item?.price} {t("currency")}
                             </Typography>
                           </Box>
                         </Grid>
@@ -198,6 +199,7 @@ const StepAddress = ({
                 {t("Price Details")}
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
+                {/* bag total */}
                 <Box
                   sx={{
                     mb: 2,
@@ -208,11 +210,51 @@ const StepAddress = ({
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography>{t("Order Total")}</Typography>
+                  <Typography>{t("Bag Total")}</Typography>
                   <Typography sx={{ color: "text.secondary" }}>
-                    $1198.00
+                    {cartData?.data?.discount_amount > 0
+                      ? cartData?.data?.sub_total_after_points
+                      : cartData?.data?.sub_total}{" "}
+                    IQD
                   </Typography>
                 </Box>
+                {/* discount_amount */}
+                {cartData?.data?.discount_amount > 0 && (
+                  <Box
+                    sx={{
+                      mb: 2,
+                      gap: 2,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography>{t("Coupon Discount")}</Typography>
+                    <Typography variant="h6" sx={{ color: "primary.main" }}>
+                      {cartData?.data?.sub_total_after_discount}
+                    </Typography>
+                  </Box>
+                )}
+                {/* points_used */}
+                {cartData?.data?.points_used > 0 && (
+                  <Box
+                    sx={{
+                      mb: 2,
+                      gap: 2,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography>{t("Points Used")}</Typography>
+                    <Typography variant="body2" color="secondary">
+                      {cartData?.data?.sub_total_after_points}
+                    </Typography>
+                  </Box>
+                )}
+
                 <Box
                   sx={{
                     gap: 2,
@@ -227,25 +269,9 @@ const StepAddress = ({
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "flex-end",
                     }}
                   >
-                    <Typography
-                      sx={{
-                        mr: 2,
-                        textDecoration: "line-through",
-                        color: "text.disabled",
-                      }}
-                    >
-                      $5.00
-                    </Typography>
-                    <Chip
-                      rounded
-                      size="small"
-                      skin="light"
-                      color="success"
-                      label="Free"
-                    />
+                    {t("well be calculating in the next step")}
                   </Box>
                 </Box>
               </Box>
@@ -281,6 +307,7 @@ const StepAddress = ({
               variant="contained"
               onClick={handleNext}
               sx={{ borderRadius: 3, boxShadow: 3 }}
+              disabled={!selectedBasicRadio}
             >
               {t("Place Order")}
             </Button>

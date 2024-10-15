@@ -46,9 +46,9 @@ const ResetPassword = () => {
         password_confirmation,
       })
       .then((res) => {
-        if (res?.code == 200) {
+        if (res?.code === 200) {
           setMessage(true);
-          setTimeout(() => navigate("/"), [2000]);
+          setTimeout(() => navigate("/login"), [2000]);
         } else {
           setError(res?.error || t("An unexpected error occurred"));
         }

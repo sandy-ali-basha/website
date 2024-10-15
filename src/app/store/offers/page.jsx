@@ -1,14 +1,12 @@
-"use client";
-import React, { useState } from "react";
-
+import React from "react";
 import Typography from "@mui/material/Typography";
 import { Container, Divider, Box, Grid } from "@mui/material";
-import img from "assets/images/offers.avif";
+import img from "assets/images/Special Offers.png";
 import ProductCard from "components/modules/ProductCard";
 import { useOffersPage } from "./_hooks/useOffersPage";
 
 export default function Offers() {
-  const { data,isLoading, isMobile, t } = useOffersPage();
+  const { data, isLoading, isMobile, t } = useOffersPage();
 
   return (
     <Container sx={{ pt: 15 }}>
@@ -24,7 +22,6 @@ export default function Offers() {
       <Box
         sx={{
           flexGrow: 1,
-
           display: "flex",
           my: 5,
           flexDirection: isMobile ? "column" : "row",
