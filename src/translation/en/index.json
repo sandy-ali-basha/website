@@ -144,5 +144,11 @@
   "currency": "I.Q.D",
   "card is a type of payment method where the recipient make payment for the order at the time of delivery rather than in advance.": "card is a type of payment method where the recipient make payment for the order at the time of delivery rather than in advance.",
   "pleas add city": "pleas add city",
-  "well be calculating in the next step":"well be calculating in the next step"
+  "well be calculating in the next step":"well be calculating in the next step",
+  "FREE":"FREE",
+  "Deliver to":"Deliver to",
+  "Address":"Address",
+  "Cart":"Cart",
+  "Apply":"Apply",
+  "Points":"Points"
 }

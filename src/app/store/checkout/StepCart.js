@@ -193,10 +193,14 @@ const StepCart = ({ handleNext }) => {
                               rounded
                               size="small"
                               skin="light"
-                              color={item?.stock > 0 ? "success" : "warrinig"}
+                              color={item?.stock > 0 ? "success" : "warning"}
                               label={
-                                item?.stock > 0
+                                item?.stock > 10
                                   ? t("In Stock")
+                                  : item?.stock === 1
+                                  ? t("Only 1 unit left")
+                                  : item?.stock > 1 && item?.stock <= 10
+                                  ? t("Few units left")
                                   : t("Out Of Stock")
                               }
                             />
@@ -263,7 +267,7 @@ const StepCart = ({ handleNext }) => {
                       {data?.data?.discount_amount > 0
                         ? data?.data?.sub_total_after_points
                         : data?.data?.sub_total}{" "}
-                      IQD
+                      {t("currency")}
                     </Typography>
                   </Box>
 

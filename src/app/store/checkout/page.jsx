@@ -19,7 +19,7 @@ import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrow
 import Swal from "sweetalert2";
 import { _addresses } from "api/addresses/addresses";
 
-import { orderStore, ValueStore } from "store/categoryStore";
+import { ValueStore } from "store/categoryStore";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@emotion/react";
 import StepperWrapper from "./_components/StepperWrapper";
@@ -84,14 +84,14 @@ const Checkout = () => {
           localStorage.removeItem("cart_id");
           if (value === "fib") {
             Swal.fire({
-              title: "Please scan the QR code with your FIB mobile app",
+              title: t("Please scan the QR code with your FIB mobile app"),
               imageUrl: res?.data?.payment_details?.qrCode,
               imageWidth: 150,
               imageHeight: 150,
               imageAlt: "QR Code",
-              confirmButtonText: "Cool",
-            }).then((result) => {
-              if (result.isConfirmed) {
+              confirmButtonText: t("Done"),
+            }).then((res) => {
+              if (res?.data?.code === 200) {
                 setActiveStep(activeStep + 1); // Move to the next step after confirming
               }
             });

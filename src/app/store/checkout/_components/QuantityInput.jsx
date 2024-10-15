@@ -4,6 +4,7 @@ import { styled } from "@mui/system";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { _cart } from "api/cart/_cart";
+import { useQueryClient } from "react-query";
 const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   return (
     <BaseNumberInput
@@ -29,9 +30,9 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
 });
 
 export default function QuantityInput({ max, quantity, productID, cartID }) {
+  const queryClient = useQueryClient();
   const handleQuantityChange = async (event, value) => {
     const updatedQuantity = value;
-
     const data = {
       products: {
         [productID]: {
@@ -40,12 +41,9 @@ export default function QuantityInput({ max, quantity, productID, cartID }) {
       },
     };
 
-    try {
-      await _cart.UpdateCart({ data, cart_id: cartID });
-      console.log("Quantity updated successfully");
-    } catch (error) {
-      console.error("Failed to update quantity", error);
-    }
+    await _cart.UpdateCart({ data, cart_id: cartID }).then(() => {
+      queryClient.invalidateQueries("cart");
+    });
   };
 
   return (

@@ -141,7 +141,7 @@ const StepConfirmation = ({ orderResponse }) => {
                 >
                   Time placed:
                 </Typography>{" "}
-                {orderDate}
+                {}
               </Typography> */}
             </Box>
           </Box>
@@ -192,23 +192,6 @@ const StepConfirmation = ({ orderResponse }) => {
               </Typography>
               <Typography>{billingAddress.contact_phone}</Typography>
             </ListItem>
-
-            {/* Shipping Method */}
-            <ListItem
-              sx={{ flexDirection: "column", alignItems: "flex-start" }}
-            >
-              <Box sx={{ mb: 4, display: "flex", alignItems: "center" }}>
-                <Box sx={{ mr: 1.5, display: "flex" }}>
-                  <Icon icon="tabler:ship" fontSize={20} />
-                </Box>
-                <Typography variant="h6">Shipping Method</Typography>
-              </Box>
-              <Typography sx={{ mb: 4, fontWeight: 500 }}>
-                Preferred Method:
-              </Typography>
-              <Typography>Standard Delivery</Typography>
-              <Typography>(Normally 3-4 business days)</Typography>
-            </ListItem>
           </HorizontalList>
         </Grid>
 
@@ -222,7 +205,7 @@ const StepConfirmation = ({ orderResponse }) => {
                     <ListItemText primary={item.description} />
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                       <Typography sx={{ mr: 1, color: "text.disabled" }}>
-                        Sold By:
+                        {t("Sold By")}:
                       </Typography>
                       <Typography
                         href="/"
@@ -234,7 +217,7 @@ const StepConfirmation = ({ orderResponse }) => {
                           textDecoration: "none",
                         }}
                       >
-                        Seller
+                        {"Seller"}
                       </Typography>
                     </Box>
                   </Grid>
@@ -289,7 +272,7 @@ const StepConfirmation = ({ orderResponse }) => {
                     {orderResponse.sub_total / 100}
                   </Typography>
                 </Box>
-                <Box
+                {/* <Box
                   sx={{
                     gap: 2,
                     display: "flex",
@@ -298,7 +281,7 @@ const StepConfirmation = ({ orderResponse }) => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography>Delivery Charges</Typography>
+                  <Typography>{t("Delivery Charges")}</Typography>
                   <Box
                     sx={{
                       display: "flex",
@@ -323,7 +306,7 @@ const StepConfirmation = ({ orderResponse }) => {
                       label="Free"
                     />
                   </Box>
-                </Box>
+                </Box> */}
               </Box>
             </CardContent>
             <Divider sx={{ m: "0 !important" }} />

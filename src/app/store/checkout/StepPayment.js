@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 // ** MUI Imports
 import { styled } from "@mui/material/styles";
 import Tab from "@mui/material/Tab";
@@ -9,15 +7,16 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
-import Chip from "@mui/material/Chip";
 import Tabs from "@mui/material/Tabs";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
-import { Card, Container, TextField } from "@mui/material";
+import { Chip, Container, TextField } from "@mui/material";
 import { ValueStore } from "store/categoryStore";
 import { useTranslation } from "react-i18next";
 import { CreditCard, Money } from "@mui/icons-material";
 import { useCart } from "hooks/cart/useCart";
+import { AddressStore } from "store/shippingStore";
+import Loader from "components/modules/Loader";
 
 const CustomTabList = styled(Tabs)(({ theme }) => ({
   borderBottom: "0 !important",
@@ -55,27 +54,17 @@ const StepPayment = ({ handleNext }) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   const { t } = useTranslation("index");
   const cart_id = localStorage.getItem("cart_id");
   const { data: cartData, isLoading: cartIsLoading } = useCart(cart_id);
+
+  const shippingAddress = AddressStore((state) => state.shippingAddress);
 
   return (
     <Container>
       <Grid container spacing={6}>
         <Grid item xs={12} lg={8}>
-          {/* <Alert
-          severity="success"
-          icon={<Icon icon="tabler:bookmarks" />}
-          sx={{ mb: 4, borderRadius: 3 }}
-        >
-          <AlertTitle>Back Offers</AlertTitle>
-          <div>
-            <Typography sx={{ color: "success.main" }}>
-              - 10% Instant Discount on Bank of America Corp Bank Debit and
-              Credit cards
-            </Typography>
-          </div>
-        </Alert> */}
           <TabContext value={value}>
             <CustomTabList
               variant="scrollable"
@@ -164,127 +153,113 @@ const StepPayment = ({ handleNext }) => {
               <Typography sx={{ mb: 4 }} variant="h6">
                 {t("Price Details")}
               </Typography>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                {/* bag total */}
-                <Box
-                  sx={{
-                    mb: 2,
-                    gap: 2,
-                    display: "flex",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography>{t("Bag Total")}</Typography>
-                  <Typography sx={{ color: "text.secondary" }}>
-                    {cartData?.data?.discount_amount > 0
-                      ? cartData?.data?.sub_total_after_points
-                      : cartData?.data?.sub_total}{" "}
-                    IQD
-                  </Typography>
+              {cartIsLoading ? (
+                <Loader />
+              ) : (
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  {/* bag total */}
+                  <Box sx={{ display: "flex", flexDirection: "column" }}>
+                    {/* bag total */}
+                    <Box
+                      sx={{
+                        mb: 2,
+                        gap: 2,
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography>{t("Sub Total")}</Typography>
+                      <Typography sx={{ color: "text.secondary" }}>
+                        {cartData?.data?.sub_total} {t("currency")}
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        gap: 2,
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography>{t("Delivery Charges")}</Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {shippingAddress > 0 ? (
+                          shippingAddress?.shipping_price
+                        ) : (
+                          <Chip color="success" label={t("FREE")}></Chip>
+                        )}
+                      </Box>
+                    </Box>
+                    {/* discount_amount */}
+                    {cartData?.data?.discount_amount > 0 && (
+                      <Box
+                        sx={{
+                          mb: 2,
+                          gap: 2,
+                          display: "flex",
+                          flexWrap: "wrap",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography>{t("Coupon Discount")}</Typography>
+                        <Typography
+                          variant="body1"
+                          sx={{ color: "primary.main" }}
+                        >
+                          {cartData?.data?.sub_total_after_discount}
+                        </Typography>
+                      </Box>
+                    )}
+                    {/* points_used */}
+                    {cartData?.data?.points_used > 0 && (
+                      <Box
+                        sx={{
+                          my: 2,
+                          gap: 2,
+                          display: "flex",
+                          flexWrap: "wrap",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography>
+                          {t("Sub Total After Points Used")}
+                        </Typography>
+                        <Typography variant="body1" color="secondary">
+                          {cartData?.data?.sub_total_after_points}{" "}
+                          {t("currency")}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Box>
                 </Box>
-                {/* discount_amount */}
-                {cartData?.data?.discount_amount > 0 && (
-                  <Box
-                    sx={{
-                      mb: 2,
-                      gap: 2,
-                      display: "flex",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography>{t("Coupon Discount")}</Typography>
-                    <Typography variant="h6" sx={{ color: "primary.main" }}>
-                      {cartData?.data?.sub_total_after_discount}
-                    </Typography>
-                  </Box>
-                )}
-                {/* points_used */}
-                {cartData?.data?.points_used > 0 && (
-                  <Box
-                    sx={{
-                      mb: 2,
-                      gap: 2,
-                      display: "flex",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography>{t("Points Used")}</Typography>
-                    <Typography variant="body2" color="secondary">
-                      {cartData?.data?.sub_total_after_points}
-                    </Typography>
-                  </Box>
-                )}
-
-                <Box
-                  sx={{
-                    gap: 2,
-                    display: "flex",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography>{t("Delivery Charges")}</Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    {t("well be calculating in the next step")}
-                  </Box>
-                </Box>
-              </Box>
+              )}
             </CardContent>
-            <Divider sx={{ my: "0 !important" }} />
+
             <CardContent>
               <Box
                 sx={{
                   mb: 4,
                   rowGap: 1,
                   columnGap: 4,
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  justifyContent: "space-between",
                 }}
               >
-                <Typography sx={{ fontWeight: 500 }}>Total</Typography>
-                <Typography sx={{ fontWeight: 500 }}>$1198.00</Typography>
-              </Box>
-              <Box
-                sx={{
-                  mb: 4,
-                  rowGap: 1,
-                  columnGap: 4,
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography>Deliver to:</Typography>
-                <Chip
-                  rounded
-                  size="small"
-                  skin="light"
-                  color="primary"
-                  label="Home"
-                />
-              </Box>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography sx={{ fontWeight: 500 }}>
-                  John Doe (Default),
+                <Typography sx={{ color: "primary.main" }}>
+                  {"Deliver to"}:
                 </Typography>
-                <Typography>4135 Parkway Street,</Typography>
-                <Typography>Los Angeles, CA, 90017.</Typography>
-                <Typography sx={{ mb: 4 }}>Mobile : +1 906 568 2332</Typography>
+                <Typography sx={{ fontWeight: 500 }}>
+                  {shippingAddress?.title}
+                </Typography>
+                {shippingAddress?.content}
               </Box>
             </CardContent>
           </Box>

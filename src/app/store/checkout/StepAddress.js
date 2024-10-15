@@ -27,6 +27,7 @@ import Loader from "components/modules/Loader";
 import { useTranslation } from "react-i18next";
 import { useCart } from "hooks/cart/useCart";
 import CardShimmer from "components/customs/loaders/CardShimmer";
+import { AddressStore } from "store/shippingStore";
 
 const StepAddress = ({
   handleNext,
@@ -40,6 +41,7 @@ const StepAddress = ({
   const addresses = data?.addresses || [];
 
   const addressData = addresses.map((address, index) => ({
+    shipping_price: address.shipping_price,
     value: address.id,
     isSelected: address.id === selectedBasicRadio,
     title: `${address.title} ${address.first_name} ${address.last_name} ${
@@ -74,25 +76,33 @@ const StepAddress = ({
     ),
   }));
 
+  const [shippingAddress, setShippingAddress] = AddressStore((state) => [
+    state.shippingAddress,
+    state.setShippingAddress,
+  ]);
+
   useEffect(() => {
     const defaultAddress = addresses.find(
       (address) => address.shipping_default
     );
     if (defaultAddress) {
       setSelectedBasicRadio(defaultAddress.id);
+      setShippingAddress(defaultAddress);
     }
-  }, [addresses, setSelectedBasicRadio]);
+  }, [addresses, setSelectedBasicRadio, setShippingAddress]);
 
   const theme = useTheme();
   const navigate = useNavigate();
   const breakpointMD = useMediaQuery(theme.breakpoints.between("sm", "lg"));
 
-  const handleBasicRadioChange = (prop) => setSelectedBasicRadio(prop);
+  const handleBasicRadioChange = (prop) => {
+    setSelectedBasicRadio(prop);
+  };
   const handleAddNewAddress = () => navigate("/profile/addresses");
 
   const cart_id = localStorage.getItem("cart_id");
   const { data: cartData, isLoading: cartIsLoading } = useCart(cart_id);
-
+  console.log("shippingAddress", shippingAddress);
   if (isLoading) {
     return (
       <Typography sx={{ textAlign: "center", minHeight: "50vh" }}>
@@ -127,9 +137,6 @@ const StepAddress = ({
         <Grid item xs={12} lg={4}>
           <Card sx={{ mb: 4, borderRadius: 3, boxShadow: 3 }}>
             <CardContent>
-              <Typography sx={{ mb: 4 }} variant="h6">
-                {t("Estimated Delivery Date")}
-              </Typography>
               <List>
                 {cartIsLoading ? (
                   <ListItem sx={{ my: 2 }}>
@@ -210,51 +217,11 @@ const StepAddress = ({
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography>{t("Bag Total")}</Typography>
+                  <Typography>{t("Sub Total")}</Typography>
                   <Typography sx={{ color: "text.secondary" }}>
-                    {cartData?.data?.discount_amount > 0
-                      ? cartData?.data?.sub_total_after_points
-                      : cartData?.data?.sub_total}{" "}
-                    IQD
+                    {cartData?.data?.sub_total} {t("currency")}
                   </Typography>
                 </Box>
-                {/* discount_amount */}
-                {cartData?.data?.discount_amount > 0 && (
-                  <Box
-                    sx={{
-                      mb: 2,
-                      gap: 2,
-                      display: "flex",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography>{t("Coupon Discount")}</Typography>
-                    <Typography variant="h6" sx={{ color: "primary.main" }}>
-                      {cartData?.data?.sub_total_after_discount}
-                    </Typography>
-                  </Box>
-                )}
-                {/* points_used */}
-                {cartData?.data?.points_used > 0 && (
-                  <Box
-                    sx={{
-                      mb: 2,
-                      gap: 2,
-                      display: "flex",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography>{t("Points Used")}</Typography>
-                    <Typography variant="body2" color="secondary">
-                      {cartData?.data?.sub_total_after_points}
-                    </Typography>
-                  </Box>
-                )}
-
                 <Box
                   sx={{
                     gap: 2,
@@ -271,28 +238,49 @@ const StepAddress = ({
                       alignItems: "center",
                     }}
                   >
-                    {t("well be calculating in the next step")}
+                    {shippingAddress > 0 ? (
+                      shippingAddress?.shipping_price
+                    ) : (
+                      <Chip color="success" label={t("FREE")}></Chip>
+                    )}
                   </Box>
                 </Box>
-              </Box>
-            </CardContent>
-            <Divider sx={{ m: "0 !important" }} />
-            <CardContent
-              sx={{ py: (theme) => `${theme.spacing(3.5)} !important` }}
-            >
-              <Box
-                sx={{
-                  gap: 2,
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography sx={{ fontWeight: 500 }}>{t("Total")}</Typography>
-                <Typography sx={{ fontWeight: 500 }}>
-                  {cartData?.data?.sub_total}
-                </Typography>
+                {/* discount_amount */}
+                {cartData?.data?.discount_amount > 0 && (
+                  <Box
+                    sx={{
+                      mb: 2,
+                      gap: 2,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography>{t("Coupon Discount")}</Typography>
+                    <Typography variant="body1" sx={{ color: "primary.main" }}>
+                      {cartData?.data?.sub_total_after_discount}
+                    </Typography>
+                  </Box>
+                )}
+                {/* points_used */}
+                {cartData?.data?.points_used > 0 && (
+                  <Box
+                    sx={{
+                      my: 2,
+                      gap: 2,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography>{t("Sub Total After Points Used")}</Typography>
+                    <Typography variant="body1" color="secondary">
+                      {cartData?.data?.sub_total_after_points} {t("currency")}
+                    </Typography>
+                  </Box>
+                )}
               </Box>
             </CardContent>
           </Card>
