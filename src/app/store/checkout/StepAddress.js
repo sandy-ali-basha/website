@@ -66,11 +66,15 @@ const StepAddress = ({
         }}
       >
         <Typography variant="body2" sx={{ mb: "auto" }}>
-          {address.line_one}, {address.city}, {address.state}, {address.country}
-          .<br />
+          {address.city}, {address.state}, {address.country}
+          <br />
+          {address.line_one}
+          <br />
           {address.postcode && `Postcode: ${address.postcode}.`}
           <br />
           {address.contact_phone && `Mobile: ${address.contact_phone}.`}
+          <br />
+          {address.contact_phone && `Email: ${address.contact_mail}.`}
         </Typography>
       </Box>
     ),
@@ -102,7 +106,6 @@ const StepAddress = ({
 
   const cart_id = localStorage.getItem("cart_id");
   const { data: cartData, isLoading: cartIsLoading } = useCart(cart_id);
-  console.log("shippingAddress", shippingAddress);
   if (isLoading) {
     return (
       <Typography sx={{ textAlign: "center", minHeight: "50vh" }}>
@@ -190,7 +193,7 @@ const StepAddress = ({
 
                           <Box sx={{ display: "flex" }}>
                             <Typography sx={{ color: "text.main" }}>
-                              {item?.price} {t("currency")}
+                              {(item?.price/1000).toFixed(3)} {t("currency")}
                             </Typography>
                           </Box>
                         </Grid>
@@ -219,7 +222,7 @@ const StepAddress = ({
                 >
                   <Typography>{t("Sub Total")}</Typography>
                   <Typography sx={{ color: "text.secondary" }}>
-                    {cartData?.data?.sub_total} {t("currency")}
+                    {(cartData?.data?.sub_total/1000).toFixed(3)} {t("currency")}
                   </Typography>
                 </Box>
                 <Box
@@ -238,9 +241,13 @@ const StepAddress = ({
                       alignItems: "center",
                     }}
                   >
-                    {shippingAddress > 0 ? (
-                      shippingAddress?.shipping_price
-                    ) : (
+                    {shippingAddress?.shipping_price > 0 && (
+                      <div>
+                        {(shippingAddress?.shipping_price/1000).toFixed(3)}
+                        {t("currency")}
+                      </div>
+                    )}
+                    {shippingAddress?.shipping_price === 0 && (
                       <Chip color="success" label={t("FREE")}></Chip>
                     )}
                   </Box>
@@ -257,9 +264,9 @@ const StepAddress = ({
                       justifyContent: "space-between",
                     }}
                   >
-                    <Typography>{t("Coupon Discount")}</Typography>
+                    <Typography>{t("Discount Amount")}</Typography>
                     <Typography variant="body1" sx={{ color: "primary.main" }}>
-                      {cartData?.data?.sub_total_after_discount}
+                      {(cartData?.data?.sub_total_after_discount/1000).toFixed(3)} {t("currency")}
                     </Typography>
                   </Box>
                 )}
@@ -277,7 +284,7 @@ const StepAddress = ({
                   >
                     <Typography>{t("Sub Total After Points Used")}</Typography>
                     <Typography variant="body1" color="secondary">
-                      {cartData?.data?.sub_total_after_points} {t("currency")}
+                      {(cartData?.data?.sub_total_after_points/1000).toFixed(3)} {t("currency")}
                     </Typography>
                   </Box>
                 )}

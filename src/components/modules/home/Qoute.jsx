@@ -5,7 +5,6 @@ export default function Qoute({ data, video }) {
   const lang = localStorage.getItem("i18nextLng");
 
   return (
-    <Container>
       <Box
         sx={{
           my: 10,
@@ -33,7 +32,7 @@ export default function Qoute({ data, video }) {
           <source src={video} type="video/mp4"></source>
           Your browser does not support the video tag.
         </video>
-        <Box
+        {/* <Box
           sx={{
             position: "absolute",
             zIndex: 1,
@@ -47,8 +46,7 @@ export default function Qoute({ data, video }) {
           <Typography variant="h4" color="initial" sx={{ fontWeight: "bold" }}>
             {data?.value?.[lang]}
           </Typography>
-        </Box>
+        </Box> */}
       </Box>
-    </Container>
   );
 }

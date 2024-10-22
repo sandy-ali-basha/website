@@ -25,14 +25,20 @@ import { Eye } from "react-feather";
 import { useTranslation } from "react-i18next";
 import {
   AssignmentTurnedInRounded,
+  Cancel,
   CancelRounded,
   CancelScheduleSendRounded,
+  CheckCircle,
   CheckCircleOutlineRounded,
   DeleteRounded,
+  Done,
+  LocalShipping,
   LocalShippingRounded,
   PaymentRounded,
+  Pending,
   PlaylistAddCheckCircleRounded,
   ShoppingCartCheckoutRounded,
+  Sync,
   TimelapseRounded,
 } from "@mui/icons-material";
 import { _axios } from "interceptor/http-config";
@@ -101,12 +107,36 @@ const BillingHistoryTable = () => {
       }
     });
   };
+
+  const getStatusDetails = (status) => {
+    switch (status) {
+      case "order_requested":
+        return { label: "Requested", color: "info", icon: <Pending /> };
+      case "order_processing":
+        return { label: "Processing", color: "primary", icon: <Sync /> };
+      case "order_processed":
+        return { label: "Processed", color: "warning", icon: <CheckCircle /> };
+      case "order_under_delivery":
+        return {
+          label: "Under Delivery",
+          color: "secondary",
+          icon: <LocalShipping />,
+        };
+      case "order_delivered":
+        return { label: "Delivered", color: "success", icon: <Done /> };
+      case "order_canceled":
+        return { label: "Canceled", color: "error", icon: <Cancel /> };
+      default:
+        return { label: "Unknown", color: "default", icon: null };
+    }
+  };
+
   const defaultColumns = (handleOrderClick) => [
     {
       flex: 0.1,
       field: "reference",
       minWidth: 100,
-      headerName: "Order Reference",
+      headerName: t("Order Reference"), // Correct property
       renderCell: ({ row }) => (
         <Typography
           component={LinkStyled}
@@ -120,45 +150,22 @@ const BillingHistoryTable = () => {
       flex: 0.1,
       minWidth: 200,
       field: "status",
-      renderHeader: () => <>Order Status</>,
+      headerName: t("Order Status"), // Replaced renderHeader with headerName
       renderCell: ({ row }) => {
-        const { status } = row;
-
-        const color = invoiceStatusObj[status]
-          ? invoiceStatusObj[status].color
-          : "primary";
-        const Rowicon = invoiceStatusObj[status].icon ? (
-          invoiceStatusObj[status].icon
-        ) : (
-          <PlaylistAddCheckCircleRounded />
-        );
+        const { label, color, icon } = getStatusDetails(row?.status);
         return (
-          <Tooltip
-            title={
-              <div>
-                <Typography
-                  variant="caption"
-                  sx={{ color: "common.white", fontWeight: 600 }}
-                >
-                  {status}
-                </Typography>
-                <br />
-                <Typography
-                  variant="caption"
-                  sx={{ color: "common.white", fontWeight: 600 }}
-                >
-                  Subtotal:
-                </Typography>{" "}
-                {row.sub_total}
-              </div>
-            }
-          >
+          <Tooltip title={label}>
             <Chip
+              label={label}
+              icon={icon}
               color={color}
               variant="outlined"
-              sx={{ width: "100%", px: 1 }}
-              label={status}
-              icon={Rowicon}
+              sx={{
+                minWidth: 120,
+                fontWeight: "bold",
+                fontSize: "0.875rem",
+                justifyContent: "start",
+              }}
             />
           </Tooltip>
         );
@@ -168,7 +175,7 @@ const BillingHistoryTable = () => {
       flex: 0.15,
       minWidth: 100,
       field: "issuedDate",
-      headerName: "Issued Date",
+      headerName: t("Issued Date"),
       renderCell: ({ row }) => (
         <Typography sx={{ color: "text.secondary" }}>
           {new Date(row.lines[0].created_at).toLocaleDateString()}
@@ -179,7 +186,7 @@ const BillingHistoryTable = () => {
       flex: 0.2,
       minWidth: 160,
       field: "lines",
-      headerName: "Order Items",
+      headerName: t("Order Items"),
       renderCell: ({ row }) => (
         <Typography sx={{ color: "text.secondary" }}>
           {row.lines.map((line) => line.description).join(", ")}
@@ -190,31 +197,28 @@ const BillingHistoryTable = () => {
       flex: 0.1,
       minWidth: 100,
       field: "sub_total",
-      headerName: "Subtotal",
+      headerName: t("total"),
       renderCell: ({ row }) => (
-        <Typography sx={{ color: "text.secondary" }}>
-          {row.sub_total.toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-          })}
+        <Typography sx={{ color: "text.secondary"}}>
+          {row.total} {t("currency")}
         </Typography>
       ),
     },
     {
       field: "actions",
-      headerName: "view",
+      headerName: t("View"),
       flex: 0.1,
       minWidth: 100,
       renderCell: ({ row }) => (
         <>
           {row?.canCancel && (
-            <Button onClick={() => handleCancel(row?.id)}>
+            <IconButton onClick={() => handleCancel(row?.id)}>
               <DeleteRounded />
-            </Button>
+            </IconButton>
           )}
-          <Button onClick={() => handleOrderClick(row)}>
+          <IconButton onClick={() => handleOrderClick(row)}>
             <Eye />
-          </Button>
+          </IconButton>
         </>
       ),
     },

@@ -19,7 +19,6 @@ import {
 } from "@mui/material";
 import { _addresses } from "api/addresses/addresses";
 import ButtonLoader from "components/customs/ButtonLoader";
-import { useAddressDialog } from "./hooks/useAddressDialog";
 import { useQuery } from "react-query";
 import Loader from "components/modules/Loader";
 import { _cities } from "api/country/country";
@@ -36,7 +35,8 @@ const EditDialog = ({ open, handleClose, id }) => {
     control,
     t,
     setChecked,
-    setValue
+    setValue,
+    watch,
   } = useEditAddress({ handleClose, id });
 
   const [cities, setCiteies] = useState();
@@ -52,11 +52,16 @@ const EditDialog = ({ open, handleClose, id }) => {
     ["addresses", `id-${id}`],
     () =>
       _addresses.get(id).then((res) => {
-        setValue("first_name", data.data.first_name);
-        return res;
-      }), // Ensure you return the data here
+        return res?.data; // Make sure you're returning the res object
+      }),
     {}
   );
+
+  if (isLoading) {
+    console.log("Data is loading...");
+  } else {
+    console.log("Data received:", data);
+  } 
 
   useEffect(() => {
     setChecked(data?.data?.shipping_default);
@@ -154,7 +159,8 @@ const EditDialog = ({ open, handleClose, id }) => {
                     sx={{ borderColor: "text.main" }}
                     {...register("city")}
                     label="city"
-                    value={data?.data?.city}
+                    value={watch("city") || data?.data?.city || ""} // Watch form value or use default from data
+                    onChange={(e) => setValue("city", e.target.value)} // Update form state on selection
                   >
                     {cities?.state?.map((item) => (
                       <MenuItem value={item.value} key={item.id}>
@@ -166,7 +172,7 @@ const EditDialog = ({ open, handleClose, id }) => {
                 </FormControl>
               ) : (
                 <Typography variant="body2" color="text.main">
-                  {t("pleas add city")}
+                  {t("please add city")}
                 </Typography>
               )}
             </Grid>
@@ -231,14 +237,14 @@ const EditDialog = ({ open, handleClose, id }) => {
                 fullWidth
                 label="Delivery Instructions"
                 placeholder="Please leave the package at the door"
-                {...register("deliveryInstructions")}
-                error={!!errors.deliveryInstructions}
+                {...register("delivery_instructions")}
+                error={!!errors.delivery_instructions}
                 helpertext={
-                  errors.deliveryInstructions
-                    ? errors.deliveryInstructions.message
+                  errors.delivery_instructions
+                    ? errors.delivery_instructions.message
                     : ""
                 }
-                defaultValue={data?.data?.deliveryInstructions}
+                defaultValue={data?.data?.delivery_instructions}
               />
             </Grid>
 

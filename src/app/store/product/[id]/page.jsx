@@ -195,16 +195,14 @@ function Product() {
               ) : (
                 data?.data?.attributes &&
                 data?.data?.attributes?.map((item, idx) => (
-                  <Link key={idx} to={"/store/categories/" + item?.id}>
-                    <Chip
-                      label={item.value}
-                      sx={{
-                        m: 1,
-                      }}
-                      color="primary"
-                      variant="outlined"
-                    />
-                  </Link>
+                  <Chip
+                    label={item.value}
+                    sx={{
+                      m: 1,
+                    }}
+                    color="primary"
+                    variant="outlined"
+                  />
                 ))
               )}
             </Box>

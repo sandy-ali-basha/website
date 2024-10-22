@@ -197,11 +197,11 @@ const AddDialog = ({ open, handleClose }) => {
               fullWidth
               label="Delivery Instructions"
               placeholder="Please leave the package at the door"
-              {...register("deliveryInstructions")}
-              error={!!errors.deliveryInstructions}
+              {...register("delivery_instructions")}
+              error={!!errors.delivery_instructions}
               helperText={
-                errors.deliveryInstructions
-                  ? errors.deliveryInstructions.message
+                errors.delivery_instructions
+                  ? errors.delivery_instructions.message
                   : ""
               }
             />

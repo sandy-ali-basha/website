@@ -1,13 +1,12 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Container, Grid, Typography } from "@mui/material";
 import React from "react";
-import productImage from "assets/images/jar.png";
 import ProductCard from "components/modules/ProductCard";
 import { useSimillerProduct } from "hooks/Product/useSimillerProduct";
 import { useTranslation } from "react-i18next";
 
 export default function Simillar({ id }) {
-  const { data, isLoading } = useSimillerProduct(id);
-  console.log(data, id);
+  const { data } = useSimillerProduct(id);
+
   const { t } = useTranslation("index");
   return (
     <Container>

@@ -1,15 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import logo from "assets/images/logo.png";
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  Grid,
-} from "@mui/material";
+
+import { Button, Grid } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import gummie from "assets/images/gummies.png";
 import AnimatedText from "../components/modules/home/AnimatedText.jsx";
@@ -21,12 +15,10 @@ import { useTranslation } from "react-i18next";
 import { settingsStore } from "store/settingsStore.js";
 import { useHome, useHomeSlider } from "hooks/home/useHome.js";
 import Loader from "components/modules/Loader.jsx";
-import ChooseCity from "components/ChooseCity.jsx";
 import imageOfStats from "assets/images/home.jpg";
+import BestSellers from "components/modules/home/BestSellers.jsx";
 
 export default function Home() {
-  const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
-
   const [direction] = settingsStore((state) => [state.direction]);
   const gummieBox = useRef(null);
 
@@ -47,7 +39,6 @@ export default function Home() {
     });
   }, [direction]);
 
-  const { t } = useTranslation("index");
   const lang = localStorage.getItem("i18nextLng");
   const { data, isLoading } = useHome();
   const { data: slider, isLoading: sliderLoading } = useHomeSlider();
@@ -83,8 +74,8 @@ export default function Home() {
               <Box
                 sx={{
                   position: "relative",
-                  width: "100vw",
-                  height: "90vh",
+                  aspectRatio: "16/9",
+
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
@@ -99,8 +90,8 @@ export default function Home() {
                   alt={`Slide ${index + 1}`}
                   style={{
                     objectFit: "cover",
-                    width: "inherit",
-                    height: "inherit",
+                    width: "100%",
+                    height: "100%",
                     position: "absolute",
                   }}
                   lazy
@@ -112,20 +103,20 @@ export default function Home() {
                     width: { md: "50%", xs: "100%" },
                   }}
                 >
-                  <Typography variant="h2" color="inherit">
+                  {/* <Typography variant="h2" color="inherit">
                     {item?.title}
                   </Typography>
                   <Typography sx={{ mt: 2 }} variant="body1" color="inherit">
                     {item?.text}
-                  </Typography>
-                  <Button
+                  </Typography> */}
+                  {/* <Button
                     sx={{ mt: 4 }}
                     color="primary"
                     variant="contained"
                     href={item?.link}
                   >
                     {t("Get Started")}
-                  </Button>
+                  </Button> */}
                 </Box>
               </Box>
             </SwiperSlide>
@@ -135,15 +126,15 @@ export default function Home() {
       {data && (
         <>
           <Container>
-            <Grid container sx={{ py: 2 }}>
-              <Grid md="6">
+            <Grid container sx={{ py: 2 }} spacing="5">
+              <Grid md="4">
                 <img
                   src={data?.["home.page.textSectionOne"]?.image}
                   alt=""
                   style={{ width: "100%" }}
                 />
               </Grid>
-              <Grid md="6">
+              <Grid md="8">
                 <Typography
                   dangerouslySetInnerHTML={{
                     __html:
@@ -152,7 +143,7 @@ export default function Home() {
                 ></Typography>
               </Grid>
             </Grid>
-            <Grid
+            {/* <Grid
               sx={{
                 mt: 3,
                 position: "relative",
@@ -182,7 +173,7 @@ export default function Home() {
                 <Typography
                   variant="h3"
                   color="initial"
-                  sx={{ mb: 2, fontWeight: "bold" }}
+                  sx={{ mb: 2 }}
                   dangerouslySetInnerHTML={{
                     __html: data?.["home.page.status"]?.value?.[lang].subtitle1,
                   }}
@@ -199,7 +190,7 @@ export default function Home() {
                       <Box key={index}>
                         <Typography
                           variant="h4"
-                          sx={{ fontWeight: "bold", color: "text.secondary" }}
+                          sx={{ color: "text.secondary" }}
                         >
                           {item?.number}
                         </Typography>
@@ -223,7 +214,6 @@ export default function Home() {
                   objectFit: "contain",
                   height: "50vh",
                   width: "50vw",
-
                   zIndex: "-1",
                 }}
                 ref={gummieBox}
@@ -235,11 +225,11 @@ export default function Home() {
                       // background: "#6A83B0",
                       borderRadius: 2,
                       // p: 2,
-                      boxShadow: 3,
+                      // boxShadow: 3,
                       height: "100%",
                     }}
                   >
-                    {/* <Typography
+                    <Typography
                       variant="h4"
                       color="white"
                       dangerouslySetInnerHTML={{
@@ -255,12 +245,21 @@ export default function Home() {
                         __html:
                           data?.["home.page.status"]?.value?.[lang].subtitle2,
                       }}
-                    ></Typography> */}
-                    <img src={imageOfStats} style={{ width: "100%" }} alt="" />
+                    ></Typography>
+                    <img
+                      src={imageOfStats}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                        borderRadius: "inherit",
+                      }}
+                      alt=""
+                    />
                   </Box>
                 </Grid>
               )}
-            </Grid>
+            </Grid> */}
             <Grid
               container
               sx={{
@@ -272,11 +271,7 @@ export default function Home() {
               }}
             >
               <Grid item sm="6">
-                <Typography
-                  variant="h5"
-                  color="initial"
-                  sx={{ fontWeight: "bold" }}
-                >
+                <Typography variant="h5" color="initial">
                   {data?.["home.page.cta"]?.value?.title?.[lang] ?? " "}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
@@ -304,7 +299,7 @@ export default function Home() {
           </Container>
           <AnimatedText></AnimatedText>
           <Container>
-            <Grid container sx={{ py: 2 }}>
+            <Grid container sx={{ py: 2, mt: 5 }}>
               <Grid md="6">
                 <Typography
                   dangerouslySetInnerHTML={{
@@ -322,36 +317,12 @@ export default function Home() {
               </Grid>
             </Grid>
           </Container>
-          {/* <BestSellers /> */}
+          <BestSellers />
           <Qoute
             data={data?.["home.page.videoText"]}
             video={data?.["home.page.video"]?.video}
           />
           <Partners />
-          <Dialog open={open} py="6">
-            <DialogContent
-              py="6"
-              sx={{
-                alignItems: "center",
-                justifyContent: "center",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <img
-                style={{ width: "50%", margin: "1rem auto" }}
-                src={logo}
-                alt=""
-              />
-              <DialogContentText
-                textAlign={"center"}
-                sx={{ fontSize: "1.5rem" }}
-              >
-                {t("pleas choose city to continue")}
-                <ChooseCity />
-              </DialogContentText>
-            </DialogContent>
-          </Dialog>
         </>
       )}
     </>

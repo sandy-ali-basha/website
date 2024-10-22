@@ -27,6 +27,7 @@ import Swal from "sweetalert2";
 import ApplyCoupon from "./_components/ApplyCoupon";
 import ApplyPoints from "./_components/ApplyPoints";
 import emptyCart from "assets/images/empty-cart.webp";
+import useFormat from "hooks/useFormat";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -53,6 +54,7 @@ const StepCart = ({ handleNext }) => {
   const breakpointMD = useMediaQuery((theme) =>
     theme.breakpoints.between("sm", "lg")
   );
+
   const { t } = useTranslation("index");
   const cart_id = localStorage.getItem("cart_id");
   const { data, isLoading } = useCart(cart_id);
@@ -68,7 +70,7 @@ const StepCart = ({ handleNext }) => {
           title: "Success",
           text: "Deleted successfully",
           toast: true,
-          position: "top-end",
+          position: "bottom-end",
           showConfirmButton: false,
           timer: 3000,
           timerProgressBar: true,
@@ -79,7 +81,7 @@ const StepCart = ({ handleNext }) => {
           title: "Error",
           text: res?.error?.message,
           toast: true,
-          position: "top-end",
+          position: "bottom-end",
           showConfirmButton: false,
           timer: 3000,
           timerProgressBar: true,
@@ -206,8 +208,22 @@ const StepCart = ({ handleNext }) => {
                             />
                           </Box>
                           <Box sx={{ display: "flex" }}>
+                            <Typography
+                              sx={{
+                                color: "text.secondary",
+                                textDecoration: "line-through",
+                              }}
+                              variant="body1"
+                              color="initial"
+                            >
+                              {item?.compare_price > 0
+                                ? item?.compare_price
+                                : ""}
+                            </Typography>
                             <Typography sx={{ color: "text.main" }}>
-                              {item?.price} {t("currency")}
+                              {(item?.price / 1000).toFixed(3)}
+
+                              {t("currency")}
                             </Typography>
                           </Box>
                         </Grid>
@@ -265,8 +281,8 @@ const StepCart = ({ handleNext }) => {
                     <Typography>{t("Bag Total")}</Typography>
                     <Typography sx={{ color: "text.secondary" }}>
                       {data?.data?.discount_amount > 0
-                        ? data?.data?.sub_total_after_points
-                        : data?.data?.sub_total}{" "}
+                        ? (data?.data?.sub_total_after_points / 1000).toFixed(3)
+                        : (data?.data?.sub_total / 1000).toFixed(3)}{" "}
                       {t("currency")}
                     </Typography>
                   </Box>
@@ -282,9 +298,10 @@ const StepCart = ({ handleNext }) => {
                         justifyContent: "space-between",
                       }}
                     >
-                      <Typography>{t("Coupon Discount")}</Typography>
+                      <Typography>{t("Discount Amount")}</Typography>
                       <Typography variant="h6" sx={{ color: "primary.main" }}>
-                        {data?.data?.discount_amount}
+                        {(data?.data?.discount_amount / 1000).toFixed(3)}{" "}
+                        {t("currency")}
                       </Typography>
                     </Box>
                   )}
@@ -306,50 +323,6 @@ const StepCart = ({ handleNext }) => {
                       </Typography>
                     </Box>
                   )}
-
-                  <Box
-                    sx={{
-                      mb: 2,
-                      gap: 2,
-                      display: "flex",
-                      flexWrap: "wrap",
-                      alignItems: "start",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography>{t("Order Total")}</Typography>
-                    <Box>
-                      <Typography
-                        sx={{
-                          color: "text.secondary",
-                          textDecoration:
-                            data?.data?.discount_amount > 0 ||
-                            data?.data?.points_used > 0
-                              ? "line-through"
-                              : "none",
-                          fontSize:
-                            data?.data?.discount_amount > 0 ||
-                            data?.data?.points_used > 0
-                              ? "small"
-                              : "initial",
-                        }}
-                      >
-                        {data?.data?.sub_total} IQD
-                      </Typography>
-
-                      {data?.data?.points_used > 0 && (
-                        <Typography
-                          variant="h6"
-                          sx={{
-                            color: "secondary.main",
-                            textDecoration: "none",
-                          }}
-                        >
-                          {data?.data?.sub_total_after_points} IQD
-                        </Typography>
-                      )}
-                    </Box>
-                  </Box>
                 </Box>
               </CardContent>
 
@@ -367,17 +340,46 @@ const StepCart = ({ handleNext }) => {
               >
                 <Box
                   sx={{
+                    mb: 2,
                     gap: 2,
                     display: "flex",
                     flexWrap: "wrap",
-                    alignItems: "center",
+                    alignItems: "start",
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography sx={{ fontWeight: 500 }}>{t("Total")}</Typography>
-                  <Typography sx={{ fontWeight: 500 }}>
-                    {data?.data?.sub_total}
-                  </Typography>
+                  <Typography>{t("Order Total")}</Typography>
+                  <Box>
+                    <Typography
+                      sx={{
+                        color: "text.secondary",
+                        textDecoration:
+                          data?.data?.discount_amount > 0 ||
+                          data?.data?.points_used > 0
+                            ? "line-through"
+                            : "none",
+                        fontSize:
+                          data?.data?.discount_amount > 0 ||
+                          data?.data?.points_used > 0
+                            ? "small"
+                            : "initial",
+                      }}
+                    >
+                      {data?.data?.sub_total} IQD
+                    </Typography>
+
+                    {data?.data?.points_used > 0 && (
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          color: "secondary.main",
+                          textDecoration: "none",
+                        }}
+                      >
+                        {data?.data?.sub_total_after_points} IQD
+                      </Typography>
+                    )}
+                  </Box>
                 </Box>
               </CardContent>
             </Box>

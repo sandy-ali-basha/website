@@ -2,33 +2,55 @@ import { Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import ProductCard from "../ProductCard";
 import { useTranslation } from "react-i18next";
+import { useAllProducts } from "hooks/Product/useProducts";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Pagination, Navigation } from "swiper";
 
-export default function BestSellers(data) {
+export default function BestSellers() {
+  const { data } = useAllProducts();
   const { t } = useTranslation("index");
-  const lang = localStorage.getItem("i18nextLng") || "en"; // Fallback to "en" if no language is set
-  console.log("item?.image?.image?", data?.data[0]?.image);
+
   return (
     data && (
       <Container>
         <Typography variant="h6" color="initial" sx={{ mb: 2 }}>
-          {t("Our best sellers")}
+          {t("Our Latest Products")}
         </Typography>
-
-        <Grid container spacing={{ xs: 1, md: 2, xl: 3 }}>
+        <Swiper
+          spaceBetween={20} // Adjust space between slides
+          slidesPerView={2} // Number of slides per view (responsive handling below)
+          navigation
+          pagination={{ clickable: true }}
+          breakpoints={{
+            // Responsive breakpoints for Swiper
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 30,
+            },
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 40,
+            },
+          }}
+        >
           {data &&
-            data?.data?.map((item, idx) => (
-              <Grid key={idx} item xs="6" md="3">
+            data?.data?.products?.slice(-10).map((item, idx) => (
+              <SwiperSlide key={idx}>
                 <ProductCard
-                  productImage={item?.image?.image_path}
-                  productName={item?.translations?.name[lang]}
+                  productImage={item?.images[0]?.image_path}
+                  productName={item?.name}
                   Price={item?.price}
                   link={`/store/product/${item?.id}`}
                   purchasable={item?.purchasable === "always"}
                   offer={item?.compare_price}
                 />
-              </Grid>
+              </SwiperSlide>
             ))}
-        </Grid>
+        </Swiper>
       </Container>
     )
   );

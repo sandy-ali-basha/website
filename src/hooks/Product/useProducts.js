@@ -15,3 +15,16 @@ export const useProducts = (body) => {
     isLoading,
   };
 };
+export const useAllProducts = () => {
+  const { data, isLoading } = useQuery(
+    ["product"],
+    () => _ProductApi.filter().then((res) => res),
+    {
+      keepPreviousData: true,
+    }
+  );
+  return {
+    data,
+    isLoading,
+  };
+};

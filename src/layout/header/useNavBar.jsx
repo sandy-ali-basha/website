@@ -1,8 +1,5 @@
-import { Button } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { settingsStore } from "store/settingsStore";
-import CartItem from "components/modules/cart/CartItem";
 import { useNavigate } from "react-router-dom";
 import { _cities } from "api/country/country";
 
@@ -10,41 +7,6 @@ export const useNavBar = () => {
   const { t } = useTranslation("navbar");
 
   const navigate = useNavigate();
-
-  const GoToCart = () => {
-    return (
-      <Button
-        sx={{ width: "100%" }}
-        variant="outlined"
-        onClick={() => navigate("/store/checkout")}
-      >
-        {t("Show Cart")}
-      </Button>
-    );
-  };
-
-  const CartMenuItems = [
-    {
-      id: 1,
-      label: <CartItem />,
-      onClick: () => navigate("/store/checkout"),
-    },
-    {
-      id: 2,
-      label: <CartItem />,
-      onClick: () => navigate("/store/checkout"),
-    },
-    {
-      id: 3,
-      label: <CartItem />,
-      onClick: () => navigate("/store/checkout"),
-    },
-    {
-      id: 4,
-      label: <GoToCart />,
-      onClick: () => navigate("/store/checkout"),
-    },
-  ];
 
   const settings = [
     {
@@ -122,7 +84,6 @@ export const useNavBar = () => {
   ];
 
   return {
-    CartMenuItems,
     settings,
     pages,
     navigate,

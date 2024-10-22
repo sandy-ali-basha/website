@@ -21,7 +21,7 @@ export default function Brand() {
     return (
       <Box
         sx={{
-          minHeight: "70vh",
+          minHeight: "80vh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -66,7 +66,7 @@ export default function Brand() {
                   position: "absolute",
                 }}
               />
-              <Box
+              {/* <Box
                 sx={{
                   position: "relative",
                   zIndex: 1,
@@ -79,7 +79,7 @@ export default function Brand() {
                 <Typography sx={{ mt: 2 }} variant="body1" color="inherit">
                   {item?.translations?.find((t) => t.locale === lang)?.text}
                 </Typography>
-              </Box>
+              </Box> */}
             </Box>
           </SwiperSlide>
         ))}
@@ -97,7 +97,7 @@ export default function Brand() {
           </Grid>
         </Grid>
         <AnimatedText />
-        <BestSellers data={data?.products} />
+        {data?.products && <BestSellers data={data?.products} />}
       </Container>
     </Box>
   );

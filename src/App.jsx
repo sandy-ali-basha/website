@@ -33,6 +33,7 @@ import ShouldNotBeLogged from "middlewares/ShouldNotBeLogged";
 import NotFound from "components/NotFound";
 import ShouldBeLogged from "middlewares/ShouldBeLogged";
 import GoogleCallback from "app/(authentication)/Login/GoogleCallback";
+import ChooseCityDialog from "components/ChooseCityDialog";
 
 function App() {
   useEffect(() => {
@@ -47,7 +48,7 @@ function App() {
         <title>Dawaa alhayat</title>
         <meta name="description" content="dawaa alhayat" />
       </Helmet>
-
+      <ChooseCityDialog />
       <Routes>
         <Route
           path="/login"

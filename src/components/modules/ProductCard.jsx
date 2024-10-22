@@ -13,6 +13,7 @@ import CardShimmer from "components/customs/loaders/CardShimmer";
 import defaultImg from "assets/images/defaultImg.jpg";
 import { useTranslation } from "react-i18next";
 import { useAddToCart } from "hooks/cart/useAddToCart";
+import { AddShoppingCart } from "@mui/icons-material";
 export default function ProductCard({
   productName,
   Price,
@@ -100,17 +101,17 @@ export default function ProductCard({
                 />
               ) : (
                 <>
-                  {Price} {t("currency")}
+                  {offer > 0 ? offer : Price} {t("currency")}
                 </>
               )}
             </Typography>
             {offer > 0 && (
               <Typography variant="body1" color="initial">
-                {offer} {t("currency")}
+                {Price} {t("currency")}
               </Typography>
             )}
           </Box>
-          
+
           {purchasable && !loading && (
             <Button
               variant="outlined"
@@ -120,7 +121,7 @@ export default function ProductCard({
               {loadingCart ? (
                 <CircularProgress sx={{ width: "10px" }} />
               ) : (
-                t("Add To Cart")
+                <AddShoppingCart />
               )}
             </Button>
           )}

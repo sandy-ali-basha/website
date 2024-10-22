@@ -28,7 +28,7 @@ export const useAddToCart = (coupon_code) => {
             icon: "success",
             title: t(t("Added To Cart Successfully")),
             toast: true,
-            position: "top-end",
+            position: "bottom-end",
             showConfirmButton: false,
             timer: 5000,
             customClass: {
@@ -47,7 +47,7 @@ export const useAddToCart = (coupon_code) => {
             title: "Error",
             text: errorMessage,
             toast: true,
-            position: "top-end",
+            position: "bottom-end",
             showConfirmButton: false,
             timer: 8000,
             customClass: {
@@ -63,7 +63,7 @@ export const useAddToCart = (coupon_code) => {
           title: "Error",
           text: t("An unexpected error occurred. Please try again."),
           toast: true,
-          position: "top-end",
+          position: "bottom-end",
           showConfirmButton: false,
           timer: 5000,
           customClass: {

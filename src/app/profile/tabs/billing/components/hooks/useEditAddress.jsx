@@ -21,7 +21,7 @@ export const useEditAddress = ({ handleClose, id }) => {
     city: yup.string().required(t("City is required")),
     state: yup.string().required(t("State is required")),
     line_one: yup.string().required(t("Address is required")),
-    deliveryInstructions: yup.string(),
+    delivery_instructions: yup.string(),
   });
 
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ export const useEditAddress = ({ handleClose, id }) => {
   };
 
   const formOptions = { resolver: yupResolver(schema) };
-  const { register, handleSubmit, formState, control, setValue } =
+  const { register, handleSubmit, formState, control, setValue, watch } =
     useForm(formOptions);
   const { errors } = formState;
   const queryClient = useQueryClient();
@@ -86,6 +86,7 @@ export const useEditAddress = ({ handleClose, id }) => {
     t,
     control,
     setChecked,
-    setValue
+    setValue,
+    watch,
   };
 };

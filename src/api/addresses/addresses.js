@@ -18,7 +18,7 @@ export const _addresses = {
           ...HttpRequestInterceptor(),
         },
       })
-      .then((res) => res.data);
+      .then((res) => res);
   },
   order: (data) => _axios.post("/order", data).then((res) => res.data),
 

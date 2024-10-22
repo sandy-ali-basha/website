@@ -7,7 +7,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import MailToLink from "./components/mailToLink";
 import { useTranslation } from "react-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
@@ -16,7 +15,6 @@ import { _contact } from "api/contact/contact";
 import * as yup from "yup";
 import ButtonLoader from "components/customs/ButtonLoader";
 import Swal from "sweetalert2";
-import { LocationCity } from "@mui/icons-material";
 import { MapPin } from "react-feather";
 
 export default function ContactUs() {
@@ -41,7 +39,7 @@ export default function ContactUs() {
     } finally {
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: "bottom-end",
         showConfirmButton: false,
         timer: 1500,
         timerProgressBar: true,
@@ -177,7 +175,7 @@ export default function ContactUs() {
           item
           md="6"
         >
-          <Box sx={{ width: { md: "45vw", sm: "90vw" } }}>
+          <Box sx={{ width: { md: "100%", sm: "90vw" } }}>
             <iframe
               title="map"
               src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d43592.783752407915!2d44.029617!3d36.21132!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4007239623882d59%3A0x168fa754f4658b3b!2z2LTYsdmD2Kkg2K_ZiNin2KEg2KfZhNit2YrYp9ipIC0gRGF3YWEgQWxoYXlhdCBjb21wYW55!5e1!3m2!1sar!2seg!4v1728900655861!5m2!1sar!2seg"
@@ -198,7 +196,7 @@ export default function ContactUs() {
             </Typography>
           </Box>
           <Box sx={{ width: "100%", mt: 3, display: "flex", gap: 1 }}>
-            <MapPin sx={{ px: 1 }} />{" "}
+            <MapPin sx={{ pe: 1 }} />{" "}
             <Typography variant="body1" color="initial">
               Baghdad Office:
             </Typography>

@@ -21,7 +21,7 @@ export const useAddressDialog = ({ handleClose }) => {
     city: yup.string().required(t("City is required")),
     state: yup.string().required(t("State is required")),
     line_one: yup.string().required(t("Address is required")),
-    deliveryInstructions: yup.string(),
+    delivery_instructions: yup.string(),
   });
 
   const [loading, setLoading] = useState(false);

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -18,21 +17,21 @@ const DeleteDialog = ({ id, page, count }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = React.useState(false);
   const deleteproduct = useDeleteProduct({ page, count });
-  const handleClickOpen = (e) => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const handleClickOpen = (e) => setOpen(true);
+  const handleClose = () => setOpen(false);
   const { refetch } = useProduct();
   const DeleteProduct = () => {
     setLoading(true);
     deleteproduct.mutate(id, {
       onSuccess: () => {
         setOpen(false);
-        refetch()
+        refetch();
       },
     });
-  }
+  };
   return (
     <React.Fragment>
-      <Tooltip title={direction === "ltr" ? "Delete" : "حذف"}>
+      <Tooltip title={t("Delete")}>
         <DeleteTwoToneIcon
           sx={{ color: "error.main" }}
           onClick={handleClickOpen}
@@ -61,7 +60,7 @@ const DeleteDialog = ({ id, page, count }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>{t('Disagree')}</Button>
+          <Button onClick={handleClose}>{t("Disagree")}</Button>
           {loading && <Loader />}
           <Button autoFocus sx={{}} variant="contained" onClick={DeleteProduct}>
             {t("Agree")}

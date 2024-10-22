@@ -12,16 +12,17 @@ const LanguageSelector = () => {
     state.direction,
     state.setDirection,
   ]);
-  
+
   const handleLanguageChange = (lang) => {
     const newLanguage = lang;
-    const newDirection = newLanguage === "ar" || newLanguage === "kr" ? "rtl" : "ltr";
-    
-    setDirection(newDirection);
+    const newDirection =
+      newLanguage === "ar" || newLanguage === "kr" ? "rtl" : "ltr";
+      setDirection(newDirection);
     i18n.changeLanguage(newLanguage);
     setAnchorEl(null);
+    localStorage.setItem("i18nextLng", lang);
   };
-  
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

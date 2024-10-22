@@ -4,7 +4,6 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import Tabs from "@mui/material/Tabs";
@@ -13,7 +12,7 @@ import TabContext from "@mui/lab/TabContext";
 import { Chip, Container, TextField } from "@mui/material";
 import { ValueStore } from "store/categoryStore";
 import { useTranslation } from "react-i18next";
-import { CreditCard, Money } from "@mui/icons-material";
+import { CreditCard, Money, MoneyRounded, QrCode } from "@mui/icons-material";
 import { useCart } from "hooks/cart/useCart";
 import { AddressStore } from "store/shippingStore";
 import Loader from "components/modules/Loader";
@@ -72,9 +71,13 @@ const StepPayment = ({ handleNext }) => {
               onChange={handleChange}
               aria-label="customized tabs example"
             >
-              <Tab value="fib" label="Card" />
-              <Tab value="cash-in-hand" label="Cash On Delivery" />
-              {/* <Tab value="gc" label="Gift Card" /> */}
+              <Tab value="fib" label={t("FIB")} icon={<QrCode />} />
+              <Tab
+                value="cash-in-hand"
+                label={t("Cash On Delivery")}
+                icon={<MoneyRounded />}
+              />
+              {/* <Tab value="gc" label={t("Gift Card")} /> */}
             </CustomTabList>
             <Grid container sx={{ mt: 2 }}>
               <Grid item md={8} xs={12}>
@@ -89,7 +92,7 @@ const StepPayment = ({ handleNext }) => {
                     )}
                   </Typography>
                   <Button variant="contained" onClick={handleNext}>
-                    {t("Pay With Card")}
+                    {t("Pay With FIB")}
                   </Button>
                 </TabPanel>
                 <TabPanel
@@ -98,9 +101,9 @@ const StepPayment = ({ handleNext }) => {
                 >
                   <Money />
                   <Typography sx={{ mb: 4 }}>
-                    Cash on Delivery is a type of payment method where the
-                    recipient make payment for the order at the time of delivery
-                    rather than in advance.
+                    {t(
+                      "Cash on Delivery is a type of payment method where the recipient make payment for the order at the time of delivery rather than in advance."
+                    )}
                   </Typography>
                   <Button variant="contained" onClick={handleNext}>
                     {t("Pay On Delivery")}
@@ -172,7 +175,8 @@ const StepPayment = ({ handleNext }) => {
                     >
                       <Typography>{t("Sub Total")}</Typography>
                       <Typography sx={{ color: "text.secondary" }}>
-                        {cartData?.data?.sub_total} {t("currency")}
+                        {(cartData?.data?.sub_total / 1000).toFixed(3)}{" "}
+                        {t("currency")}
                       </Typography>
                     </Box>
                     <Box
@@ -191,9 +195,15 @@ const StepPayment = ({ handleNext }) => {
                           alignItems: "center",
                         }}
                       >
-                        {shippingAddress > 0 ? (
-                          shippingAddress?.shipping_price
-                        ) : (
+                        {shippingAddress?.shipping_price > 0 && (
+                          <div>
+                            {(shippingAddress?.shipping_price / 1000).toFixed(
+                              3
+                            )}
+                            {t("currency")}
+                          </div>
+                        )}
+                        {shippingAddress?.shipping_price === 0 && (
                           <Chip color="success" label={t("FREE")}></Chip>
                         )}
                       </Box>
@@ -210,7 +220,7 @@ const StepPayment = ({ handleNext }) => {
                           justifyContent: "space-between",
                         }}
                       >
-                        <Typography>{t("Coupon Discount")}</Typography>
+                        <Typography>{t("Discount Amount")}</Typography>
                         <Typography
                           variant="body1"
                           sx={{ color: "primary.main" }}
@@ -235,7 +245,9 @@ const StepPayment = ({ handleNext }) => {
                           {t("Sub Total After Points Used")}
                         </Typography>
                         <Typography variant="body1" color="secondary">
-                          {cartData?.data?.sub_total_after_points}{" "}
+                          {(
+                            cartData?.data?.sub_total_after_points / 1000
+                          ).toFixed(3)}{" "}
                           {t("currency")}
                         </Typography>
                       </Box>

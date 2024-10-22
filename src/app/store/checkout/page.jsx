@@ -90,8 +90,8 @@ const Checkout = () => {
               imageHeight: 150,
               imageAlt: "QR Code",
               confirmButtonText: t("Done"),
-            }).then((res) => {
-              if (res?.data?.code === 200) {
+            }).then((result) => {
+              if (result?.isConfirmed) {
                 setActiveStep(activeStep + 1); // Move to the next step after confirming
               }
             });
@@ -102,7 +102,7 @@ const Checkout = () => {
             title: "Error",
             text: res?.error?.message,
             toast: true,
-            position: "top-end",
+            position: "bottom-end",
             showConfirmButton: false,
             timer: 3000,
             timerProgressBar: true,

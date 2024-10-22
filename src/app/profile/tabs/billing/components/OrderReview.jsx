@@ -1,3 +1,4 @@
+import { Cancel, CheckCircle, Done, LocalShipping, Pending, Sync } from "@mui/icons-material";
 import {
   Box,
   Chip,
@@ -7,6 +8,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React, { useMemo } from "react";
@@ -30,7 +32,31 @@ const OrderReview = ({ item }) => {
       </TableRow>
     ));
   }, [item]);
+  const getStatusDetails = (status) => {
+    switch (status) {
+      case "order_requested":
+        return { label: "Requested", color: "info", icon: <Pending /> };
+      case "order_processing":
+        return { label: "Processing", color: "primary", icon: <Sync /> };
+      case "order_processed":
+        return { label: "Processed", color: "warning", icon: <CheckCircle /> };
+      case "order_under_delivery":
+        return {
+          label: "Under Delivery",
+          color: "secondary",
+          icon: <LocalShipping />,
+        };
+      case "order_delivered":
+        return { label: "Delivered", color: "success", icon: <Done /> };
+      case "order_canceled":
+        return { label: "Canceled", color: "error", icon: <Cancel /> };
+      default:
+        return { label: "Unknown", color: "default", icon: null };
+    }
+  };
 
+  const { label, color, icon } = getStatusDetails(item?.status);
+  
   return (
     <Box p={3}>
       {/* Order Information and Status */}
@@ -46,16 +72,20 @@ const OrderReview = ({ item }) => {
 
         {/* Order Status Chips */}
         <Box display="flex" gap={2}>
-          <Chip
-            label={item?.status}
-            color={
-              item?.status === "awaiting-payment"
-                ? "info"
-                : item?.status === "payment-offline"
-                ? "primary"
-                : "success"
-            }
-          />
+        <Tooltip title={label}>
+            <Chip
+              label={label}
+              icon={icon}
+              color={color}
+              variant="outlined"
+              sx={{
+                minWidth: 120,
+                fontWeight: "bold",
+                fontSize: "0.875rem",
+                justifyContent: "start",
+              }}
+            />
+          </Tooltip>
         </Box>
       </Box>
 

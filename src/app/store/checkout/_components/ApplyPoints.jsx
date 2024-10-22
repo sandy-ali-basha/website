@@ -17,8 +17,12 @@ const ApplyPoints = ({ points }) => {
     _cart.points({ data }).then((res) => {
       if (res?.code === 200) {
         queryClient.invalidateQueries("cart");
-      }else
-      setAlert(res?.error?.errors?.points_to_use[0] || "something went wrong");
+      } else
+        setAlert(
+          res?.error?.errors.length > 0
+            ? res?.error?.errors?.points_to_use[0]
+            : res?.error?.message || t("something went wrong")
+        );
     });
   };
   return (
@@ -34,7 +38,6 @@ const ApplyPoints = ({ points }) => {
           placeholder="Enter Points"
           type="number"
           onChange={(e) => setCouponCode(e.target.value)}
-        
         />
 
         <Button

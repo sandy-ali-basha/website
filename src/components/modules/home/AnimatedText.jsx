@@ -1,8 +1,6 @@
 import React from "react";
-import Typography from "@mui/material/Typography";
 import { Box } from "@mui/material";
 //* images
-  
 import gummie1 from "assets/images/animatedText/gummy (1).png";
 import gummie2 from "assets/images/animatedText/gummy (2).png";
 import gummie3 from "assets/images/animatedText/gummy (3).png";
@@ -10,8 +8,10 @@ import gummie4 from "assets/images/animatedText/gummy (4).png";
 import gummie5 from "assets/images/animatedText/gummy (5).png";
 import gummie6 from "assets/images/animatedText/gummy (6).png";
 import gummie7 from "assets/images/animatedText/gummy (7).png";
-import gar1 from "assets/images/jar.png";
-import gar2 from "assets/images/animatedText/gummyGar2.png";
+import gar1 from "assets/images/Asset 2.png";
+import fin from "assets/images/Asset 1.png";
+import eis from "assets/images/Asset 3.png";
+
 //*GSAP
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
@@ -96,36 +96,34 @@ export default function AnimatedText() {
           alt={`gummie ${index + 1}`}
         />
       ))}
-      {/* <img
-        src={gar2}
-        ref={gsr2}
-        className="floatingGar2"
-        style={{ zIndex: "3" }}
-        alt=""
-      />
-      <Typography
-        variant="h2"
-        color="initial"
-        className="text"
-        sx={{ zIndex: "4", position: "relative" }}
-      >
-        EASILY DIGESTIBLE
-      </Typography> */}
       <img
         src={gar1}
-        className="floatingGar"
-        style={{ zIndex: "1" }}
-        ref={gar}
+        ref={gsr2}
+        className="floatingGar2"
+        style={{ zIndex: "4", position: "relative" }}
         alt=""
-      />
-      {/* <Typography
-        variant="h2"
-        color="initial"
-        className="text"
-        sx={{ zIndex  : "2", position: "relative" }}
-      >
-        GUMMY BEAR
-      </Typography> */}
+      />{" "}
+      <Box sx={{ display: "flex" }}>
+        <img
+          src={fin}
+          style={{ position: "relative", zIndex: "3" }}
+          className="text"
+          alt=""
+        />
+        <img
+          src={eis}
+          style={{ zIndex: "-1", position: "relative" }}
+          clasName="text"
+          alt=""
+          />
+          {/* <img
+            src={gar1}
+            className="floatingGar"
+            style={{ zIndex: "1" }}
+            ref={gar}
+            alt=""
+          /> */}
+      </Box>
     </Box>
   );
 }

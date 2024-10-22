@@ -12,9 +12,8 @@ import ListItemText from "@mui/material/ListItemText";
 
 // ** Icon Imports
 import Icon from "components/modules/icon";
-import { Chip, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useCart } from "hooks/cart/useCart";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -75,6 +74,8 @@ const HorizontalList = styled(List)(({ theme }) => ({
 }));
 
 const StepConfirmation = ({ orderResponse }) => {
+  console.log("orderResponse", orderResponse);
+
   const billingAddress = orderResponse.address.find(
     (addr) => addr.type === "billing"
   );
@@ -132,24 +133,12 @@ const StepConfirmation = ({ orderResponse }) => {
                 alignItems: "center",
                 "& svg": { color: "text.secondary" },
               }}
-            >
-              {/* <Icon icon="tabler:clock" fontSize={20} /> */}
-              {/* <Typography sx={{ ml: 1.5, color: "text.secondary" }}>
-                <Typography
-                  component="span"
-                  sx={{ fontWeight: 500, color: "text.secondary" }}
-                >
-                  Time placed:
-                </Typography>{" "}
-                {}
-              </Typography> */}
-            </Box>
+            ></Box>
           </Box>
         </Grid>
 
         <Grid item xs={12}>
           <HorizontalList>
-            {/* Shipping Address */}
             <ListItem
               sx={{ flexDirection: "column", alignItems: "flex-start" }}
             >
@@ -157,9 +146,10 @@ const StepConfirmation = ({ orderResponse }) => {
                 <Box sx={{ mr: 1.5, display: "flex" }}>
                   <Icon icon="tabler:map-pin" fontSize={20} />
                 </Box>
-                <Typography variant="h6">Shipping</Typography>
+                <Typography variant="h6">{t("Shipping")}</Typography>
               </Box>
               <Typography>{`${shippingAddress.first_name} ${shippingAddress.last_name}`}</Typography>
+              <br />
               <Typography>{shippingAddress.line_one}</Typography>
               <Typography>
                 {shippingAddress.city}, {shippingAddress.state},{" "}
@@ -179,7 +169,7 @@ const StepConfirmation = ({ orderResponse }) => {
                 <Box sx={{ mr: 1.5, display: "flex" }}>
                   <Icon icon="tabler:credit-card" fontSize={20} />
                 </Box>
-                <Typography variant="h6">Billing Address</Typography>
+                <Typography variant="h6">{t("Billing Address")}</Typography>
               </Box>
               <Typography>{`${billingAddress.first_name} ${billingAddress.last_name}`}</Typography>
               <Typography>{billingAddress.line_one}</Typography>
@@ -203,23 +193,6 @@ const StepConfirmation = ({ orderResponse }) => {
                 <Grid container spacing={5}>
                   <Grid item xs={12} sm={8}>
                     <ListItemText primary={item.description} />
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <Typography sx={{ mr: 1, color: "text.disabled" }}>
-                        {t("Sold By")}:
-                      </Typography>
-                      <Typography
-                        href="/"
-                        component={Link}
-                        onClick={(e) => e.preventDefault()}
-                        sx={{
-                          mr: 4,
-                          color: "primary.main",
-                          textDecoration: "none",
-                        }}
-                      >
-                        {"Seller"}
-                      </Typography>
-                    </Box>
                   </Grid>
                   <Grid
                     item
@@ -232,7 +205,8 @@ const StepConfirmation = ({ orderResponse }) => {
                     }}
                   >
                     <Typography sx={{ color: "primary.main" }}>
-                      {item.unit_price.value / 100} {t("currency")}
+                      {(item.unit_price.value / 1000).toFixed(3)}{" "}
+                      {t("currency")}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -266,10 +240,25 @@ const StepConfirmation = ({ orderResponse }) => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography>Order Total</Typography>
+                  <Typography>{t("sub total")}</Typography>
                   <Typography sx={{ color: "text.secondary" }}>
+                    {(orderResponse.sub_total / 1000).toFixed(3)}{" "}
                     {t("currency")}
-                    {orderResponse.sub_total / 100}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    mb: 4,
+                    gap: 2,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography>{t("Order Total")}</Typography>
+                  <Typography sx={{ color: "text.secondary" }}>
+                    {(orderResponse.total / 1000).toFixed(3)} {t("currency")}
                   </Typography>
                 </Box>
                 {/* <Box
@@ -322,9 +311,9 @@ const StepConfirmation = ({ orderResponse }) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Typography sx={{ fontWeight: 500 }}>Total</Typography>
+                <Typography sx={{ fontWeight: 500 }}>{t("Total")}</Typography>
                 <Typography sx={{ fontWeight: 500 }}>
-                  ${orderResponse.sub_total / 100}
+                  {(orderResponse.sub_total / 1000).toFixed(3)} {t("currency")}
                 </Typography>
               </Box>
             </CardContent>

@@ -42,7 +42,7 @@ const BillingAddressCard = () => {
 
   const { t } = useTranslation();
   const { data = { addresses: [] }, isLoading } = useAddresses();
- 
+
   return (
     <>
       <EditDialog open={openEdit} handleClose={handleCloseEdit} id={id} />
@@ -131,6 +131,7 @@ const BillingAddressCard = () => {
                       {item?.city}, {item?.state}, {item?.country},{" "}
                       {item?.postcode}
                     </Typography>
+                    <Typography variant="body1">{item?.line_one}</Typography>
                     <Box
                       sx={{
                         display: "flex",
