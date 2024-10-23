@@ -1,4 +1,4 @@
-name: Deploy React App to Hostinger
+name: Deploy to Hostinger
 
 on:
   push:
@@ -6,29 +6,19 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
       - name: Install dependencies
         run: npm install
 
-      - name: Build React app
+      - name: Build project
         run: npm run build
 
-      - name: Deploy to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
-        with:
-          ftp-server: ftp://dawaaalhayat.com
-          ftp-username: sandy
-          ftp-password: Te$tWebsite1
-          local-dir: ./build
-          server-dir: /public_html/website_test  # Adjust if your React app is deployed in a subdirectory
+      - name: Deploy to Hostinger
+        run: |
+          scp -r ./build/* u668552896@213.130.145.172 :/home/user/public_html/testWebsite
