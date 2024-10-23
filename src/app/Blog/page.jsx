@@ -9,7 +9,6 @@ import CardShimmer from "components/customs/loaders/CardShimmer";
 export default function Blog() {
 
   const { data, isLoading } = useBlogs();
-  console.log(data);
   return (
     <Container sx={{ mt: 20 }}>
       <Chip sx={{ background: "rgba(194, 238, 252, 1)" }} label="Blog"></Chip>
@@ -42,7 +41,7 @@ export default function Blog() {
               objectFit: "cover",
             }}
             src={data?.posts[0]?.image}
-            alt="company"
+            alt={data?.posts[0]?.title}
           />
         )}
 
@@ -50,7 +49,7 @@ export default function Blog() {
           variant="body2"
           color="initial"
           sx={{ fontWeight: "300" }}
-          dangerouslySetInnerHTML={{ __html: data?.posts[0]?.text }}
+          dangerouslySetInnerHTML={{ __html: data?.posts[0]?.text.slice(0, 2500)  }}
         ></Typography>
         {isLoading && <CardShimmer style={{ width: "100%", height: "20px" }} />}
         {isLoading && <CardShimmer style={{ width: "90%", height: "20px" }} />}

@@ -24,7 +24,6 @@ export default function AnimatedText() {
 
   const imageRefs = useRef([]);
   imageRefs.current = [];
-
   useEffect(() => {
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -99,14 +98,14 @@ export default function AnimatedText() {
       <img
         src={gar1}
         ref={gsr2}
-        className="floatingGar2"
-        style={{ zIndex: "4", position: "relative" }}
+        className=""
+        style={{ zIndex: "3", position: "absolute" }}
         alt=""
       />{" "}
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex" ,position:'relative'}}>
         <img
           src={fin}
-          style={{ position: "relative", zIndex: "3" }}
+          style={{ position: "relative", zIndex: "5" }}
           className="text"
           alt=""
         />
@@ -115,8 +114,8 @@ export default function AnimatedText() {
           style={{ zIndex: "-1", position: "relative" }}
           clasName="text"
           alt=""
-          />
-          {/* <img
+        />
+        {/* <img
             src={gar1}
             className="floatingGar"
             style={{ zIndex: "1" }}

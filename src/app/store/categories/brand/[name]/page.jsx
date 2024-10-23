@@ -8,13 +8,11 @@ import { Autoplay } from "swiper/modules";
 import { useParams } from "react-router-dom";
 import { useBrandPage } from "hooks/brands/useBrand";
 import AnimatedText from "components/modules/home/AnimatedText.jsx";
-import BestSellers from "components/modules/home/BestSellers.jsx";
 import Loader from "components/modules/Loader";
+import BrandProducts from "components/modules/home/BrandProducts";
 
 export default function Brand() {
   const { id } = useParams(); // Get the brand ID from the URL params
-  const lang = localStorage.getItem("i18nextLng") || "en"; // Fallback to "en" if no language is set
-
   const { data, isLoading } = useBrandPage(id);
 
   if (isLoading)
@@ -46,12 +44,11 @@ export default function Brand() {
             <Box
               sx={{
                 position: "relative",
-                width: "100vw",
-                height: "90vh",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
+                aspectRatio: "16/9",
                 color: "white",
                 textAlign: "center",
               }}
@@ -61,8 +58,8 @@ export default function Brand() {
                 alt={`Slide ${index + 1}`}
                 style={{
                   objectFit: "cover",
-                  width: "inherit",
-                  height: "inherit",
+                  width: "100%",
+                  height: "100%",
                   position: "absolute",
                 }}
               />
@@ -97,7 +94,7 @@ export default function Brand() {
           </Grid>
         </Grid>
         <AnimatedText />
-        {data?.products && <BestSellers data={data?.products} />}
+        {data?.products && <BrandProducts data={data?.products} />}
       </Container>
     </Box>
   );

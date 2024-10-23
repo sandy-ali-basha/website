@@ -24,6 +24,7 @@ export default function ProductCard({
   id,
   purchasable,
 }) {
+
   const { handleAddToCart, loadingCart } = useAddToCart();
   const { t } = useTranslation("index");
 
@@ -127,8 +128,7 @@ export default function ProductCard({
           )}
         </Box>
       </CardContent>
-      {/* Uncomment and use the Image component if necessary
-      <img width="100%" src={productImage} alt={productName} /> */}
+      
     </Card>
   );
 }

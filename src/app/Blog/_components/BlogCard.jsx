@@ -33,7 +33,7 @@ const BlogCard = ({ id, image, title, text, date }) => {
           borderRadius: 4,
           height: "100%",
         }}
-        alt="alt text"
+        alt={title}
       />
       <Box
         sx={{

@@ -12,7 +12,7 @@
   "Add To Cart": "Add To Cart",
   "Our Partners": "Our Partners",
   "Sorry, we currently have no open positions. Please check back later.": "Sorry, we currently have no open positions. Please check back later.",
-  "© 2024 Dawaa Alhayat. All rights reserved.": "© 2024 Dawaa Alhayat. All rights reserved.",
+  "© 2024 Dawaa Alhayat. All rights reserved.": "© 2025 Dawaa Alhayat. All rights reserved.",
   "You have not added any address yet. Please add a new address.": "You have not added any address yet. Please add a new address.",
   "Edit": "Edit",
   "Delete": "Delete",
@@ -163,5 +163,6 @@
   "Order Items":"Order Items",
   "Issued Date":"Issued Date",
   "Order Status":"Order Status",
-  "Order Reference":"Order Reference"
+  "Order Reference":"Order Reference",
+  "View All":"View All"
 }

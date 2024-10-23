@@ -1,13 +1,14 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import React from "react";
 import ProductCard from "../ProductCard";
 import { useTranslation } from "react-i18next";
-import { useAllProducts } from "hooks/Product/useProducts";
+import { useProducts } from "hooks/Product/useProducts";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Pagination, Navigation } from "swiper";
+import { Autoplay } from "swiper/modules";
 
 export default function BestSellers() {
-  const { data } = useAllProducts();
+  const filterData = { filters: {} };
+  const { data } = useProducts(filterData);
   const { t } = useTranslation("index");
 
   return (
@@ -17,12 +18,15 @@ export default function BestSellers() {
           {t("Our Latest Products")}
         </Typography>
         <Swiper
-          spaceBetween={20} // Adjust space between slides
-          slidesPerView={2} // Number of slides per view (responsive handling below)
-          navigation
-          pagination={{ clickable: true }}
+          spaceBetween={20}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          lazy={true}
+          modules={[Autoplay]}
+          slidesPerView={2}
           breakpoints={{
-            // Responsive breakpoints for Swiper
             640: {
               slidesPerView: 2,
               spaceBetween: 20,
@@ -39,7 +43,7 @@ export default function BestSellers() {
         >
           {data &&
             data?.data?.products?.slice(-10).map((item, idx) => (
-              <SwiperSlide key={idx}>
+              <SwiperSlide key={idx} style={{ paddingBottom: "10px" }}>
                 <ProductCard
                   productImage={item?.images[0]?.image_path}
                   productName={item?.name}
@@ -51,6 +55,11 @@ export default function BestSellers() {
               </SwiperSlide>
             ))}
         </Swiper>
+        <Box sx={{ width: "100%", textAlign: "center" }}>
+          <Button sx={{ mx: "auto" }} href="/store">
+            {t("View All")}
+          </Button>
+        </Box>
       </Container>
     )
   );

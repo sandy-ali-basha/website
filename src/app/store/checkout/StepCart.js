@@ -208,23 +208,35 @@ const StepCart = ({ handleNext }) => {
                             />
                           </Box>
                           <Box sx={{ display: "flex" }}>
-                            <Typography
-                              sx={{
-                                color: "text.secondary",
-                                textDecoration: "line-through",
-                              }}
-                              variant="body1"
-                              color="initial"
-                            >
-                              {item?.compare_price > 0
-                                ? item?.compare_price
-                                : ""}
-                            </Typography>
-                            <Typography sx={{ color: "text.main" }}>
-                              {(item?.price / 1000).toFixed(3)}
-
-                              {t("currency")}
-                            </Typography>
+                            <Box>
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  textDecoration: item?.compare_price
+                                    ? "line-through"
+                                    : "none",
+                                  fontSize: item?.compare_price
+                                    ? "small"
+                                    : "inherit",
+                                }}
+                                color={
+                                  item?.compare_price
+                                    ? "text.secondary"
+                                    : "initial"
+                                }
+                              >
+                                {item?.compare_price > 0
+                                  ? item?.compare_price
+                                  : (item?.price / 1000).toFixed(3)}{" "}
+                                {t("currency")}
+                              </Typography>
+                              {item?.price > 0 && (
+                                <Typography variant="body1" color="initial">
+                                  {(item?.price / 1000).toFixed(3)}{" "}
+                                  {t("currency")}
+                                </Typography>
+                              )}
+                            </Box>
                           </Box>
                         </Grid>
                         <Grid item xs={12} md={4} sx={{ mt: [4, 4, 6] }}>
@@ -365,7 +377,7 @@ const StepCart = ({ handleNext }) => {
                             : "initial",
                       }}
                     >
-                      {data?.data?.sub_total} IQD
+                      {(data?.data?.sub_total/ 1000).toFixed(3)} {t("currency")}
                     </Typography>
 
                     {data?.data?.points_used > 0 && (
@@ -376,7 +388,7 @@ const StepCart = ({ handleNext }) => {
                           textDecoration: "none",
                         }}
                       >
-                        {data?.data?.sub_total_after_points} IQD
+                        {data?.data?.sub_total_after_points} {t("currency")}
                       </Typography>
                     )}
                   </Box>

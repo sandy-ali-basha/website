@@ -125,7 +125,6 @@ function NavBar() {
           <Box sx={{ mx: "10px" }}>
             {_AuthApi.getToken() ? (
               <MenuButton
-                badgeNumber={4}
                 icon={<PersonOutlineOutlined sx={{ color: "white" }} />}
                 menuItems={settings.map((item) => ({
                   ...item,

@@ -1,22 +1,21 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
 import { Button, Grid } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-import gummie from "assets/images/gummies.png";
+// import gummie from "assets/images/gummies.png";
 import AnimatedText from "../components/modules/home/AnimatedText.jsx";
 import Qoute from "../components/modules/home/Qoute.jsx";
 import Partners from "../components/modules/home/Partners.jsx";
 import { Autoplay } from "swiper/modules";
 import gsap from "gsap";
-import { useTranslation } from "react-i18next";
 import { settingsStore } from "store/settingsStore.js";
 import { useHome, useHomeSlider } from "hooks/home/useHome.js";
 import Loader from "components/modules/Loader.jsx";
-import imageOfStats from "assets/images/home.jpg";
 import BestSellers from "components/modules/home/BestSellers.jsx";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const [direction] = settingsStore((state) => [state.direction]);
@@ -42,6 +41,22 @@ export default function Home() {
   const lang = localStorage.getItem("i18nextLng");
   const { data, isLoading } = useHome();
   const { data: slider, isLoading: sliderLoading } = useHomeSlider();
+  const [showMore, setShowMore] = useState(false);
+
+  // Get the text
+  const text = data?.["home.page.textSectionOne"]?.value?.text?.[lang] || "";
+
+  // Define the max length before showing "View More"
+  const maxLength = 1200; // adjust the length as needed
+
+  // Function to toggle between showing more or less
+  const handleToggle = () => {
+    setShowMore(!showMore);
+  };
+
+  // Determine if the text is long enough to be truncated
+  const isLongText = text.length > maxLength;
+  const displayedText = showMore ? text : text.substring(0, maxLength);
 
   return (
     <>
@@ -71,45 +86,45 @@ export default function Home() {
         >
           {slider?.home_slides?.map((item, index) => (
             <SwiperSlide key={index}>
-              <Box
-                sx={{
-                  position: "relative",
-                  aspectRatio: "16/9",
-
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  color: "white",
-                  textAlign: "center",
-                  background: "#6A83B0",
-                }}
-              >
-                <img
-                  src={item.image}
-                  alt={`Slide ${index + 1}`}
-                  style={{
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "100%",
-                    position: "absolute",
-                  }}
-                  lazy
-                />
+              <Link to={item?.link}>
                 <Box
                   sx={{
                     position: "relative",
-                    zIndex: 1,
-                    width: { md: "50%", xs: "100%" },
+                    aspectRatio: "16/9",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    color: "white",
+                    textAlign: "center",
+                    background: "#6A83B0",
                   }}
                 >
-                  {/* <Typography variant="h2" color="inherit">
+                  <img
+                    src={item.image}
+                    alt={`Slide ${index + 1}`}
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                      height: "100%",
+                      position: "absolute",
+                    }}
+                    lazy
+                  />
+                  <Box
+                    sx={{
+                      position: "relative",
+                      zIndex: 1,
+                      width: { md: "50%", xs: "100%" },
+                    }}
+                  >
+                    {/* <Typography variant="h2" color="inherit">
                     {item?.title}
                   </Typography>
                   <Typography sx={{ mt: 2 }} variant="body1" color="inherit">
                     {item?.text}
                   </Typography> */}
-                  {/* <Button
+                    {/* <Button
                     sx={{ mt: 4 }}
                     color="primary"
                     variant="contained"
@@ -117,16 +132,18 @@ export default function Home() {
                   >
                     {t("Get Started")}
                   </Button> */}
+                  </Box>
                 </Box>
-              </Box>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>
       )}
+
       {data && (
         <>
           <Container>
-            <Grid container sx={{ py: 2 }} spacing="5">
+            <Grid container sx={{ py: 5 }} spacing="5">
               <Grid md="4">
                 <img
                   src={data?.["home.page.textSectionOne"]?.image}
@@ -134,13 +151,17 @@ export default function Home() {
                   style={{ width: "100%" }}
                 />
               </Grid>
-              <Grid md="8">
+              <Grid md="8" sx={{ px: 5 }}>
                 <Typography
                   dangerouslySetInnerHTML={{
-                    __html:
-                      data?.["home.page.textSectionOne"]?.value?.text?.[lang],
+                    __html: displayedText,
                   }}
                 ></Typography>
+                {isLongText && (
+                  <Button onClick={handleToggle}>
+                    {showMore ? "View Less" : "View More"}
+                  </Button>
+                )}
               </Grid>
             </Grid>
             {/* <Grid

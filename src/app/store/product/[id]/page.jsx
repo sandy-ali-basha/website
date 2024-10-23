@@ -41,7 +41,7 @@ function Product() {
     <Container sx={{ mt: 15 }}>
       <Grid container>
         <Grid item xs={12} md={6}>
-          <Swiper navigation={true} modules={[Navigation]} spaceBetween={10}>
+          <Swiper navigation={true} modules={[Navigation]} spaceBetween={10} >
             {data?.data?.images ? (
               data?.data?.images?.map((item, idx) => (
                 <SwiperSlide key={idx}>

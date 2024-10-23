@@ -9,12 +9,12 @@ import {
 } from "@mui/material";
 import React from "react";
 import logo from "assets/images/logo_white.png";
-import { Facebook, Instagram, LinkedIn, Twitter } from "@mui/icons-material";
+import { Facebook, Instagram, LinkedIn } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { _terms } from "api/terms/terms";
 import { useQuery } from "react-query";
 import CardShimmer from "components/customs/loaders/CardShimmer";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Footer() {
   const MenuItems = [
@@ -132,6 +132,7 @@ function Footer() {
             )}
             {termsData?.terms?.map((item, index) => (
               <Button
+              size="small"
                 sx={{ color: "#e9e9e9", fontWeight: "300" }}
                 variant={"text"}
                 key={index}
