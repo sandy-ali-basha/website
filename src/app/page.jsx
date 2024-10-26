@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 
 import { Button, Grid } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-// import gummie from "assets/images/gummies.png";
 import AnimatedText from "../components/modules/home/AnimatedText.jsx";
 import Qoute from "../components/modules/home/Qoute.jsx";
 import Partners from "../components/modules/home/Partners.jsx";
@@ -16,6 +15,8 @@ import { useHome, useHomeSlider } from "hooks/home/useHome.js";
 import Loader from "components/modules/Loader.jsx";
 import BestSellers from "components/modules/home/BestSellers.jsx";
 import { Link } from "react-router-dom";
+import i18n from "i18n.js";
+import Reels from "components/modules/home/Reels.jsx";
 
 export default function Home() {
   const [direction] = settingsStore((state) => [state.direction]);
@@ -38,13 +39,12 @@ export default function Home() {
     });
   }, [direction]);
 
-  const lang = localStorage.getItem("i18nextLng");
   const { data, isLoading } = useHome();
   const { data: slider, isLoading: sliderLoading } = useHomeSlider();
   const [showMore, setShowMore] = useState(false);
 
   // Get the text
-  const text = data?.["home.page.textSectionOne"]?.value?.text?.[lang] || "";
+  const text = data?.["home.page.textSectionOne"]?.value?.text?.[i18n.language] || "";
 
   // Define the max length before showing "View More"
   const maxLength = 1200; // adjust the length as needed
@@ -164,123 +164,6 @@ export default function Home() {
                 )}
               </Grid>
             </Grid>
-            {/* <Grid
-              sx={{
-                mt: 3,
-                position: "relative",
-                justifyContent: "space-between",
-              }}
-              container
-              spacing={2}
-            >
-              <Grid
-                p="2rem"
-                item
-                md={6}
-                xs={12}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  color="initial"
-                  dangerouslySetInnerHTML={{
-                    __html: data?.["home.page.status"]?.value?.[lang].title1,
-                  }}
-                ></Typography>
-                <Typography
-                  variant="h3"
-                  color="initial"
-                  sx={{ mb: 2 }}
-                  dangerouslySetInnerHTML={{
-                    __html: data?.["home.page.status"]?.value?.[lang].subtitle1,
-                  }}
-                ></Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  {data?.["home.page.status"]?.value?.info?.map(
-                    (item, index) => (
-                      <Box key={index}>
-                        <Typography
-                          variant="h4"
-                          sx={{ color: "text.secondary" }}
-                        >
-                          {item?.number}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {item[lang]?.text}
-                        </Typography>
-                      </Box>
-                    )
-                  )}
-                </Box>
-              </Grid>
-              <img
-                src={gummie}
-                alt="gummie"
-                objectFit="contain"
-                quality={100}
-                style={{
-                  position: "absolute",
-                  left: direction === "ltr" ? "38%" : "5%",
-                  top: "20%",
-                  objectFit: "contain",
-                  height: "50vh",
-                  width: "50vw",
-                  zIndex: "-1",
-                }}
-                ref={gummieBox}
-              />
-              {data?.["home.page.status"] && (
-                <Grid item md={5} xs={12} sx={{ height: "60vh" }}>
-                  <Box
-                    sx={{
-                      // background: "#6A83B0",
-                      borderRadius: 2,
-                      // p: 2,
-                      // boxShadow: 3,
-                      height: "100%",
-                    }}
-                  >
-                    <Typography
-                      variant="h4"
-                      color="white"
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          data?.["home.page.status"]?.value?.[lang].title2,
-                      }}
-                    ></Typography>
-                    <Typography
-                      variant="body1"
-                      color="white"
-                      sx={{ mt: 2 }}
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          data?.["home.page.status"]?.value?.[lang].subtitle2,
-                      }}
-                    ></Typography>
-                    <img
-                      src={imageOfStats}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "contain",
-                        borderRadius: "inherit",
-                      }}
-                      alt=""
-                    />
-                  </Box>
-                </Grid>
-              )}
-            </Grid> */}
             <Grid
               container
               sx={{
@@ -293,10 +176,10 @@ export default function Home() {
             >
               <Grid item sm="6">
                 <Typography variant="h5" color="initial">
-                  {data?.["home.page.cta"]?.value?.title?.[lang] ?? " "}
+                  {data?.["home.page.cta"]?.value?.title?.[i18n.language] ?? " "}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  {data?.["home.page.cta"]?.value?.subtitle?.[lang] ?? " "}
+                  {data?.["home.page.cta"]?.value?.subtitle?.[i18n.language] ?? " "}
                 </Typography>
               </Grid>
               <Grid
@@ -311,13 +194,14 @@ export default function Home() {
                   color="primary"
                   variant="contained"
                   sx={{ px: 3 }}
-                  href={data?.["home.page.cta"]?.value?.subtitle?.[lang]}
+                  href={data?.["home.page.cta"]?.value?.subtitle?.[i18n.language]}
                 >
                   {"Shop Now"}
                 </Button>
               </Grid>
             </Grid>
           </Container>
+          <Reels/>
           <AnimatedText></AnimatedText>
           <Container>
             <Grid container sx={{ py: 2, mt: 5 }}>
@@ -325,7 +209,7 @@ export default function Home() {
                 <Typography
                   dangerouslySetInnerHTML={{
                     __html:
-                      data?.["home.page.textSectionTwo"]?.value?.text?.[lang],
+                      data?.["home.page.textSectionTwo"]?.value?.text?.[i18n.language],
                   }}
                 ></Typography>
               </Grid>

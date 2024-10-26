@@ -12,7 +12,7 @@ import authEn from "./translation/en/auth.json";
 import authKu from "./translation/kr/auth.json";
 import aboutEn from "./translation/en/about.json";
 import aboutAr from "./translation/ar/about.json";
-import aboutku from "./translation/kr/about.json";
+import aboutKu from "./translation/kr/about.json"; // Updated import
 
 let resources = {
   en: {
@@ -31,7 +31,7 @@ let resources = {
     navbar: { ...navbarKu },
     index: { ...indexKu },
     auth: { ...authKu },
-    about: { ...aboutku },
+    about: { ...aboutKu }, // Updated key
   },
 };
 

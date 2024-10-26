@@ -85,7 +85,7 @@ export default function AnimatedText() {
     }
   };
   return (
-    <Box sx={{ position: "relative" }} className="animatedText">
+    <Box sx={{ position: "relative" }} className="animatedText" dir="ltr">
       {Gummies.map((item, index) => (
         <img
           ref={addToRefs}

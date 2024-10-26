@@ -52,7 +52,7 @@ export default function Job() {
               color="initial"
               sx={{ mt: 4, fontWeight: "bold" }}
             >
-              description
+              {t("description")}
             </Typography>
             <Typography
               variant="body1"

@@ -2,7 +2,6 @@ import { Box, Container, Typography } from "@mui/material";
 import React from "react";
 
 export default function Qoute({ data, video }) {
-  const lang = localStorage.getItem("i18nextLng");
 
   return (
       <Box

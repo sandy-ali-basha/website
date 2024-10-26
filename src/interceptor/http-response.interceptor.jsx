@@ -1,5 +1,6 @@
 import { _AuthApi } from "api/auth";
 import { _axios as Axios } from "../interceptor/http-config";
+import i18n from "i18n";
 
 const showSnackbar = (enqueueSnackbar, message, variant) => {
   enqueueSnackbar(message, {
@@ -9,7 +10,6 @@ const showSnackbar = (enqueueSnackbar, message, variant) => {
   });
 };
 
-const lang = localStorage.getItem("i18nextLng");
 export const HttpResponseInterceptor = (navigate, enqueueSnackbar) => {
   Axios.interceptors.response.use(
     function (response) {
@@ -17,14 +17,14 @@ export const HttpResponseInterceptor = (navigate, enqueueSnackbar) => {
         case "post":
           showSnackbar(
             enqueueSnackbar,
-            lang === "ar" ? "تم" : "Done",
+            i18n.language === "ar" ? "تم" : "Done",
             "success"
           );
           break;
         case "put":
           showSnackbar(
             enqueueSnackbar,
-            lang === "ar" ? "تم التعديل" : "Updated",
+            i18n.language === "ar" ? "تم التعديل" : "Updated",
             "success"
           );
           break;
@@ -32,13 +32,13 @@ export const HttpResponseInterceptor = (navigate, enqueueSnackbar) => {
           showSnackbar(
             enqueueSnackbar,
             response?.data?.error?.message,
-            lang === "ar" ? "تمت العملية بنجاح" : "success"
+            i18n.language === "ar" ? "تمت العملية بنجاح" : "success"
           );
           break;
         case "delete":
           showSnackbar(
             enqueueSnackbar,
-            lang === "ar" ? "تم الحذف" : "Deleted",
+            i18n.language === "ar" ? "تم الحذف" : "Deleted",
             "success"
           );
           break;

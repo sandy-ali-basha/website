@@ -1,25 +1,23 @@
-import { Box, Chip, Container, Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 
 import React from "react";
-import img from "../../assets/images/hero-image (3).jpg";
 import BlogCard from "./_components/BlogCard";
 import { useBlogs } from "hooks/blog/useBlog";
-import CardShimmer from "components/customs/loaders/CardShimmer";
+import { useTranslation } from "react-i18next";
 
 export default function Blog() {
+  const { data } = useBlogs();
+  const { t } = useTranslation("index");
 
-  const { data, isLoading } = useBlogs();
   return (
     <Container sx={{ mt: 20 }}>
-      <Chip sx={{ background: "rgba(194, 238, 252, 1)" }} label="Blog"></Chip>
-      <Typography variant="h2" sx={{ fontWeight: "bold", mt: 3 }}>
-        {isLoading ? (
-          <CardShimmer style={{ width: "100%", height: "20px" }} />
-        ) : (
-          data?.posts[0]?.title
-        )}
+      <Typography
+        variant="h2"
+        sx={{ fontWeight: "bold", mt: 3, textAlign: "center" }}
+      >
+        {t("Blogs")}
       </Typography>
-      <Box sx={{ mt: 6, mb: 5, width: "80%" }}>
+      {/* <Box sx={{ mt: 6, mb: 5, width: "80%" }}>
         <Typography variant="body2" color="text.secondary">
           {isLoading ? (
             <CardShimmer style={{ width: "100%", height: "20px" }} />
@@ -53,12 +51,10 @@ export default function Blog() {
         ></Typography>
         {isLoading && <CardShimmer style={{ width: "100%", height: "20px" }} />}
         {isLoading && <CardShimmer style={{ width: "90%", height: "20px" }} />}
-      </Box>
+      </Box> */}
 
       {data?.posts?.length > 1 &&
-        data?.posts
-          ?.slice(1)
-          .map((item, index) => <BlogCard key={index} {...item} />)}
+        data?.posts?.map((item, index) => <BlogCard key={index} {...item} />)}
     </Container>
   );
 }

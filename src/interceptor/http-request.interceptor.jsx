@@ -1,10 +1,10 @@
 import { _AuthApi } from "api/auth";
 import { _axios as Axios } from "./http-config";
+import i18n from "i18n";
 
 export const HttpRequestInterceptor = () => {
   Axios.interceptors.request.use(
     function (request) {
-      // Do something before request is sent
       const access_token = _AuthApi.getToken();
       if (request.headers) {
         request.headers.Authorization = access_token
@@ -12,12 +12,10 @@ export const HttpRequestInterceptor = () => {
           : "";
 
         request.headers.Accept = "application/json";
-        // request.headers("Access-Control-Allow-Origin", "*");
+        // Set the i18n.language current language using i18n's active language
 
-        request.headers.locale = ["en", "ar", "kr"].includes(
-          localStorage.getItem("i18nextLng")
-        )
-          ? localStorage.getItem("i18nextLng")
+        request.headers.locale = ["en", "ar", "kr"].includes(i18n.language)
+          ? i18n.language
           : "en";
       }
 

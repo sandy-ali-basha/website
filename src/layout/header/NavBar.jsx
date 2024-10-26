@@ -112,6 +112,7 @@ function NavBar() {
           </Box>
 
           <LanguageSelector />
+          
           <Box sx={{ mx: "10px" }}>
             <Tooltip title={t("Show Cart")}>
               <IconButton

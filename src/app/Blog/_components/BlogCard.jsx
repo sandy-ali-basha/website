@@ -13,15 +13,16 @@ const BlogCard = ({ id, image, title, text, date }) => {
   };
 
   const plainText = htmlToText(text);
-  const truncatedText = truncateText(plainText, 20);
-
+  const truncatedText = truncateText(plainText, 25);
+  console.log("image", image);
   return (
     <Box
       sx={{
         gap: 2,
         borderRadius: 2,
-        my: 4,
+        my: 5,
         p: 2,
+        py: 5,
         display: "flex",
         boxShadow: 3,
       }}
@@ -29,7 +30,7 @@ const BlogCard = ({ id, image, title, text, date }) => {
       <img
         src={image}
         style={{
-          width: "20%",
+          width: "50%",
           borderRadius: 4,
           height: "100%",
         }}
@@ -48,10 +49,7 @@ const BlogCard = ({ id, image, title, text, date }) => {
               {title}
             </Typography>
           </Link>
-          <Typography
-            variant="body1"
-            color="text.secondary"
-          >
+          <Typography variant="body1" color="text.secondary">
             {truncatedText}
           </Typography>
         </div>

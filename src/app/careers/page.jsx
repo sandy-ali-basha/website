@@ -1,7 +1,6 @@
-import { Box, Button, Chip, Container, Typography, Grid } from "@mui/material";
-
+import { Box, Chip, Container, Typography, Grid } from "@mui/material";
 import React from "react";
-import careerimg from "assets/images/careers.png";
+import careerimg from "assets/images/careers.svg";
 import careerimg1 from "assets/images/careers-img.png";
 import careerimg2 from "assets/images/pic.png";
 import careerimg3 from "assets/images/pic2.png";
@@ -10,232 +9,215 @@ import JobCard from "./component/JobCard";
 import { useCareers } from "hooks/careers/useCreers";
 import { LoaderIcon } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import bg from "assets/images/careersBg.svg";
 
 export default function Careers() {
   const { data, isLoading } = useCareers();
   const { t } = useTranslation();
   return (
-    <Container sx={{ pt: 7 }}>
-      <Grid container spacing={2}>
-        <Grid
-          item
-          sm={6}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "flex-start",
-          }}
-        >
-          <Chip label="Explore" color="primary" variant="outlined" />
-          <Typography
-            variant="h2"
-            color="initial"
-            sx={{ fontWeight: "bold", mt: 1 }}
-          >
-            Your Dream Jobs
-          </Typography>
-          <Typography variant="body1" color="initial" sx={{ mt: 2 }}>
-            find jobs according to your interest, Here are +1000 jobs
-            opportunities for your better future .
-          </Typography>
-        </Grid>
-        <Grid item sm={6} sx={{ px: 4, textAlign: "center" }}>
-          <img
-            alt="join us"
-            sx={{ width: "80%", mx: "auto", objectFit: "contain" }}
-            src={careerimg}
-          />
-        </Grid>
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid item md="4">
-          <Box
+    <Box
+      sx={{
+        background: `url(${bg}) no-repeat`,
+        backgroundPosition: "45vw 0%",
+        backgroundSize: "60%",
+      }}
+    >
+      <Container
+        sx={{
+          pt: 7,
+        }}
+      >
+        <Grid container spacing={2} sx={{ minHeight: "90vh" }}>
+          <Grid
+            item
+            sm={6}
             sx={{
-              border: "1px solid #E0E0E0",
-              borderRadius: "10px",
-              p: 4,
-              textAlign: "center",
-              height: "100%",
               display: "flex",
               flexDirection: "column",
-              justifyContent: "space-between",
-              alignItems: "center",
+              justifyContent: "center",
+              alignItems: "flex-start",
             }}
           >
-            <Box>
-              <Star label="Careers at Dawaa alhayat" size="large" />
-              <Typography
-                variant="h3"
-                color="initial"
-                sx={{ fontWeight: "bold", mt: 2 }}
-              >
-                Join us
-              </Typography>
-
-              <Chip
-                label={"Careers at Dawaa alhayat"}
-                size="small"
-                variant="outlined"
-                color="secondary"
-                sx={{ mt: 2 }}
-              ></Chip>
-            </Box>
-            <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
-              Our values are part of who we are, what we believe in, what we
-              aspire to be, and they are reflected in our actions. They are our
-              commitment to one another, and the collective personality of our
-              organization. We always strive to lean into the fact that when
-              properly practiced, sometimes our values will push us outside of
-              our comfort zone. Our values are part of who we are, what we
-              believe in, what we aspire to be, and they are reflected in our
-              actions. They are our commitment to one another
+            <Typography
+              variant="h2"
+              color="initial"
+              sx={{ fontWeight: "bold", mt: 1 }}
+            >
+              {t("Join Us Today")}
             </Typography>
-          </Box>
-        </Grid>
-        <Grid item xs="8">
-          <Grid container spacing={2}>
-            <Grid item md="6">
-              <Box
-                sx={{
-                  border: "1px solid #E0E0E0",
-                  borderRadius: "10px",
-                  p: 4,
-                  textAlign: "center",
-                  height: "100%",
-                }}
-              >
-                <img alt="" src={careerimg1} />
-                <Typography variant="h6" color="initial">
-                  Help customers succeed
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  We come to work every day committed to driving success for our
-                  customers. We create value for our community by building and
-                  providing meaningful solutions to solve our customer's
-                  problems and needs.
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item md="6">
-              <Box
-                sx={{
-                  border: "1px solid #E0E0E0",
-                  borderRadius: "10px",
-                  p: 4,
-                  textAlign: "center",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                    justifyContent: "center",
-                  }}
-                >
-                  <img alt="careerimg2" src={careerimg2} />
-                  <img alt="careerimg3" src={careerimg3} />
-                </Box>
-                <Typography variant="h6" color="initial" sx={{ mt: 2 }}>
-                  Our values guide everything
-                </Typography>
-                <Typography
-                  variant="body1"
-                  color="text.secondary"
-                  sx={{ mt: 1 }}
-                >
-                  we serve a global community and we need a diverse team to do
-                  that successfully. Women, people of colour, members of the
-                  LGBTQ+ community, individuals with disabilities, and veterans
-                  are strongly encouraged to appl
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item md="6">
-              <Box
-                sx={{
-                  border: "1px solid #E0E0E0",
-                  borderRadius: "10px",
-                  p: 4,
-                  textAlign: "center",
-                }}
-              >
-                <img alt="" src={careerimg1} />
-                <Typography variant="h6" color="initial">
-                  benefits
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  We’re committed to providing our team with the freedom and
-                  flexibility that comes with working remotely, and support our
-                  team by providing everyone with the tools you need to do your
-                  best work, in the work environment of your choice.
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item md="6">
-              <Box
-                sx={{
-                  border: "1px solid #E0E0E0",
-                  borderRadius: "10px",
-                  p: 4,
-                  textAlign: "center",
-                }}
-              >
-                <Typography variant="h6" color="initial">
-                  benefits
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  We’re committed to providing our team with the freedom and
-                  flexibility that comes with working remotely, and support our
-                  team by providing everyone with the tools you need to do your
-                  best work, in the work environment of your choice.
-                </Typography>
-                <img alt="" src={careerimg1} />
-              </Box>
-            </Grid>
+            <Typography variant="body1" color="initial" sx={{ mt: 2 }}>
+              {t(
+                "At Dawaa Al Hayat, we're driven by a commitment to excellence in healthcare. We're always searching for talented individuals who share our passion for improving lives. Do you dream of a career that allows you to make a real impact? If you're energized by the healthcare industry and eager to contribute to our growing team, we invite you to explore the exciting opportunities currently available at Dawaa Al Hayat."
+              )}
+            </Typography>
           </Grid>
-        </Grid>
-      </Grid>
-      <section>
-        <Typography
-          variant="h3"
-          color="initial"
-          sx={{ fontWight: "bold", mt: 5 }}
-        >
-          Open Positions
-        </Typography>
-        {isLoading ? (
-          <Box
+          <Grid
+            item
+            sm={6}
             sx={{
-              width: "100%",
-              py: 10,
+              px: 4,
+              textAlign: "center",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <LoaderIcon style={{ width: "10vw", height: "10vw" }} />
-          </Box>
-        ) : data?.careers ? (
-          data?.careers?.map((item, idx) => (
-            <JobCard
-              key={idx}
-              id={item.id}
-              title={item?.vacancy_name}
-              description={
-                item?.category_name + ". " + item.location + " " + item.country
-              }
+            <img
+              alt="join us"
+              style={{ width: "75%", mx: "auto", objectFit: "contain" }}
+              src={careerimg}
             />
-          ))
-        ) : (
-          <Typography variant="body2" my={2}>
-            {t(
-              "Sorry, we currently have no open positions. Please check back later."
-            )}
+          </Grid>
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid item md="6">
+            <Box
+              sx={{
+                border: "1px solid #E0E0E0",
+                borderRadius: "10px",
+                p: 4,
+                textAlign: "center",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Box sx={{ mt: 5 }}>
+                <Star label="Careers at Dawaa alhayat" size="large" />
+                <Typography
+                  variant="h3"
+                  color="initial"
+                  sx={{ fontWeight: "bold", mt: 3 }}
+                >
+                  {t("What We offer our employees:")}
+                </Typography>
+
+                <Chip
+                  label={"Careers at Dawaa alhayat"}
+                  size="small"
+                  variant="outlined"
+                  color="secondary"
+                  sx={{ mt: 3 }}
+                ></Chip>
+              </Box>
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                sx={{ mt: 2, mb: 5 }}
+              >
+                {t(
+                  "A positive and inclusive work environment. We believe in diversity and inclusion, and we strive to create a work environment where everyone feels welcome and valued."
+                )}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item md="6">
+            <Grid container spacing={2}>
+              <Grid item md="12">
+                <Box
+                  sx={{
+                    border: "1px solid #E0E0E0",
+                    borderRadius: "10px",
+                    p: 4,
+                    textAlign: "center",
+                    height: "100%",
+                    backdropFilter:'blur(10px)'
+                  }}
+                >
+                  <img alt="" src={careerimg1} />
+
+                  <Typography variant="body1" color="text.secondary">
+                    {t(
+                      "Excellent opportunities for growth and development. We provide comprehensive training and development programs to help our employees reach their full potential."
+                    )}
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item md="12">
+                <Box
+                  sx={{
+                    border: "1px solid #E0E0E0",
+                    borderRadius: "10px",
+                    p: 4,
+                    textAlign: "center",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      justifyContent: "center",
+                    }}
+                  >
+                    <img
+                      alt="careerimg2"
+                      style={{ width: "30%" }}
+                      src={careerimg2}
+                    />
+                    <img
+                      alt="careerimg3"
+                      style={{ width: "30%" }}
+                      src={careerimg3}
+                    />
+                  </Box>
+
+                  <Typography
+                    variant="body1"
+                    color="text.secondary"
+                    sx={{ mt: 1 }}
+                  >
+                    {
+                      "A work culture based on respect and collaboration. We believe in teamwork and encourage collaboration among our team members."
+                    }
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+        <section>
+          <Typography
+            variant="h3"
+            color="initial"
+            sx={{ fontWight: "bold", mt: 5 }}
+          >
+            {t("Open Positions")}
           </Typography>
-        )}
-      </section>
-    </Container>
+          {isLoading ? (
+            <Box
+              sx={{
+                width: "100%",
+                py: 10,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <LoaderIcon style={{ width: "10vw", height: "10vw" }} />
+            </Box>
+          ) : data?.careers ? (
+            data?.careers?.map((item, idx) => (
+              <JobCard
+                key={idx}
+                id={item.id}
+                title={item?.vacancy_name}
+                description={
+                  item?.category + ". " + item.location + " " + item.country
+                }
+              />
+            ))
+          ) : (
+            <Typography variant="body2" my={2}>
+              {t(
+                "Sorry, we currently have no open positions. Please check back later."
+              )}
+            </Typography>
+          )}
+        </section>
+      </Container>
+    </Box>
   );
 }
