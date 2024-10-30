@@ -17,21 +17,21 @@ import CardShimmer from "components/customs/loaders/CardShimmer";
 import { useNavigate } from "react-router-dom";
 
 function Footer() {
+  const { t } = useTranslation("index");
+  const navigate = useNavigate();
+  const userData = localStorage.getItem("userData");
   const MenuItems = [
-    { href: "/", title: "Home" },
-    { href: "/about", title: "About" },
-    { href: "/contact-us", title: "Contact" },
-    { href: "/careers", title: "Career" },
-    { href: "/Blog", title: "Blog" },
+    { href: "/", title: t("Home") },
+    { href: "/about", title: t("About") },
+    { href: "/contact-us", title: t("Contact") },
+    { href: "/careers", title: t("Career") },
+    { href: "/Blog", title: t("Blog") },
   ];
   const { data: termsData, isLoading: isLoadingTerms } = useQuery(
     ["terms"],
     () => _terms.getTerms().then((res) => res?.data)
   );
 
-  const { t } = useTranslation("index");
-  const navigate = useNavigate();
-  const userData = localStorage.getItem("userData");
   return (
     <footer style={{ background: "#6A83B0" }}>
       <Container sx={{ py: 4 }}>
@@ -51,14 +51,16 @@ function Footer() {
               gap: "10px",
             }}
           >
-            {!userData && (
+            {!userData ? (
               <Button
                 sx={{ color: "white", borderColor: "white" }}
                 variant="outlined"
                 onClick={() => navigate("/login")}
               >
-                {t("Sign Up")}
+                {t("sign in")}
               </Button>
+            ) : (
+              ""
             )}
           </Grid>
 
@@ -132,8 +134,12 @@ function Footer() {
             )}
             {termsData?.terms?.map((item, index) => (
               <Button
-              size="small"
-                sx={{ color: "#e9e9e9", fontWeight: "300" }}
+                size="small"
+                sx={{
+                  color: "#e9e9e9",
+                  fontWeight: "300",
+                  width: { xs: "50%",md:'auto'},
+                }}
                 variant={"text"}
                 key={index}
                 href={`/terms/${item.id}`}
@@ -151,6 +157,7 @@ function Footer() {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
+              flexDirection:{xs:'column',md:'row'}
             }}
           >
             <Typography
@@ -163,7 +170,7 @@ function Footer() {
               sx={{ color: "white", fontWeight: "300" }}
               variant="body3"
             >
-              developed by{" "}
+              {t("Developed By")}{" "}
               <Link
                 sx={{ color: "text.primary", fontWeight: "bold" }}
                 href="https://xyz-dev.vercel.app/"

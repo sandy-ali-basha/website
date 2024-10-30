@@ -35,7 +35,7 @@ const Shimmer = () => (
 );
 
 export default function Reels({ data }) {
-  const { i18n } = useTranslation();
+  const { i18n } = useTranslation("index");
   const VediosAr = [ved3Ar, ved2Ar, ved5Ar, ved1Ar, ved4Ar];
   const VediosEn = [ved3En, ved2En, ved5En, ved1En, ved4En];
   const VediosKr = [ved3Kr, ved2Kr, ved5Kr, ved1Kr, ved4Kr];
@@ -94,10 +94,10 @@ export default function Reels({ data }) {
     <Swiper
       style={{ paddingTop: "2vh", paddingBottom: "2vh" }}
       spaceBetween={5}
-      slidesPerView={2}
+      slidesPerView={1}
       modules={[Autoplay]}
       breakpoints={{
-        640: { slidesPerView: 2, spaceBetween: 5 },
+        640: { slidesPerView: 1, spaceBetween: 5 },
         768: { slidesPerView: 3, spaceBetween: 5 },
         1024: { slidesPerView: 4, spaceBetween: 5 },
       }}

@@ -27,7 +27,7 @@ import Swal from "sweetalert2";
 import ApplyCoupon from "./_components/ApplyCoupon";
 import ApplyPoints from "./_components/ApplyPoints";
 import emptyCart from "assets/images/empty-cart.webp";
-import useFormat from "hooks/useFormat";
+import BestSellers from "components/modules/home/BestSellers";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -68,7 +68,7 @@ const StepCart = ({ handleNext }) => {
         Swal.fire({
           icon: "success",
           title: "Success",
-          text: "Deleted successfully",
+          text: t("Deleted successfully"),
           toast: true,
           position: "bottom-end",
           showConfirmButton: false,
@@ -209,27 +209,26 @@ const StepCart = ({ handleNext }) => {
                           </Box>
                           <Box sx={{ display: "flex" }}>
                             <Box>
-                              <Typography
-                                variant="body1"
-                                sx={{
-                                  textDecoration: item?.compare_price
-                                    ? "line-through"
-                                    : "none",
-                                  fontSize: item?.compare_price
-                                    ? "small"
-                                    : "inherit",
-                                }}
-                                color={
-                                  item?.compare_price
-                                    ? "text.secondary"
-                                    : "initial"
-                                }
-                              >
-                                {item?.compare_price > 0
-                                  ? item?.compare_price
-                                  : (item?.price / 1000).toFixed(3)}{" "}
-                                {t("currency")}
-                              </Typography>
+                              {item?.compare_price > 0 && (
+                                <Typography
+                                  variant="body1"
+                                  sx={{
+                                    textDecoration: item?.compare_price
+                                      ? "line-through"
+                                      : "none",
+                                    fontSize: item?.compare_price
+                                      ? "small"
+                                      : "inherit",
+                                  }}
+                                  color={
+                                    item?.compare_price
+                                      ? "text.secondary"
+                                      : "initial"
+                                  }
+                                >
+                                  item?.compare_price {t("currency")}
+                                </Typography>
+                              )}
                               {item?.price > 0 && (
                                 <Typography variant="body1" color="initial">
                                   {(item?.price / 1000).toFixed(3)}{" "}
@@ -377,7 +376,8 @@ const StepCart = ({ handleNext }) => {
                             : "initial",
                       }}
                     >
-                      {(data?.data?.sub_total/ 1000).toFixed(3)} {t("currency")}
+                      {(data?.data?.sub_total / 1000).toFixed(3)}{" "}
+                      {t("currency")}
                     </Typography>
 
                     {data?.data?.points_used > 0 && (
@@ -415,6 +415,7 @@ const StepCart = ({ handleNext }) => {
           </Grid>
         )}
       </Grid>
+      <BestSellers />
     </Container>
   );
 };

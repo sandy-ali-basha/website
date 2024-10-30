@@ -85,7 +85,11 @@ export default function AnimatedText() {
     }
   };
   return (
-    <Box sx={{ position: "relative" }} className="animatedText" dir="ltr">
+    <Box
+      sx={{ position: "relative", display: { xs: "none", md: "flex" } }}
+      className="animatedText"
+      dir="ltr"
+    >
       {Gummies.map((item, index) => (
         <img
           ref={addToRefs}
@@ -102,7 +106,7 @@ export default function AnimatedText() {
         style={{ zIndex: "3", position: "absolute" }}
         alt=""
       />{" "}
-      <Box sx={{ display: "flex" ,position:'relative'}}>
+      <Box sx={{ display: "flex", position: "relative" }}>
         <img
           src={fin}
           style={{ position: "relative", zIndex: "5" }}

@@ -24,7 +24,6 @@ export default function ProductCard({
   id,
   purchasable,
 }) {
-
   const { handleAddToCart, loadingCart } = useAddToCart();
   const { t } = useTranslation("index");
 
@@ -119,16 +118,16 @@ export default function ProductCard({
               size="small"
               onClick={() => handleAddToCart(id)}
             >
+              {/* <CircularProgress style={{ width: "100%", height: "auto" }} /> */}
               {loadingCart ? (
-                <CircularProgress sx={{ width: "10px" }} />
+                <CircularProgress style={{ width: "50%", height: "auto" }} />
               ) : (
-                <AddShoppingCart />
+                <AddShoppingCart style={{ width: "50%" }} />
               )}
             </Button>
           )}
         </Box>
       </CardContent>
-      
     </Card>
   );
 }

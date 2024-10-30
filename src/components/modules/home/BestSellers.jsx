@@ -4,7 +4,7 @@ import ProductCard from "../ProductCard";
 import { useTranslation } from "react-i18next";
 import { useProducts } from "hooks/Product/useProducts";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay } from "swiper/modules"; // Import Lazy module
 
 export default function BestSellers() {
   const filterData = { filters: {} };
@@ -13,25 +13,25 @@ export default function BestSellers() {
 
   return (
     data && (
-      <Container>
+      <Container sx={{my:5}}>
         <Typography variant="h6" color="initial" sx={{ mb: 2 }}>
           {t("Our Latest Products")}
         </Typography>
         <Swiper
           spaceBetween={20}
           autoplay={{
-            delay: 2500,
+            delay: 30000,
             disableOnInteraction: false,
           }}
-          lazy={true}
-          modules={[Autoplay]}
+          lazy={true} // Enable lazy loading
+          modules={[Autoplay]} 
           slidesPerView={2}
           breakpoints={{
             640: {
               slidesPerView: 2,
               spaceBetween: 20,
             },
-            768: {
+            820: {
               slidesPerView: 3,
               spaceBetween: 30,
             },
@@ -41,19 +41,18 @@ export default function BestSellers() {
             },
           }}
         >
-          {data &&
-            data?.data?.products?.slice(-10).map((item, idx) => (
-              <SwiperSlide key={idx} style={{ paddingBottom: "10px" }}>
-                <ProductCard
-                  productImage={item?.images[0]?.image_path}
-                  productName={item?.name}
-                  Price={item?.price}
-                  link={`/store/product/${item?.id}`}
-                  purchasable={item?.purchasable === "always"}
-                  offer={item?.compare_price}
-                />
-              </SwiperSlide>
-            ))}
+          {data?.data?.products?.slice(-10).map((item, idx) => (
+            <SwiperSlide key={idx} style={{ paddingBottom: "10px" }}>
+              <ProductCard
+                productImage={item?.images[0]?.image_path}
+                productName={item?.name}
+                Price={item?.price}
+                link={`/store/product/${item?.id}`}
+                purchasable={item?.purchasable === "always"}
+                offer={item?.compare_price}
+              />
+            </SwiperSlide>
+          ))}
         </Swiper>
         <Box sx={{ width: "100%", textAlign: "center" }}>
           <Button sx={{ mx: "auto" }} href="/store">

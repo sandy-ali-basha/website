@@ -170,7 +170,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                         }}
                       >
                         <Icon fontSize="1.25rem" icon="tabler:shopping-cart" />
-                        {!hideText && "Orders"}
+                        {!hideText && t("Orders")}
                       </Box>
                     }
                   />

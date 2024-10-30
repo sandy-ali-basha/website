@@ -119,7 +119,7 @@ const StepAddress = ({
       <Grid container spacing={6}>
         <Grid item xs={12} lg={8}>
           <Typography sx={{ mb: 4 }} variant="h6">
-            {"Select your preferable address"}
+            {t("Select your preferable address")}
           </Typography>
           <Grid container spacing={4}>
             {addressData.map((item, index) => (
@@ -250,7 +250,7 @@ const StepAddress = ({
                     {shippingAddress?.shipping_price === 0 && (
                       <Chip color="success" label={t("FREE")}></Chip>
                     )}
-                  </Box>
+                  </Box>  
                 </Box>
                 {/* discount_amount */}
                 {cartData?.data?.discount_amount > 0 && (

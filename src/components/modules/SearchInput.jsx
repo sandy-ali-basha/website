@@ -4,6 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { _axios } from "../../interceptor/http-config";
 import { Box } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
@@ -38,7 +39,7 @@ export default function SearchInput({ searchResults, setSearchResults }) {
       }
     }
   };
-
+  const { t } = useTranslation("index");
   return (
     <>
       <Box
@@ -57,7 +58,7 @@ export default function SearchInput({ searchResults, setSearchResults }) {
         <SearchIcon sx={{ color: "text.primary" }} />
 
         <InputBase
-          placeholder="Search…"
+          placeholder={t("Search…")}
           inputProps={{ "aria-label": "search" }}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -68,7 +69,7 @@ export default function SearchInput({ searchResults, setSearchResults }) {
       {/* Optionally display the search results */}
       {searchResults && searchResults?.length > 0 && (
         <div>
-          <h2>Search Results:</h2>
+          <h2>{t("Search Results:")}</h2>
           <ul>
             {searchResults.map((result, index) => (
               <li key={index}>{result.name}</li>

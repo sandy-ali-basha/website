@@ -155,13 +155,22 @@ export default function About() {
 
           <Box sx={{ width: "90vw", height: "70vh", py: 5 }}>
             <Swiper
-              slidesPerView={3}
-              spaceBetween={30}
-
-              // pagination={{
-              //   clickable: true,
-              // }}
-              // modules={[Pagination]}
+              slidesPerView={1}
+              spaceBetween={5}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2,
+                  spaceBetween: 10,
+                },
+                820: {
+                  slidesPerView: 3,
+                  spaceBetween: 20,
+                },
+                1024: {
+                  slidesPerView: 4,
+                  spaceBetween: 30,
+                },
+              }}
             >
               <SwiperSlide>
                 <Box
@@ -501,7 +510,7 @@ export default function About() {
           >
             <img src={values} style={{ width: "50%", mx: "auto" }} alt="" />
           </Grid>
-          <Grid md="12" item sx={{my:6}}>
+          <Grid md="12" item sx={{ my: 6 }}>
             <Box
               sx={{
                 borderRadius: 3,
@@ -634,29 +643,37 @@ export default function About() {
                 justifyContent: "center",
                 gap: 2,
                 my: 2,
-                flexDirection: { md: "row", xs: "column" },
+                flexDirection: "row",
               }}
             >
-              <img
-                src={partner3}
-                style={{ width: "10vw" }}
-                alt="partner logo"
-              />
-              <img
-                src={partner2}
-                style={{ width: "10vw" }}
-                alt="partner logo"
-              />
-              <img
-                src={partner1}
-                style={{ width: "10vw" }}
-                alt="partner logo"
-              />
-              <img
-                src={partner0}
-                style={{ width: "10vw" }}
-                alt="partner logo"
-              />
+              <Box sx={{ width: { xs: "20vw", md: "15vw", lg: "10vw" } }}>
+                <img
+                  src={partner3}
+                  style={{ width: "100%" }}
+                  alt="partner logo"
+                />
+              </Box>
+              <Box sx={{ width: { xs: "20vw", md: "15vw", lg: "10vw" } }}>
+                <img
+                  src={partner2}
+                  style={{ width: "100%" }}
+                  alt="partner logo"
+                />
+              </Box>
+              <Box sx={{ width: { xs: "20vw", md: "15vw", lg: "10vw" } }}>
+                <img
+                  src={partner1}
+                  style={{ width: "100%" }}
+                  alt="partner logo"
+                />
+              </Box>
+              <Box sx={{ width: { xs: "20vw", md: "15vw", lg: "10vw" } }}>
+                <img
+                  src={partner0}
+                  style={{ width: "100%" }}
+                  alt="partner logo"
+                />
+              </Box>
             </Box>
           </Grid>
         </Grid>

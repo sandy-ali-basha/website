@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// LanguageSelector.js
+import React, { useState } from "react";
 import { Box, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
 import { LanguageOutlined } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
@@ -8,30 +9,27 @@ import axios from "axios";
 const LanguageSelector = () => {
   const { t, i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
-
   const [direction, setDirection] = settingsStore((state) => [
     state.direction,
     state.setDirection,
   ]);
 
-  useEffect(() => {
-    console.log("Direction updated to:", direction); // Debugging direction state
-  }, [direction]);
-
   const handleLanguageChange = async (lang) => {
     const newDirection = lang === "ar" || lang === "kr" ? "rtl" : "ltr";
+
+    // Set localStorage before changing language to avoid revert
     localStorage.setItem("i18nextLng", lang);
-  
+    
     // Change language and direction
     await i18n.changeLanguage(lang);
     setDirection(newDirection);
-  
+
     // Set Axios locale header
     axios.defaults.headers.common["locale"] = lang;
-  
+
     setAnchorEl(null);
   };
-  
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

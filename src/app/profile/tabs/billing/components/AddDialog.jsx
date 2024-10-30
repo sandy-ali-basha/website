@@ -67,7 +67,7 @@ const AddDialog = ({ open, handleClose }) => {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="First Name"
+                  label={t("First Name")}
                   variant="outlined"
                   fullWidth
                   error={!!errors.first_name}
@@ -93,10 +93,10 @@ const AddDialog = ({ open, handleClose }) => {
                                 errors.title ? errors.title.message : ""
                               }
                             >
-                              <MenuItem value="Mr">Mr</MenuItem>
-                              <MenuItem value="Mrs">Mrs</MenuItem>
-                              <MenuItem value="Ms">Ms</MenuItem>
-                              <MenuItem value="Dr">Dr</MenuItem>
+                              <MenuItem value="Mr">{t("Mr")}</MenuItem>
+                              <MenuItem value="Mrs">{t("Mrs")}</MenuItem>
+                              <MenuItem value="Ms">{t("Ms")}</MenuItem>
+                              <MenuItem value="Dr">{t("Dr")}</MenuItem>
                             </Select>
                           )}
                         />
@@ -111,7 +111,7 @@ const AddDialog = ({ open, handleClose }) => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Last Name"
+              label={t("Last Name")}
               placeholder="Last name"
               {...register("last_name")}
               error={!!errors.last_name}
@@ -121,7 +121,7 @@ const AddDialog = ({ open, handleClose }) => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Contact Email"
+              label={t("Contact Email")}
               placeholder="jone@mail.com"
               {...register("contact_email")}
               error={!!errors.contact_email}
@@ -149,14 +149,14 @@ const AddDialog = ({ open, handleClose }) => {
               </FormControl>
             ) : (
               <Typography variant="body2" color="text.main">
-                pleas add cities
+                {t("pleas add cities")}
               </Typography>
             )}
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="State"
+              label={t("State")}
               placeholder="State"
               {...register("state")}
               error={!!errors.state}
@@ -168,7 +168,7 @@ const AddDialog = ({ open, handleClose }) => {
             <TextField
               fullWidth
               type="number"
-              label="Phone Number"
+              label={t("Phone Number")}
               placeholder="012 345 1111"
               {...register("contact_phone")}
               error={!!errors.contact_phone}
@@ -195,8 +195,8 @@ const AddDialog = ({ open, handleClose }) => {
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Delivery Instructions"
-              placeholder="Please leave the package at the door"
+              label={t("Delivery Instructions")}
+              placeholder={t("Please leave the package at the door")}
               {...register("delivery_instructions")}
               error={!!errors.delivery_instructions}
               helperText={

@@ -7,6 +7,8 @@ import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { useQuery } from "react-query";
 import { _Attributes } from "api/attributes/attributes";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import i18n from "i18n";
 
 export default function CAccordion({ data, handleCheked }) {
   const params = useParams();
@@ -43,6 +45,7 @@ export default function CAccordion({ data, handleCheked }) {
     setSelectedValueId(Number(event.target.value));
     handleCheked(selectedCategoryId, event.target.value);
   };
+const {t}= useTranslation("index")
 
   return (
     <div>
@@ -57,10 +60,10 @@ export default function CAccordion({ data, handleCheked }) {
             aria-controls="panel-content"
             id={item.id.toString()}
           >
-            {item.title}
+            {item?.translations?.find((t) => t.locale === i18n.language)?.title}
           </AccordionSummary>
           {AttrValuesLoading ? (
-            <AccordionDetails>Loading...</AccordionDetails>
+            <AccordionDetails>{t("Loading...")}</AccordionDetails>
           ) : (
             <AccordionDetails>
               <RadioGroup value={selectedValueId} onChange={handleRadioChange}>

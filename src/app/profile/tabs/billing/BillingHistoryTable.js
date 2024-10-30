@@ -3,43 +3,30 @@ import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { DataGrid } from "@mui/x-data-grid";
 import {
-  // Box,
-  // MenuItem,
   CardHeader,
   CardContent,
   Typography,
   Chip,
   Card,
   Tooltip,
-  // TextField,
   Dialog,
   DialogContent,
   DialogTitle,
   IconButton,
-  Button,
 } from "@mui/material";
 import { useOrders } from "hooks/orders/useOrders";
-import CloseIcon from "@mui/icons-material/Close"; // For close button in modal
+import CloseIcon from "@mui/icons-material/Close"; 
 import OrderReview from "./components/OrderReview";
 import { Eye } from "react-feather";
 import { useTranslation } from "react-i18next";
 import {
-  AssignmentTurnedInRounded,
   Cancel,
-  CancelRounded,
-  CancelScheduleSendRounded,
   CheckCircle,
-  CheckCircleOutlineRounded,
   DeleteRounded,
   Done,
   LocalShipping,
-  LocalShippingRounded,
-  PaymentRounded,
   Pending,
-  PlaylistAddCheckCircleRounded,
-  ShoppingCartCheckoutRounded,
   Sync,
-  TimelapseRounded,
 } from "@mui/icons-material";
 import { _axios } from "interceptor/http-config";
 import Swal from "sweetalert2";
@@ -49,25 +36,11 @@ const LinkStyled = styled(Link)(({ theme }) => ({
   color: `${theme.palette.primary.main} !important`,
 }));
 
-const invoiceStatusObj = {
-  order_delivered: { color: "success", icon: <CheckCircleOutlineRounded /> },
-  order_under_delivery: { color: "secondary", icon: <LocalShippingRounded /> },
-  order_processing: { color: "secondary", icon: <TimelapseRounded /> },
-  order_processed: { color: "secondary", icon: <AssignmentTurnedInRounded /> },
-  canceled: { color: "primary", icon: <CancelRounded /> },
-  cancel_requested: { color: "error", icon: <CancelScheduleSendRounded /> },
-  order_requested: { color: "info", icon: <ShoppingCartCheckoutRounded /> },
-  awaiting_payment: { color: "warning", icon: <PaymentRounded /> },
-  order_canceled: { color: "success", icon: <CloseIcon /> },
-};
 
 const BillingHistoryTable = () => {
   const [value, setValue] = useState("");
   const [statusValue, setStatusValue] = useState("");
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 10,
-  });
+
   const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
   const [open, setOpen] = useState(false); // State for controlling modal visibility
   const { t } = useTranslation("index");
@@ -199,7 +172,7 @@ const BillingHistoryTable = () => {
       field: "sub_total",
       headerName: t("total"),
       renderCell: ({ row }) => (
-        <Typography sx={{ color: "text.secondary"}}>
+        <Typography sx={{ color: "text.secondary" }}>
           {row.total} {t("currency")}
         </Typography>
       ),
@@ -259,13 +232,9 @@ const BillingHistoryTable = () => {
         <DataGrid
           sx={{ mx: 2 }}
           autoHeight
-          pagination
           rows={filteredRows}
           columns={columns}
           disableRowSelectionOnClick
-          pageSizeOptions={[10, 25, 50]}
-          paginationModel={paginationModel}
-          onPaginationModelChange={setPaginationModel}
           getRowId={(row) => row.reference}
         />
       )}

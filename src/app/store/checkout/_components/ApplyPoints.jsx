@@ -35,7 +35,7 @@ const ApplyPoints = ({ points }) => {
           fullWidth
           size="small"
           sx={{ mr: 2 }}
-          placeholder="Enter Points"
+          placeholder={t("Enter Points")}
           type="number"
           onChange={(e) => setCouponCode(e.target.value)}
         />

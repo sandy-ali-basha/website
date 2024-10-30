@@ -95,7 +95,7 @@ export default function ContactUs() {
             >
               <TextField
                 sx={{ width: "-webkit-fill-available", mt: 4, mx: 1 }}
-                label="First Name"
+                label={t("First Name")}
                 variant="outlined"
                 type="text"
                 name="first_name"
@@ -105,7 +105,7 @@ export default function ContactUs() {
               />
               <TextField
                 sx={{ width: "-webkit-fill-available", mt: 4, mx: 1 }}
-                label="Last Name"
+                label={t("Last Name")}
                 variant="outlined"
                 type="text"
                 name="last_name"
@@ -117,7 +117,7 @@ export default function ContactUs() {
             <Box>
               <TextField
                 sx={{ width: "-webkit-fill-available", mt: 4, mx: 1 }}
-                label="Email Address"
+                label={t("Email Address")}
                 variant="outlined"
                 type="email"
                 name="email"
@@ -127,7 +127,7 @@ export default function ContactUs() {
               />
               <TextField
                 sx={{ width: "-webkit-fill-available", mt: 4, mx: 1 }}
-                label="Message"
+                label={t("Message")}
                 variant="outlined"
                 multiline
                 rows={4}
@@ -145,7 +145,7 @@ export default function ContactUs() {
                     loading={true}
                     disabled={loading}
                   >
-                    Waiting..
+                    {t("Waiting..")}
                   </ButtonLoader>
                 ) : (
                   <Button
@@ -190,7 +190,7 @@ export default function ContactUs() {
               }}
             ></iframe>
             <Typography variant="body1" color="initial">
-              Erbil Office: <br />
+             {t("Erbil Office:")} <br />
               Dawaa Alhayat Company <br />
               Shoresh Street,Khanzad، 2nd Floor , Building 206، Erbil، Erbil IQ
             </Typography>
@@ -198,7 +198,7 @@ export default function ContactUs() {
           <Box sx={{ width: "100%", mt: 3, display: "flex", gap: 1 }}>
             <MapPin sx={{ pe: 1 }} />{" "}
             <Typography variant="body1" color="initial">
-              Baghdad Office:
+              {t("Baghdad Office:")}
             </Typography>
             <a href="https://maps.app.goo.gl/NgbhGFS5KkDjLGXDA" color="initial">
               Dawaa Alhayat Scientific bureau Al Amiriya, Baghdad, Iraq
@@ -207,7 +207,7 @@ export default function ContactUs() {
           <Box sx={{ width: "100%", mt: 3, display: "flex", gap: 1 }}>
             <MapPin />{" "}
             <Typography variant="body1" color="initial">
-              Sulaymaniya office:
+              {t("Sulaymaniya office:")}
             </Typography>
             <a href="https://maps.app.goo.gl/bBXyAZ89f1pXREmJ7" color="initial">
               Al sulaymaniya , German Village 1 , Villa No.47

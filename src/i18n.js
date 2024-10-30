@@ -1,5 +1,5 @@
+// i18n.js
 import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 import navbarEn from "./translation/en/navbar.json";
 import navbarAr from "./translation/ar/navbar.json";
@@ -12,9 +12,9 @@ import authEn from "./translation/en/auth.json";
 import authKu from "./translation/kr/auth.json";
 import aboutEn from "./translation/en/about.json";
 import aboutAr from "./translation/ar/about.json";
-import aboutKu from "./translation/kr/about.json"; // Updated import
+import aboutKu from "./translation/kr/about.json";
 
-let resources = {
+const resources = {
   en: {
     navbar: { ...navbarEn },
     index: { ...indexEn },
@@ -31,21 +31,24 @@ let resources = {
     navbar: { ...navbarKu },
     index: { ...indexKu },
     auth: { ...authKu },
-    about: { ...aboutKu }, // Updated key
+    about: { ...aboutKu },
   },
 };
 
+// Set initial language directly from localStorage
+const savedLanguage = localStorage.getItem("i18nextLng") || "en";
+
 i18n
-  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: "en",
+    lng: savedLanguage, // Use saved language as initial language
+    fallbackLng: false, // Disable fallback language
     resources,
     debug: true,
     ns: ["navbar", "index", "auth", "about"],
     defaultNS: "navbar",
     interpolation: {
-      escapeValue: false,
+      escapeValue: false, // React already escapes values to prevent XSS
     },
   });
 

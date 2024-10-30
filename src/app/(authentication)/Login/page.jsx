@@ -9,7 +9,6 @@ import {
 import React from "react";
 import img from "../../../assets/images/hero-image (3).jpg";
 import logo from "../../../assets/images/logo.png";
-import { Google } from "@mui/icons-material";
 import ButtonLoader from "components/customs/ButtonLoader";
 import { useLogin } from "./hooks/useLogin";
 import LanguageSelector from "components/LanguageSelector";
@@ -25,9 +24,6 @@ export default function Login() {
     onSubmit,
     loading,
     error,
-    GoogleLogin,
-    loginUrl,
-    navigate,
   } = useLogin();
   return (
     <Box
@@ -142,7 +138,7 @@ export default function Login() {
           </div>
         )}
         {error && <Alert severity="error">{error}</Alert>}
-        <Divider>OR</Divider>
+        <Divider>{t("OR")}</Divider>
 
         <LoginComponent />
         <Box sx={{ display: "flex", justifyContent: "space-around", mt: 2 }}>

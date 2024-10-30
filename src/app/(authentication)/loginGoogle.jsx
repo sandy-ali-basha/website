@@ -20,9 +20,10 @@ function LoginButton() {
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
+        })
+        .finally(() => {
+          navigate("/");
         });
-
-      navigate("/");
     },
     onError: (error) => {
       console.log("Login Failed:", error);
@@ -30,7 +31,9 @@ function LoginButton() {
     scope:
       "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
   });
+
   const { t } = useTranslation("index");
+
   return (
     <Button
       sx={{ background: "white", color: "text.primary" }}

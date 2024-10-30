@@ -21,11 +21,13 @@ import { Navigation } from "swiper/modules";
 import { useTranslation } from "react-i18next";
 import { useProduct } from "./hooks/useProduct";
 import CardShimmer from "components/customs/loaders/CardShimmer";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAccourdion } from "./hooks/useAccourdion";
 import { Shimmer } from "react-shimmer";
 import { useSlider } from "./hooks/useSlider";
 import { useAddToCart } from "hooks/cart/useAddToCart";
+import { PaidRounded } from "@mui/icons-material";
+import BestSellers from "components/modules/home/BestSellers";
 
 function Product() {
   const theme = useTheme();
@@ -41,7 +43,7 @@ function Product() {
     <Container sx={{ mt: 15 }}>
       <Grid container>
         <Grid item xs={12} md={6}>
-          <Swiper navigation={true} modules={[Navigation]} spaceBetween={10} >
+          <Swiper navigation={true} modules={[Navigation]} spaceBetween={10}>
             {data?.data?.images ? (
               data?.data?.images?.map((item, idx) => (
                 <SwiperSlide key={idx}>
@@ -165,6 +167,7 @@ function Product() {
                   />
                 )
               )}
+
               {isLoading ? (
                 <CardShimmer
                   style={{
@@ -184,6 +187,7 @@ function Product() {
                   />
                 )
               )}
+
               {isLoading ? (
                 <CardShimmer
                   style={{
@@ -206,6 +210,16 @@ function Product() {
                 ))
               )}
             </Box>
+            {data?.data?.points > 0 && (
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ display: "inline-flex", gap: 1, my: 2 }}
+              >
+                <PaidRounded color="warning" /> {t("you earn")}{" "}
+                {data?.data?.points} {t("points by purchasing this product")}
+              </Typography>
+            )}
           </Box>
 
           <Box sx={{ mx: 2 }}>
@@ -255,9 +269,11 @@ function Product() {
                 disabled={isLoading}
               >
                 {loadingCart ? (
-                  <CircularProgress sx={{ width: "10px" }} />
+                  <CircularProgress
+                    style={{ height: "auto", width: "1.5rem", color: "white" }}
+                  />
                 ) : (
-                  t("Add To Cart")
+                  <Typography> {t("Add To Cart")}</Typography>
                 )}
               </Button>
             </Box>
@@ -297,6 +313,7 @@ function Product() {
             ))}
         </Swiper>
       </Box>
+      <BestSellers />
     </Container>
   );
 }

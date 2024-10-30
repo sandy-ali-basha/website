@@ -11,7 +11,7 @@ export default function Terms() {
   const { data, isLoading } = useQuery(["terms", params.id], () =>
     _terms.getTerm(params.id).then((res) => res?.data)
   );
-  const { t } = useTranslation();
+  const { t } = useTranslation("index");
   return (
     <Container sx={{ mt: 20, textAlign: "center", my: 3 }}>
       {isLoading ? (

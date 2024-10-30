@@ -53,7 +53,7 @@ export default function Category() {
       >
         {t("Products")}
       </Typography>
-    
+
       <Box
         sx={{
           display: "flex",
@@ -141,10 +141,10 @@ export default function Category() {
               {t("No Product Found")} <CloseRounded />
             </Typography>
           ) : null}
-          <Grid container spacing={2}>
+          <Grid container spacing={{ md: 2, xs: 1 }}>
             {isLoading &&
               Array.from({ length: 5 }).map((_, index) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                <Grid item xs={6} sm={6} md={4} lg={3} key={index}>
                   <ProductCard loading={true} />
                 </Grid>
               ))}
@@ -152,7 +152,7 @@ export default function Category() {
             {searchResults?.data?.products &&
               searchResults?.data?.products?.map((item, idx) => {
                 return (
-                  <Grid item key={idx} xs={12} sm={6} md={4} lg={3}>
+                  <Grid item key={idx} xs={6} sm={6} md={4} lg={3}>
                     <ProductCard
                       id={item?.id}
                       productName={item.name}
@@ -170,7 +170,7 @@ export default function Category() {
               !searchResults?.data?.products &&
               data?.data?.products?.map((item, idx) => {
                 return (
-                  <Grid item key={idx} xs={12} sm={6} md={4} lg={3}>
+                  <Grid item key={idx} xs={6} sm={6} md={4} lg={3}>
                     <ProductCard
                       id={item?.id}
                       productName={item.name}
@@ -179,7 +179,7 @@ export default function Category() {
                       link={`/store/product/${item.id}`}
                       loading={false}
                       purchasable={item?.purchasable === "always"}
-                      offer={item?.compare_price }
+                      offer={item?.compare_price}
                     />
                   </Grid>
                 );

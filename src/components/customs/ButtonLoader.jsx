@@ -25,7 +25,7 @@ import {
               width:'100%'
             }}
           >
-            <CircularProgress sx={{ color: "white" }} size="25px" />
+            <CircularProgress style={{ width: "100%", height: "auto",color:'white' }} />
           </Box>
         )}
         <Typography sx={{ visibility: props.loading ? "hidden" : "visible" }}>

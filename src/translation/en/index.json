@@ -166,11 +166,58 @@
   "Order Reference": "Order Reference",
   "View All": "View All",
   "description": "description",
-  "Excellent opportunities for growth and development. We provide comprehensive training and development programs to help our employees reach their full potential.":"Excellent opportunities for growth and development. We provide comprehensive training and development programs to help our employees reach their full potential.",
-  "Join Us Today":"Join Us Today",
-  "At Dawaa Al Hayat, we're driven by a commitment to excellence in healthcare. We're always searching for talented individuals who share our passion for improving lives. Do you dream of a career that allows you to make a real impact? If you're energized by the healthcare industry and eager to contribute to our growing team, we invite you to explore the exciting opportunities currently available at Dawaa Al Hayat.":"At Dawaa Al Hayat, we're driven by a commitment to excellence in healthcare. We're always searching for talented individuals who share our passion for improving lives. Do you dream of a career that allows you to make a real impact? If you're energized by the healthcare industry and eager to contribute to our growing team, we invite you to explore the exciting opportunities currently available at Dawaa Al Hayat.",
-  "What We offer our employees:":"What We offer our employees:",
-  "A positive and inclusive work environment. We believe in diversity and inclusion, and we strive to create a work environment where everyone feels welcome and valued.":"A positive and inclusive work environment. We believe in diversity and inclusion, and we strive to create a work environment where everyone feels welcome and valued.",
-  "A work culture based on respect and collaboration. We believe in teamwork and encourage collaboration among our team members.":"A work culture based on respect and collaboration. We believe in teamwork and encourage collaboration among our team members.",
-  "Open Positions":"Open Positions"
+  "Excellent opportunities for growth and development. We provide comprehensive training and development programs to help our employees reach their full potential.": "Excellent opportunities for growth and development. We provide comprehensive training and development programs to help our employees reach their full potential.",
+  "Join Us Today": "Join Us Today",
+  "At Dawaa Al Hayat, we're driven by a commitment to excellence in healthcare. We're always searching for talented individuals who share our passion for improving lives. Do you dream of a career that allows you to make a real impact? If you're energized by the healthcare industry and eager to contribute to our growing team, we invite you to explore the exciting opportunities currently available at Dawaa Al Hayat.": "At Dawaa Al Hayat, we're driven by a commitment to excellence in healthcare. We're always searching for talented individuals who share our passion for improving lives. Do you dream of a career that allows you to make a real impact? If you're energized by the healthcare industry and eager to contribute to our growing team, we invite you to explore the exciting opportunities currently available at Dawaa Al Hayat.",
+  "What We offer our employees:": "What We offer our employees:",
+  "A positive and inclusive work environment. We believe in diversity and inclusion, and we strive to create a work environment where everyone feels welcome and valued.": "A positive and inclusive work environment. We believe in diversity and inclusion, and we strive to create a work environment where everyone feels welcome and valued.",
+  "A work culture based on respect and collaboration. We believe in teamwork and encourage collaboration among our team members.": "A work culture based on respect and collaboration. We believe in teamwork and encourage collaboration among our team members.",
+  "Open Positions": "Open Positions",
+  "Deleted successfully": "Deleted successfully",
+  "points by purchasing this product": "points by purchasing this product",
+  "you earn": "you earn",
+  "Home": "Home",
+  "About": "About",
+  "Contact": "Contact",
+  "Career": "Career",
+  "Blog": "Blog",
+  "Developed By": "Developed By",
+  "sign in": "sign in",
+  "This website uses cookies to ensure you get the best experience on our website.": "This website uses cookies to ensure you get the best experience on our website.",
+  "Accept": "Accept",
+  "Payment":"Payment"
+,"Confirmation":"Confirmation"
+,"My Shopping Bag":"My Shopping Bag"
+,"Items":"Items"
+,"coupon":"coupon"
+,"Enter Promo Code":"Enter Promo Code",
+"Enter Points":"Enter Points"
+,"Sub Total":"Sub Total"
+,"Search…":"Search…",
+"Search Results:":"Search Results:",
+
+
+
+"Min Price":"Min Price",
+"Max Price":"Max Price",
+"First Name":"First Name",
+"Last Name":"Last Name",
+"Email Address":"Email Address",
+"Message":"Message",
+"Waiting..":"Waiting..",
+"Erbil Office:":"Erbil Office:",
+"Baghdad Office:":"Baghdad Office:",
+"Sulaymaniya office:":"Sulaymaniya office:",
+"Mr":"Mr",
+"Mrs":"Mrs",
+"Ms":"Ms",
+"Dr":"Dr",
+"Please leave the package at the door":"Please leave the package at the door",
+"Delivery Instructions":"Delivery Instructions",
+"Phone Number":"Phone Number",
+"State":"State",
+"pleas add cities":"pleas add cities",
+"Orders":"Orders",
+"total":"total",
+"View":"View"
 }

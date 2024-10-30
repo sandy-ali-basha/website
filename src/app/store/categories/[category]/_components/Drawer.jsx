@@ -1,4 +1,4 @@
-import { Box, Grid, Slider, TextField, Typography } from "@mui/material";
+import { Box, Grid, TextField, Typography } from "@mui/material";
 import CAccordion from "components/modules/Accordion";
 import SearchInput from "components/modules/SearchInput";
 import { useTranslation } from "react-i18next";
@@ -45,7 +45,7 @@ const SideDrawer = ({
           {/* Input for Minimum Value */}
           <Grid item xs={6}>
             <TextField
-              label="Min Price"
+              label={t("Min Price")}
               type="number"
               value={minValue}
               onChange={handleMinChange}
@@ -57,7 +57,7 @@ const SideDrawer = ({
           {/* Input for Maximum Value */}
           <Grid item xs={6}>
             <TextField
-              label="Max Price"
+              label={t("Max Price")}
               type="number"
               value={maxValue}
               onChange={handleMaxChange}

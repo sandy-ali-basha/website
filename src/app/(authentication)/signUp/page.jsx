@@ -3,32 +3,25 @@ import {
   Button,
   TextField,
   Typography,
-  Container,
   Divider,
   Grid,
   InputAdornment,
   IconButton,
   Alert,
-  CircularProgress,
 } from "@mui/material";
 import {
   Visibility,
   VisibilityOff,
-  Apple,
-  Facebook,
-  Google,
 } from "@mui/icons-material";
 import React from "react";
 
 import img from "../../../assets/images/hero-image (3).jpg";
 import logo from "../../../assets/images/logo.png";
 import { useSignUp } from "./_hooks/useSignUp";
-import ConfirmPhoneNum from "./_components/ConfirmPhoneNum";
 import ButtonLoader from "components/customs/ButtonLoader";
 import GenderSelect from "components/customs/GenderSelect";
 import LanguageSelector from "components/LanguageSelector";
 import { Link } from "react-router-dom";
-import Loader from "components/modules/Loader";
 import LoginComponent from "../loginGoogle";
 function SignUp() {
   const {
@@ -39,8 +32,6 @@ function SignUp() {
     details,
     showPassword,
     handleTogglePasswordVisibility,
-    open,
-    setOpen,
     error,
     onSubmit,
     t,

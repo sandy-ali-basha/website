@@ -44,7 +44,8 @@ export default function Home() {
   const [showMore, setShowMore] = useState(false);
 
   // Get the text
-  const text = data?.["home.page.textSectionOne"]?.value?.text?.[i18n.language] || "";
+  const text =
+    data?.["home.page.textSectionOne"]?.value?.text?.[i18n.language] || "";
 
   // Define the max length before showing "View More"
   const maxLength = 1200; // adjust the length as needed
@@ -145,11 +146,13 @@ export default function Home() {
           <Container>
             <Grid container sx={{ py: 5 }} spacing="5">
               <Grid md="4">
-                <img
-                  src={data?.["home.page.textSectionOne"]?.image}
-                  alt=""
-                  style={{ width: "100%" }}
-                />
+                <Box sx={{ width: { xs: "70%", lg: "100%" }, mx: "auto" }}>
+                  <img
+                    src={data?.["home.page.textSectionOne"]?.image}
+                    alt=""
+                    style={{ width: "100%" }}
+                  />
+                </Box>
               </Grid>
               <Grid md="8" sx={{ px: 5 }}>
                 <Typography
@@ -164,7 +167,7 @@ export default function Home() {
                 )}
               </Grid>
             </Grid>
-            <Grid
+            {/* <Grid
               container
               sx={{
                 background: "#F4F4F4",
@@ -199,9 +202,9 @@ export default function Home() {
                   {"Shop Now"}
                 </Button>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Container>
-          <Reels/>
+          <Reels />
           <AnimatedText></AnimatedText>
           <Container>
             <Grid container sx={{ py: 2, mt: 5 }}>
@@ -209,7 +212,9 @@ export default function Home() {
                 <Typography
                   dangerouslySetInnerHTML={{
                     __html:
-                      data?.["home.page.textSectionTwo"]?.value?.text?.[i18n.language],
+                      data?.["home.page.textSectionTwo"]?.value?.text?.[
+                        i18n.language
+                      ],
                   }}
                 ></Typography>
               </Grid>

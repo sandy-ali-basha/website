@@ -40,7 +40,7 @@ const BillingAddressCard = () => {
   const handleCloseEdit = () => setOpenEdit(false);
   const handleCloseDel = () => setOpenDel(false);
 
-  const { t } = useTranslation();
+  const { t } = useTranslation("index");
   const { data = { addresses: [] }, isLoading } = useAddresses();
 
   return (

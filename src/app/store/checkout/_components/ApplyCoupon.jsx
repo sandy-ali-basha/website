@@ -36,7 +36,7 @@ const ApplyCoupon = () => {
           fullWidth
           size="small"
           sx={{ mr: 2 }}
-          placeholder="Enter Promo Code"
+          placeholder={t("Enter Promo Code")}
           onChange={(e) => setCouponCode(e.target.value)}
           disabled={success}
         />

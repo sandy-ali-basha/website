@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { useState } from "react";
 
 export const useAddressDialog = ({ handleClose }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("index");
 
   // Schema validation using Yup
   const schema = yup.object().shape({

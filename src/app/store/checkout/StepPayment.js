@@ -64,18 +64,18 @@ const StepPayment = ({ handleNext }) => {
     <Container>
       <Grid container spacing={6}>
         <Grid item xs={12} lg={8}>
-          <TabContext value={value}>
+          <TabContext value={value} sx={{px:5}}>
             <CustomTabList
               variant="scrollable"
               scrollButtons="auto"
               onChange={handleChange}
               aria-label="customized tabs example"
             >
-              <Tab value="fib" label={t("FIB")} icon={<QrCode />} />
+              <Tab value="fib" label={t("FIB")} icon={<QrCode sx={{fontSize:'3rem'}} />} />
               <Tab
                 value="cash-in-hand"
                 label={t("Cash On Delivery")}
-                icon={<MoneyRounded />}
+                icon={<MoneyRounded sx={{fontSize:'3rem'}}/>}
               />
               {/* <Tab value="gc" label={t("Gift Card")} /> */}
             </CustomTabList>

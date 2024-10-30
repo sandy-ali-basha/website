@@ -13,13 +13,14 @@ import bg from "assets/images/careersBg.svg";
 
 export default function Careers() {
   const { data, isLoading } = useCareers();
-  const { t } = useTranslation();
+  const { t } = useTranslation('index');
+
   return (
     <Box
       sx={{
         background: `url(${bg}) no-repeat`,
-        backgroundPosition: "45vw 0%",
-        backgroundSize: "60%",
+        backgroundPosition: { lg: "60vw 0%", xs: "55vw -10%" },
+        backgroundSize: { lg: "60%", xs: "100%" },
       }}
     >
       <Container
@@ -27,7 +28,11 @@ export default function Careers() {
           pt: 7,
         }}
       >
-        <Grid container spacing={2} sx={{ minHeight: "90vh" }}>
+        <Grid
+          container
+          spacing={2}
+          sx={{ minHeight: "90vh", flexDirection: { xs: "column-reverse" ,md:'row'} }}
+        >
           <Grid
             item
             sm={6}
@@ -69,7 +74,7 @@ export default function Careers() {
             />
           </Grid>
         </Grid>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ pb: 5 }}>
           <Grid item md="6">
             <Box
               sx={{
@@ -123,7 +128,7 @@ export default function Careers() {
                     p: 4,
                     textAlign: "center",
                     height: "100%",
-                    backdropFilter:'blur(10px)'
+                    backdropFilter: "blur(10px)",
                   }}
                 >
                   <img alt="" src={careerimg1} />
@@ -178,28 +183,28 @@ export default function Careers() {
             </Grid>
           </Grid>
         </Grid>
-        <section>
-          <Typography
-            variant="h3"
-            color="initial"
-            sx={{ fontWight: "bold", mt: 5 }}
+        {isLoading ? (
+          <Box
+            sx={{
+              width: "100%",
+              py: 10,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            {t("Open Positions")}
-          </Typography>
-          {isLoading ? (
-            <Box
-              sx={{
-                width: "100%",
-                py: 10,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <LoaderIcon style={{ width: "10vw", height: "10vw" }} />
-            </Box>
-          ) : data?.careers ? (
-            data?.careers?.map((item, idx) => (
+            <LoaderIcon style={{ width: "10vw", height: "10vw" }} />
+          </Box>
+        ) : data?.careers ? (
+          data?.careers?.map((item, idx) => (
+            <section>
+              <Typography
+                variant="h3"
+                color="initial"
+                sx={{ fontWight: "bold", mt: 5 }}
+              >
+                {t("Open Positions")}
+              </Typography>
               <JobCard
                 key={idx}
                 id={item.id}
@@ -208,15 +213,15 @@ export default function Careers() {
                   item?.category + ". " + item.location + " " + item.country
                 }
               />
-            ))
-          ) : (
-            <Typography variant="body2" my={2}>
-              {t(
-                "Sorry, we currently have no open positions. Please check back later."
-              )}
-            </Typography>
-          )}
-        </section>
+            </section>
+          ))
+        ) : (
+          <Typography variant="body2" my={2}>
+            {t(
+              "Sorry, we currently have no open positions. Please check back later."
+            )}
+          </Typography>
+        )}
       </Container>
     </Box>
   );

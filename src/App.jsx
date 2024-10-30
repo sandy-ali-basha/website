@@ -34,6 +34,7 @@ import NotFound from "components/NotFound";
 import ShouldBeLogged from "middlewares/ShouldBeLogged";
 import GoogleCallback from "app/(authentication)/Login/GoogleCallback";
 import ChooseCityDialog from "components/ChooseCityDialog";
+import CookieConsent from "components/CookieConsent";
 
 function App() {
   useEffect(() => {
@@ -49,6 +50,7 @@ function App() {
         <meta name="description" content="dawaa alhayat" />
       </Helmet>
       <ChooseCityDialog />
+      <CookieConsent />
       <Routes>
         <Route
           path="/login"
