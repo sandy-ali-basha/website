@@ -131,10 +131,11 @@ const AddDialog = ({ open, handleClose }) => {
             />
           </Grid>
 
-          <Grid item xs={6} sx={{ p: "10px" }}>
+          <Grid item xs={12} sx={{ p: "10px" }}>
             {cities ? (
               <FormControl fullWidth>
                 <Select
+                fullWidth
                   sx={{ color: "text.main", borderColor: "text.main" }}
                   {...register("city")}
                   label="city"

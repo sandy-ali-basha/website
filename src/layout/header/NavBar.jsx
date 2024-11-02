@@ -8,6 +8,7 @@ import {
   Button,
   IconButton,
   Tooltip,
+  Badge,
 } from "@mui/material";
 import logo from "assets/images/logo.png";
 import {
@@ -22,6 +23,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { _AuthApi } from "api/auth";
 function NavBar() {
   const { settings, pages, navigate, cities, t } = useNavBar();
+
+  // Get the cart count from local storage
+  const cartCount = parseInt(localStorage.getItem("cart_count")) || 0;
 
   return (
     <AppBar
@@ -112,14 +116,17 @@ function NavBar() {
           </Box>
 
           <LanguageSelector />
-          
+
           <Box sx={{ mx: "10px" }}>
             <Tooltip title={t("Show Cart")}>
               <IconButton
                 id="basic-button"
                 onClick={() => navigate("/store/checkout")}
+                badgeNumber={2}
               >
-                <ShoppingCartOutlined sx={{ color: "white" }} />
+                <Badge badgeContent={cartCount} color="primary" size="small">
+                  <ShoppingCartOutlined sx={{ color: "white" }} />
+                </Badge>
               </IconButton>
             </Tooltip>
           </Box>

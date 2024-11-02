@@ -6,7 +6,6 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Dialog from "@mui/material/Dialog";
-import { styled } from "@mui/material/styles";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import CardHeader from "@mui/material/CardHeader";
@@ -15,10 +14,8 @@ import CardContent from "@mui/material/CardContent";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import FormHelperText from "@mui/material/FormHelperText";
-import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import profileImg from "assets/images/profile.png";
 // ** Third Party Imports
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
@@ -26,38 +23,59 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 // ** Icon Imports
 import Icon from "components/modules/icon";
-import CustomTextField from "components/customs/CustomTextField";
 import { useTranslation } from "react-i18next";
-import { TextField } from "@mui/material";
+import { _AuthApi } from "api/auth";
 
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/;
-
-const DeleteAcount = () => {
+const DeleteAccount = () => {
   // ** State
-
   const { t } = useTranslation("auth");
 
-  let schema = yup.object().shape({
-    checkbox: yup.string().required(t("checkbox is required")),
+  //**  Define validation schema
+  const schema = yup.object().shape({
+    checkbox: yup.boolean().oneOf([true], t("checkbox is required")),
   });
 
   const [open, setOpen] = useState(false);
   const [userInput, setUserInput] = useState("yes");
   const [secondDialogOpen, setSecondDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const handleClose = () => setOpen(false);
   const handleSecondDialogClose = () => setSecondDialogOpen(false);
-  const onSubmit = () => setOpen(true);
 
-  const handleConfirmation = (value) => {
+  // Submit function
+  const onSubmit = async (data) => {
+    if (data.checkbox) {
+      setOpen(true);
+    }
+  };
+  const userData = JSON.parse(localStorage.getItem("userData"));
+
+  const handleConfirmation = async (value) => {
     handleClose();
     setUserInput(value);
+
+    if (value === "yes") {
+      setLoading(true); // Set loading to true
+      try {
+        // Call the delete account API
+        await _AuthApi.delete(userData?.id).then((res) => {
+          if (res?.code === 200) setUserInput("yes");
+          else setUserInput("cancel");
+        });
+      } catch (error) {
+        console.error("Failed to delete account:", error);
+        // Handle error accordingly
+        setUserInput("cancel"); // Change the state to show cancel dialog
+      } finally {
+        setLoading(false); // Set loading to false
+      }
+    }
     setSecondDialogOpen(true);
   };
 
   const formOptions = { resolver: yupResolver(schema) };
-  const { register, handleSubmit, formState, control } = useForm(formOptions);
+  const { handleSubmit, formState, control } = useForm(formOptions);
   const { errors } = formState;
 
   return (
@@ -65,7 +83,7 @@ const DeleteAcount = () => {
       {/* //* Delete Account Card */}
       <Grid item xs={12}>
         <Card>
-          <CardHeader title="Delete Account" />
+          <CardHeader title={t("Delete Account")} />
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Box sx={{ mb: 4 }}>
@@ -73,22 +91,13 @@ const DeleteAcount = () => {
                   <Controller
                     name="checkbox"
                     control={control}
-                    rules={{ required: true }}
                     render={({ field }) => (
                       <FormControlLabel
-                        label="I confirm my account deactivation"
-                        sx={{
-                          "& .MuiTypography-root": {
-                            color: errors.checkbox
-                              ? "error.main"
-                              : "text.secondary",
-                          },
-                        }}
+                        label={t("I confirm my account deactivation")}
                         control={
                           <Checkbox
                             {...field}
                             size="small"
-                            name="validation-basic-checkbox"
                             sx={
                               errors.checkbox ? { color: "error.main" } : null
                             }
@@ -106,7 +115,7 @@ const DeleteAcount = () => {
                         fontSize: (theme) => theme.typography.body2.fontSize,
                       }}
                     >
-                      Please confirm you want to delete account
+                      {t("Please confirm you want to delete account")}
                     </FormHelperText>
                   )}
                 </FormControl>
@@ -117,7 +126,7 @@ const DeleteAcount = () => {
                 type="submit"
                 disabled={errors.checkbox !== undefined}
               >
-                Deactivate Account
+                {t("Delete Account")}
               </Button>
             </form>
           </CardContent>
@@ -139,44 +148,41 @@ const DeleteAcount = () => {
           >
             <Icon icon="tabler:alert-circle" fontSize="5.5rem" />
             <Typography>
-              Are you sure you would like to cancel your subscription?
+              {t("Are you sure you would like to Delete your Account?")}
             </Typography>
           </Box>
         </DialogContent>
-        <DialogActions
-          sx={{ p: 4 }}
-        >
+        <DialogActions sx={{ p: 4 }}>
           <Button
             variant="contained"
             sx={{ mr: 2 }}
             onClick={() => handleConfirmation("yes")}
           >
-            Yes
+            {t("Yes")}
           </Button>
           <Button
             variant="outlined"
             color="secondary"
             onClick={() => handleConfirmation("cancel")}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
         </DialogActions>
       </Dialog>
+
       <Dialog
         fullWidth
         maxWidth="xs"
         open={secondDialogOpen}
         onClose={handleSecondDialogClose}
       >
-        <DialogContent
-         sx={{ p: 4 }}
-        >
+        <DialogContent sx={{ p: 4 }}>
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               flexDirection: "column",
-              justifyContent:"center",
+              justifyContent: "center",
               "& svg": {
                 mb: 8,
                 color: userInput === "yes" ? "success.main" : "error.main",
@@ -194,19 +200,18 @@ const DeleteAcount = () => {
             </Typography>
             <Typography>
               {userInput === "yes"
-                ? "Your subscription cancelled successfully."
-                : "Unsubscription Cancelled!!"}
+                ? t("Your Account Deleted successfully :(")
+                : t("Unsubscription Cancelled!!")}
             </Typography>
           </Box>
         </DialogContent>
-        <DialogActions sx={{ p: 4 }}
-        >
+        <DialogActions sx={{ p: 4 }}>
           <Button
             variant="contained"
             color="success"
             onClick={handleSecondDialogClose}
           >
-            OK
+            {t("OK")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -214,4 +219,4 @@ const DeleteAcount = () => {
   );
 };
 
-export default DeleteAcount;
+export default DeleteAccount;

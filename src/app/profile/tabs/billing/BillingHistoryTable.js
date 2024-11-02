@@ -13,9 +13,11 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  Grid,
+  useMediaQuery,
 } from "@mui/material";
 import { useOrders } from "hooks/orders/useOrders";
-import CloseIcon from "@mui/icons-material/Close"; 
+import CloseIcon from "@mui/icons-material/Close";
 import OrderReview from "./components/OrderReview";
 import { Eye } from "react-feather";
 import { useTranslation } from "react-i18next";
@@ -30,12 +32,12 @@ import {
 } from "@mui/icons-material";
 import { _axios } from "interceptor/http-config";
 import Swal from "sweetalert2";
+import theme from "theme";
 
 const LinkStyled = styled(Link)(({ theme }) => ({
   textDecoration: "none",
   color: `${theme.palette.primary.main} !important`,
 }));
-
 
 const BillingHistoryTable = () => {
   const [value, setValue] = useState("");
@@ -44,6 +46,8 @@ const BillingHistoryTable = () => {
   const [selectedOrder, setSelectedOrder] = useState(null); // State for selected order
   const [open, setOpen] = useState(false); // State for controlling modal visibility
   const { t } = useTranslation("index");
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const handleCancel = (id) => {
     Swal.fire({
       title: t("Are you sure?"),
@@ -228,16 +232,75 @@ const BillingHistoryTable = () => {
       {error && (
         <Typography color="error">{t("Error loading data")}.</Typography>
       )}
-      {data?.data && (
-        <DataGrid
-          sx={{ mx: 2 }}
-          autoHeight
-          rows={filteredRows}
-          columns={columns}
-          disableRowSelectionOnClick
-          getRowId={(row) => row.reference}
-        />
-      )}
+      {data?.data &&
+        (isMobile ? (
+          // Mobile view using Card layout
+          <Grid container spacing={2} sx={{ p: 2 }}>
+            {filteredRows.map((order) => {
+              const { label, color, icon } = getStatusDetails(order.status);
+              return (
+                <Grid item xs={12} key={order.reference}>
+                  <Card variant="outlined">
+                    <CardContent>
+                      <Typography variant="h6">
+                        {t("Order Reference")}: #{order.reference}
+                      </Typography>
+                      <Typography sx={{ color: "text.secondary" }}>
+                        {t("Issued Date")}:{" "}
+                        {new Date(
+                          order.lines[0].created_at
+                        ).toLocaleDateString()}
+                      </Typography>
+                      <Typography sx={{ color: "text.secondary" }}>
+                        {t("Order Items")}:{" "}
+                        {order.lines.map((line) => line.description).join(", ")}
+                      </Typography>
+                      <Typography sx={{ color: "text.secondary" }}>
+                        {t("Total")}: {order.total} {t("currency")}
+                      </Typography>
+                      <Tooltip title={label}>
+                        <Chip
+                          label={label}
+                          icon={icon}
+                          color={color}
+                          variant="outlined"
+                          sx={{
+                            mt: 1,
+                            minWidth: 120,
+                            fontWeight: "bold",
+                            fontSize: "0.875rem",
+                          }}
+                        />
+                      </Tooltip>
+                      <IconButton
+                        onClick={() => handleCancel(order.id)}
+                        color="error"
+                      >
+                        <DeleteRounded />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => handleOrderClick(order)}
+                        color="primary"
+                      >
+                        <Eye />
+                      </IconButton>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              );
+            })}
+          </Grid>
+        ) : (
+          // Desktop view using DataGrid
+          <DataGrid
+            sx={{ mx: 2 }}
+            autoHeight
+            rows={filteredRows}
+            columns={defaultColumns(handleOrderClick)}
+            disableRowSelectionOnClick
+            getRowId={(row) => row.reference}
+          />
+        ))}
 
       {/* Order Review Modal */}
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">

@@ -15,15 +15,16 @@ export const useAddToCart = (coupon_code) => {
         },
       },
     };
-    console.log("cart_id", cart_id);
+
     setLoading(true);
     _cart
       .AddToCart({ data, cart_id })
       .then((res) => {
-        console.log("res?.data?.id", res?.data?.id);
         if (!cart_id) localStorage.setItem("cart_id", res?.data?.id);
 
         if (res?.code === 200) {
+          const currentCartCount = parseInt(localStorage.getItem("cart_count")) || 0;
+          localStorage.setItem("cart_count", currentCartCount + 1);
           Swal.fire({
             icon: "success",
             title: t(t("Added To Cart Successfully")),

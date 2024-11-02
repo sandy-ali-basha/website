@@ -50,6 +50,7 @@ export default function BestSellers() {
                 link={`/store/product/${item?.id}`}
                 purchasable={item?.purchasable === "always"}
                 offer={item?.compare_price}
+                id={item?.id}
               />
             </SwiperSlide>
           ))}

@@ -75,57 +75,57 @@ export default function Home() {
           <Loader />
         </Box>
       )}
-
-      {slider && (
-        <Swiper
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
-          lazy={true}
-          modules={[Autoplay]}
-        >
-          {slider?.home_slides?.map((item, index) => (
-            <SwiperSlide key={index}>
-              <Link to={item?.link}>
-                <Box
-                  sx={{
-                    position: "relative",
-                    aspectRatio: "16/9",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    color: "white",
-                    textAlign: "center",
-                    background: "#6A83B0",
-                  }}
-                >
-                  <img
-                    src={item.image}
-                    alt={`Slide ${index + 1}`}
-                    style={{
-                      objectFit: "cover",
-                      width: "100%",
-                      height: "100%",
-                      position: "absolute",
-                    }}
-                    lazy
-                  />
+      <Box sx={{ mt: { xs: "5vh", sm: "0px" } }}>
+        {slider && (
+          <Swiper
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            lazy={true}
+            modules={[Autoplay]}
+          >
+            {slider?.home_slides?.map((item, index) => (
+              <SwiperSlide key={index}>
+                <Link to={item?.link}>
                   <Box
                     sx={{
                       position: "relative",
-                      zIndex: 1,
-                      width: { md: "50%", xs: "100%" },
+                      aspectRatio: "16/9",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "white",
+                      textAlign: "center",
+                      background: "#6A83B0",
                     }}
                   >
-                    {/* <Typography variant="h2" color="inherit">
+                    <img
+                      src={item.image}
+                      alt={`Slide ${index + 1}`}
+                      style={{
+                        objectFit: "cover",
+                        width: "100%",
+                        height: "100%",
+                        position: "absolute",
+                      }}
+                      lazy
+                    />
+                    <Box
+                      sx={{
+                        position: "relative",
+                        zIndex: 1,
+                        width: { md: "50%", xs: "100%" },
+                      }}
+                    >
+                      {/* <Typography variant="h2" color="inherit">
                     {item?.title}
                   </Typography>
                   <Typography sx={{ mt: 2 }} variant="body1" color="inherit">
                     {item?.text}
                   </Typography> */}
-                    {/* <Button
+                      {/* <Button
                     sx={{ mt: 4 }}
                     color="primary"
                     variant="contained"
@@ -133,13 +133,14 @@ export default function Home() {
                   >
                     {t("Get Started")}
                   </Button> */}
+                    </Box>
                   </Box>
-                </Box>
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      )}
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
+      </Box>
 
       {data && (
         <>

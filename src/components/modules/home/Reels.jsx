@@ -21,6 +21,7 @@ import ved2Kr from "assets/reels/kr/2.m4v";
 import ved1Kr from "assets/reels/kr/1.m4v";
 import ved4Kr from "assets/reels/kr/4.m4v";
 import ved5Kr from "assets/reels/kr/5.m4v";
+import { Box } from "@mui/material";
 
 const Shimmer = () => (
   <div
@@ -94,10 +95,10 @@ export default function Reels({ data }) {
     <Swiper
       style={{ paddingTop: "2vh", paddingBottom: "2vh" }}
       spaceBetween={5}
-      slidesPerView={1}
+      slidesPerView={3}
       modules={[Autoplay]}
       breakpoints={{
-        640: { slidesPerView: 1, spaceBetween: 5 },
+        640: { slidesPerView: 3, spaceBetween: 5 },
         768: { slidesPerView: 3, spaceBetween: 5 },
         1024: { slidesPerView: 4, spaceBetween: 5 },
       }}
@@ -109,12 +110,13 @@ export default function Reels({ data }) {
       {selectedVideos.map((videoSrc, idx) => (
         <SwiperSlide key={idx}>
           {loadingStatus[idx] && <Shimmer />}
+
           <video
             ref={(el) => (videoRefs.current[idx] = el)}
             style={{
               display: loadingStatus[idx] ? "none" : "block",
               width: "100%",
-              height: "80vh",
+              height: "auto",
               objectFit: "cover",
               borderRadius: 10,
             }}
@@ -131,6 +133,8 @@ export default function Reels({ data }) {
             <source type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+
+        
         </SwiperSlide>
       ))}
     </Swiper>

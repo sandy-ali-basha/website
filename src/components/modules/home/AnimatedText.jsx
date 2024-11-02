@@ -21,53 +21,52 @@ gsap.registerPlugin(ScrollTrigger);
 export default function AnimatedText() {
   const gar = useRef(null);
   const gsr2 = useRef(null);
-
   const imageRefs = useRef([]);
   imageRefs.current = [];
+
   useEffect(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: gar.current,
-        start: "top center",
-        end: "bottom center",
-        scrub: 5,
-        // pin: true,
-        // pinSpacing: false,
-      },
-    });
-
-    tl.to(gar.current, { y: -10, duration: 1, ease: "power1.inOut" });
-
-    const t2 = gsap.timeline({
-      scrollTrigger: {
-        trigger: gar.current,
-        start: "top center",
-        end: "bottom center",
-        scrub: 5,
-        // pin: true,
-        // pinSpacing: false,
-      },
-    });
-
-    t2.to(gsr2.current, {
-      y: 10,
-      rotation: 5,
-      duration: 1,
-      ease: "power1.inOut",
-    });
-
-    //*images
-    imageRefs.current.forEach((ref, index) => {
-      tl.to(
-        ref,
-        {
-          y: index % 2 === 0 ? -20 : 20, // Alternate direction for visual effect
-          duration: 1,
-          ease: "power1.inOut",
+    // Check if the screen size is above mobile width
+    if (window.innerWidth > 600) {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: gar.current,
+          start: "top center",
+          end: "bottom center",
+          scrub: 5,
         },
-        index * 0.1
-      ); // Stagger by 0.1 seconds
-    });
+      });
+
+      tl.to(gar.current, { y: -10, duration: 1, ease: "power1.inOut" });
+
+      const t2 = gsap.timeline({
+        scrollTrigger: {
+          trigger: gar.current,
+          start: "top center",
+          end: "bottom center",
+          scrub: 5,
+        },
+      });
+
+      t2.to(gsr2.current, {
+        y: 10,
+        rotation: 5,
+        duration: 1,
+        ease: "power1.inOut",
+      });
+
+      // Images animation
+      imageRefs.current.forEach((ref, index) => {
+        tl.to(
+          ref,
+          {
+            y: index % 2 === 0 ? -20 : 20,
+            duration: 1,
+            ease: "power1.inOut",
+          },
+          index * 0.1
+        );
+      });
+    }
   }, []);
 
   const Gummies = [
@@ -79,14 +78,20 @@ export default function AnimatedText() {
     gummie6,
     gummie7,
   ];
+
   const addToRefs = (el) => {
     if (el && !imageRefs.current.includes(el)) {
       imageRefs.current.push(el);
     }
   };
+
   return (
     <Box
-      sx={{ position: "relative", display: { xs: "none", md: "flex" } }}
+      sx={{
+        position: "relative",
+        display: "flex",
+        minHeight: { lg: "70vh", md: "60vh", xs: "40vh" },
+      }}
       className="animatedText"
       dir="ltr"
     >
@@ -99,33 +104,43 @@ export default function AnimatedText() {
           alt={`gummie ${index + 1}`}
         />
       ))}
-      <img
-        src={gar1}
-        ref={gsr2}
-        className=""
-        style={{ zIndex: "3", position: "absolute" }}
-        alt=""
-      />{" "}
-      <Box sx={{ display: "flex", position: "relative" }}>
+      <Box sx={{ width: { xs: "50vw", md: "30%" } }}>
         <img
-          src={fin}
-          style={{ position: "relative", zIndex: "5" }}
-          className="text"
+          src={gar1}
+          ref={gsr2}
+          className=""
+          style={{
+            zIndex: "3",
+            position: "absolute",
+            width: "inherit",
+            top: "10%",
+          }}
           alt=""
         />
-        <img
-          src={eis}
-          style={{ zIndex: "-1", position: "relative" }}
-          clasName="text"
-          alt=""
-        />
-        {/* <img
-            src={gar1}
-            className="floatingGar"
-            style={{ zIndex: "1" }}
-            ref={gar}
+      </Box>
+      <Box
+        sx={{
+          position: "relative",
+          display: "flex",
+        }}
+        dir="ltr"
+      >
+        <Box sx={{ width: { xs: "40vw", md: "auto" } }}>
+          <img
+            src={fin}
+            style={{ position: "relative", zIndex: "5", width: "inherit" }}
+            className="text"
             alt=""
-          /> */}
+          />
+        </Box>
+        <Box sx={{ width: { xs: "40vw", md: "auto" } }}>
+          <img
+            src={eis}
+            style={{ zIndex: "-1", position: "relative", width: "inherit" }}
+            className="text"
+            alt=""
+          />
+        </Box>
       </Box>
     </Box>
   );

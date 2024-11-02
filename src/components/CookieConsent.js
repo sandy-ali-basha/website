@@ -39,7 +39,7 @@ const popupStyle = {
   bottom: "20px",
   left: "20px",
   backgroundColor: "#fff",
-  color: "#fff",
+  color: "#0a0a0a",
   padding: "15px",
   borderRadius: "5px",
   zIndex: 1000,
@@ -47,7 +47,7 @@ const popupStyle = {
 };
 
 const buttonStyle = {
-  backgroundColor: "#4CAF50",
+  backgroundColor: "#6a83b0",
   color: "white",
   border: "none",
   padding: "8px 12px",

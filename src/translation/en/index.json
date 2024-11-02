@@ -219,5 +219,16 @@
 "pleas add cities":"pleas add cities",
 "Orders":"Orders",
 "total":"total",
-"View":"View"
+"View":"View",
+
+
+"Please confirm you want to delete account":"Please confirm you want to delete account",
+"Delete Account":"Delete Account",
+"Are you sure you would like to Delete your Account?":"Are you sure you would like to Delete your Account?",
+"Yes":"Yes",
+"Your Account Deleted successfully :(":"Your Account Deleted successfully :(",
+"Unsubscription Cancelled!!":"Unsubscription Cancelled!!",
+"OK":"OK",
+"I confirm my account deactivation":"I confirm my account deactivation"
+
 }

@@ -9,7 +9,7 @@ export default function Offers() {
   const { data, isLoading, isMobile, t } = useOffersPage();
 
   return (
-    <Container sx={{ pt: 15 }}>
+    <Container sx={{ pt: 15,minHeight:'100vh' }}>
       <img src={img} style={{ width: "100%" }} alt="img" />
       <Typography
         variant="h3"

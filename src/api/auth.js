@@ -73,4 +73,11 @@ export const _AuthApi = {
         throw error;
       });
   },
+  delete : (id)=>{
+    return _axios
+      .delete(`/customers/${id}`)
+      .then((res) => {
+        return res;
+      })
+  }
 };

@@ -63,8 +63,11 @@ const StepCart = ({ handleNext }) => {
   const handleDeleteItem = (id) => {
     _cart.delete({ id, cart_id }).then((res) => {
       // Invalidate the "cart" query to refetch the updated cart data
+
       if (res?.code === 200) {
         queryClient.invalidateQueries("cart");
+        const currentCartCount = parseInt(localStorage.getItem("cart_count")) || 0;
+        localStorage.setItem("cart_count", Math.max(currentCartCount - 1, 0)); 
         Swal.fire({
           icon: "success",
           title: "Success",

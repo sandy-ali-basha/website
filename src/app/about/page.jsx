@@ -34,7 +34,7 @@ export default function About() {
       sx={{
         background: `url(${bg}) no-repeat`,
         backgroundPosition: "65vw 10%",
-        backgroundSize: "50%",
+        backgroundSize: { md: "50%", xs: "110%" },
       }}
     >
       <Container maxWidth="lg" sx={{ marginTop: 12, mb: 4 }}>
@@ -153,7 +153,13 @@ export default function About() {
             </Typography>
           </Grid>
 
-          <Box sx={{ width: "90vw", height: "70vh", py: 5 }}>
+          <Box
+            sx={{
+              width: { md: "90vw", xs: "100vw" },
+              height: { md: "70vh", xs: "50vh" },
+              py: 5,
+            }}
+          >
             <Swiper
               slidesPerView={1}
               spaceBetween={5}
