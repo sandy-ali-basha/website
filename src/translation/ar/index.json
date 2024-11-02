@@ -217,6 +217,14 @@
   "please add cities": "يرجى إضافة المدن",
   "Orders": "الطلبات",
   "total": "الإجمالي",
-  "View": "عرض"
-  
+  "View": "عرض",
+
+  "Please confirm you want to delete account": "يرجى تأكيد رغبتك في حذف الحساب",
+  "Delete Account": "حذف الحساب",
+  "Are you sure you would like to Delete your Account?": "هل أنت متأكد أنك تريد حذف حسابك؟",
+  "Yes": "نعم",
+  "Your Account Deleted successfully :(": "تم حذف حسابك بنجاح :(",
+  "Unsubscription Cancelled!!": "تم إلغاء الاشتراك!!",
+  "OK": "حسنًا",
+  "I confirm my account deactivation": "أؤكد تعطيل حسابي"
 }

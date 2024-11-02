@@ -59,7 +59,36 @@ const Checkout = () => {
       icon: <ReceiptLongRoundedIcon />,
     },
   ];
+  // Function to poll order status every 30 seconds
+  const pollOrderStatus = async (orderId) => {
+    try {
+      const res = await _addresses.getOrderStatus(orderId); // Make the request to get order status
+      console.log(res?.data?.data?.status);
 
+      if (res?.data?.data?.status === "PAID") {
+        Swal.close(); // Close the "Please Wait" alert once payment is confirmed
+        localStorage.setItem("cart_count", 0);
+        setActiveStep((prevStep) => prevStep + 1); // Move to the next step if payment is confirmed
+      } else if (res?.data?.data?.status === "UNPAID") {
+        // Poll again after 30 seconds if payment is still pending
+        setTimeout(() => pollOrderStatus(orderId), 15000);
+      }
+    } catch (error) {
+      console.error("Error checking order status:", error);
+      Swal.fire({
+        icon: "error",
+        title: t("Error checking order status"),
+        text: error.message,
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+    }
+  };
+
+  // Main function to handle the order and initiate polling
   const handleNext = async () => {
     if (activeStep === 2) {
       // StepAddress is active
@@ -89,13 +118,24 @@ const Checkout = () => {
               imageWidth: 150,
               imageHeight: 150,
               imageAlt: "QR Code",
-              confirmButtonText: t("Done"),
-            }).then((result) => {
-              if (result?.isConfirmed) {
-                setActiveStep(activeStep + 1); // Move to the next step after confirming
-              }
+
+              allowOutsideClick: false, // Prevents closing by clicking outside
+              allowEscapeKey: false, // Prevents closing by pressing Escape
+              allowEnterKey: false, // Prevents closing by pressing Enter
+            }).then(() => {
+              Swal.fire({
+                title: t("Please Wait ..."),
+                showConfirmButton: false,
+                allowOutsideClick: false, // Prevents closing by clicking outside
+                allowEscapeKey: false, // Prevents closing by pressing Escape
+                allowEnterKey: false, // Prevents closing by pressing Enter
+              });
+              pollOrderStatus(res.data.id); // Start polling with the order ID
             });
-          } else setActiveStep(activeStep + 1);
+          } else {
+            setActiveStep((prevStep) => prevStep + 1);
+              setActiveStep((prevStep) => prevStep + 1); // Move to the next step if payment is 
+          }
         } else {
           Swal.fire({
             icon: "error",
@@ -110,7 +150,7 @@ const Checkout = () => {
         }
       });
     } else {
-      setActiveStep(activeStep + 1); // Move to the next step for other steps
+      setActiveStep((prevStep) => prevStep + 1); // Move to the next step for other steps
     }
   };
 

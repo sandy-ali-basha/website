@@ -64,18 +64,25 @@ const StepPayment = ({ handleNext }) => {
     <Container>
       <Grid container spacing={6}>
         <Grid item xs={12} lg={8}>
-          <TabContext value={value} sx={{px:5}}>
+          <Typography variant="h5" sx={{ ms: 5, mb: 3 }} color="text.primary">
+            {t("Pleas Choose Payment method")}
+          </Typography>
+          <TabContext value={value} sx={{ px: 5 }}>
             <CustomTabList
               variant="scrollable"
               scrollButtons="auto"
               onChange={handleChange}
               aria-label="customized tabs example"
             >
-              <Tab value="fib" label={t("FIB")} icon={<QrCode sx={{fontSize:'3rem'}} />} />
+              <Tab
+                value="fib"
+                label={t("FIB")}
+                icon={<QrCode sx={{ fontSize: "4rem" }} />}
+              />
               <Tab
                 value="cash-in-hand"
                 label={t("Cash On Delivery")}
-                icon={<MoneyRounded sx={{fontSize:'3rem'}}/>}
+                icon={<MoneyRounded sx={{ fontSize: "4rem" }} />}
               />
               {/* <Tab value="gc" label={t("Gift Card")} /> */}
             </CustomTabList>

@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
 import chars from "assets/images/pexels.jpg";
+import image from "assets/images/about.png";
 import image2 from "assets/images/pexels2.jpg";
 import image4 from "assets/images/aboutsUs3.jpg";
 import vision from "assets/images/vision.avif";
@@ -33,21 +34,23 @@ export default function About() {
     <Box
       sx={{
         background: `url(${bg}) no-repeat`,
-        backgroundPosition: "65vw 10%",
+        backgroundPosition: "65vw 30%",
         backgroundSize: { md: "50%", xs: "110%" },
       }}
     >
-      <Container maxWidth="lg" sx={{ marginTop: 12, mb: 4 }}>
+      <img src={image} alt="Hero" style={{ width: "100vw" }} />
+      <Container maxWidth="lg" sx={{  mb: 4 }}>
         <Box
           sx={{
-            height: "80vh",
+            minHeight: "80vh",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "column",
           }}
         >
-          <img src={logo} alt="dawaa alhayat logo" style={{ width: "10vw" }} />
+
+          <img src={logo} alt="dawaa alhayat logo" style={{ width: "10vw",marginTop:'-10vh' }} />
           <Typography variant="h3" sx={{ textAlign: "center", mt: 3 }}>
             {t("Welcome to Dawaa Al Hayat")}
           </Typography>

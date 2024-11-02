@@ -66,8 +66,9 @@ const StepCart = ({ handleNext }) => {
 
       if (res?.code === 200) {
         queryClient.invalidateQueries("cart");
-        const currentCartCount = parseInt(localStorage.getItem("cart_count")) || 0;
-        localStorage.setItem("cart_count", Math.max(currentCartCount - 1, 0)); 
+        const currentCartCount =
+          parseInt(localStorage.getItem("cart_count")) || 0;
+        localStorage.setItem("cart_count", Math.max(currentCartCount - 1, 0));
         Swal.fire({
           icon: "success",
           title: "Success",
@@ -115,11 +116,24 @@ const StepCart = ({ handleNext }) => {
                 <Typography variant="h5" sx={{ mb: 2 }}>
                   <CardShimmer style={{ width: "100px", height: "20px" }} />
                 </Typography>
-              ) : (
+              ) : data?.data?.products?.length > 0 ? (
                 <Typography variant="h5" sx={{ mb: 2 }}>
                   {t("My Shopping Bag")} ({data?.data?.products?.length}{" "}
                   {t("Items")})
                 </Typography>
+              ) : (
+                <Card
+                  sx={{
+                    minHeight: "80vh",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <img alt=" " src={emptyCart} style={{ width: "40vw" }} />
+                  <Typography>{t("Your shopping page is empty")}{data?.data?.products?.length}</Typography>
+                </Card>
               )}
               <StyledList>
                 {isLoading ? (

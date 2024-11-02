@@ -203,5 +203,15 @@
   "pleas add cities": "تکایە شارەکان زیاد بکە",
   "Orders": "داواکاریەکان",
   "total": "کۆی گشتی",
-  "View": "بینین"
+  "View": "بینین",
+
+  "Please confirm you want to delete account": "تکایە دڵنیابە لە ڕەشکردنەوەی هەژمارەکەت",
+  "Delete Account": "ڕەشکردنەوەی هەژمار",
+  "Are you sure you would like to Delete your Account?": "دڵنیایت لە ڕەشکردنەوەی هەژمارەکەت؟",
+  "Yes": "بەڵێ",
+  "Your Account Deleted successfully :(": "هەژمارەکەت بە سەرکەوتوویی ڕەشکرایەوە :(",
+  "Unsubscription Cancelled!!": "لابردنی تۆمارکردن هەڵوەشایە!!",
+  "OK": "باشە",
+  "I confirm my account deactivation": "من دڵنیای لە ناچالاککردنی هەژمارەکەم",
+  "Pleas Choose Payment method":""
 }

@@ -20,6 +20,15 @@ export const _addresses = {
       })
       .then((res) => res);
   },
+  getOrderStatus: async (id) => {
+    return _axios
+      .get(`/order/my_orders/${id}`, {
+        headers: {
+          ...HttpRequestInterceptor(),
+        },
+      })
+      .then((res) => res);
+  },
   order: (data) => _axios.post("/order", data).then((res) => res.data),
 
   delete: (id) => _axios.delete(`/addresses/${id}`).then((res) => res.data),
@@ -28,4 +37,5 @@ export const _addresses = {
     _axios.post(`/addresses/${id}`, data).then((res) => res?.data),
 
   post: (data) => _axios.post(`/addresses`, data).then((res) => res?.data),
+  
 };
