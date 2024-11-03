@@ -109,7 +109,6 @@ const Checkout = () => {
       await _addresses.order(orderData).then((res) => {
         if (res?.code === 200) {
           setOrderResponse(res.data); // Store the order response
-
           localStorage.removeItem("cart_id");
           if (value === "fib") {
             Swal.fire({
@@ -134,7 +133,6 @@ const Checkout = () => {
             });
           } else {
             setActiveStep((prevStep) => prevStep + 1);
-              setActiveStep((prevStep) => prevStep + 1); // Move to the next step if payment is 
           }
         } else {
           Swal.fire({

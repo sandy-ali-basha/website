@@ -190,9 +190,9 @@ export default function ContactUs() {
               }}
             ></iframe>
             <Typography variant="body1" color="initial">
-             {t("Erbil Office:")} <br />
+              {t("Erbil Office:")} <br />
               Dawaa Alhayat Company <br />
-              Shoresh Street,Khanzad، 2nd Floor , Building 206، Erbil، Erbil IQ
+              Buildind. No. 206, Shoresh St. Khanzad, Erbil, Iraq
             </Typography>
           </Box>
           <Box sx={{ width: "100%", mt: 3, display: "flex", gap: 1 }}>
@@ -201,7 +201,7 @@ export default function ContactUs() {
               {t("Baghdad Office:")}
             </Typography>
             <a href="https://maps.app.goo.gl/NgbhGFS5KkDjLGXDA" color="initial">
-              Dawaa Alhayat Scientific bureau Al Amiriya, Baghdad, Iraq
+              Building No. 66, Alkhadraa cross, Baghdad, Iraq
             </a>
           </Box>
           <Box sx={{ width: "100%", mt: 3, display: "flex", gap: 1 }}>
@@ -210,7 +210,7 @@ export default function ContactUs() {
               {t("Sulaymaniya office:")}
             </Typography>
             <a href="https://maps.app.goo.gl/bBXyAZ89f1pXREmJ7" color="initial">
-              Al sulaymaniya , German Village 1 , Villa No.47
+              Villa No.47, German Village 1, 60m St, Sulaymaniyah, Iraq
             </a>
           </Box>
         </Grid>

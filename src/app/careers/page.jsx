@@ -175,7 +175,7 @@ export default function Careers() {
                     sx={{ mt: 1 }}
                   >
                     {
-                      "A work culture based on respect and collaboration. We believe in teamwork and encourage collaboration among our team members."
+                      t("A work culture based on respect and collaboration. We believe in teamwork and encourage collaboration among our team members.")
                     }
                   </Typography>
                 </Box>

@@ -7,8 +7,8 @@ import chars from "assets/images/pexels.jpg";
 import image from "assets/images/about.png";
 import image2 from "assets/images/pexels2.jpg";
 import image4 from "assets/images/aboutsUs3.jpg";
-import vision from "assets/images/vision.avif";
-import misiion from "assets/images/misiion.avif";
+import vision from "assets/images/vision.png";
+import misiion from "assets/images/misiion.png";
 import logo from "assets/images/logo.png";
 import goal1 from "assets/images/about us/pexels.jpg";
 import values from "assets/images/ourValues.avif";
@@ -38,8 +38,8 @@ export default function About() {
         backgroundSize: { md: "50%", xs: "110%" },
       }}
     >
-      <img src={image} alt="Hero" style={{ width: "100vw" }} />
-      <Container maxWidth="lg" sx={{  mb: 4 }}>
+      <img src={image} alt="Hero" style={{ width: "100%" }} />
+      <Container maxWidth="lg" sx={{ mb: 4 }}>
         <Box
           sx={{
             minHeight: "80vh",
@@ -49,8 +49,11 @@ export default function About() {
             flexDirection: "column",
           }}
         >
-
-          <img src={logo} alt="dawaa alhayat logo" style={{ width: "10vw",marginTop:'-10vh' }} />
+          <img
+            src={logo}
+            alt="dawaa alhayat logo"
+            style={{ width: "15vw", marginTop: "-40vh", mb: "10vh" }}
+          />
           <Typography variant="h3" sx={{ textAlign: "center", mt: 3 }}>
             {t("Welcome to Dawaa Al Hayat")}
           </Typography>
@@ -95,7 +98,7 @@ export default function About() {
                     style={{
                       borderRadius: "12px",
                       objectFit: "contain",
-                      height: "25%",
+                      width: "25%",
                       margin: "0 auto",
                     }}
                     alt=""
@@ -129,7 +132,7 @@ export default function About() {
                     style={{
                       borderRadius: "12px",
                       objectFit: "contain",
-                      height: "25%",
+                      width: "25%",
                       margin: "0 auto",
                     }}
                     alt=""
@@ -213,7 +216,7 @@ export default function About() {
                       flexDirection: "column",
                       justifyContent: "center",
                       background:
-                        "linear-gradient(180deg, rgba(118,128,176,0.11808473389355745) 0%, rgba(52,57,78,1) 71%)",
+                        "linear-gradient(180deg, rgba(118, 128, 176, 0.048) 0%, rgba(52,57,78,1) 71%)",
                     }}
                   >
                     <Typography
@@ -228,9 +231,9 @@ export default function About() {
                       color="initial"
                       sx={{ textAlign: "center", color: "white" }}
                     >
-                      {
+                      {t(
                         "Strive to become the undisputed leader in pharmaceutical distribution within the Iraqi market. Achieve a premium position by consistently delivering exceptional service and maintaining a diverse portfolio of high-quality products."
-                      }
+                      )}
                     </Typography>
                   </Box>
                 </Box>
@@ -267,7 +270,7 @@ export default function About() {
                       flexDirection: "column",
                       justifyContent: "center",
                       background:
-                        "linear-gradient(180deg, rgba(118,128,176,0.11808473389355745) 0%, rgba(52,57,78,1) 71%)",
+                        "linear-gradient(180deg, rgba(118, 128, 176, 0.048) 0%, rgba(52,57,78,1) 71%)",
                     }}
                   >
                     <Typography
@@ -321,7 +324,7 @@ export default function About() {
                       flexDirection: "column",
                       justifyContent: "center",
                       background:
-                        "linear-gradient(180deg, rgba(118,128,176,0.11808473389355745) 0%, rgba(52,57,78,1) 71%)",
+                        "linear-gradient(180deg, rgba(118, 128, 176, 0.048) 0%, rgba(52,57,78,1) 71%)",
                     }}
                   >
                     <Typography
@@ -375,7 +378,7 @@ export default function About() {
                       flexDirection: "column",
                       justifyContent: "center",
                       background:
-                        "linear-gradient(180deg, rgba(118,128,176,0.11808473389355745) 0%, rgba(52,57,78,1) 71%)",
+                        "linear-gradient(180deg, rgba(118, 128, 176, 0.048) 0%, rgba(52,57,78,1) 71%)",
                     }}
                   >
                     <Typography
@@ -429,7 +432,7 @@ export default function About() {
                       flexDirection: "column",
                       justifyContent: "center",
                       background:
-                        "linear-gradient(180deg, rgba(118,128,176,0.11808473389355745) 0%, rgba(52,57,78,1) 71%)",
+                        "linear-gradient(180deg, rgba(118, 128, 176, 0.048) 0%, rgba(52,57,78,1) 71%)",
                     }}
                   >
                     <Typography
