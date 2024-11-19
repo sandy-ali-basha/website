@@ -21,7 +21,7 @@ const ChooseCityDialog = () => {
       >
         <img style={{ width: "50%", margin: "1rem auto" }} src={logo} alt="" />
         <DialogContentText textAlign={"center"} sx={{ fontSize: "1.5rem" }}>
-          {t("pleas choose city to continue")}
+          {t("Select your city for a customized shopping journey")}
           <ChooseCity />
         </DialogContentText>
       </DialogContent>

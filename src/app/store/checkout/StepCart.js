@@ -28,6 +28,7 @@ import ApplyCoupon from "./_components/ApplyCoupon";
 import ApplyPoints from "./_components/ApplyPoints";
 import emptyCart from "assets/images/empty-cart.webp";
 import BestSellers from "components/modules/home/BestSellers";
+import Simillar from "../product/[id]/_components/Simllar";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -68,7 +69,7 @@ const StepCart = ({ handleNext }) => {
         queryClient.invalidateQueries("cart");
         const currentCartCount =
           parseInt(localStorage.getItem("cart_count")) || 0;
-        localStorage.setItem("cart_count", Math.max(currentCartCount - 1, 0));
+          localStorage.setItem("cart_count", Math.max(currentCartCount - 1, 0));
         Swal.fire({
           icon: "success",
           title: "Success",
@@ -248,7 +249,7 @@ const StepCart = ({ handleNext }) => {
                               )}
                               {item?.price > 0 && (
                                 <Typography variant="body1" color="initial">
-                                  {(item?.price / 1000).toFixed(3)}{" "}
+                                  {item?.price.toLocaleString()}{" "}
                                   {t("currency")}
                                 </Typography>
                               )}
@@ -309,8 +310,8 @@ const StepCart = ({ handleNext }) => {
                     <Typography>{t("Bag Total")}</Typography>
                     <Typography sx={{ color: "text.secondary" }}>
                       {data?.data?.discount_amount > 0
-                        ? (data?.data?.sub_total_after_points / 1000).toFixed(3)
-                        : (data?.data?.sub_total / 1000).toFixed(3)}{" "}
+                        ? data?.data?.sub_total_after_points.toLocaleString()
+                        : data?.data?.sub_total.toLocaleString()}{" "}
                       {t("currency")}
                     </Typography>
                   </Box>
@@ -328,7 +329,7 @@ const StepCart = ({ handleNext }) => {
                     >
                       <Typography>{t("Discount Amount")}</Typography>
                       <Typography variant="h6" sx={{ color: "primary.main" }}>
-                        {(data?.data?.discount_amount / 1000).toFixed(3)}{" "}
+                        {data?.data?.discount_amount.toLocaleString()}{" "}
                         {t("currency")}
                       </Typography>
                     </Box>
@@ -393,7 +394,7 @@ const StepCart = ({ handleNext }) => {
                             : "initial",
                       }}
                     >
-                      {(data?.data?.sub_total / 1000).toFixed(3)}{" "}
+                      {data?.data?.sub_total.toLocaleString()}{" "}
                       {t("currency")}
                     </Typography>
 
@@ -405,7 +406,7 @@ const StepCart = ({ handleNext }) => {
                           textDecoration: "none",
                         }}
                       >
-                        {data?.data?.sub_total_after_points} {t("currency")}
+                        {data?.data?.sub_total_after_points.toLocaleString()} {t("currency")}
                       </Typography>
                     )}
                   </Box>
@@ -432,7 +433,7 @@ const StepCart = ({ handleNext }) => {
           </Grid>
         )}
       </Grid>
-      <BestSellers />
+      <Simillar id={data?.data?.products[0]?.id}/>
     </Container>
   );
 };

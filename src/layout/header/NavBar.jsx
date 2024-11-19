@@ -112,6 +112,7 @@ function NavBar() {
                 ...item,
                 key: item.id,
               }))}
+              defaultValue={localStorage.getItem("city")}
             />
           </Box>
 

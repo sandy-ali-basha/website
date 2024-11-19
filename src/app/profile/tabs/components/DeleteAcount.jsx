@@ -1,5 +1,6 @@
 // ** React Imports
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
@@ -28,9 +29,10 @@ import { _AuthApi } from "api/auth";
 
 const DeleteAccount = () => {
   // ** State
-  const { t } = useTranslation("auth");
+  const { t } = useTranslation("index");
+  const navigate = useNavigate(); // Initialize navigate
 
-  //**  Define validation schema
+  // ** Define validation schema
   const schema = yup.object().shape({
     checkbox: yup.boolean().oneOf([true], t("checkbox is required")),
   });
@@ -59,13 +61,15 @@ const DeleteAccount = () => {
       setLoading(true); // Set loading to true
       try {
         // Call the delete account API
-        await _AuthApi.delete(userData?.id).then((res) => {
-          if (res?.code === 200) setUserInput("yes");
-          else setUserInput("cancel");
-        });
+        const response = await _AuthApi.delete(userData?.id);
+        if (response?.data?.code === 200) {
+          localStorage.clear(); // Clear local storage
+          navigate("/"); // Redirect to home page
+        } else {
+          setUserInput("cancel");
+        }
       } catch (error) {
         console.error("Failed to delete account:", error);
-        // Handle error accordingly
         setUserInput("cancel"); // Change the state to show cancel dialog
       } finally {
         setLoading(false); // Set loading to false

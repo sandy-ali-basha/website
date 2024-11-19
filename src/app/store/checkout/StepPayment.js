@@ -182,7 +182,7 @@ const StepPayment = ({ handleNext }) => {
                     >
                       <Typography>{t("Sub Total")}</Typography>
                       <Typography sx={{ color: "text.secondary" }}>
-                        {(cartData?.data?.sub_total / 1000).toFixed(3)}{" "}
+                        {cartData?.data?.sub_total.toLocaleString()}{" "}
                         {t("currency")}
                       </Typography>
                     </Box>
@@ -204,9 +204,7 @@ const StepPayment = ({ handleNext }) => {
                       >
                         {shippingAddress?.shipping_price > 0 && (
                           <div>
-                            {(shippingAddress?.shipping_price / 1000).toFixed(
-                              3
-                            )}
+                            {shippingAddress?.shipping_price.toLocaleString()}
                             {t("currency")}
                           </div>
                         )}
@@ -252,9 +250,7 @@ const StepPayment = ({ handleNext }) => {
                           {t("Sub Total After Points Used")}
                         </Typography>
                         <Typography variant="body1" color="secondary">
-                          {(
-                            cartData?.data?.sub_total_after_points / 1000
-                          ).toFixed(3)}{" "}
+                          {cartData?.data?.sub_total_after_points.toLocaleString()}{" "}
                           {t("currency")}
                         </Typography>
                       </Box>
@@ -273,7 +269,7 @@ const StepPayment = ({ handleNext }) => {
                 }}
               >
                 <Typography sx={{ color: "primary.main" }}>
-                  {"Deliver to"}:
+                  {t("Deliver to")}:
                 </Typography>
                 <Typography sx={{ fontWeight: 500 }}>
                   {shippingAddress?.title}

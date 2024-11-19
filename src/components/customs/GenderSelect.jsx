@@ -13,7 +13,7 @@ const GenderSelect = ({ register, errors, defaultValue }) => {
 
   return (
     <FormControl fullWidth error={!!errors.gender?.message}>
-      <InputLabel id="gender-label">Gender</InputLabel>
+      <InputLabel id="gender-label">{t("Gender")}</InputLabel>
       <Select
         labelId="gender-label"
         id="gender-select"
@@ -24,10 +24,10 @@ const GenderSelect = ({ register, errors, defaultValue }) => {
         placeholder="Gender"
       >
         <MenuItem value={"female"}>
-          <Box>{t("femail")}</Box>
+          <Box>{t("Female")}</Box>
         </MenuItem>
         <MenuItem value={"male"}>
-          <Box>male</Box>
+          <Box>{t("male")}</Box>
         </MenuItem>
       </Select>
       <FormHelperText>{errors.gender?.message}</FormHelperText>

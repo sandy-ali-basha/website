@@ -36,6 +36,8 @@ const Checkout = () => {
   // ** States
   const [activeStep, setActiveStep] = useState(0);
   const [selectedBasicRadio, setSelectedBasicRadio] = useState();
+  const [opendFIB, setOpendFIB] = useState(false);
+  const [orderId, setOrderId] = useState();
   const [orderResponse, setOrderResponse] = useState(null); // New state for storing order response
   const { t } = useTranslation("index");
   const theme = useTheme();
@@ -63,11 +65,8 @@ const Checkout = () => {
   const pollOrderStatus = async (orderId) => {
     try {
       const res = await _addresses.getOrderStatus(orderId); // Make the request to get order status
-      console.log(res?.data?.data?.status);
-
       if (res?.data?.data?.status === "PAID") {
         Swal.close(); // Close the "Please Wait" alert once payment is confirmed
-        localStorage.setItem("cart_count", 0);
         setActiveStep((prevStep) => prevStep + 1); // Move to the next step if payment is confirmed
       } else if (res?.data?.data?.status === "UNPAID") {
         // Poll again after 30 seconds if payment is still pending
@@ -91,62 +90,124 @@ const Checkout = () => {
   // Main function to handle the order and initiate polling
   const handleNext = async () => {
     if (activeStep === 2) {
+      console.log("order")
       // StepAddress is active
       const addressId = selectedBasicRadio;
       const userData = JSON.parse(localStorage.getItem("userData"));
       const cart_id = JSON.parse(localStorage.getItem("cart_id"));
-
-      const orderData = {
-        address_id: addressId,
-        first_name: userData?.first_name,
-        last_name: userData?.last_name,
-        email: userData?.email,
-        message: "message",
-        cart_id: cart_id,
-        payment_method: value,
-      };
-
-      await _addresses.order(orderData).then((res) => {
-        if (res?.code === 200) {
-          setOrderResponse(res.data); // Store the order response
-          localStorage.removeItem("cart_id");
-          if (value === "fib") {
-            Swal.fire({
-              title: t("Please scan the QR code with your FIB mobile app"),
-              imageUrl: res?.data?.payment_details?.qrCode,
-              imageWidth: 150,
-              imageHeight: 150,
-              imageAlt: "QR Code",
-
-              allowOutsideClick: false, // Prevents closing by clicking outside
-              allowEscapeKey: false, // Prevents closing by pressing Escape
-              allowEnterKey: false, // Prevents closing by pressing Enter
-            }).then(() => {
+  
+      if (!orderId) {
+        const orderData = {
+          address_id: addressId,
+          first_name: userData?.first_name,
+          last_name: userData?.last_name,
+          email: userData?.email,
+          message: "message",
+          cart_id: cart_id,
+          payment_method: value,
+        };
+        await _addresses.order(orderData).then((res) => {
+          setOrderId(res?.data?.id);
+          if (res?.code === 200) {
+            setOrderResponse(res.data); // Store the order response
+            localStorage.removeItem("cart_id");
+            localStorage.removeItem("cart_count");
+            if (value === "fib") {
               Swal.fire({
-                title: t("Please Wait ..."),
-                showConfirmButton: false,
-                allowOutsideClick: false, // Prevents closing by clicking outside
+                title: t("Please scan the QR code with your FIB mobile app"),
+                imageUrl: res?.data?.payment_details?.qrCode,
+                imageWidth: 150,
+                imageHeight: 150,
+                imageAlt: "QR Code",
                 allowEscapeKey: false, // Prevents closing by pressing Escape
                 allowEnterKey: false, // Prevents closing by pressing Enter
+                showCloseButton: true, 
+                didOpen: () => {
+                  setOpendFIB(true);
+                },
+              }).then((result) => {
+                // Check if the user clicked "OK"
+                if (result.isConfirmed) {
+                  Swal.fire({
+                    title: t("Please Wait ..."),
+                    showConfirmButton: false,
+                    allowOutsideClick: false, // Prevents closing by clicking outside
+                    allowEscapeKey: false, // Prevents closing by pressing Escape
+                    allowEnterKey: false, // Prevents closing by pressing Enter
+                  });
+                  pollOrderStatus(res.data.id); // Start polling with the order ID
+                }
               });
-              pollOrderStatus(res.data.id); // Start polling with the order ID
-            });
+            } else {
+              setActiveStep((prevStep) => prevStep + 1);
+            }
           } else {
-            setActiveStep((prevStep) => prevStep + 1);
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: res?.error?.message,
+              toast: true,
+              position: "bottom-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+            });
           }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: res?.error?.message,
-            toast: true,
-            position: "bottom-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-          });
-        }
-      });
+        });
+      } else {
+        console.log("UpdateOrder")
+        const orderData = {
+          payment_method: value,
+        };
+        await _addresses.UpdateOrder({ orderId, orderData }).then((res) => {
+          setOrderId(res?.data?.id);
+          if (res?.code === 200) {
+            setOrderResponse(res.data); // Store the order response
+            localStorage.removeItem("cart_id");
+            localStorage.removeItem("cart_count");
+            if (value === "fib") {
+              Swal.fire({
+                title: t("Please scan the QR code with your FIB mobile app"),
+                imageUrl: res?.data?.payment_details?.qrCode,
+                imageWidth: 150,
+                imageHeight: 150,
+                imageAlt: "QR Code",
+                allowEscapeKey: false, // Prevents closing by pressing Escape
+                allowEnterKey: false, // Prevents closing by pressing Enter
+                showCloseButton: true, 
+                didOpen: () => {
+                  setOpendFIB(true);
+                },
+              }).then((result) => {
+                // Check if the user clicked "OK"
+                if (result.isConfirmed) {
+                  Swal.fire({
+                    title: t("Please Wait ..."),
+                    showConfirmButton: false,
+                    allowOutsideClick: false, // Prevents closing by clicking outside
+                    allowEscapeKey: false, // Prevents closing by pressing Escape
+                    allowEnterKey: false, // Prevents closing by pressing Enter
+                  });
+                  pollOrderStatus(res.data.id); // Start polling with the order ID
+                }
+              });
+            } else {
+              setActiveStep((prevStep) => prevStep + 1);
+            }
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: res?.error?.message,
+              toast: true,
+              position: "bottom-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+            });
+          }
+        });
+      }
     } else {
       setActiveStep((prevStep) => prevStep + 1); // Move to the next step for other steps
     }

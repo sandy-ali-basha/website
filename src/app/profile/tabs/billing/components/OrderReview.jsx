@@ -34,26 +34,33 @@ const OrderReview = ({ item }) => {
       </TableRow>
     ));
   }, [item]);
+  
   const getStatusDetails = (status) => {
     switch (status) {
       case "order_requested":
-        return { label: "Requested", color: "info", icon: <Pending /> };
+        return { label: t("Requested"), color: "info", icon: <Pending /> };
       case "order_processing":
-        return { label: "Processing", color: "primary", icon: <Sync /> };
+        return { label: t("Processing"), color: "primary", icon: <Sync /> };
       case "order_processed":
-        return { label: "Processed", color: "warning", icon: <CheckCircle /> };
+        return {
+          label: t("Processed"),
+          color: "warning",
+          icon: <CheckCircle />,
+        };
       case "order_under_delivery":
         return {
-          label: "Under Delivery",
+          label: t("Under Delivery"),
           color: "secondary",
           icon: <LocalShipping />,
         };
       case "order_delivered":
-        return { label: "Delivered", color: "success", icon: <Done /> };
+        return { label: t("Delivered"), color: "success", icon: <Done /> };
       case "order_canceled":
-        return { label: "Canceled", color: "error", icon: <Cancel /> };
+        return { label: t("Canceled"), color: "error", icon: <Cancel /> };
+      case "cancel_requested":
+        return { label: t("Cancel Requested"), color: "error", icon: <Sync /> };
       default:
-        return { label: "Unknown", color: "default", icon: null };
+        return { label: t("Unknown"), color: "default", icon: null };
     }
   };
 

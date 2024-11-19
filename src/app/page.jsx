@@ -206,28 +206,12 @@ export default function Home() {
             </Grid> */}
           </Container>
           <Reels />
-          <AnimatedText></AnimatedText>
-          <Container>
-            <Grid container sx={{ py: 2, mt: 5 }}>
-              <Grid md="6">
-                <Typography
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      data?.["home.page.textSectionTwo"]?.value?.text?.[
-                        i18n.language
-                      ],
-                  }}
-                ></Typography>
-              </Grid>
-              <Grid md="6">
-                <img
-                  src={data?.["home.page.textSectionTwo"]?.image}
-                  style={{ width: "100%" }}
-                  alt=""
-                />
-              </Grid>
-            </Grid>
-          </Container>
+          <AnimatedText
+            text={
+              data?.["home.page.textSectionTwo"]?.value?.text?.[i18n.language]
+            }
+          ></AnimatedText>
+
           <BestSellers />
           <Qoute
             data={data?.["home.page.videoText"]}

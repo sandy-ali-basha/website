@@ -7,7 +7,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { useParams } from "react-router-dom";
 import { useBrandPage } from "hooks/brands/useBrand";
-import AnimatedText from "components/modules/home/AnimatedText.jsx";
 import Loader from "components/modules/Loader";
 import BrandProducts from "components/modules/home/BrandProducts";
 
@@ -83,17 +82,26 @@ export default function Brand() {
       </Swiper>
       <Container>
         <Grid container sx={{ my: 6 }}>
-          <Grid item md={12}>
-            <Typography variant="h5">{data?.name}</Typography>
+          <Grid
+            item
+            md={6} 
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <img src={data?.image} style={{ width: "50%" }} alt="" />
           </Grid>
-          <Grid item md={12}>
+          <Grid item md={6}>
+            <Typography variant="h5">{data?.name}</Typography>
             <Typography
               variant="body1"
               dangerouslySetInnerHTML={{ __html: data?.text }}
             ></Typography>
           </Grid>
         </Grid>
-        <AnimatedText />
+
         {data?.products && <BrandProducts data={data?.products} />}
       </Container>
     </Box>

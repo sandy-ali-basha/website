@@ -3,6 +3,7 @@ import {
   Button,
   Container,
   Grid,
+  Link,
   TextField,
   Typography,
 } from "@mui/material";
@@ -16,6 +17,13 @@ import * as yup from "yup";
 import ButtonLoader from "components/customs/ButtonLoader";
 import Swal from "sweetalert2";
 import { MapPin } from "react-feather";
+import {
+  Facebook,
+  Instagram,
+  LinkedIn,
+  Mail,
+  WhatsApp,
+} from "@mui/icons-material";
 
 export default function ContactUs() {
   const { t } = useTranslation("index");
@@ -164,6 +172,101 @@ export default function ContactUs() {
           <Typography sx={{ mt: 3 }} variant="caption" color="text.secondary">
             {t("We typically get back to all requests within 24 hours.")}
           </Typography>
+          <Typography sx={{ mt: 3, fontWeight: "500" }} variant="body1">
+            {t("Our Contact Info")}
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              my: 2,
+              gap: 1,
+              color: "text.main",
+            }}
+          >
+            <Facebook />
+            <Link
+              style={{ color: "initial", textDecoration: "none" }}
+              href="https://web.facebook.com/Dawaaalhayatco?_rdc=1&_rdr"
+              aria-label="facebook"
+            >
+              Facebook
+            </Link>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              my: 2,
+              gap: 1,
+              color: "text.main",
+            }}
+          >
+            <Instagram />
+            <Link
+              style={{ color: "initial", textDecoration: "none" }}
+              href="https://www.instagram.com/dawaa_alhayat"
+              aria-label="instagram"
+            >
+              Instagram
+            </Link>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              my: 2,
+              gap: 1,
+              color: "text.main",
+            }}
+          >
+            <LinkedIn />
+            <Link
+              style={{ color: "initial", textDecoration: "none" }}
+              href="https://www.linkedin.com/company/dawaa-alhayat/"
+              aria-label="linkedin"
+            >
+              LinkedIn
+            </Link>{" "}
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              my: 2,
+              gap: 1,
+              color: "text.main",
+            }}
+          >
+            <WhatsApp />
+            <Link
+              style={{ color: "initial", textDecoration: "none" }}
+              href="https://wa.me/+9647709445659"
+              aria-label="whatsapp"
+              target="_blank" // Opens in a new tab
+              rel="noopener noreferrer" // Enhances security when opening in a new tab
+            >
+              +9647709445659
+            </Link>{" "}
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              my: 2,
+              gap: 1,
+              color: "text.main",
+            }}
+          >
+            <Mail />
+            <Link
+              style={{ color: "initial", textDecoration: "none" }}
+              href="mailto:online@dawaaalhayat.com" // Correct mailto URL
+              aria-label="Email"
+            >
+              online@dawaaalhayat.com
+            </Link>{" "}
+          </Box>
         </Grid>
         <Grid
           sx={{

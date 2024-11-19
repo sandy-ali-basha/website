@@ -143,8 +143,8 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                         {!hideText && t("Security")}
                       </Box>
                     }
-                  />
-                  <Tab
+                  />  
+                  {/* <Tab
                     value="billing"
                     label={
                       <Box
@@ -158,7 +158,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                         {!hideText && t("Billing")}
                       </Box>
                     }
-                  />
+                  /> */}
                   <Tab
                     value="orders"
                     label={

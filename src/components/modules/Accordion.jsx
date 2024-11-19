@@ -47,6 +47,7 @@ export default function CAccordion({ data, handleCheked }) {
   };
 const {t}= useTranslation("index")
 
+const lang = localStorage.getItem("i18nextLng")
   return (
     <div>
       {data?.product_attributes?.map((item, idx) => (
@@ -79,7 +80,7 @@ const {t}= useTranslation("index")
                       key={idx}
                       id={option.id}
                       control={<Radio value={option.id} />}
-                      label={option.value}
+                      label={option.translations?.find((t) => t.locale === lang)?.value}
                     />
                   )
                 )}

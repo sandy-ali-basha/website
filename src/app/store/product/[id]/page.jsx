@@ -27,7 +27,6 @@ import { Shimmer } from "react-shimmer";
 import { useSlider } from "./hooks/useSlider";
 import { useAddToCart } from "hooks/cart/useAddToCart";
 import { PaidRounded } from "@mui/icons-material";
-import BestSellers from "components/modules/home/BestSellers";
 
 function Product() {
   const theme = useTheme();
@@ -120,7 +119,7 @@ function Product() {
                   variant="h5"
                   color="text.secondary"
                 >
-                  {data?.data?.compare_price} {t("currency")}
+                  {data?.data?.compare_price.toLocaleString()} {t("currency")}
                 </Typography>
               )
             )}
@@ -133,7 +132,7 @@ function Product() {
                   variant="h4"
                   sx={{ fontWeight: "bold" }}
                 >
-                  {data?.data?.price} {t("currency")}
+                  {data?.data?.price.toLocaleString()} {t("currency")}
                 </Typography>
               )
             )}
@@ -210,6 +209,8 @@ function Product() {
                 ))
               )}
             </Box>
+            
+          </Box>
             {data?.data?.points > 0 && (
               <Typography
                 variant="caption"
@@ -220,7 +221,6 @@ function Product() {
                 {data?.data?.points} {t("points by purchasing this product")}
               </Typography>
             )}
-          </Box>
 
           <Box sx={{ mx: 2 }}>
             {isLoading ? (
@@ -278,8 +278,6 @@ function Product() {
               </Button>
             </Box>
           )}
-
-          <Simillar id={data?.data?.id} />
         </Grid>
       </Grid>
       <Box sx={{ m: 3 }}>
@@ -313,7 +311,7 @@ function Product() {
             ))}
         </Swiper>
       </Box>
-      <BestSellers />
+      <Simillar id={data?.data?.id} />
     </Container>
   );
 }

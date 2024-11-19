@@ -25,7 +25,7 @@ const phoneRegExp =
 
 const TabAccount = () => {
   // ** State
-  const { t } = useTranslation("auth");
+  const { t } = useTranslation("index");
   let schema = yup.object().shape({
     first_name: yup.string().required(t("First name is required")),
     last_name: yup.string().required(t("Last name is required")),
@@ -37,33 +37,12 @@ const TabAccount = () => {
       .string()
       .matches(phoneRegExp, t("Enter a valid phone number"))
       .required(t("Phone number is required")),
-    age: yup
-      .date()
-      .required(t("Birth date is required"))
-      .test("age", t("You must be at least 18 years old"), function (value) {
-        const today = new Date();
-        const birthDate = new Date(value);
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-          age--;
-        }
-        return age >= 18;
-      })
-      .test(
-        "max-age",
-        t("Age must not be more than 200 years"),
-        function (value) {
-          const today = new Date();
-          const birthDate = new Date(value);
-          let age = today.getFullYear() - birthDate.getFullYear();
-          const m = today.getMonth() - birthDate.getMonth();
-          if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-          }
-          return age <= 200;
-        }
-      ),
+      age: yup
+      .number()
+      .required(t("Age is required"))
+      .min(18, t("You must be at least 18 years old"))
+      .max(150, t("Age must not be more than 150 years")),
+    
     gender: yup
       .string()
       .required(t("Gender is required"))
@@ -87,42 +66,42 @@ const TabAccount = () => {
 
   const details = [
     {
-      head: t("first_name"),
+      head: t("first name"),
       type: "text",
-      placeholder: t("first_name"),
+      placeholder: t("first name"),
       register: "first_name",
       defaultValue: data?.first_name,
     },
     {
-      head: t("last_name"),
+      head: t("last name"),
       type: "text",
-      placeholder: t("last_name"),
+      placeholder: t("last name"),
       register: "last_name",
       defaultValue: data?.last_name,
     },
     {
-      head: t("email"),
+      head: t("Email"),
       type: "text",
-      placeholder: t("email"),
+      placeholder: t("Email"),
       register: "email",
       defaultValue: data?.email,
     },
     {
-      head: t("phone_number"),
+      head: t("Phone Number"),
       type: "text",
       InputProps: {
         startAdornment: (
-          <InputAdornment position="start">US (+1)</InputAdornment>
+          <InputAdornment position="start">IQ (+964)</InputAdornment>
         ),
       },
-      placeholder: t("phone_number"),
+      placeholder: t("Phone Number"),
       register: "phone_number",
       defaultValue: data?.phone_number,
     },
     {
-      head: t("age"),
-      type: "date",
-      placeholder: t("age"),
+      head: t("Age"),
+      type: "number",
+      placeholder: t("Age"),
       register: "age",
       defaultValue: calculateDefaultDate(data?.age),
     },
@@ -136,25 +115,25 @@ const TabAccount = () => {
   const onSubmit = (input) => {
     setLoading(true);
 
-    // Calculate age based on birth date
-    const today = new Date();
-    const birthDate = new Date(input.age);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
+    // // Calculate age based on birth date
+    // const today = new Date();
+    // const birthDate = new Date(input.age);
+    // let age = today.getFullYear() - birthDate.getFullYear();
+    // const m = today.getMonth() - birthDate.getMonth();
+    // if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    //   age--;
+    // }
 
-    // Add age to input object before sending to API
-    const inputData = {
-      ...input,
-      age: age,
-      name: "name",
-      user_id: data?.user_id,
-    };
+    // // Add age to input object before sending to API
+    // const inputData = {
+    //   ...input,
+    //   age: age,
+    //   name: "name",
+    //   user_id: data?.user_id,
+    // };
 
     _AuthApi
-      .update(data?.user_id, inputData)
+      .update(data?.user_id, input)
       .then((res) => {
         console.log("res", res);
         if (res?.data?.code == 200) {
@@ -177,7 +156,7 @@ const TabAccount = () => {
         {/* Account Details Card */}
         <Grid item xs={12}>
           <Card>
-            <CardHeader title="Profile Details" />
+            <CardHeader title={t("Profile Details")} />
             <form onSubmit={handleSubmit(onSubmit)}>
               <CardContent>
                 <Box onSubmit={handleSubmit(onSubmit)} component="form">

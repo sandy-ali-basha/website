@@ -9,7 +9,14 @@ import {
 } from "@mui/material";
 import React from "react";
 import logo from "assets/images/logo_white.png";
-import { Facebook, Instagram, LinkedIn } from "@mui/icons-material";
+import {
+  Facebook,
+  Instagram,
+  LinkedIn,
+  Mail,
+  Phone,
+  WhatsApp,
+} from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { _terms } from "api/terms/terms";
 import { useQuery } from "react-query";
@@ -51,17 +58,15 @@ function Footer() {
               gap: "10px",
             }}
           >
-            {!userData ? (
+            
               <Button
                 sx={{ color: "white", borderColor: "white" }}
                 variant="outlined"
-                onClick={() => navigate("/login")}
+                href="mailto:online@dawaaalhayat.com"
               >
-                {t("sign in")}
+                {t("contact")}
               </Button>
-            ) : (
-              ""
-            )}
+            
           </Grid>
 
           <Grid
@@ -98,21 +103,30 @@ function Footer() {
               href="https://web.facebook.com/Dawaaalhayatco?_rdc=1&_rdr"
               aria-label="facebook"
             >
-              <Facebook style={{ color: "white" }} size="large" />
+              <Facebook style={{ color: "white" }} />
             </IconButton>
             <IconButton
               href="https://www.instagram.com/dawaa_alhayat"
               aria-label="instagram"
             >
-              <Instagram style={{ color: "white" }} size="large" />
+              <Instagram style={{ color: "white" }} />
             </IconButton>
 
             <IconButton
               href="https://www.linkedin.com/company/dawaa-alhayat/"
               aria-label="linkedin"
             >
-              <LinkedIn style={{ color: "white" }} size="large" />
+              <LinkedIn style={{ color: "white" }} />
             </IconButton>
+            <IconButton
+              href="https://wa.me/+9647709445659"
+              aria-label="whatsapp"
+              target="_blank" // Opens in a new tab
+              rel="noopener noreferrer" // Enhances security when opening in a new tab
+            >
+              <WhatsApp style={{ color: "white" }} />
+            </IconButton>
+          
           </Grid>
           <Grid xs="12">
             <hr />
@@ -138,7 +152,7 @@ function Footer() {
                 sx={{
                   color: "#e9e9e9",
                   fontWeight: "300",
-                  width: { xs: "50%",md:'auto'},
+                  width: { xs: "50%", md: "auto" },
                 }}
                 variant={"text"}
                 key={index}
@@ -157,7 +171,7 @@ function Footer() {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              flexDirection:{xs:'column',md:'row'}
+              flexDirection: { xs: "column", md: "row" },
             }}
           >
             <Typography

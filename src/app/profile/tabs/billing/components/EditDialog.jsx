@@ -52,20 +52,15 @@ const EditDialog = ({ open, handleClose, id }) => {
     ["addresses", `id-${id}`],
     () =>
       _addresses.get(id).then((res) => {
-        return res?.data; // Make sure you're returning the res object
+        return res?.data;
       }),
     {}
   );
 
-  if (isLoading) {
-    console.log("Data is loading...");
-  } else {
-    console.log("Data received:", data);
-  } 
-
   useEffect(() => {
     setChecked(data?.data?.shipping_default);
-  }, [data?.data?.shipping_default, setChecked]);
+    setValue("first_name",data?.data?.first_name)
+  }, [data?.data?.first_name, data?.data?.shipping_default, setChecked, setValue]);
 
   return (
     <Dialog

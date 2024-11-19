@@ -101,13 +101,13 @@ export default function ProductCard({
                 />
               ) : (
                 <>
-                  {offer > 0 ? offer : Price} {t("currency")}
+                  {offer > 0 ? offer.toLocaleString() : Price.toLocaleString()} {t("currency")}
                 </>
               )}
             </Typography>
             {offer > 0 && (
               <Typography variant="body1" color="initial">
-                {Price} {t("currency")}
+                {Price.toLocaleString()} {t("currency")}
               </Typography>
             )}
           </Box>

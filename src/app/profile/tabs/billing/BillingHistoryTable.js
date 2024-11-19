@@ -33,6 +33,7 @@ import {
 import { _axios } from "interceptor/http-config";
 import Swal from "sweetalert2";
 import theme from "theme";
+import { useQueryClient } from "react-query";
 
 const LinkStyled = styled(Link)(({ theme }) => ({
   textDecoration: "none",
@@ -48,6 +49,8 @@ const BillingHistoryTable = () => {
   const { t } = useTranslation("index");
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const queryClient = useQueryClient();
+
   const handleCancel = (id) => {
     Swal.fire({
       title: t("Are you sure?"),
@@ -62,6 +65,8 @@ const BillingHistoryTable = () => {
         _axios
           .post(`/order/${id}/cancel`)
           .then((res) => {
+            // orders
+            queryClient.invalidateQueries(["orders"]);
             // Show a success message
             Swal.fire({
               icon: "success",
@@ -88,23 +93,29 @@ const BillingHistoryTable = () => {
   const getStatusDetails = (status) => {
     switch (status) {
       case "order_requested":
-        return { label: "Requested", color: "info", icon: <Pending /> };
+        return { label: t("Requested"), color: "info", icon: <Pending /> };
       case "order_processing":
-        return { label: "Processing", color: "primary", icon: <Sync /> };
+        return { label: t("Processing"), color: "primary", icon: <Sync /> };
       case "order_processed":
-        return { label: "Processed", color: "warning", icon: <CheckCircle /> };
+        return {
+          label: t("Processed"),
+          color: "warning",
+          icon: <CheckCircle />,
+        };
       case "order_under_delivery":
         return {
-          label: "Under Delivery",
+          label: t("Under Delivery"),
           color: "secondary",
           icon: <LocalShipping />,
         };
       case "order_delivered":
-        return { label: "Delivered", color: "success", icon: <Done /> };
+        return { label: t("Delivered"), color: "success", icon: <Done /> };
       case "order_canceled":
-        return { label: "Canceled", color: "error", icon: <Cancel /> };
+        return { label: t("Canceled"), color: "error", icon: <Cancel /> };
+      case "cancel_requested":
+        return { label: t("Cancel Requested"), color: "error", icon: <Sync /> };
       default:
-        return { label: "Unknown", color: "default", icon: null };
+        return { label: t("Unknown"), color: "default", icon: null };
     }
   };
 
@@ -177,7 +188,7 @@ const BillingHistoryTable = () => {
       headerName: t("total"),
       renderCell: ({ row }) => (
         <Typography sx={{ color: "text.secondary" }}>
-          {row.total} {t("currency")}
+          {row.total.toLocaleString()} {t("currency")}
         </Typography>
       ),
     },
@@ -211,8 +222,6 @@ const BillingHistoryTable = () => {
   const handleClose = () => {
     setOpen(false); // Close the modal
   };
-
-  const columns = defaultColumns(handleOrderClick);
 
   const filteredRows = (data?.data?.orders || []).filter((order) => {
     const matchesSearch = order.reference
@@ -256,7 +265,7 @@ const BillingHistoryTable = () => {
                         {order.lines.map((line) => line.description).join(", ")}
                       </Typography>
                       <Typography sx={{ color: "text.secondary" }}>
-                        {t("Total")}: {order.total} {t("currency")}
+                        {t("Total")}: {order.total.toLocaleString()} {t("currency")}
                       </Typography>
                       <Tooltip title={label}>
                         <Chip
@@ -305,7 +314,7 @@ const BillingHistoryTable = () => {
       {/* Order Review Modal */}
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
         <DialogTitle>
-          Order Review
+          {t("Order Review")}
           <IconButton
             aria-label="close"
             onClick={handleClose}

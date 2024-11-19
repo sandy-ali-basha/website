@@ -41,7 +41,7 @@ const TabPoints = () => {
         </>
       ) : (
         <>
-          <Typography variant="h1">
+          <Typography variant="h3">
             {" "}
             {t("pleas Login to view your points")}
           </Typography>{" "}
@@ -54,12 +54,7 @@ const TabPoints = () => {
         </Typography>
         <Typography variant="body1">
           {t(
-            "One Point: You will earn one point for every 1,460 Iraqi dinars (IQD) you spend on the Al Rayan website and app."
-          )}
-        </Typography>
-        <Typography variant="body1">
-          {t(
-            "50 Points: You will earn 50 points when you register an account."
+            "You will earn one point for every 1,500 IQD you spend on Dawaa Al Hayat's website."
           )}
         </Typography>
       </Box>
@@ -69,12 +64,7 @@ const TabPoints = () => {
         </Typography>
         <Typography variant="body1">
           {t(
-            "Redeeming Points: You can use the points in your reward balance to get discounts on your future purchases in our store."
-          )}
-        </Typography>
-        <Typography variant="body1">
-          {t(
-            "Discount Value: For every 100 points you redeem, you will get a discount of 1,460 IQD."
+            "You can use your points in your reward balance to receive discounts on your future purchases on our website. For every 100 points you redeem, you will receive a discount of 1,500 IQD"
           )}
         </Typography>
       </Box>

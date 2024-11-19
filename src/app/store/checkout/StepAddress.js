@@ -193,7 +193,7 @@ const StepAddress = ({
 
                           <Box sx={{ display: "flex" }}>
                             <Typography sx={{ color: "text.main" }}>
-                              {(item?.price/1000).toFixed(3)} {t("currency")}
+                              {item?.price.toLocaleString()} {t("currency")}
                             </Typography>
                           </Box>
                         </Grid>
@@ -266,7 +266,7 @@ const StepAddress = ({
                   >
                     <Typography>{t("Discount Amount")}</Typography>
                     <Typography variant="body1" sx={{ color: "primary.main" }}>
-                      {(cartData?.data?.sub_total_after_discount/1000).toFixed(3)} {t("currency")}
+                      {cartData?.data?.sub_total_after_discount.toLocaleString()} {t("currency")}
                     </Typography>
                   </Box>
                 )}
@@ -284,7 +284,7 @@ const StepAddress = ({
                   >
                     <Typography>{t("Sub Total After Points Used")}</Typography>
                     <Typography variant="body1" color="secondary">
-                      {(cartData?.data?.sub_total_after_points/1000).toFixed(3)} {t("currency")}
+                      {cartData?.data?.sub_total_after_points.toLocaleString()} {t("currency")}
                     </Typography>
                   </Box>
                 )}

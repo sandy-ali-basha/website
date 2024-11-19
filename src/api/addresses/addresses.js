@@ -31,6 +31,8 @@ export const _addresses = {
   },
   order: (data) => _axios.post("/order", data).then((res) => res.data),
 
+  UpdateOrder: ({orderId, orderData}) => _axios.post(`/order/my_orders/${orderId}/change-payment`, orderData).then((res) => res.data),
+
   delete: (id) => _axios.delete(`/addresses/${id}`).then((res) => res.data),
 
   update: ({ id, data }) =>

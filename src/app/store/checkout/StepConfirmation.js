@@ -74,11 +74,6 @@ const HorizontalList = styled(List)(({ theme }) => ({
 }));
 
 const StepConfirmation = ({ orderResponse }) => {
-  console.log("orderResponse", orderResponse);
-
-  const billingAddress = orderResponse.address.find(
-    (addr) => addr.type === "billing"
-  );
   const shippingAddress = orderResponse.address.find(
     (addr) => addr.type === "shipping"
   );
@@ -101,7 +96,7 @@ const StepConfirmation = ({ orderResponse }) => {
               {t("Thank You!")} 😇
             </Typography>
             <Typography sx={{ mb: 4, color: "text.secondary" }}>
-              Your order{" "}
+              {t("Your order")}{" "}
               <Box
                 href="/"
                 component={Link}
@@ -136,8 +131,36 @@ const StepConfirmation = ({ orderResponse }) => {
             ></Box>
           </Box>
         </Grid>
-
-        <Grid item xs={12}>
+        {/* Order Items */}
+        <Grid item xs={12} md={8} xl={9}>
+          <StyledList sx={{ boxShadow: 3 }}>
+            {items.slice(0, -1).map((item) => (
+              <ListItem key={item.id}>
+                <Grid container spacing={5}>
+                  <Grid item xs={12} sm={8}>
+                    <ListItemText primary={item.description} />
+                  </Grid>
+                  <Grid
+                    item
+                    sm={4}
+                    xs={12}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: { xs: "flex-start", sm: "flex-end" },
+                    }}
+                  >
+                    <Typography sx={{ color: "primary.main" }}>
+                      {item.unit_price.value.toLocaleString()}{" "}
+                      {t("currency")}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </ListItem>
+            ))}
+          </StyledList>
+        </Grid>
+        <Grid item md={6}>
           <HorizontalList>
             <ListItem
               sx={{ flexDirection: "column", alignItems: "flex-start" }}
@@ -160,9 +183,8 @@ const StepConfirmation = ({ orderResponse }) => {
               </Typography>
               <Typography>{shippingAddress.contact_phone}</Typography>
             </ListItem>
-
             {/* Billing Address */}
-            <ListItem
+            {/* <ListItem
               sx={{ flexDirection: "column", alignItems: "flex-start" }}
             >
               <Box sx={{ mb: 4, display: "flex", alignItems: "center" }}>
@@ -181,42 +203,12 @@ const StepConfirmation = ({ orderResponse }) => {
                 {billingAddress.country?.name}
               </Typography>
               <Typography>{billingAddress.contact_phone}</Typography>
-            </ListItem>
+            </ListItem> */}
           </HorizontalList>
         </Grid>
 
-        {/* Order Items */}
-        <Grid item xs={12} md={8} xl={9}>
-          <StyledList sx={{ boxShadow: 3 }}>
-            {items.map((item) => (
-              <ListItem key={item.id}>
-                <Grid container spacing={5}>
-                  <Grid item xs={12} sm={8}>
-                    <ListItemText primary={item.description} />
-                  </Grid>
-                  <Grid
-                    item
-                    sm={4}
-                    xs={12}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: { xs: "flex-start", sm: "flex-end" },
-                    }}
-                  >
-                    <Typography sx={{ color: "primary.main" }}>
-                      {(item.unit_price.value / 1000).toFixed(3)}{" "}
-                      {t("currency")}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </ListItem>
-            ))}
-          </StyledList>
-        </Grid>
-
         {/* Price Details */}
-        <Grid item xs={12} md={4} xl={3}>
+        <Grid item xs={12} md={6} xl={6}>
           <Box
             sx={{
               mb: 4,
@@ -240,12 +232,28 @@ const StepConfirmation = ({ orderResponse }) => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Typography>{t("sub total")}</Typography>
+                  <Typography>{t("Sub Total")}</Typography>
                   <Typography sx={{ color: "text.secondary" }}>
-                    {(orderResponse.sub_total / 1000).toFixed(3)}{" "}
+                    {orderResponse.sub_total.toLocaleString()}{" "}
                     {t("currency")}
                   </Typography>
                 </Box>
+                    <Box
+                      sx={{
+                        mb: 4,
+                        gap: 2,
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography>{t("Shipping")}</Typography>
+                      <Typography sx={{ color: "text.secondary" }}>
+                        {orderResponse.shipping_total.toLocaleString()}{" "}
+                        {t("currency")}
+                      </Typography>
+                    </Box>
                 <Box
                   sx={{
                     mb: 4,
@@ -258,7 +266,7 @@ const StepConfirmation = ({ orderResponse }) => {
                 >
                   <Typography>{t("Order Total")}</Typography>
                   <Typography sx={{ color: "text.secondary" }}>
-                    {(orderResponse.total / 1000).toFixed(3)} {t("currency")}
+                    {orderResponse.total.toLocaleString()} {t("currency")}
                   </Typography>
                 </Box>
                 {/* <Box
@@ -313,7 +321,7 @@ const StepConfirmation = ({ orderResponse }) => {
               >
                 <Typography sx={{ fontWeight: 500 }}>{t("Total")}</Typography>
                 <Typography sx={{ fontWeight: 500 }}>
-                  {(orderResponse.sub_total / 1000).toFixed(3)} {t("currency")}
+                {orderResponse.total.toLocaleString()} {t("currency")}
                 </Typography>
               </Box>
             </CardContent>

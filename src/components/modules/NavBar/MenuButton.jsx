@@ -13,10 +13,15 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-export default function MenuButton({ badgeNumber, icon, menuItems, tooltip }) {
+export default function MenuButton({
+  badgeNumber,
+  icon,
+  menuItems,
+  tooltip,
+  defaultValue,
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -51,13 +56,19 @@ export default function MenuButton({ badgeNumber, icon, menuItems, tooltip }) {
       >
         {menuItems.map((item, index) => (
           <MenuItem
+            sx={{
+              // eslint-disable-next-line eqeqeq
+              border: item.id == defaultValue ? "1px solid #218ea7" : "none",
+              borderRadius:1,
+              mx:1
+            }}
             key={index} // Alternatively, you can use a unique property like item.label or item.id if available
             onClick={() => {
               if (item.onClick) item.onClick();
               handleClose();
             }}
           >
-            {item.label}
+            {item.label} 
           </MenuItem>
         ))}
       </Menu>

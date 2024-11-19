@@ -46,23 +46,41 @@ function BrandImage({ item }) {
 
   return (
     <Grid xl="2" md="3" sm="4" xs="6" item mt="2">
-      <Link
-        to={"store/categories/brand/" + item.id}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {isLoading && (
-          <CardShimmer style={{ width: "100px", height: "100px" }} />
-        )}
+      {item?.havePage ? (
+        <Link
+          to={"store/categories/brand/" + item.id}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {isLoading && (
+            <CardShimmer style={{ width: "100px", height: "100px" }} />
+          )}
 
+          <img
+            lazyLoading
+            alt="logo"
+            style={{
+              width: "70%",
+              objectFit: "contain",
+              display: isLoading ? "none" : "block",
+            }}
+            src={
+              item?.images && item?.images.length > 0
+                ? item?.images[0]
+                : DefualtLogo
+            }
+            onLoad={handleImageLoad}
+          />
+        </Link>
+      ) : (
         <img
           lazyLoading
           alt="logo"
           style={{
-            width: "50%",
+            width: "70%",
             objectFit: "contain",
             display: isLoading ? "none" : "block",
           }}
@@ -73,7 +91,7 @@ function BrandImage({ item }) {
           }
           onLoad={handleImageLoad}
         />
-      </Link>
+      )}
     </Grid>
   );
 }
