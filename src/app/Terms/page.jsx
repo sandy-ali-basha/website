@@ -1,6 +1,6 @@
 import { Box, Chip, Container, Typography } from "@mui/material";
 import { _terms } from "api/terms/terms";
-import React from "react";
+import React, { useEffect } from "react";
 import { LoaderIcon } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
@@ -12,6 +12,10 @@ export default function Terms() {
     _terms.getTerm(params.id).then((res) => res?.data)
   );
   const { t } = useTranslation("index");
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+  
   return (
     <Container sx={{ mt: 20, textAlign: "center", my: 3 }}>
       {isLoading ? (

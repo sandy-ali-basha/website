@@ -41,3 +41,16 @@ export const useGetSlider = (id) => {
     isLoading,
   };
 };
+export const useGetFeatures = (id) => {
+  const { data, isLoading } = useQuery(
+    [`productFeatures/${id}`],
+    () => _show_product.features(id).then((res) => res),
+    {
+      keepPreviousData: true,
+    }
+  );
+  return {
+    data,
+    isLoading,
+  };
+};

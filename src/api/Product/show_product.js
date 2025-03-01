@@ -38,4 +38,9 @@ export const _show_product = {
       })
       .then((res) => res.data);
   },
+  features: async (id) => {
+    return _axios
+      .get(`products/${id}/images/products_features`)
+      .then((res) => res.data);
+  },
 };

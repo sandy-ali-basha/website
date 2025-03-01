@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCategory } from "./_hooks/useCategory";
 import Typography from "@mui/material/Typography";
 import { Container, Box, Grid, Drawer, IconButton } from "@mui/material";
@@ -23,6 +23,9 @@ export default function Category() {
     Attr,
     handleCheked,
   } = useCategory();
+       useEffect(() => {
+            window.scrollTo(0, 0);
+          }, []);
   // const SortFilter = () => {
   //   return (
   //     <FormControl
@@ -158,7 +161,7 @@ export default function Category() {
                       productName={item.name}
                       Price={item?.price}
                       productImage={item?.images[0]?.image_path}
-                      link={`/store/product/${item.id}`}
+                      link={`/store/product/${item.id}/${item.name}`}
                       loading={false}
                       purchasable={item?.purchasable === "always"}
                       offer={item?.compare_price}
@@ -176,7 +179,7 @@ export default function Category() {
                       productName={item.name}
                       Price={item?.price}
                       productImage={item?.images[0]?.image_path}
-                      link={`/store/product/${item.id}`}
+                      link={`/store/product/${item.id}/${item.name}`}
                       loading={false}
                       purchasable={item?.purchasable === "always"}
                       offer={item?.compare_price}

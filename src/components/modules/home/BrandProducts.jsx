@@ -45,7 +45,7 @@ export default function BrandProducts({ data }) {
                 productImage={item?.image?.image_path}
                 productName={item?.name}
                 Price={item?.price}
-                link={`/store/product/${item?.id}`}
+                link={`/store/product/${item?.id}/${item.name}`}
                 purchasable={item?.purchasable === "always"}
               />
             </SwiperSlide>

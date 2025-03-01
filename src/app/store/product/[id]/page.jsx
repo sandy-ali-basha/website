@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 // import { Container, Grid, Box } from "@mui/material";
 import {
   Box,
@@ -27,6 +27,7 @@ import { Shimmer } from "react-shimmer";
 import { useSlider } from "./hooks/useSlider";
 import { useAddToCart } from "hooks/cart/useAddToCart";
 import { PaidRounded } from "@mui/icons-material";
+import { useFeatures } from "./hooks/useFeatures";
 
 function Product() {
   const theme = useTheme();
@@ -35,8 +36,11 @@ function Product() {
   const { data, isLoading } = useProduct();
   const { data: Acc, isLoading: AccLoading } = useAccourdion();
   const { data: Slider, isLoading: SliderLoading } = useSlider();
+  const { data: features, isLoading: featuresLoading } = useFeatures();
   const { handleAddToCart, loadingCart } = useAddToCart();
-
+ useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
   const navigate = useNavigate();
   return (
     <Container sx={{ mt: 15 }}>
@@ -209,18 +213,17 @@ function Product() {
                 ))
               )}
             </Box>
-            
           </Box>
-            {data?.data?.points > 0 && (
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                sx={{ display: "inline-flex", gap: 1, my: 2 }}
-              >
-                <PaidRounded color="warning" /> {t("you earn")}{" "}
-                {data?.data?.points} {t("points by purchasing this product")}
-              </Typography>
-            )}
+          {data?.data?.points > 0 && (
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ display: "inline-flex", gap: 1, my: 2 }}
+            >
+              <PaidRounded color="warning" /> {t("you earn")}{" "}
+              {data?.data?.points} {t("points by purchasing this product")}
+            </Typography>
+          )}
 
           <Box sx={{ mx: 2 }}>
             {isLoading ? (
@@ -241,6 +244,7 @@ function Product() {
               </>
             )}
           </Box>
+
           <Box sx={{ px: 2 }}>
             {data?.data?.properties && isLoading ? (
               <CardShimmer />
@@ -257,6 +261,36 @@ function Product() {
                 />
               ))
             )}
+          </Box>
+
+          <Box sx={{ my: 5, px: 3 }}>
+            {featuresLoading && (
+              <Shimmer style={{ width: "100%", height: "100%" }} />
+            )}
+            <Swiper spaceBetween={10} slidesPerView={5}>
+              {features &&
+                features?.data?.map((item, idx) => (
+                  <SwiperSlide key={idx}>
+                    <Box
+                      sx={{
+                        width: "100%",
+                        borderRadius: 3,
+                      }}
+                    >
+                      <img
+                        src={item?.image_path}
+                        alt={`Slide `}
+                        style={{
+                          objectFit: "cover",
+                          borderRadius: "inherit",
+                          width: "100%",
+                        }}
+                        quality={100}
+                      />
+                    </Box>
+                  </SwiperSlide>
+                ))}
+            </Swiper>
           </Box>
           {data?.data?.purchasable === "always" && (
             <Box display="flex" alignItems="center" justifyContent="center">
@@ -280,9 +314,11 @@ function Product() {
           )}
         </Grid>
       </Grid>
+
       <Box sx={{ m: 3 }}>
         <AccordionUsage data={Acc} isLoading={AccLoading} />
       </Box>
+
       <Box sx={{ my: 5, px: 3 }}>
         {SliderLoading && <Shimmer style={{ width: "100%", height: "100%" }} />}
         <Swiper>

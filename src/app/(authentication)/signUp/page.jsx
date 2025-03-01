@@ -13,7 +13,7 @@ import {
   Visibility,
   VisibilityOff,
 } from "@mui/icons-material";
-import React from "react";
+import React, { useEffect } from "react";
 
 import img from "../../../assets/images/hero-image (3).jpg";
 import logo from "../../../assets/images/logo.png";
@@ -36,7 +36,9 @@ function SignUp() {
     onSubmit,
     t,
   } = useSignUp();
-
+ useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
   return (
     <Box
       sx={{

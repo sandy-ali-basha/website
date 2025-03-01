@@ -189,7 +189,7 @@ const StepCart = ({ handleNext }) => {
                       <Grid container sx={{ mx: 1 }}>
                         <Grid item xs={12} md={8}>
                           <Link
-                            to={`/store/product/${item?.id}`}
+                            to={`/store/product/${item?.id}/${item.name}`}
                             style={{ textDecoration: "none" }}
                           >
                             <ListItemText primary={item?.name} />

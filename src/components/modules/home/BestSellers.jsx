@@ -47,7 +47,7 @@ export default function BestSellers() {
                 productImage={item?.images[0]?.image_path}
                 productName={item?.name}
                 Price={item?.price}
-                link={`/store/product/${item?.id}`}
+                link={`/store/product/${item?.id}/${item.name}`}
                 purchasable={item?.purchasable === "always"}
                 offer={item?.compare_price}
                 id={item?.id}

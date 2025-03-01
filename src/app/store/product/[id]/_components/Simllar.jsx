@@ -22,7 +22,7 @@ export default function Simillar({ id }) {
                   productImage={item?.image}
                   productName={item?.name}
                   Price={item?.price?.value}
-                  link={`/store/product/${item?.id}`}
+                  link={`/store/product/${item?.id}/${item.name}`}
                   purchasable={item?.purchasable === "always"}
                   offer={item?.compare_price}
                 />

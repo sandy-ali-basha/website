@@ -152,7 +152,7 @@ function Footer() {
                 sx={{
                   color: "#e9e9e9",
                   fontWeight: "300",
-                  width: { xs: "50%", md: "auto" },
+                  width: { xs: "100%", md: "auto" },
                 }}
                 variant={"text"}
                 key={index}

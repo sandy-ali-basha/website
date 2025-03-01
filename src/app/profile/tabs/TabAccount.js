@@ -37,19 +37,20 @@ const TabAccount = () => {
       .string()
       .matches(phoneRegExp, t("Enter a valid phone number"))
       .required(t("Phone number is required")),
-      age: yup
+    age: yup
       .number()
       .required(t("Age is required"))
       .min(18, t("You must be at least 18 years old"))
       .max(150, t("Age must not be more than 150 years")),
-    
+
     gender: yup
       .string()
       .required(t("Gender is required"))
       .oneOf(["male", "female", "other"], t("Invalid gender selection")),
   });
 
-  const data = JSON.parse(localStorage.getItem("userData"));
+  const localStorageUserData = localStorage.getItem("userData");
+  const data = localStorageUserData ? JSON.parse(localStorageUserData) : null;
   const calculateDefaultDate = (age) => {
     if (!age) return ""; // Return an empty string or a default date if age is not provided
 
@@ -70,21 +71,21 @@ const TabAccount = () => {
       type: "text",
       placeholder: t("first name"),
       register: "first_name",
-      defaultValue: data?.first_name,
+      defaultValue: data ? data?.first_name : "",
     },
     {
       head: t("last name"),
       type: "text",
       placeholder: t("last name"),
       register: "last_name",
-      defaultValue: data?.last_name,
+      defaultValue: data ? data?.last_name : "",
     },
     {
       head: t("Email"),
       type: "text",
       placeholder: t("Email"),
       register: "email",
-      defaultValue: data?.email,
+      defaultValue: data ? data?.email : "",
     },
     {
       head: t("Phone Number"),
@@ -96,14 +97,14 @@ const TabAccount = () => {
       },
       placeholder: t("Phone Number"),
       register: "phone_number",
-      defaultValue: data?.phone_number,
+      defaultValue: data ? data?.phone_number : "",
     },
     {
       head: t("Age"),
       type: "number",
       placeholder: t("Age"),
       register: "age",
-      defaultValue: calculateDefaultDate(data?.age),
+      defaultValue: data ? calculateDefaultDate(data?.age) : "",
     },
   ];
 
@@ -125,18 +126,15 @@ const TabAccount = () => {
     // }
 
     // // Add age to input object before sending to API
-    // const inputData = {
-    //   ...input,
-    //   age: age,
-    //   name: "name",
-    //   user_id: data?.user_id,
-    // };
+    const inputData = {
+      ...input,
+      user_id: data?.user_id,
+    };
 
     _AuthApi
-      .update(data?.user_id, input)
+      .update(data?.user_id, inputData)
       .then((res) => {
-        console.log("res", res);
-        if (res?.data?.code == 200) {
+        if (res?.data?.code === 200) {
           setMessage("updated succesfully");
         } else {
           setError(res?.error || "An unexpected error occurred");

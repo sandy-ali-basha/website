@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import { Container, Divider, Box, Grid } from "@mui/material";
 import img from "assets/images/Special Offers.png";
@@ -7,9 +7,11 @@ import { useOffersPage } from "./_hooks/useOffersPage";
 
 export default function Offers() {
   const { data, isLoading, isMobile, t } = useOffersPage();
-
+ useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
   return (
-    <Container sx={{ pt: 15,minHeight:'100vh' }}>
+    <Container sx={{ pt: 15, minHeight: "100vh" }}>
       <img src={img} style={{ width: "100%" }} alt="img" />
       <Typography
         variant="h3"
@@ -43,7 +45,7 @@ export default function Offers() {
                   productName={item.name}
                   Price={item?.price}
                   productImage={item?.images[0]?.image_path}
-                  link={`/store/product/${item.id}`}
+                  link={`/store/product/${item.id}/${item.name}`}
                   loading={false}
                   purchasable={item?.purchasable === "always"}
                   offer={item?.compare_price}

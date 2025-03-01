@@ -152,7 +152,7 @@ function App() {
           <Route path="/store" element={<StoreCategoryPage />} />
           <Route path="/store/checkout" element={<StoreCheckoutPage />} />
           <Route path="/store/offers" element={<StoreOffersPage />} />
-          <Route path="/store/product/:id" element={<StoreProductPage />} />
+          <Route path="/store/product/:id/:name" element={<StoreProductPage />} />
           <Route path="/terms/:id" element={<TermsPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />

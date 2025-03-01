@@ -1,6 +1,6 @@
 import { Container, Typography } from "@mui/material";
 
-import React from "react";
+import React, { useEffect } from "react";
 import BlogCard from "./_components/BlogCard";
 import { useBlogs } from "hooks/blog/useBlog";
 import { useTranslation } from "react-i18next";
@@ -8,7 +8,9 @@ import { useTranslation } from "react-i18next";
 export default function Blog() {
   const { data } = useBlogs();
   const { t } = useTranslation("index");
-
+ useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
   return (
     <Container sx={{ mt: 20 }}>
       <Typography

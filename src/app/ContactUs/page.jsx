@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
@@ -39,7 +39,9 @@ export default function ContactUs() {
   const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
   const { mutate } = useMutation((data) => createPost(data));
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   async function createPost(data) {
     setLoading(true);
     try {
