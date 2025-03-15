@@ -1,5 +1,5 @@
 import { Box, Container, Typography, Grid } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import careerimg from "assets/images/careers.webp";
 import careerimg1 from "assets/images/career2.webp";
 import careerimg3 from "assets/images/career3.webp";
@@ -14,9 +14,9 @@ export default function Careers() {
   const { data, isLoading } = useCareers();
   const { t } = useTranslation("index");
 
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Box sx={{ mt: 10 }}>
@@ -100,7 +100,7 @@ export default function Careers() {
             <Typography variant="h5" color="initial" sx={{ mt: 2 }}>
               {t("What we offer our employees:")}
             </Typography>
-            <Typography variant="h6" color="initial" sx={{ mt: 2 }}>
+            <Typography variant="h5" color="initial" sx={{ mt: 2 }}>
               {t("A")}
               <span style={{ color: "#5d2c8f" }}> {t("Positive")}</span>{" "}
               {t("and inclusive work environment. We believe in")}{" "}

@@ -101,7 +101,8 @@ export default function ProductCard({
                 />
               ) : (
                 <>
-                  {offer > 0 ? offer.toLocaleString() : Price.toLocaleString()} {t("currency")}
+                  {offer > 0 ? offer.toLocaleString() : Price.toLocaleString()}{" "}
+                  {t("currency")}
                 </>
               )}
             </Typography>

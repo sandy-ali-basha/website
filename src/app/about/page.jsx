@@ -29,6 +29,7 @@ export default function About() {
         background: `url(${bg}) no-repeat`,
         backgroundPosition: "65vw 30%",
         backgroundSize: { md: "50%", xs: "110%" },
+        mt: { md: "0px", sm: "5vh", xs: "6vh" },
       }}
     >
       <img src={image} alt="Hero" style={{ width: "100%" }} />
@@ -42,15 +43,20 @@ export default function About() {
             flexDirection: "column",
           }}
         >
+        <Box sx={{marginTop: { md: "-40vh", sm: "-10vh" },}}>
           <img
             src={logo}
             alt="dawaa alhayat logo"
-            style={{ width: "15vw", marginTop: "-40vh", mb: "10vh" }}
+            style={{
+              width: "15vw",
+              mb: "10vh",
+            }}
           />
-          <Typography variant="h3" sx={{ textAlign: "center", mt: 3 }}>
+        </Box>
+          <Typography variant="h4" sx={{ textAlign: "center", mt: 3 }}>
             {t("Welcome to Dawaa Al Hayat")}
           </Typography>
-          <Box sx={{ width: "75vw", mx: "auto", my: 5 }}>
+          <Box sx={{ width: { md: "75vw", sm: "95vw" }, mx: "auto", my: 5 }}>
             <Typography variant="body1" sx={{ mt: 1, textAlign: "center" }}>
               {t(
                 "Dawaa Al Hayat was born in 2012 as an entrepreneurial project of its founders to invest their experience in the pharmaceutical distribution sector to reach a premium position in the Iraqi market."
@@ -165,7 +171,7 @@ export default function About() {
                   variant="h3"
                   sx={{
                     textAlign: "center",
-                    fontWeight: "Typography ",
+                    fontWeight:'400'
                   }}
                 >
                   {t("Our culture")}
@@ -177,6 +183,7 @@ export default function About() {
                     mt: 2,
                     width: "90%",
                     mx: "auto",
+                    fontWeight:'400'
                   }}
                 >
                   {t(

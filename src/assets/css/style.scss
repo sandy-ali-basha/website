@@ -46,6 +46,9 @@
     &:nth-child(5) {
       right: 210px;
       top: 400px;
+      @media only screen and (max-width: 600px) {
+        display: none;
+      }
     }
     &:nth-child(6) {
       left: 80px;

@@ -18,7 +18,7 @@ export default function BestSellers() {
           {t("Our Latest Products")}
         </Typography>
         <Swiper
-          spaceBetween={20}
+          spaceBetween={5}
           autoplay={{
             delay: 30000,
             disableOnInteraction: false,
@@ -29,7 +29,7 @@ export default function BestSellers() {
           breakpoints={{
             640: {
               slidesPerView: 2,
-              spaceBetween: 20,
+              spaceBetween:5,
             },
             820: {
               slidesPerView: 3,
@@ -42,7 +42,7 @@ export default function BestSellers() {
           }}
         >
           {data?.data?.products?.slice(-10).map((item, idx) => (
-            <SwiperSlide key={idx} style={{ paddingBottom: "10px" }}>
+            <SwiperSlide key={idx} style={{ paddingBottom: "10px" ,height:'auto'}}>
               <ProductCard
                 productImage={item?.images[0]?.image_path}
                 productName={item?.name}
