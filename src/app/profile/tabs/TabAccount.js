@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
@@ -19,6 +19,8 @@ import { Alert, Button, TextField } from "@mui/material";
 import DeleteAcount from "./components/DeleteAcount";
 import { _AuthApi } from "api/auth";
 import GenderSelect from "components/customs/GenderSelect";
+import { useQuery } from "react-query";
+import Loader from "components/modules/Loader";
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/;
@@ -50,7 +52,10 @@ const TabAccount = () => {
   });
 
   const localStorageUserData = localStorage.getItem("userData");
-  const data = localStorageUserData ? JSON.parse(localStorageUserData) : null;
+  const loginData = localStorageUserData
+    ? JSON.parse(localStorageUserData)
+    : null;
+
   const calculateDefaultDate = (age) => {
     if (!age) return ""; // Return an empty string or a default date if age is not provided
 
@@ -65,27 +70,30 @@ const TabAccount = () => {
     return defaultDate.toISOString().split("T")[0]; // Format as YYYY-MM-DD
   };
 
+  const { data, refetch, isLoading } = useQuery({
+    queryKey: ["profile", loginData?.id],
+    queryFn: () => _AuthApi.getProfile(loginData?.id),
+    enabled: !!loginData?.id, // ensures query runs only when loginData?.id is available
+  });
+
   const details = [
     {
       head: t("first name"),
       type: "text",
       placeholder: t("first name"),
       register: "first_name",
-      defaultValue: data ? data?.first_name : "",
     },
     {
       head: t("last name"),
       type: "text",
       placeholder: t("last name"),
       register: "last_name",
-      defaultValue: data ? data?.last_name : "",
     },
     {
       head: t("Email"),
       type: "text",
       placeholder: t("Email"),
       register: "email",
-      defaultValue: data ? data?.email : "",
     },
     {
       head: t("Phone Number"),
@@ -97,14 +105,12 @@ const TabAccount = () => {
       },
       placeholder: t("Phone Number"),
       register: "phone_number",
-      defaultValue: data ? data?.phone_number : "",
     },
     {
       head: t("Age"),
       type: "number",
       placeholder: t("Age"),
       register: "age",
-      defaultValue: data ? calculateDefaultDate(data?.age) : "",
     },
   ];
 
@@ -116,26 +122,17 @@ const TabAccount = () => {
   const onSubmit = (input) => {
     setLoading(true);
 
-    // // Calculate age based on birth date
-    // const today = new Date();
-    // const birthDate = new Date(input.age);
-    // let age = today.getFullYear() - birthDate.getFullYear();
-    // const m = today.getMonth() - birthDate.getMonth();
-    // if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-    //   age--;
-    // }
-
-    // // Add age to input object before sending to API
     const inputData = {
       ...input,
-      user_id: data?.user_id,
+      user_id: data?.data?.user_id,
     };
 
     _AuthApi
-      .update(data?.user_id, inputData)
+      .update(data?.data?.user_id, inputData)
       .then((res) => {
         if (res?.data?.code === 200) {
           setMessage("updated succesfully");
+          refetch();
         } else {
           setError(res?.error || "An unexpected error occurred");
         }
@@ -145,72 +142,93 @@ const TabAccount = () => {
   };
 
   const formOptions = { resolver: yupResolver(schema) };
-  const { register, handleSubmit, formState, control } = useForm(formOptions);
+  const { register, handleSubmit, formState, reset } = useForm(formOptions);
   const { errors } = formState;
 
-  return (
-    <>
-      <Grid container spacing={6}>
-        {/* Account Details Card */}
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader title={t("Profile Details")} />
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <CardContent>
-                <Box onSubmit={handleSubmit(onSubmit)} component="form">
-                  <Grid container spacing={2}>
-                    {details.map((item, index) => (
-                      <Grid item xs={6} key={index}>
-                        <TextField
-                          fullWidth
-                          size="small"
-                          type={
-                            item.type === "password"
-                              ? showPassword
-                                ? "text"
-                                : "password"
-                              : item.type
-                          }
-                          placeholder={item.placeholder}
-                          label={item.placeholder}
-                          name={item.register}
-                          {...register(item.register)}
-                          error={!!errors[item.register]?.message}
-                          helperText={errors[item.register]?.message || ""}
-                          defaultValue={item.defaultValue}
-                          InputProps={item.InputProps}
+  useEffect(() => {
+    if (data?.data) {
+      const profile = data.data;
+      reset({
+        first_name: profile.first_name || "",
+        last_name: profile.last_name || "",
+        email: profile.email || "",
+        phone_number: profile.phone_number || "",
+        age: profile.age || "", // or convert if needed
+        gender: profile.gender || "",
+      });
+    }
+  }, [data, reset]);
+
+  if (isLoading)
+    return (
+      <Card sx={{ p: 5 }}>
+        <Loader />
+      </Card>
+    );
+  else
+    return (
+      <>
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <Card>
+              <CardHeader title={t("Profile Details")} />
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <CardContent>
+                  <Box onSubmit={handleSubmit(onSubmit)} component="form">
+                    <Grid container spacing={2}>
+                      {data &&
+                        details.map((item, index) => (
+                          <Grid item xs={6} key={index}>
+                            <TextField
+                              fullWidth
+                              size="small"
+                              type={
+                                item.type === "password"
+                                  ? showPassword
+                                    ? "text"
+                                    : "password"
+                                  : item.type
+                              }
+                              placeholder={item.placeholder}
+                              label={item.placeholder}
+                              name={item.register}
+                              {...register(item.register)}
+                              error={!!errors[item.register]?.message}
+                              helperText={errors[item.register]?.message || ""}
+                              defaultValue={item.defaultValue}
+                              InputProps={item.InputProps}
+                            />
+                          </Grid>
+                        ))}
+                      <Grid xs={6} item>
+                        <GenderSelect
+                          defaultValue={data?.gender}
+                          register={register}
+                          errors={errors}
                         />
                       </Grid>
-                    ))}
-                    <Grid xs={6} item>
-                      <GenderSelect
-                        defaultValue={data?.gender}
-                        register={register}
-                        errors={errors}
-                      />
                     </Grid>
+                  </Box>
+                  <Box>
+                    {Message && (
+                      <Alert sx={{ mt: 1 }} severity="success">
+                        {Message}
+                      </Alert>
+                    )}
+                  </Box>
+                  <Grid item xs={12} sx={{ pt: 4 }}>
+                    <Button type="submit" variant="contained" sx={{ mr: 4 }}>
+                      {t("Save Changes")}
+                    </Button>
                   </Grid>
-                </Box>
-                <Box>
-                  {Message && (
-                    <Alert sx={{ mt: 1 }} severity="success">
-                      {Message}
-                    </Alert>
-                  )}
-                </Box>
-                <Grid item xs={12} sx={{ pt: 4 }}>
-                  <Button type="submit" variant="contained" sx={{ mr: 4 }}>
-                    {t("Save Changes")}
-                  </Button>
-                </Grid>
-              </CardContent>
-            </form>
-          </Card>
+                </CardContent>
+              </form>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
-      <DeleteAcount />
-    </>
-  );
+        <DeleteAcount />
+      </>
+    );
 };
 
 export default TabAccount;

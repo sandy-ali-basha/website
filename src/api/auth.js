@@ -10,6 +10,9 @@ export const _AuthApi = {
   getUserData: (data) => {
     return _axios.post("/auth/google/callback", data).then((res) => res.data);
   },
+  getProfile: (id) => {
+    return _axios.get(`/customers/${id}`).then((res) => res.data);
+  },
   
 
   register: (data) => {

@@ -16,14 +16,14 @@ import { Alert, TextField } from "@mui/material";
 import { _AuthApi } from "api/auth";
 
 const defaultValues = {
-  newPassword: "",
-  currentPassword: "",
-  confirmNewPassword: "",
+  password: "",
+  current_password: "",
+  password_confirmation: "",
 };
 
 const schema = yup.object().shape({
-  currentPassword: yup.string().min(8).required("Current password is required"),
-  newPassword: yup
+  current_password: yup.string().min(8).required("Current password is required"),
+  password: yup
     .string()
     .min(8, "Password must be at least 8 characters")
     .matches(
@@ -31,17 +31,17 @@ const schema = yup.object().shape({
       "Must contain 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character"
     )
     .required("New password is required"),
-  confirmNewPassword: yup
+  password_confirmation: yup
     .string()
-    .oneOf([yup.ref("newPassword")], "Passwords must match")
+    .oneOf([yup.ref("password")], "Passwords must match")
     .required("Confirm new password is required"),
 });
 
 const ChangePasswordCard = () => {
   const [values, setValues] = useState({
-    showNewPassword: false,
-    showCurrentPassword: false,
-    showConfirmNewPassword: false,
+    showpassword: false,
+    showcurrent_password: false,
+    showpassword_confirmation: false,
   });
   const [Message, setMessage] = useState();
   const [Error, setError] = useState(false);
@@ -57,24 +57,24 @@ const ChangePasswordCard = () => {
     resolver: yupResolver(schema),
   });
 
-  const handleClickShowCurrentPassword = () => {
+  const handleClickShowcurrent_password = () => {
     setValues((prevState) => ({
       ...prevState,
-      showCurrentPassword: !prevState.showCurrentPassword,
+      showcurrent_password: !prevState.showcurrent_password,
     }));
   };
 
-  const handleClickShowNewPassword = () => {
+  const handleClickShowpassword = () => {
     setValues((prevState) => ({
       ...prevState,
-      showNewPassword: !prevState.showNewPassword,
+      showpassword: !prevState.showpassword,
     }));
   };
 
-  const handleClickShowConfirmNewPassword = () => {
+  const handleClickShowpassword_confirmation = () => {
     setValues((prevState) => ({
       ...prevState,
-      showConfirmNewPassword: !prevState.showConfirmNewPassword,
+      showpassword_confirmation: !prevState.showpassword_confirmation,
     }));
   };
   const onPasswordFormSubmit = (data) => {
@@ -84,7 +84,7 @@ const ChangePasswordCard = () => {
       .passEdit(data)
       .then((res) => {
         console.log("res", res);
-        if (res?.data?.code == 200) {
+        if (res?.data?.code === 200) {
           setMessage("Password Changed Successfully");
           reset(defaultValues);
         } else {
@@ -102,7 +102,7 @@ const ChangePasswordCard = () => {
           <Grid container spacing={5}>
             <Grid item xs={12} sm={6}>
               <Controller
-                name="currentPassword"
+                name="current_password"
                 control={control}
                 render={({ field: { value, onChange } }) => (
                   <TextField
@@ -112,21 +112,21 @@ const ChangePasswordCard = () => {
                     label="Current Password"
                     placeholder="············"
                     id="input-current-password"
-                    error={Boolean(errors.currentPassword)}
-                    type={values.showCurrentPassword ? "text" : "password"}
-                    helperText={errors.currentPassword?.message}
+                    error={Boolean(errors.current_password)}
+                    type={values.showcurrent_password ? "text" : "password"}
+                    helperText={errors.current_password?.message}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
                             edge="end"
                             onMouseDown={(e) => e.preventDefault()}
-                            onClick={handleClickShowCurrentPassword}
+                            onClick={handleClickShowcurrent_password}
                           >
                             <Icon
                               fontSize="1.25rem"
                               icon={
-                                values.showCurrentPassword
+                                values.showcurrent_password
                                   ? "tabler:eye"
                                   : "tabler:eye-off"
                               }
@@ -143,7 +143,7 @@ const ChangePasswordCard = () => {
           <Grid container spacing={5} sx={{ mt: 0 }}>
             <Grid item xs={12} sm={6}>
               <Controller
-                name="newPassword"
+                name="password"
                 control={control}
                 render={({ field: { value, onChange } }) => (
                   <TextField
@@ -153,21 +153,21 @@ const ChangePasswordCard = () => {
                     label="New Password"
                     id="input-new-password"
                     placeholder="············"
-                    error={Boolean(errors.newPassword)}
-                    type={values.showNewPassword ? "text" : "password"}
-                    helperText={errors.newPassword?.message}
+                    error={Boolean(errors.password)}
+                    type={values.showpassword ? "text" : "password"}
+                    helperText={errors.password?.message}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
                             edge="end"
-                            onClick={handleClickShowNewPassword}
+                            onClick={handleClickShowpassword}
                             onMouseDown={(e) => e.preventDefault()}
                           >
                             <Icon
                               fontSize="1.25rem"
                               icon={
-                                values.showNewPassword
+                                values.showpassword
                                   ? "tabler:eye"
                                   : "tabler:eye-off"
                               }
@@ -182,7 +182,7 @@ const ChangePasswordCard = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Controller
-                name="confirmNewPassword"
+                name="password_confirmation"
                 control={control}
                 render={({ field: { value, onChange } }) => (
                   <TextField
@@ -192,21 +192,21 @@ const ChangePasswordCard = () => {
                     placeholder="············"
                     label="Confirm New Password"
                     id="input-confirm-new-password"
-                    error={Boolean(errors.confirmNewPassword)}
-                    type={values.showConfirmNewPassword ? "text" : "password"}
-                    helperText={errors.confirmNewPassword?.message}
+                    error={Boolean(errors.password_confirmation)}
+                    type={values.showpassword_confirmation ? "text" : "password"}
+                    helperText={errors.password_confirmation?.message}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
                             edge="end"
                             onMouseDown={(e) => e.preventDefault()}
-                            onClick={handleClickShowConfirmNewPassword}
+                            onClick={handleClickShowpassword_confirmation}
                           >
                             <Icon
                               fontSize="1.25rem"
                               icon={
-                                values.showConfirmNewPassword
+                                values.showpassword_confirmation
                                   ? "tabler:eye"
                                   : "tabler:eye-off"
                               }
