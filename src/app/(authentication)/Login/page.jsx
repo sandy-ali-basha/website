@@ -38,7 +38,7 @@ export default function Login() {
         minHeight: "100vh",
       }}
     >
-      <img
+      {/* <img
         src={img}
         alt="gummie"
         objectFit="cover"
@@ -51,7 +51,7 @@ export default function Login() {
           height: "100%",
           zIndex: "-1",
         }}
-      />
+      /> */}
       <Box
         sx={{
           width: { md: "35%", sm: "80%" },

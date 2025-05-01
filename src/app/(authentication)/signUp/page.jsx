@@ -50,7 +50,7 @@ function SignUp() {
         py: 5,
       }}
     >
-      <img
+      {/* <img
         src={img}
         alt="gummie"
         objectFit="cover"
@@ -63,7 +63,7 @@ function SignUp() {
           height: "100%",
           zIndex: "-1",
         }}
-      />
+      /> */}
       <Box
         sx={{
           width: { md: "35%", sm: "80%" },

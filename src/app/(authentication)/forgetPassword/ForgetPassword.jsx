@@ -63,7 +63,7 @@ const ForgetPassword = () => {
           pb: 7,
         }}
       >
-        <img
+        {/* <img
           src={img}
           alt="gummie"
           style={{
@@ -75,7 +75,7 @@ const ForgetPassword = () => {
             zIndex: "-1",
             objectFit: "cover",
           }}
-        />
+        /> */}
         <Box
           sx={{
             width: { md: "35%", sm: "80%" },
@@ -132,7 +132,9 @@ const ForgetPassword = () => {
               variant="contained"
               sx={{ mt: 2 }}
             >
-              {timer > 0 ? `${t("Send Again in")} ${timer}s` : t("Send Reset Email")}
+              {timer > 0
+                ? `${t("Send Again in")} ${timer}s`
+                : t("Send Reset Email")}
             </Button>
           </Box>
         </Box>
