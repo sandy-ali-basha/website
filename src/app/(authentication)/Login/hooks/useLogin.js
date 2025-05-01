@@ -35,6 +35,8 @@ export const useLogin = () => {
         if (res?.data?.code === 200) {
           _AuthApi.storeToken(res?.data?.data?.token);
           localStorage.setItem("userData", JSON.stringify(res.data.data));
+          if (res?.data?.data?.cart_id)
+            localStorage.setItem("cart_id", res?.data?.data?.cart_id);
           navigate("/");
         } else {
           setError(
