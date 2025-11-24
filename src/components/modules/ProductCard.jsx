@@ -91,7 +91,7 @@ export default function ProductCard({
               }}
               color={offer ? "text.secondary" : "initial"}
             >
-              {loading ? (
+              {/* {loading ? (
                 <CardShimmer
                   style={{
                     width: "100%",
@@ -104,13 +104,13 @@ export default function ProductCard({
                   {offer > 0 ? offer.toLocaleString() : Price.toLocaleString()}{" "}
                   {t("currency")}
                 </>
-              )}
+              )} */}
             </Typography>
-            {offer > 0 && (
+            {/* {offer > 0 && (
               <Typography variant="body1" color="initial">
                 {Price.toLocaleString()} {t("currency")}
               </Typography>
-            )}
+            )} */}
           </Box>
 
           {purchasable && !loading && (

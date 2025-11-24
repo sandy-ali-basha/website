@@ -42,9 +42,9 @@ const Checkout = () => {
   const { t } = useTranslation("index");
   const theme = useTheme();
   const [value] = ValueStore((state) => [state.value]);
- useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const steps = [
     {
       title: t("Cart"),
@@ -92,12 +92,12 @@ const Checkout = () => {
   // Main function to handle the order and initiate polling
   const handleNext = async () => {
     if (activeStep === 2) {
-      console.log("order")
+      console.log("order");
       // StepAddress is active
       const addressId = selectedBasicRadio;
       const userData = JSON.parse(localStorage.getItem("userData"));
       const cart_id = JSON.parse(localStorage.getItem("cart_id"));
-  
+
       if (!orderId) {
         const orderData = {
           address_id: addressId,
@@ -123,7 +123,7 @@ const Checkout = () => {
                 imageAlt: "QR Code",
                 allowEscapeKey: false, // Prevents closing by pressing Escape
                 allowEnterKey: false, // Prevents closing by pressing Enter
-                showCloseButton: true, 
+                showCloseButton: true,
                 didOpen: () => {
                   setOpendFIB(true);
                 },
@@ -157,7 +157,7 @@ const Checkout = () => {
           }
         });
       } else {
-        console.log("UpdateOrder")
+        console.log("UpdateOrder");
         const orderData = {
           payment_method: value,
         };
@@ -176,7 +176,7 @@ const Checkout = () => {
                 imageAlt: "QR Code",
                 allowEscapeKey: false, // Prevents closing by pressing Escape
                 allowEnterKey: false, // Prevents closing by pressing Enter
-                showCloseButton: true, 
+                showCloseButton: true,
                 didOpen: () => {
                   setOpendFIB(true);
                 },

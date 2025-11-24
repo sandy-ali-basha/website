@@ -2,30 +2,32 @@ import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useAttributes } from "hooks/attributes/useAttributes";
 import { useProducts } from "hooks/Product/useProducts";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 export const useCategory = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [minValue, setMinValue] = useState();
-  const [maxValue, setMaxValue] = useState();
+  const [minValue, setMinValue] = useState("");
+  const [maxValue, setMaxValue] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sort, setSort] = useState("");
+  const [selectedAttributes, setSelectedAttributes] = useState({});
+  console.log("selectedAttributes", selectedAttributes);
   const { t } = useTranslation("index");
   const params = useParams();
   const { data: Attr, isLoading: AttrLoading } = useAttributes();
-  const [attr, setAttr] = useState();
-  const [attValue, setAttrValue] = useState();
 
-  const body = {
-    filters: {
-      [attr]: attValue,
-    },
-    min_price: minValue,
-    max_price: maxValue,
-  };
+  // 🧮 build filters body dynamically
+  const body = useMemo(() => {
+    return {
+      filters: selectedAttributes,
+      min_price: minValue || undefined,
+      max_price: maxValue || undefined,
+    };
+  }, [selectedAttributes, minValue, maxValue]);
 
   const { data, isLoading } = useProducts(body);
 
@@ -33,23 +35,33 @@ export const useCategory = () => {
     return `${value}$`;
   }
 
-  const handleMinChange = (event) => {
-    setMinValue(event.target.value);
+  const handleMinChange = (e) => setMinValue(e.target.value);
+  const handleMaxChange = (e) => setMaxValue(e.target.value);
+
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+
+  // ✅ allow multiple values per attribute
+  const handleCheked = (attrId, attrValue) => {
+    setSelectedAttributes((prev) => {
+      const currentValues = prev[attrId] || [];
+      const exists = currentValues.includes(attrValue);
+      return {
+        ...prev,
+        [attrId]: exists
+          ? currentValues.filter((v) => v !== attrValue)
+          : [...currentValues, attrValue],
+      };
+    });
   };
 
-  const handleMaxChange = (event) => {
-    setMaxValue(event.target.value);
-  };
-  const handleSortChange = (event) => {
-    setSort(event.target.value);
-  };
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-  const handleCheked = (attr, attrValue) => {
-    setAttrValue(attrValue);
-    setAttr(attr);
+  // ✅ Reset everything
+  const ClearFilter = () => {
+    setMinValue("");
+    setMaxValue("");
+    setSearchResults([]);
+    setSort("");
+    setSelectedAttributes({});
+    setMobileOpen(false);
   };
 
   return {
@@ -62,7 +74,6 @@ export const useCategory = () => {
     maxValue,
     handleMinChange,
     handleMaxChange,
-    handleSortChange,
     handleDrawerToggle,
     params,
     t,
@@ -70,6 +81,9 @@ export const useCategory = () => {
     Attr,
     AttrLoading,
     handleCheked,
-    attr,
+    searchResults,
+    setSearchResults,
+    ClearFilter,
+    selectedAttributes,
   };
 };

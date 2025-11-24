@@ -27,3 +27,36 @@ export const useHomeSlider = () => {
     isLoading,
   };
 };
+export const useSocialMedia = () => {
+  const { data, isLoading } = useQuery(
+    ["socialMedia"],
+    () => _Home.social().then((res) => res?.data),
+    {
+      keepPreviousData: true,
+    }
+  );
+  return {
+    data,
+    isLoading,
+  };
+};
+
+export const useHomeSection = (id) => {
+
+  const { data, isLoading, refetch } = useQuery(
+    ["getHomeSection", id], // 👈 include id in key
+    () =>
+      _Home.getSection({
+        id,      // 👈 pass id to API
+      }).then((res) => res),
+    {
+      enabled: !!id, // query runs only when id exists
+    }
+  );
+
+  return {
+    data,
+    isLoading,
+    refetch,
+  };
+};

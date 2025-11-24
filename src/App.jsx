@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Routes, Route, Outlet } from "react-router-dom";
 import "./assets/css/style.scss";
@@ -40,8 +40,9 @@ function App() {
   useEffect(() => {
     HttpRequestInterceptor();
     window.scrollTo(0, 0);
-    // localStorage.setItem("i18nextLng", "en");
+    localStorage.setItem("i18nextLng", "en");
   }, []);
+  const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
 
   return (
     <ThemeProviderWrapper>
@@ -76,8 +77,10 @@ function App() {
           content="Explore a wide range of quality medical products at Dawaa Alhayat."
         />
       </Helmet>
-      <ChooseCityDialog />
+
+      <ChooseCityDialog open={open} setOpen={setOpen} />
       <CookieConsent />
+
       <Routes>
         <Route
           path="/login"
@@ -152,7 +155,10 @@ function App() {
           <Route path="/store" element={<StoreCategoryPage />} />
           <Route path="/store/checkout" element={<StoreCheckoutPage />} />
           <Route path="/store/offers" element={<StoreOffersPage />} />
-          <Route path="/store/product/:id/:name" element={<StoreProductPage />} />
+          <Route
+            path="/store/product/:id/:name"
+            element={<StoreProductPage />}
+          />
           <Route path="/terms/:id" element={<TermsPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />

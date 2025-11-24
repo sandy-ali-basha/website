@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Box,
@@ -13,6 +13,7 @@ import {
 import logo from "assets/images/logo.png";
 import {
   Flag,
+  FlagOutlined,
   PersonOutlineOutlined,
   ShoppingCartOutlined,
 } from "@mui/icons-material";
@@ -21,11 +22,13 @@ import MenuButton from "components/modules/NavBar/MenuButton";
 import LanguageSelector from "components/LanguageSelector";
 import MenuIcon from "@mui/icons-material/Menu";
 import { _AuthApi } from "api/auth";
+import ChooseCityDialog from "components/ChooseCityDialog";
 function NavBar() {
-  const { settings, pages, navigate, cities, t } = useNavBar();
+  const { settings, pages, navigate, t } = useNavBar();
 
   // Get the cart count from local storage
   const cartCount = parseInt(localStorage.getItem("cart_count")) || 0;
+  const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
 
   return (
     <AppBar
@@ -103,21 +106,12 @@ function NavBar() {
               </Button>
             ))}
           </Box>
-
-          <Box>
-            <MenuButton
-              tooltip={t("change city")}
-              icon={<Flag sx={{ color: "white" }} />}
-              menuItems={cities.map((item) => ({
-                ...item,
-                key: item.id,
-              }))}
-              defaultValue={localStorage.getItem("city")}
-            />
-          </Box>
+          <ChooseCityDialog open={open} setOpen={setOpen} />
 
           <LanguageSelector />
-
+          <IconButton id="basic-button" onClick={() => setOpen(true)}>
+            <FlagOutlined sx={{ color: "white" }} />
+          </IconButton>
           <Box sx={{ mx: "10px" }}>
             <Tooltip title={t("Show Cart")}>
               <IconButton

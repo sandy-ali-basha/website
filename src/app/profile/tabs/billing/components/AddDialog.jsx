@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import ButtonLoader from "components/customs/ButtonLoader";
 import { useAddressDialog } from "./hooks/useAddressDialog";
-import { _cities } from "api/country/country";
+import { _countries } from "api/country/countries"; // your region API (actually regions here)
 
 const AddDialog = ({ open, handleClose }) => {
   const {
@@ -31,15 +31,35 @@ const AddDialog = ({ open, handleClose }) => {
     handleSubmit,
     control,
     t,
+    watch,
+    setValue,
   } = useAddressDialog({ handleClose });
-  const [cities, setCiteies] = useState();
+
+  const [countries, setCountries] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  // watch selected region to update city list
+  const selectedRegion = watch("country_id");
+
   useMemo(() => {
-    _cities.index().then((response) => {
+    _countries.index().then((response) => {
       if (response.code === 200) {
-        setCiteies(response.data);
+        setCountries(response.data);
       }
     });
   }, []);
+
+  // update cities when region changes
+  React.useEffect(() => {
+    if (selectedRegion) {
+      const selected = countries.find((r) => r.id === selectedRegion);
+      setCities(selected?.cities || []);
+      setValue("city", ""); // reset city when region changes
+    } else {
+      setCities([]);
+      setValue("city", "");
+    }
+  }, [selectedRegion, countries, setValue]);
 
   return (
     <Dialog
@@ -50,7 +70,6 @@ const AddDialog = ({ open, handleClose }) => {
         handleClose();
       }}
       aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
       scroll="paper"
       PaperProps={{
         component: "form",
@@ -60,6 +79,7 @@ const AddDialog = ({ open, handleClose }) => {
       <DialogTitle id="scroll-dialog-title">{t("Add New Address")}</DialogTitle>
       <DialogContent>
         <Grid container spacing={2} sx={{ pt: 1 }}>
+          {/* FIRST NAME + TITLE */}
           <Grid item xs={12} sm={6}>
             <Controller
               name="first_name"
@@ -71,9 +91,7 @@ const AddDialog = ({ open, handleClose }) => {
                   variant="outlined"
                   fullWidth
                   error={!!errors.first_name}
-                  helperText={
-                    errors.first_name ? errors.first_name.message : ""
-                  }
+                  helperText={errors.first_name?.message || ""}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -88,10 +106,6 @@ const AddDialog = ({ open, handleClose }) => {
                               variant="standard"
                               disableUnderline
                               sx={{ mr: 1, minWidth: 60 }}
-                              error={!!errors.title}
-                              helperText={
-                                errors.title ? errors.title.message : ""
-                              }
                             >
                               <MenuItem value="Mr">{t("Mr")}</MenuItem>
                               <MenuItem value="Mrs">{t("Mrs")}</MenuItem>
@@ -108,6 +122,7 @@ const AddDialog = ({ open, handleClose }) => {
             />
           </Grid>
 
+          {/* LAST NAME */}
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -115,45 +130,62 @@ const AddDialog = ({ open, handleClose }) => {
               placeholder="Last name"
               {...register("last_name")}
               error={!!errors.last_name}
-              helperText={errors.last_name ? errors.last_name.message : ""}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label={t("Contact Email")}
-              placeholder="jone@mail.com"
-              {...register("contact_email")}
-              error={!!errors.contact_email}
-              helperText={
-                errors.contact_email ? errors.contact_email.message : ""
-              }
+              helperText={errors.last_name?.message || ""}
             />
           </Grid>
 
-          <Grid item xs={12} sx={{ p: "10px" }}>
-            {cities ? (
-              <FormControl fullWidth>
-                <Select
+          {/* REGION (country list actually) */}
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth error={!!errors.country_id}>
+              <Select
                 fullWidth
-                  sx={{ color: "text.main", borderColor: "text.main" }}
-                  {...register("city")}
-                  label="city"
-                >
-                  {cities?.state?.map((item) => (
-                    <MenuItem value={item.value} key={item.id}>
-                      <Box style={{ color: "text.main" }}>{item.name}</Box>
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText error>{errors.city?.message}</FormHelperText>
-              </FormControl>
-            ) : (
-              <Typography variant="body2" color="text.main">
-                {t("pleas add cities")}
-              </Typography>
-            )}
+                displayEmpty
+                {...register("country_id")}
+                defaultValue=""
+              >
+                <MenuItem value="" disabled>
+                  <Box sx={{ color: "text.secondary" }}>
+                    {t("Select a Country")}
+                  </Box>
+                </MenuItem>
+                {countries?.map((item) => (
+                  <MenuItem value={item.id} key={item.id}>
+                    <Box sx={{ color: "text.main" }}>{item.name}</Box>
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>{errors.country_id?.message}</FormHelperText>
+            </FormControl>
           </Grid>
+
+          {/* CITY - dynamic based on selected region */}
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth error={!!errors.city}>
+              <Select
+                fullWidth
+                displayEmpty
+                {...register("city")}
+                defaultValue=""
+                disabled={!selectedRegion}
+              >
+                <MenuItem value="" disabled>
+                  <Box sx={{ color: "text.secondary" }}>
+                    {selectedRegion
+                      ? t("Select a city")
+                      : t("Select country first")}
+                  </Box>
+                </MenuItem>
+                {cities.map((item) => (
+                  <MenuItem value={item.id} key={item.id}>
+                    <Box sx={{ color: "text.main" }}>{item.name}</Box>
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>{errors.city?.message}</FormHelperText>
+            </FormControl>
+          </Grid>
+
+          {/* STATE */}
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -161,10 +193,23 @@ const AddDialog = ({ open, handleClose }) => {
               placeholder="State"
               {...register("state")}
               error={!!errors.state}
-              helperText={errors.state ? errors.state.message : ""}
+              helperText={errors.state?.message || ""}
             />
           </Grid>
-        
+
+          {/* CONTACT EMAIL */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label={t("Contact Email")}
+              placeholder="john@mail.com"
+              {...register("contact_email")}
+              error={!!errors.contact_email}
+              helperText={errors.contact_email?.message || ""}
+            />
+          </Grid>
+
+          {/* PHONE */}
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -173,9 +218,7 @@ const AddDialog = ({ open, handleClose }) => {
               placeholder="012 345 1111"
               {...register("contact_phone")}
               error={!!errors.contact_phone}
-              helperText={
-                errors.contact_phone ? errors.contact_phone.message : ""
-              }
+              helperText={errors.contact_phone?.message || ""}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">IQ (+964)</InputAdornment>
@@ -183,6 +226,8 @@ const AddDialog = ({ open, handleClose }) => {
               }}
             />
           </Grid>
+
+          {/* ADDRESS */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -190,9 +235,11 @@ const AddDialog = ({ open, handleClose }) => {
               placeholder={t("e.g. building name, street #")}
               {...register("line_one")}
               error={!!errors.line_one}
-              helperText={errors.line_one ? errors.line_one.message : ""}
+              helperText={errors.line_one?.message || ""}
             />
           </Grid>
+
+          {/* DELIVERY INSTRUCTIONS */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -200,22 +247,20 @@ const AddDialog = ({ open, handleClose }) => {
               placeholder={t("Please leave the package at the door")}
               {...register("delivery_instructions")}
               error={!!errors.delivery_instructions}
-              helperText={
-                errors.delivery_instructions
-                  ? errors.delivery_instructions.message
-                  : ""
-              }
+              helperText={errors.delivery_instructions?.message || ""}
             />
           </Grid>
 
+          {/* DEFAULT ADDRESS CHECKBOX */}
           <Grid item xs={12}>
-            <Checkbox variant="soft" onChange={handleChange} />
-            <Typography variant="text.primary">
-              {t("Defualt address for shipping")}
+            <Checkbox onChange={handleChange} />
+            <Typography variant="body2">
+              {t("Default address for shipping")}
             </Typography>
           </Grid>
         </Grid>
       </DialogContent>
+
       <DialogActions>
         <Button onClick={handleClose}>{t("Cancel")}</Button>
         <ButtonLoader

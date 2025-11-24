@@ -28,6 +28,7 @@ import { useTranslation } from "react-i18next";
 import { useCart } from "hooks/cart/useCart";
 import CardShimmer from "components/customs/loaders/CardShimmer";
 import { AddressStore } from "store/shippingStore";
+import { Mail, MailOutline, PhoneOutlined } from "@mui/icons-material";
 
 const StepAddress = ({
   handleNext,
@@ -72,9 +73,17 @@ const StepAddress = ({
           <br />
           {address.postcode && `Postcode: ${address.postcode}.`}
           <br />
-          {address.contact_phone && `Mobile: ${address.contact_phone}.`}
+          {address.contact_phone && (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <PhoneOutlined /> {address.contact_phone}
+            </Box>
+          )}
           <br />
-          {address.contact_phone && `Email: ${address.contact_mail}.`}
+          {address.contact_mail && (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <MailOutline /> {address.contact_mail}
+            </Box>
+          )}
         </Typography>
       </Box>
     ),
@@ -113,6 +122,20 @@ const StepAddress = ({
       </Typography>
     );
   }
+
+  // Helper function to render product variants
+  const renderVariants = (options) => {
+    if (!options || options.length === 0) return null;
+
+    // Join the variant names into a single string
+    const variantString = options.map(option => option.name).join(' - ');
+
+    return (
+      <Typography variant="caption" sx={{ color: "text.secondary", display: 'block' }}>
+        {t("options")}: {variantString}
+      </Typography>
+    );
+  };
 
   return (
     <Container>
@@ -183,17 +206,19 @@ const StepAddress = ({
                         />
                       </ListItemAvatar>
                       <Grid container sx={{ mx: 1 }}>
-                        <Grid item xs={12} md={8}>
+                        <Grid item xs={12} md={12}>
                           <Link
                             to={`/store/product/${item?.id}/${item.name}`}
                             style={{ textDecoration: "none" }}
                           >
                             <ListItemText primary={item?.name} />
                           </Link>
-
-                          <Box sx={{ display: "flex" }}>
-                            <Typography sx={{ color: "text.main" }}>
-                              {item?.price.toLocaleString()} {t("currency")}
+                          {/* ⬇️ Display Variants Here ⬇️ */}
+                          {renderVariants(item?.options)}
+                          {/* ⬆️ Display Variants Here ⬆️ */}
+                          <Box sx={{ display: "flex", mt: 0.5 }}>
+                            <Typography sx={{ color: "text.main", fontSize: 'small' }}>
+                              {item?.quantity} x {item?.price.toLocaleString()} {t("currency")}
                             </Typography>
                           </Box>
                         </Grid>
@@ -222,9 +247,12 @@ const StepAddress = ({
                 >
                   <Typography>{t("Sub Total")}</Typography>
                   <Typography sx={{ color: "text.secondary" }}>
-                    {(cartData?.data?.sub_total/1000).toFixed(3)} {t("currency")}
+                    {/* Assuming data?.data?.sub_total is in an integer unit (like fils or cents) and you display in a higher unit (like dinars or dollars) */}
+                    {(cartData?.data?.sub_total / 1000).toLocaleString()}{" "}
+                    {t("currency")}
                   </Typography>
                 </Box>
+                {/* Delivery Charges */}
                 <Box
                   sx={{
                     gap: 2,
@@ -242,21 +270,26 @@ const StepAddress = ({
                     }}
                   >
                     {shippingAddress?.shipping_price > 0 && (
-                      <div>
-                        {(shippingAddress?.shipping_price/1000).toFixed(3)}
+                      <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                        {(shippingAddress?.shipping_price / 1000).toLocaleString()}
                         {t("currency")}
-                      </div>
+                      </Typography>
                     )}
                     {shippingAddress?.shipping_price === 0 && (
                       <Chip color="success" label={t("FREE")}></Chip>
                     )}
-                  </Box>  
+                    {!shippingAddress && (
+                      <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                        {t("Select Address")}
+                      </Typography>
+                    )}
+                  </Box>
                 </Box>
                 {/* discount_amount */}
                 {cartData?.data?.discount_amount > 0 && (
                   <Box
                     sx={{
-                      mb: 2,
+                      my: 2, // Added margin for separation
                       gap: 2,
                       display: "flex",
                       flexWrap: "wrap",
@@ -266,15 +299,17 @@ const StepAddress = ({
                   >
                     <Typography>{t("Discount Amount")}</Typography>
                     <Typography variant="body1" sx={{ color: "primary.main" }}>
-                      {cartData?.data?.sub_total_after_discount.toLocaleString()} {t("currency")}
+                      - {(cartData?.data?.discount_amount / 1000).toLocaleString()}{" "}
+                      {t("currency")}
                     </Typography>
                   </Box>
                 )}
-                {/* points_used */}
+                {/* points_used adjustment */}
                 {cartData?.data?.points_used > 0 && (
                   <Box
                     sx={{
-                      my: 2,
+                      mt: 2,
+                      mb: 2, // Retained original bottom margin
                       gap: 2,
                       display: "flex",
                       flexWrap: "wrap",
@@ -282,12 +317,31 @@ const StepAddress = ({
                       justifyContent: "space-between",
                     }}
                   >
-                    <Typography>{t("Sub Total After Points Used")}</Typography>
+                    <Typography>{t("Points Discount")}</Typography>
                     <Typography variant="body1" color="secondary">
-                      {cartData?.data?.sub_total_after_points.toLocaleString()} {t("currency")}
+                       - {(cartData?.data?.sub_total - cartData?.data?.sub_total_after_points) > 0 ? ((cartData?.data?.sub_total - cartData?.data?.sub_total_after_points) / 1000).toLocaleString() : 0} {" "}
+                      {t("currency")}
                     </Typography>
                   </Box>
                 )}
+                <Divider sx={{ my: 2 }} />
+                {/* Final Total */}
+                <Box
+                  sx={{
+                    mt: 2,
+                    gap: 2,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography variant="h6">{t("Order Total")}</Typography>
+                  <Typography variant="h6" color="primary">
+                    {/* Calculation: sub_total_after_points (or sub_total_after_discount) + shipping_price */}
+                    {((cartData?.data?.sub_total_after_points || cartData?.data?.sub_total_after_discount || cartData?.data?.sub_total) + (shippingAddress?.shipping_price || 0) / 1000).toLocaleString()} {t("currency")}
+                  </Typography>
+                </Box>
               </Box>
             </CardContent>
           </Card>

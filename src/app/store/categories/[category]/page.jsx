@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useCategory } from "./_hooks/useCategory";
 import Typography from "@mui/material/Typography";
-import { Container, Box, Grid, Drawer, IconButton } from "@mui/material";
+import {
+  Container,
+  Box,
+  Grid,
+  Drawer,
+  IconButton,
+  Button,
+} from "@mui/material";
 import ProductCard from "components/modules/ProductCard";
 import MenuIcon from "@mui/icons-material/Menu";
 import SideDrawer from "./_components/Drawer";
@@ -22,46 +29,29 @@ export default function Category() {
     mobileOpen,
     Attr,
     handleCheked,
+    searchResults,
+    setSearchResults,
+    ClearFilter,
   } = useCategory();
-       useEffect(() => {
-            window.scrollTo(0, 0);
-          }, []);
-  // const SortFilter = () => {
-  //   return (
-  //     <FormControl
-  //       variant="outlined"
-  //       size="small"
-  //       sx={{ minWidth: 120, ml: { xs: 2, md: 0 } }}
-  //     >
-  //       <InputLabel>{t("Sort By")}</InputLabel>
-  //       <Select value={sort} onChange={handleSortChange} label="Sort By">
-  //         <MenuItem value="">
-  //           <em>None</em>
-  //         </MenuItem>
-  //         <MenuItem value={"priceAsc"}>{t("Price: Low to High")}</MenuItem>
-  //         <MenuItem value={"priceDesc"}>{t("Price: High to Low")}</MenuItem>
-  //         <MenuItem value={"nameAsc"}>{t("Name: A-Z")}</MenuItem>
-  //         <MenuItem value={"nameDesc"}>{t("Name: Z-A")}</MenuItem>
-  //       </Select>
-  //     </FormControl>
-  //   );
-  // };
-  const [searchResults, setSearchResults] = useState([]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <Container sx={{ pt: 15 }}>
+    <Box sx={{ pt: 12, px: 2 }}>
       <Typography
-        variant="h3"
+        variant="h5"
         color="initial"
-        sx={{ mb: 1, overflowWrap: "break-word" }}
+        sx={{ overflowWrap: "break-word" }}
       >
-        {t("Products")}
+        {t("Home")} / {t("Products")}
       </Typography>
 
       <Box
         sx={{
           display: "flex",
           alignItems: "flex-start",
-          my: 5,
+          my: 1,
           flexDirection: { xs: "column", md: "row" },
         }}
       >
@@ -93,6 +83,7 @@ export default function Category() {
         >
           <SideDrawer
             data={Attr}
+            ClearFilter={ClearFilter}
             minValue={minValue}
             maxValue={maxValue}
             handleMinChange={handleMinChange}
@@ -110,6 +101,7 @@ export default function Category() {
           }}
         >
           <SideDrawer
+            ClearFilter={ClearFilter}
             valuetext={valuetext}
             data={Attr}
             minValue={minValue}
@@ -190,6 +182,6 @@ export default function Category() {
           </Grid>
         </Box>
       </Box>
-    </Container>
+    </Box>
   );
 }

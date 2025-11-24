@@ -1,4 +1,4 @@
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
@@ -33,7 +33,8 @@ export const useAddressDialog = ({ handleClose }) => {
   };
 
   const formOptions = { resolver: yupResolver(schema) };
-  const { register, handleSubmit, formState, control } = useForm(formOptions);
+  const { register, handleSubmit, formState, control, watch,setValue } =
+    useForm(formOptions);
   const { errors } = formState;
   const queryClient = useQueryClient();
 
@@ -67,7 +68,6 @@ export const useAddressDialog = ({ handleClose }) => {
     const newInput = {
       ...input,
       user_id: userData.user_id,
-      country_id: 2,
       billing_default: checked,
       shipping_default: checked,
     };
@@ -84,6 +84,8 @@ export const useAddressDialog = ({ handleClose }) => {
     handleSubmit,
     t,
     control,
+    watch,
+    setValue,
     setChecked,
   };
 };

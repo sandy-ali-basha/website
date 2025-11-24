@@ -4,8 +4,7 @@ import { useState } from "react";
 import ChooseCity from "./ChooseCity";
 import { useTranslation } from "react-i18next";
 
-const ChooseCityDialog = () => {
-  const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
+const ChooseCityDialog = ({open, setOpen}) => {
   const { t } = useTranslation("index");
 
   return (
@@ -22,7 +21,7 @@ const ChooseCityDialog = () => {
         <img style={{ width: "50%", margin: "1rem auto" }} src={logo} alt="" />
         <DialogContentText textAlign={"center"} sx={{ fontSize: "1.5rem" }}>
           {t("Select your city for a customized shopping journey")}
-          <ChooseCity />
+          <ChooseCity onClose={() => setOpen(false)} />
         </DialogContentText>
       </DialogContent>
     </Dialog>

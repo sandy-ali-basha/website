@@ -9,24 +9,15 @@ import {
 } from "@mui/material";
 import React from "react";
 import logo from "assets/images/logo_white.png";
-import {
-  Facebook,
-  Instagram,
-  LinkedIn,
-  Mail,
-  Phone,
-  WhatsApp,
-} from "@mui/icons-material";
+import { Facebook, Instagram, LinkedIn, WhatsApp } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { _terms } from "api/terms/terms";
 import { useQuery } from "react-query";
 import CardShimmer from "components/customs/loaders/CardShimmer";
-import { useNavigate } from "react-router-dom";
+import { useSocialMedia } from "hooks/home/useHome";
 
 function Footer() {
   const { t } = useTranslation("index");
-  const navigate = useNavigate();
-  const userData = localStorage.getItem("userData");
   const MenuItems = [
     { href: "/", title: t("Home") },
     { href: "/about", title: t("About") },
@@ -39,6 +30,8 @@ function Footer() {
     () => _terms.getTerms().then((res) => res?.data)
   );
 
+  const { data: socialData } = useSocialMedia();
+  
   return (
     <footer style={{ background: "#6A83B0" }}>
       <Container sx={{ py: 4 }}>
@@ -58,15 +51,13 @@ function Footer() {
               gap: "10px",
             }}
           >
-            
-              <Button
-                sx={{ color: "white", borderColor: "white" }}
-                variant="outlined"
-                href="mailto:online@dawaaalhayat.com"
-              >
-                {t("contact")}
-              </Button>
-            
+            <Button
+              sx={{ color: "white", borderColor: "white" }}
+              variant="outlined"
+              href={`mailto:${socialData?.links?.email}`}
+            >
+              {t("contact")}
+            </Button>
           </Grid>
 
           <Grid
@@ -100,33 +91,31 @@ function Footer() {
             item
           >
             <IconButton
-              href="https://web.facebook.com/Dawaaalhayatco?_rdc=1&_rdr"
+              href={socialData?.links?.facebook}
               aria-label="facebook"
             >
               <Facebook style={{ color: "white" }} />
             </IconButton>
             <IconButton
-              href="https://www.instagram.com/dawaa_alhayat"
+              href={socialData?.links?.instagram}
               aria-label="instagram"
             >
               <Instagram style={{ color: "white" }} />
             </IconButton>
-
             <IconButton
-              href="https://www.linkedin.com/company/dawaa-alhayat/"
+              href={socialData?.links?.linkedin}
               aria-label="linkedin"
             >
               <LinkedIn style={{ color: "white" }} />
             </IconButton>
             <IconButton
-              href="https://wa.me/+9647709445659"
+              href={`https://wa.me/${socialData?.links?.whatsApp}`}
               aria-label="whatsapp"
               target="_blank" // Opens in a new tab
               rel="noopener noreferrer" // Enhances security when opening in a new tab
             >
               <WhatsApp style={{ color: "white" }} />
             </IconButton>
-          
           </Grid>
           <Grid xs="12">
             <hr />

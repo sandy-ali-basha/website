@@ -13,10 +13,12 @@ import gsap from "gsap";
 import { settingsStore } from "store/settingsStore.js";
 import { useHome, useHomeSlider } from "hooks/home/useHome.js";
 import Loader from "components/modules/Loader.jsx";
+import HomeGrid from "components/modules/home/HomeGrid.jsx";
 import BestSellers from "components/modules/home/BestSellers.jsx";
 import { Link } from "react-router-dom";
 import i18n from "i18n.js";
 import Reels from "components/modules/home/Reels.jsx";
+import ParallaxSlides from "components/modules/home/ParallaxSlides.jsx";
 
 export default function Home() {
   const [direction] = settingsStore((state) => [state.direction]);
@@ -102,7 +104,7 @@ export default function Home() {
                     }}
                   >
                     <img
-                      src={item.image}
+                      src={item?.image}
                       alt={`Slide ${index + 1}`}
                       style={{
                         objectFit: "cover",
@@ -112,28 +114,6 @@ export default function Home() {
                       }}
                       lazy
                     />
-                    <Box
-                      sx={{
-                        position: "relative",
-                        zIndex: 1,
-                        width: { md: "50%", xs: "100%" },
-                      }}
-                    >
-                      {/* <Typography variant="h2" color="inherit">
-                    {item?.title}
-                  </Typography>
-                  <Typography sx={{ mt: 2 }} variant="body1" color="inherit">
-                    {item?.text}
-                  </Typography> */}
-                      {/* <Button
-                    sx={{ mt: 4 }}
-                    color="primary"
-                    variant="contained"
-                    href={item?.link}
-                  >
-                    {t("Get Started")}
-                  </Button> */}
-                    </Box>
                   </Box>
                 </Link>
               </SwiperSlide>
@@ -218,6 +198,8 @@ export default function Home() {
             video={data?.["home.page.video"]?.video}
           />
           <Partners />
+          <HomeGrid />
+          <ParallaxSlides  />
         </>
       )}
     </>

@@ -61,15 +61,15 @@ const StepCart = ({ handleNext }) => {
   const { data, isLoading } = useCart(cart_id);
   const queryClient = useQueryClient();
   const userData = localStorage.getItem("userData");
+
   const handleDeleteItem = (id) => {
     _cart.delete({ id, cart_id }).then((res) => {
       // Invalidate the "cart" query to refetch the updated cart data
-
       if (res?.code === 200) {
         queryClient.invalidateQueries("cart");
         const currentCartCount =
           parseInt(localStorage.getItem("cart_count")) || 0;
-          localStorage.setItem("cart_count", Math.max(currentCartCount - 1, 0));
+        localStorage.setItem("cart_count", Math.max(currentCartCount - 1, 0));
         Swal.fire({
           icon: "success",
           title: "Success",
@@ -92,6 +92,20 @@ const StepCart = ({ handleNext }) => {
           timerProgressBar: true,
         });
     });
+  };
+
+  // Helper function to render product variants
+  const renderVariants = (options) => {
+    if (!options || options.length === 0) return null;
+
+    // Join the variant names into a single string
+    const variantString = options.map((option) => option.name).join(" - ");
+
+    return (
+      <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>
+        {t("Options")}: {variantString}
+      </Typography>
+    );
   };
 
   return !cart_id ? (
@@ -117,12 +131,15 @@ const StepCart = ({ handleNext }) => {
                 <Typography variant="h5" sx={{ mb: 2 }}>
                   <CardShimmer style={{ width: "100px", height: "20px" }} />
                 </Typography>
-              ) : data?.data?.products?.length > 0 ? (
-                <Typography variant="h5" sx={{ mb: 2 }}>
-                  {t("My Shopping Bag")} ({data?.data?.products?.length}{" "}
-                  {t("Items")})
-                </Typography>
               ) : (
+                data?.data?.products?.length > 0 ?? (
+                  <Typography variant="h5" sx={{ mb: 2 }}>
+                    {t("My Shopping Bag")} ({data?.data?.products?.length}{" "}
+                    {t("Items")})
+                  </Typography>
+                )
+              )}
+              {data?.data?.products?.length < 0 && (
                 <Card
                   sx={{
                     minHeight: "80vh",
@@ -133,7 +150,10 @@ const StepCart = ({ handleNext }) => {
                   }}
                 >
                   <img alt=" " src={emptyCart} style={{ width: "40vw" }} />
-                  <Typography>{t("Your shopping page is empty")}{data?.data?.products?.length}</Typography>
+                  <Typography>
+                    {t("Your shopping page is empty")}
+                    {data?.data?.products?.length}
+                  </Typography>
                 </Card>
               )}
               <StyledList>
@@ -194,7 +214,18 @@ const StepCart = ({ handleNext }) => {
                           >
                             <ListItemText primary={item?.name} />
                           </Link>
-                          <Box sx={{ display: "flex", alignItems: "center" }}>
+
+                          {/* ⬇️ Display Variants Here ⬇️ */}
+                          {renderVariants(item?.options)}
+                          {/* ⬆️ Display Variants Here ⬆️ */}
+
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              mt: 1,
+                            }}
+                          >
                             <Typography sx={{ mr: 1, color: "text.disabled" }}>
                               {t("Sold By")}:
                             </Typography>
@@ -244,13 +275,12 @@ const StepCart = ({ handleNext }) => {
                                       : "initial"
                                   }
                                 >
-                                  item?.compare_price {t("currency")}
+                                  {item?.compare_price} {t("currency")}
                                 </Typography>
                               )}
                               {item?.price > 0 && (
                                 <Typography variant="body1" color="initial">
-                                  {item?.price.toLocaleString()}{" "}
-                                  {t("currency")}
+                                  {item?.price.toLocaleString()} {t("currency")}
                                 </Typography>
                               )}
                             </Box>
@@ -394,8 +424,7 @@ const StepCart = ({ handleNext }) => {
                             : "initial",
                       }}
                     >
-                      {data?.data?.sub_total.toLocaleString()}{" "}
-                      {t("currency")}
+                      {data?.data?.sub_total.toLocaleString()} {t("currency")}
                     </Typography>
 
                     {data?.data?.points_used > 0 && (
@@ -406,7 +435,8 @@ const StepCart = ({ handleNext }) => {
                           textDecoration: "none",
                         }}
                       >
-                        {data?.data?.sub_total_after_points.toLocaleString()} {t("currency")}
+                        {data?.data?.sub_total_after_points.toLocaleString()}{" "}
+                        {t("currency")}
                       </Typography>
                     )}
                   </Box>
@@ -432,8 +462,8 @@ const StepCart = ({ handleNext }) => {
             </Box>
           </Grid>
         )}
+        <Simillar id={data?.data?.products[0]?.id} />
       </Grid>
-      <Simillar id={data?.data?.products[0]?.id}/>
     </Container>
   );
 };

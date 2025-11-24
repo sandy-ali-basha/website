@@ -1,14 +1,6 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Chip,
-  Container,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Chip, Container, Grid, Typography } from "@mui/material";
 import { useCareer } from "hooks/careers/useCreers";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
@@ -16,6 +8,10 @@ export default function Job() {
   const { id } = useParams();
   const { t } = useTranslation("index");
   const { data, isLoading } = useCareer(id);
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Container sx={{ my: 22 }}>
@@ -38,7 +34,7 @@ export default function Job() {
               variant="h5"
               color="initial"
             >
-              {t("About Us")}
+              {t("Position Overview")}
             </Typography>
             <Typography
               variant="body1"
@@ -52,7 +48,7 @@ export default function Job() {
               color="initial"
               sx={{ mt: 4, fontWeight: "bold" }}
             >
-              {t("description")}
+              {t("Description")}
             </Typography>
             <Typography
               variant="body1"
@@ -60,8 +56,6 @@ export default function Job() {
               sx={{ mt: 1, fontWeight: "light" }}
               dangerouslySetInnerHTML={{ __html: data?.description }}
             ></Typography>
-
-          
           </Box>
         </Grid>
         <Grid item xs={4}>
@@ -83,9 +77,7 @@ export default function Job() {
                 my: 2,
               }}
             >
-              <Chip label={data?.requisition_no} variant="outlined">
-           
-              </Chip>
+              <Chip label={data?.requisition_no} variant="outlined"></Chip>
               <Button
                 variant="contained"
                 color="primary"
