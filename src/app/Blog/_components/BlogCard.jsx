@@ -2,8 +2,13 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { htmlToText } from "html-to-text";
+import i18n from "i18n";
 
-const BlogCard = ({ id, image, title, text, date }) => {
+const BlogCard = ({ post }) => {
+  const locale = i18n.language;
+  const { id, image, title, text, date } = post;
+  // 2. Find the translation matching the current locale
+  const translation = post.translations.find((t) => t.locale === locale);
   const truncateText = (text, wordLimit) => {
     const words = text.split(" ");
     if (words.length <= wordLimit) {
@@ -12,7 +17,7 @@ const BlogCard = ({ id, image, title, text, date }) => {
     return words.slice(0, wordLimit).join(" ") + "...";
   };
 
-  const plainText = htmlToText(text);
+  const plainText = htmlToText(translation?.text);
   const truncatedText = truncateText(plainText, 25);
   console.log("image", image);
   return (
@@ -46,7 +51,7 @@ const BlogCard = ({ id, image, title, text, date }) => {
         <div>
           <Link style={{ textDecoration: "none" }} to={`/Blog/${id}`}>
             <Typography variant="h5" color="initial" sx={{ fontWeight: "600" }}>
-              {title}
+              {translation?.title}
             </Typography>
           </Link>
           <Typography variant="body1" color="text.secondary">

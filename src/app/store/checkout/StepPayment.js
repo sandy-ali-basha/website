@@ -80,11 +80,11 @@ const StepPayment = ({ handleNext }) => {
                 label={t("FIB")}
                 icon={<QrCode sx={{ fontSize: "2rem" }} />}
               />
-              <Tab
+              {/* <Tab
                 value="credit-card"
                 label={t("Credit Card")}
                 icon={<CreditCard sx={{ fontSize: "2rem" }} />}
-              />
+              /> */}
               <Tab
                 value="cash-in-hand"
                 label={t("Cash On Delivery")}

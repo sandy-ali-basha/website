@@ -2,7 +2,7 @@ import * as React from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import image from "assets/images/about.png";
 import image2 from "assets/images/Our culture.png";
 import vision from "assets/images/vision.png";
@@ -15,13 +15,34 @@ import partner0 from "assets/images/partner-0.avif";
 import bg from "assets/images/Asset2.svg";
 import { useTranslation } from "react-i18next";
 import video from "assets/videos/DawaaAlHayatValues.m4v";
+import { useHome } from "hooks/home/useHome";
 
 export default function About() {
-  const { t } = useTranslation("about");
+  const { t, i18n } = useTranslation("about");
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  
+  const { data } = useHome();
+
+  const [showMore, setShowMore] = React.useState(false);
+
+  // Get the text
+  const text =
+    data?.["home.page.textSectionOne"]?.value?.text?.[i18n.language] || "";
+
+  // Define the max length before showing "View More"
+  const maxLength = 1200; // adjust the length as needed
+
+  // Function to toggle between showing more or less
+  const handleToggle = () => {
+    setShowMore(!showMore);
+  };
+
+  // Determine if the text is long enough to be truncated
+  const isLongText = text.length > maxLength;
+  const displayedText = showMore ? text : text.substring(0, maxLength);
 
   return (
     <Box
@@ -43,16 +64,16 @@ export default function About() {
             flexDirection: "column",
           }}
         >
-        <Box sx={{marginTop: { md: "-40vh", sm: "-10vh" },}}>
-          <img
-            src={logo}
-            alt="dawaa alhayat logo"
-            style={{
-              width: "15vw",
-              mb: "10vh",
-            }}
-          />
-        </Box>
+          <Box sx={{ marginTop: { md: "-40vh", sm: "-10vh" } }}>
+            <img
+              src={logo}
+              alt="dawaa alhayat logo"
+              style={{
+                width: "15vw",
+                mb: "10vh",
+              }}
+            />
+          </Box>
           <Typography variant="h4" sx={{ textAlign: "center", mt: 3 }}>
             {t("Welcome to Dawaa Al Hayat")}
           </Typography>
@@ -74,7 +95,29 @@ export default function About() {
             </Typography>
           </Box>
         </Box>
-
+        <Grid container sx={{ py: 5 }} spacing="5">
+          <Grid md="4">
+            <Box sx={{ width: { xs: "70%", lg: "100%" }, mx: "auto" }}>
+              <img
+                src={data?.["home.page.textSectionOne"]?.image}
+                alt=""
+                style={{ width: "100%" }}
+              />
+            </Box>
+          </Grid>
+          <Grid md="8" sx={{ px: 5 }}>
+            <Typography
+              dangerouslySetInnerHTML={{
+                __html: displayedText,
+              }}
+            ></Typography>
+            {isLongText && (
+              <Button onClick={handleToggle}>
+                {showMore ? "View Less" : "View More"}
+              </Button>
+            )}
+          </Grid>
+        </Grid>
         <Grid container spacing={3}>
           <Grid md="12" item>
             <Grid container spacing={2} sx={{ mb: 5 }}>
@@ -171,7 +214,7 @@ export default function About() {
                   variant="h3"
                   sx={{
                     textAlign: "center",
-                    fontWeight:'400'
+                    fontWeight: "400",
                   }}
                 >
                   {t("Our culture")}
@@ -183,7 +226,7 @@ export default function About() {
                     mt: 2,
                     width: "90%",
                     mx: "auto",
-                    fontWeight:'400'
+                    fontWeight: "400",
                   }}
                 >
                   {t(

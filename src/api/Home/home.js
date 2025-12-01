@@ -22,16 +22,6 @@ export const _Home = {
       .then((res) => res.data);
   },
 
-  social: async () => {
-    return _axios
-      .get(`/home/social`, {
-        headers: {
-          ...HttpRequestInterceptor(),
-        },
-      })
-      .then((res) => res.data);
-  },
-
   getSection: ({ id }) =>
     _axios.get("home_page/section/" + id).then((res) => res.data?.data),
 };

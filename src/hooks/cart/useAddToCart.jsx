@@ -24,7 +24,6 @@ export const useAddToCart = (coupon_code) => {
 
   const userData = localStorage.getItem("userData");
   const user_data = userData ? JSON.parse(userData) : null;
-  console.log("userData in useAddToCart:", user_data.id);
 
   const handleAddToCart = useCallback(
     async (productId) => {

@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import logo from "assets/images/logo.png";
 import {
-  Flag,
   FlagOutlined,
   PersonOutlineOutlined,
   ShoppingCartOutlined,
@@ -23,9 +22,10 @@ import LanguageSelector from "components/LanguageSelector";
 import MenuIcon from "@mui/icons-material/Menu";
 import { _AuthApi } from "api/auth";
 import ChooseCityDialog from "components/ChooseCityDialog";
-function NavBar() {
-  const { settings, pages, navigate, t } = useNavBar();
 
+function NavBar() {
+
+  const { settings, pages, navigate, t } = useNavBar();
   // Get the cart count from local storage
   const cartCount = parseInt(localStorage.getItem("cart_count")) || 0;
   const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);

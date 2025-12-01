@@ -43,24 +43,7 @@ export default function Home() {
 
   const { data, isLoading } = useHome();
   const { data: slider, isLoading: sliderLoading } = useHomeSlider();
-  const [showMore, setShowMore] = useState(false);
-
-  // Get the text
-  const text =
-    data?.["home.page.textSectionOne"]?.value?.text?.[i18n.language] || "";
-
-  // Define the max length before showing "View More"
-  const maxLength = 1200; // adjust the length as needed
-
-  // Function to toggle between showing more or less
-  const handleToggle = () => {
-    setShowMore(!showMore);
-  };
-
-  // Determine if the text is long enough to be truncated
-  const isLongText = text.length > maxLength;
-  const displayedText = showMore ? text : text.substring(0, maxLength);
-
+ 
   return (
     <>
       {/* <SpinAndWin/> */}
@@ -125,29 +108,6 @@ export default function Home() {
       {data && (
         <>
           <Container>
-            <Grid container sx={{ py: 5 }} spacing="5">
-              <Grid md="4">
-                <Box sx={{ width: { xs: "70%", lg: "100%" }, mx: "auto" }}>
-                  <img
-                    src={data?.["home.page.textSectionOne"]?.image}
-                    alt=""
-                    style={{ width: "100%" }}
-                  />
-                </Box>
-              </Grid>
-              <Grid md="8" sx={{ px: 5 }}>
-                <Typography
-                  dangerouslySetInnerHTML={{
-                    __html: displayedText,
-                  }}
-                ></Typography>
-                {isLongText && (
-                  <Button onClick={handleToggle}>
-                    {showMore ? "View Less" : "View More"}
-                  </Button>
-                )}
-              </Grid>
-            </Grid>
             {/* <Grid 
               container
               sx={{
@@ -186,12 +146,13 @@ export default function Home() {
             </Grid> */}
           </Container>
           <Reels />
-          <AnimatedText
-            text={
-              data?.["home.page.textSectionTwo"]?.value?.text?.[i18n.language]
-            }
-          ></AnimatedText>
-
+          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+            <AnimatedText
+              text={
+                data?.["home.page.textSectionTwo"]?.value?.text?.[i18n.language]
+              }
+            />
+          </Box>
           <BestSellers />
           <Qoute
             data={data?.["home.page.videoText"]}
@@ -199,7 +160,7 @@ export default function Home() {
           />
           <Partners />
           <HomeGrid />
-          <ParallaxSlides  />
+          <ParallaxSlides />
         </>
       )}
     </>

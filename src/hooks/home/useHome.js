@@ -27,19 +27,6 @@ export const useHomeSlider = () => {
     isLoading,
   };
 };
-export const useSocialMedia = () => {
-  const { data, isLoading } = useQuery(
-    ["socialMedia"],
-    () => _Home.social().then((res) => res?.data),
-    {
-      keepPreviousData: true,
-    }
-  );
-  return {
-    data,
-    isLoading,
-  };
-};
 
 export const useHomeSection = (id) => {
 

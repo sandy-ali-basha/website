@@ -69,32 +69,33 @@ const EditDialog = ({ open, handleClose, id }) => {
       setValue("first_name", addr.first_name || "");
       setValue("last_name", addr.last_name || "");
       setValue("title", addr.title || "Mr");
-      setValue("contact_email", addr.contact_email || "");
+      setValue("contact_email", addr.contact_mail || "");
       setValue("contact_phone", addr.contact_phone || "");
       setValue("line_one", addr.line_one || "");
       setValue("delivery_instructions", addr.delivery_instructions || "");
       setValue("state", addr.state || "");
 
-      // If region exists, set it and its cities
-      if (addr.region_id) {
-        setValue("region", addr.region_id);
-        const selected = regions.find((r) => r.id === addr.region_id);
-        if (selected) {
-          setCities(selected.cities || []);
-        }
-      }
+      // --- REGION NAME instead of ID ---
+    if (addr.region) {
+      setValue("region", addr.region);
 
-      // Set city if present
-      if (addr.city_id) {
-        setValue("city", addr.city_id);
+      const selected = regions.find((r) => r.name === addr.region);
+      if (selected) {
+        setCities(selected.cities || []);
       }
+    }
+
+    // --- CITY NAME instead of ID ---
+    if (addr.city) {
+      setValue("city", addr.city);
+    }
     }
   }, [data?.data, regions, setChecked, setValue]);
 
   // When region changes manually
   useEffect(() => {
     if (selectedRegion) {
-      const selected = regions.find((r) => r.id === selectedRegion);
+      const selected = regions.find((r) => r.name === selectedRegion);
       setCities(selected?.cities || []);
       setValue("city", "");
     } else {
@@ -196,7 +197,7 @@ const EditDialog = ({ open, handleClose, id }) => {
                     </Box>
                   </MenuItem>
                   {regions.map((item) => (
-                    <MenuItem key={item.id} value={item.id}>
+                    <MenuItem key={item.id} value={item.name}>
                       <Box sx={{ color: "text.main" }}>{item.name}</Box>
                     </MenuItem>
                   ))}
@@ -223,7 +224,7 @@ const EditDialog = ({ open, handleClose, id }) => {
                     </Box>
                   </MenuItem>
                   {cities.map((item) => (
-                    <MenuItem key={item.id} value={item.id}>
+                    <MenuItem key={item.id} value={item.name}>
                       <Box sx={{ color: "text.main" }}>{item.name}</Box>
                     </MenuItem>
                   ))}

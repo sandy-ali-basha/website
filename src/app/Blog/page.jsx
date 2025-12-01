@@ -56,7 +56,7 @@ export default function Blog() {
       </Box> */}
 
       {data?.posts?.length > 1 &&
-        data?.posts?.map((item, index) => <BlogCard key={index} {...item} />)}
+        data?.posts?.map((item, index) => <BlogCard key={index} post={item} />)}
     </Container>
   );
 }

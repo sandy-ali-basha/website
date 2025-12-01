@@ -5,6 +5,7 @@ import {
   Grid,
   Link,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -17,17 +18,12 @@ import * as yup from "yup";
 import ButtonLoader from "components/customs/ButtonLoader";
 import Swal from "sweetalert2";
 import { MapPin } from "react-feather";
-import {
-  Facebook,
-  Instagram,
-  LinkedIn,
-  Mail,
-  WhatsApp,
-} from "@mui/icons-material";
+import { useHomeSection } from "hooks/home/useHome";
 
 export default function ContactUs() {
-  const { t } = useTranslation("index");
+  const { t, i18n } = useTranslation("index");
   const [loading, setLoading] = useState(false);
+
   let schema = yup.object().shape({
     first_name: yup.string().trim().required(t("first name is required")),
     last_name: yup.string().trim().required(t("last name is required")),
@@ -39,9 +35,13 @@ export default function ContactUs() {
   const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
   const { mutate } = useMutation((data) => createPost(data));
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const { data: socialData } = useHomeSection(3);
+
   async function createPost(data) {
     setLoading(true);
     try {
@@ -177,98 +177,63 @@ export default function ContactUs() {
           <Typography sx={{ mt: 3, fontWeight: "500" }} variant="body1">
             {t("Our Contact Info")}
           </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "start",
-              my: 2,
-              gap: 1,
-              color: "text.main",
-            }}
-          >
-            <Facebook />
-            <Link
-              style={{ color: "initial", textDecoration: "none" }}
-              href="https://web.facebook.com/Dawaaalhayatco?_rdc=1&_rdr"
-              aria-label="facebook"
-            >
-              Facebook
-            </Link>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "start",
-              my: 2,
-              gap: 1,
-              color: "text.main",
-            }}
-          >
-            <Instagram />
-            <Link
-              style={{ color: "initial", textDecoration: "none" }}
-              href="https://www.instagram.com/dawaa_alhayat"
-              aria-label="instagram"
-            >
-              Instagram
-            </Link>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "start",
-              my: 2,
-              gap: 1,
-              color: "text.main",
-            }}
-          >
-            <LinkedIn />
-            <Link
-              style={{ color: "initial", textDecoration: "none" }}
-              href="https://www.linkedin.com/company/dawaa-alhayat/"
-              aria-label="linkedin"
-            >
-              LinkedIn
-            </Link>{" "}
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "start",
-              my: 2,
-              gap: 1,
-              color: "text.main",
-            }}
-          >
-            <WhatsApp />
-            <Link
-              style={{ color: "initial", textDecoration: "none" }}
-              href="https://wa.me/+9647709445659"
-              aria-label="whatsapp"
-              target="_blank" // Opens in a new tab
-              rel="noopener noreferrer" // Enhances security when opening in a new tab
-            >
-              +9647709445659
-            </Link>{" "}
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "start",
-              my: 2,
-              gap: 1,
-              color: "text.main",
-            }}
-          >
-            <Mail />
-            <Link
-              style={{ color: "initial", textDecoration: "none" }}
-              href="mailto:online@dawaaalhayat.com" // Correct mailto URL
-              aria-label="Email"
-            >
-              online@dawaaalhayat.com
-            </Link>{" "}
-          </Box>
+          {socialData?.items?.map((item) => {
+            const title =
+              item[`title_${i18n.language}`] ||
+              item.title_en ||
+              item.title_ar ||
+              item.title_kr;
+
+            const description =
+              item[`description_${i18n.language}`] ||
+              item.description_en ||
+              item.description_ar ||
+              item.description_kr;
+
+            return (
+              <Tooltip key={item.id} title={description} arrow>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "start",
+                    my: 2,
+                    gap: 1,
+                    color: "text.main",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    width: "fit-content",
+                  }}
+                >
+                  {/* Icon image */}
+                  <img
+                    src={item.image}
+                    alt={title}
+                    style={{
+                      width: 22,
+                      height: 22,
+                      objectFit: "contain",
+                      filter: "brightness(0) invert(1)",
+                    }}
+                  />
+
+                  {/* Link */}
+                  <Link
+                    style={{ color: "initial", textDecoration: "none" }}
+                    href={
+                      title?.toLowerCase() === "email"
+                        ? `mailto:${item.cta_link}`
+                        : item.cta_link
+                    }
+                    aria-label={title}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {title}
+                  </Link>
+                </Box>
+              </Tooltip>
+            );
+          })}
         </Grid>
         <Grid
           sx={{

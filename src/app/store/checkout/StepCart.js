@@ -62,8 +62,13 @@ const StepCart = ({ handleNext }) => {
   const queryClient = useQueryClient();
   const userData = localStorage.getItem("userData");
 
-  const handleDeleteItem = (id) => {
-    _cart.delete({ id, cart_id }).then((res) => {
+  const handleDeleteItem = (params) => {
+    const data = {
+      product_id: params?.id,
+      variant_id: params?.variant_id,
+    };
+
+    _cart.delete({ data, cart_id }).then((res) => {
       // Invalidate the "cart" query to refetch the updated cart data
       if (res?.code === 200) {
         queryClient.invalidateQueries("cart");
@@ -202,7 +207,7 @@ const StepCart = ({ handleNext }) => {
                         size="small"
                         className="remove-item"
                         sx={{ color: "text.primary" }}
-                        onClick={() => handleDeleteItem(item?.id)}
+                        onClick={() => handleDeleteItem(item)}
                       >
                         <Icon icon="tabler:x" fontSize={20} />
                       </IconButton>
@@ -298,7 +303,7 @@ const StepCart = ({ handleNext }) => {
                             }}
                           >
                             <QuantityInput
-                              productID={item?.id}
+                              product={item}
                               quantity={item?.quantity}
                               max={item?.stock}
                               cartID={cart_id}
