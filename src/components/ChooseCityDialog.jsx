@@ -1,8 +1,8 @@
 import { Dialog, DialogContent, DialogContentText } from "@mui/material";
 import logo from "assets/images/logo.png";
-import { useState } from "react";
 import ChooseCity from "./ChooseCity";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 const ChooseCityDialog = () => {
   const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
@@ -26,8 +26,8 @@ const ChooseCityDialog = () => {
           alt=""
         />
         <DialogContentText textAlign={"center"} sx={{ fontSize: "1.5rem" }}>
-          {t("Select your city for a customized shopping journey")}
-          <ChooseCity />
+          {t("Select your city for a customized shopping journey")}
+          <ChooseCity onClose={() => setOpen(false)} />
         </DialogContentText>
       </DialogContent>
     </Dialog>

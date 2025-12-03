@@ -233,9 +233,9 @@ export default function About() {
                     fontWeight: "400",
                   }}
                 >
-                  {t(
-                    "We believe that true strength lies in the diversity of our team and the supportive work environment we create together.Here, every voice is heard, and every idea is valued, because we see differences as a source of creativity and success."
-                  )}
+                  {t("We_believe")}
+                  <br />
+                  {t("every_voice")}
                 </Typography>
               </Box>
             </Box>

@@ -54,6 +54,9 @@ function App() {
         "I am the smart assistant from Dawaa Alhayat . How can I help you today?",
       ],
     });
+ 
+    const i18nextLng = localStorage.getItem("i18nextLng");
+    if (!i18nextLng) localStorage.setItem("i18nextLng", "ar");
   }, []);
 
   return (
