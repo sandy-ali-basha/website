@@ -37,6 +37,11 @@ export const useNavBar = () => {
     },
     {
       id: 5,
+      label: t("Location"),
+      onClick: () => navigate("/profile/country"),
+    },
+    {
+      id: 5,
       label: t("Log out"),
       onClick: () => {
         localStorage.clear();

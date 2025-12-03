@@ -73,7 +73,7 @@ const StepCart = ({ handleNext }) => {
       if (res?.code === 200) {
         queryClient.invalidateQueries("cart");
         const currentCartCount =
-          parseInt(localStorage.getItem("cart_count")) || 0;
+        parseInt(localStorage.getItem("cart_count")) || 0;
         localStorage.setItem("cart_count", Math.max(currentCartCount - 1, 0));
         Swal.fire({
           icon: "success",

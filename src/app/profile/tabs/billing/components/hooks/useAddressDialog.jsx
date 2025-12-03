@@ -68,6 +68,7 @@ export const useAddressDialog = ({ handleClose }) => {
     const newInput = {
       ...input,
       user_id: userData.user_id,
+      country_id: 2,
       billing_default: checked,
       shipping_default: checked,
     };

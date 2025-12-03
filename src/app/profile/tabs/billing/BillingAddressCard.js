@@ -62,7 +62,7 @@
                     )}
                   </Typography>
                 )}{" "}
-                {data?.addresses?.map((item, idx) => (
+                {data?.addresses && data?.addresses?.map((item, idx) => (
                   <Grid
                     container
                     key={idx}

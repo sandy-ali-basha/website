@@ -95,7 +95,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
   const tabContentList = {
     account: <TabAccount />,
     security: <TabSecurity />,
-    billing: <TabBilling apiPricingPlanData={apiPricingPlanData} />,
+    // billing: <TabBilling apiPricingPlanData={apiPricingPlanData} />,
     orders: <TabOrders />,
     addresses: <TabAddresses />,
     points: <TabPoints />,
@@ -145,7 +145,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                       </Box>
                     }
                   />  
-                  <Tab
+                  {/* <Tab
                     value="billing"
                     label={
                       <Box
@@ -159,7 +159,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                         {!hideText && t("Billing")}
                       </Box>
                     }
-                  />
+                  /> */}
                   <Tab
                     value="orders"
                     label={

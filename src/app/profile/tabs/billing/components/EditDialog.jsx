@@ -42,7 +42,7 @@ const EditDialog = ({ open, handleClose, id }) => {
   const [regions, setRegions] = useState([]);
   const [cities, setCities] = useState([]);
 
-  const selectedRegion = watch("region");
+  const selectedRegion = watch("city");
 
   // Fetch regions (countries)
   useMemo(() => {
@@ -56,8 +56,7 @@ const EditDialog = ({ open, handleClose, id }) => {
   // Fetch existing address
   const { data, isLoading } = useQuery(
     ["addresses", `id-${id}`],
-    () =>
-      _addresses.get(id).then((res) => res?.data),
+    () => _addresses.get(id).then((res) => res?.data),
     {}
   );
 
@@ -73,22 +72,21 @@ const EditDialog = ({ open, handleClose, id }) => {
       setValue("contact_phone", addr.contact_phone || "");
       setValue("line_one", addr.line_one || "");
       setValue("delivery_instructions", addr.delivery_instructions || "");
-      setValue("state", addr.state || "");
 
-      // --- REGION NAME instead of ID ---
-    if (addr.region) {
-      setValue("region", addr.region);
+      // Region = country name coming from API in "city"
+      const regionName = addr.city;
+      setValue("city", regionName);
 
-      const selected = regions.find((r) => r.name === addr.region);
-      if (selected) {
-        setCities(selected.cities || []);
+      // Now find region object
+      const foundRegion = regions.find((r) => r.name === regionName);
+
+      if (foundRegion) {
+        setCities(foundRegion.cities || []);
+
+        // State = city name coming from API
+        const stateName = addr.state;
+        setValue("state", stateName);
       }
-    }
-
-    // --- CITY NAME instead of ID ---
-    if (addr.city) {
-      setValue("city", addr.city);
-    }
     }
   }, [data?.data, regions, setChecked, setValue]);
 
@@ -97,10 +95,10 @@ const EditDialog = ({ open, handleClose, id }) => {
     if (selectedRegion) {
       const selected = regions.find((r) => r.name === selectedRegion);
       setCities(selected?.cities || []);
-      setValue("city", "");
+      setValue("state", "");
     } else {
       setCities([]);
-      setValue("city", "");
+      setValue("state", "");
     }
   }, [selectedRegion, regions, setValue]);
 
@@ -184,11 +182,11 @@ const EditDialog = ({ open, handleClose, id }) => {
 
             {/* Region */}
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth error={!!errors.region}>
+              <FormControl fullWidth error={!!errors.city}>
                 <Select
                   fullWidth
                   displayEmpty
-                  {...register("region")}
+                  {...register("city")}
                   defaultValue=""
                 >
                   <MenuItem value="" disabled>
@@ -202,17 +200,17 @@ const EditDialog = ({ open, handleClose, id }) => {
                     </MenuItem>
                   ))}
                 </Select>
-                <FormHelperText>{errors.region?.message}</FormHelperText>
+                <FormHelperText>{errors.city?.message}</FormHelperText>
               </FormControl>
             </Grid>
 
             {/* City - depends on region */}
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth error={!!errors.city}>
+              <FormControl fullWidth error={!!errors.state}>
                 <Select
                   fullWidth
                   displayEmpty
-                  {...register("city")}
+                  {...register("state")}
                   disabled={!selectedRegion}
                   defaultValue=""
                 >
@@ -229,12 +227,12 @@ const EditDialog = ({ open, handleClose, id }) => {
                     </MenuItem>
                   ))}
                 </Select>
-                <FormHelperText>{errors.city?.message}</FormHelperText>
+                <FormHelperText>{errors.state?.message}</FormHelperText>
               </FormControl>
             </Grid>
 
             {/* State */}
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
                 label={t("State")}
@@ -243,7 +241,7 @@ const EditDialog = ({ open, handleClose, id }) => {
                 error={!!errors.state}
                 helperText={errors.state?.message || ""}
               />
-            </Grid>
+            </Grid> */}
 
             {/* Contact Email */}
             <Grid item xs={12} sm={6}>
@@ -300,8 +298,10 @@ const EditDialog = ({ open, handleClose, id }) => {
             </Grid>
 
             {/* Default Address */}
-            <Grid item xs={12}>
-              <Checkbox onChange={handleChange} />
+            <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
+              <Checkbox
+                onChange={handleChange}
+              />
               <Typography variant="body2">
                 {t("Default address for shipping")}
               </Typography>

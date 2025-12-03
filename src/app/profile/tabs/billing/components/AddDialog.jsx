@@ -39,7 +39,8 @@ const AddDialog = ({ open, handleClose }) => {
   const [cities, setCities] = useState([]);
 
   // watch selected region to update city list
-  const selectedRegion = watch("country_id");
+  const selectedRegion = watch("city");
+  console.log("selectedRegion", selectedRegion);
 
   useMemo(() => {
     _countries.index().then((response) => {
@@ -52,12 +53,12 @@ const AddDialog = ({ open, handleClose }) => {
   // update cities when region changes
   React.useEffect(() => {
     if (selectedRegion) {
-      const selected = countries.find((r) => r.id === selectedRegion);
+      const selected = countries.find((r) => r.name === selectedRegion);
       setCities(selected?.cities || []);
-      setValue("city", ""); // reset city when region changes
+      setValue("state", ""); // reset city when region changes
     } else {
       setCities([]);
-      setValue("city", "");
+      setValue("state", "");
     }
   }, [selectedRegion, countries, setValue]);
 
@@ -136,11 +137,11 @@ const AddDialog = ({ open, handleClose }) => {
 
           {/* REGION (country list actually) */}
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth error={!!errors.country_id}>
+            <FormControl fullWidth error={!!errors.city}>
               <Select
                 fullWidth
                 displayEmpty
-                {...register("country_id")}
+                {...register("city")}
                 defaultValue=""
               >
                 <MenuItem value="" disabled>
@@ -149,22 +150,22 @@ const AddDialog = ({ open, handleClose }) => {
                   </Box>
                 </MenuItem>
                 {countries?.map((item) => (
-                  <MenuItem value={item.id} key={item.id}>
+                  <MenuItem value={item.name} key={item.id}>
                     <Box sx={{ color: "text.main" }}>{item.name}</Box>
                   </MenuItem>
                 ))}
               </Select>
-              <FormHelperText>{errors.country_id?.message}</FormHelperText>
+              <FormHelperText>{errors.city?.message}</FormHelperText>
             </FormControl>
           </Grid>
 
-          {/* CITY - dynamic based on selected region */}
+          {/* state - dynamic based on selected region (city)*/}
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth error={!!errors.city}>
+            <FormControl fullWidth error={!!errors.state}>
               <Select
                 fullWidth
                 displayEmpty
-                {...register("city")}
+                {...register("state")}
                 defaultValue=""
                 disabled={!selectedRegion}
               >
@@ -176,17 +177,17 @@ const AddDialog = ({ open, handleClose }) => {
                   </Box>
                 </MenuItem>
                 {cities.map((item) => (
-                  <MenuItem value={item.id} key={item.id}>
+                  <MenuItem value={item.name} key={item.id}>
                     <Box sx={{ color: "text.main" }}>{item.name}</Box>
                   </MenuItem>
                 ))}
               </Select>
-              <FormHelperText>{errors.city?.message}</FormHelperText>
+              <FormHelperText>{errors.state?.message}</FormHelperText>
             </FormControl>
           </Grid>
 
           {/* STATE */}
-          <Grid item xs={12} sm={6}>
+          {/* <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               label={t("State")}
@@ -195,7 +196,7 @@ const AddDialog = ({ open, handleClose }) => {
               error={!!errors.state}
               helperText={errors.state?.message || ""}
             />
-          </Grid>
+          </Grid> */}
 
           {/* CONTACT EMAIL */}
           <Grid item xs={12} sm={6}>
@@ -252,7 +253,7 @@ const AddDialog = ({ open, handleClose }) => {
           </Grid>
 
           {/* DEFAULT ADDRESS CHECKBOX */}
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
             <Checkbox onChange={handleChange} />
             <Typography variant="body2">
               {t("Default address for shipping")}
