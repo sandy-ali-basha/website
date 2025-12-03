@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
 import {
   Dialog,
@@ -16,10 +16,13 @@ import {
   FormControl,
   Box,
   FormHelperText,
+  InputLabel,
 } from "@mui/material";
+
 import ButtonLoader from "components/customs/ButtonLoader";
+import LocationPicker from "./LocationPicker";
 import { useAddressDialog } from "./hooks/useAddressDialog";
-import { _countries } from "api/country/countries"; // your region API (actually regions here)
+import { _cities } from "api/country/country";
 
 const AddDialog = ({ open, handleClose }) => {
   const {
@@ -31,56 +34,80 @@ const AddDialog = ({ open, handleClose }) => {
     handleSubmit,
     control,
     t,
-    watch,
     setValue,
   } = useAddressDialog({ handleClose });
 
-  const [countries, setCountries] = useState([]);
-  const [cities, setCities] = useState([]);
+  const [cities, setCities] = useState();
+  const [location, setLocation] = useState([
+    4899113.013567734, 4326807.948463461,
+  ]); // Default coordinates (Erbil center)
 
-  // watch selected region to update city list
-  const selectedRegion = watch("city");
-  console.log("selectedRegion", selectedRegion);
+  console.log("location: ", location);
 
   useMemo(() => {
-    _countries.index().then((response) => {
+    _cities.index().then((response) => {
       if (response.code === 200) {
-        setCountries(response.data);
+        setCities(response.data);
       }
     });
   }, []);
 
-  // update cities when region changes
-  React.useEffect(() => {
-    if (selectedRegion) {
-      const selected = countries.find((r) => r.name === selectedRegion);
-      setCities(selected?.cities || []);
-      setValue("state", ""); // reset city when region changes
-    } else {
-      setCities([]);
-      setValue("state", "");
+  useEffect(() => {
+    if (location) {
+      setValue("longitude", location[0]);
+      setValue("latitude", location[1]);
     }
-  }, [selectedRegion, countries, setValue]);
+  }, [location, setValue]);
+
+  const resetOnClose = () => {
+    const form = document.querySelector("form");
+    if (form) form.reset();
+    handleClose();
+  };
 
   return (
     <Dialog
       open={open}
-      onClose={() => {
-        const form = document.querySelector("form");
-        if (form) form.reset();
-        handleClose();
-      }}
-      aria-labelledby="alert-dialog-title"
+      onClose={resetOnClose}
       scroll="paper"
+      aria-labelledby="add-address-dialog-title"
       PaperProps={{
         component: "form",
         onSubmit: handleSubmit(handleCreate),
       }}
+      maxWidth="lg"
+      fullWidth
     >
-      <DialogTitle id="scroll-dialog-title">{t("Add New Address")}</DialogTitle>
-      <DialogContent>
+      <DialogTitle id="add-address-dialog-title">
+        {t("Add New Address")}
+      </DialogTitle>
+
+      <DialogContent
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "repeat(1,1fr)", md: "repeat(2,1fr)" },
+          gap: 2.5,
+          alignItems: "center",
+        }}
+      >
+        {/* Map picker */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1.5,
+            height: { xs: "50dvh", md: "100%" },
+          }}
+        >
+          <Typography variant="subtitle1">
+            {t("Add your location on the map")}
+          </Typography>
+          <LocationPicker setLocation={setLocation} locaiton={location} />
+        </Box>
+
+        {/* Address form */}
         <Grid container spacing={2} sx={{ pt: 1 }}>
-          {/* FIRST NAME + TITLE */}
+          {/* Name and Title */}
           <Grid item xs={12} sm={6}>
             <Controller
               name="first_name"
@@ -92,7 +119,7 @@ const AddDialog = ({ open, handleClose }) => {
                   variant="outlined"
                   fullWidth
                   error={!!errors.first_name}
-                  helperText={errors.first_name?.message || ""}
+                  helperText={errors.first_name?.message}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -108,10 +135,11 @@ const AddDialog = ({ open, handleClose }) => {
                               disableUnderline
                               sx={{ mr: 1, minWidth: 60 }}
                             >
-                              <MenuItem value="Mr">{t("Mr")}</MenuItem>
-                              <MenuItem value="Mrs">{t("Mrs")}</MenuItem>
-                              <MenuItem value="Ms">{t("Ms")}</MenuItem>
-                              <MenuItem value="Dr">{t("Dr")}</MenuItem>
+                              {["Mr", "Mrs", "Ms", "Dr"].map((label) => (
+                                <MenuItem key={label} value={label}>
+                                  {t(label)}
+                                </MenuItem>
+                              ))}
                             </Select>
                           )}
                         />
@@ -123,103 +151,72 @@ const AddDialog = ({ open, handleClose }) => {
             />
           </Grid>
 
-          {/* LAST NAME */}
           <Grid item xs={12} sm={6}>
             <TextField
+              {...register("last_name")}
               fullWidth
               label={t("Last Name")}
-              placeholder="Last name"
-              {...register("last_name")}
               error={!!errors.last_name}
-              helperText={errors.last_name?.message || ""}
+              helperText={errors.last_name?.message}
             />
           </Grid>
 
-          {/* REGION (country list actually) */}
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth error={!!errors.city}>
-              <Select
-                fullWidth
-                displayEmpty
-                {...register("city")}
-                defaultValue=""
-              >
-                <MenuItem value="" disabled>
-                  <Box sx={{ color: "text.secondary" }}>
-                    {t("Select a Country")}
-                  </Box>
-                </MenuItem>
-                {countries?.map((item) => (
-                  <MenuItem value={item.name} key={item.id}>
-                    <Box sx={{ color: "text.main" }}>{item.name}</Box>
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>{errors.city?.message}</FormHelperText>
-            </FormControl>
-          </Grid>
-
-          {/* state - dynamic based on selected region (city)*/}
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth error={!!errors.state}>
-              <Select
-                fullWidth
-                displayEmpty
-                {...register("state")}
-                defaultValue=""
-                disabled={!selectedRegion}
-              >
-                <MenuItem value="" disabled>
-                  <Box sx={{ color: "text.secondary" }}>
-                    {selectedRegion
-                      ? t("Select a city")
-                      : t("Select country first")}
-                  </Box>
-                </MenuItem>
-                {cities.map((item) => (
-                  <MenuItem value={item.name} key={item.id}>
-                    <Box sx={{ color: "text.main" }}>{item.name}</Box>
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>{errors.state?.message}</FormHelperText>
-            </FormControl>
-          </Grid>
-
-          {/* STATE */}
-          {/* <Grid item xs={12} sm={6}>
             <TextField
+              {...register("contact_email")}
+              fullWidth
+              label={t("Contact Email")}
+              placeholder="jone@mail.com"
+              error={!!errors.contact_email}
+              helperText={errors.contact_email?.message}
+            />
+          </Grid>
+
+          {/* City selection */}
+          <Grid item xs={12}>
+            {cities ? (
+              <FormControl fullWidth>
+                <InputLabel id="city-label">{t("city")}</InputLabel>
+                <Select
+                  labelId="city-label"
+                  label={t("city")}
+                  {...register("city")}
+                  sx={{ color: "text.main" }}
+                >
+                  {cities?.state?.map((item) => (
+                    <MenuItem key={item.id} value={item.value}>
+                      <Box color="text.main">{item.name}</Box>
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText error>{errors.city?.message}</FormHelperText>
+              </FormControl>
+            ) : (
+              <Typography variant="body2">{t("Please add cities")}</Typography>
+            )}
+          </Grid>
+
+          {/* Other address fields */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              {...register("state")}
               fullWidth
               label={t("State")}
               placeholder="State"
-              {...register("state")}
               error={!!errors.state}
-              helperText={errors.state?.message || ""}
-            />
-          </Grid> */}
-
-          {/* CONTACT EMAIL */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label={t("Contact Email")}
-              placeholder="john@mail.com"
-              {...register("contact_email")}
-              error={!!errors.contact_email}
-              helperText={errors.contact_email?.message || ""}
+              helperText={errors.state?.message}
             />
           </Grid>
 
-          {/* PHONE */}
           <Grid item xs={12} sm={6}>
             <TextField
+              {...register("contact_phone")}
               fullWidth
               type="number"
               label={t("Phone Number")}
               placeholder="012 345 1111"
-              {...register("contact_phone")}
               error={!!errors.contact_phone}
-              helperText={errors.contact_phone?.message || ""}
+              helperText={errors.contact_phone?.message}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">IQ (+964)</InputAdornment>
@@ -228,34 +225,32 @@ const AddDialog = ({ open, handleClose }) => {
             />
           </Grid>
 
-          {/* ADDRESS */}
           <Grid item xs={12}>
             <TextField
+              {...register("line_one")}
               fullWidth
               label={t("Address")}
               placeholder={t("e.g. building name, street #")}
-              {...register("line_one")}
               error={!!errors.line_one}
-              helperText={errors.line_one?.message || ""}
+              helperText={errors.line_one?.message}
             />
           </Grid>
 
-          {/* DELIVERY INSTRUCTIONS */}
           <Grid item xs={12}>
             <TextField
+              {...register("delivery_instructions")}
               fullWidth
               label={t("Delivery Instructions")}
               placeholder={t("Please leave the package at the door")}
-              {...register("delivery_instructions")}
               error={!!errors.delivery_instructions}
-              helperText={errors.delivery_instructions?.message || ""}
+              helperText={errors.delivery_instructions?.message}
             />
           </Grid>
 
-          {/* DEFAULT ADDRESS CHECKBOX */}
-          <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
-            <Checkbox onChange={handleChange} />
-            <Typography variant="body2">
+          {/* Default address */}
+          <Grid item xs={12}>
+            <Checkbox variant="soft" onChange={handleChange} />
+            <Typography variant="body1">
               {t("Default address for shipping")}
             </Typography>
           </Grid>

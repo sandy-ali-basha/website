@@ -171,6 +171,7 @@ const Faqs = ({ data, activeTab, handleChange }) => {
             }}
           >
             <img
+              loading="lazy"
               src="/images/pages/faq-illustration.png"
               alt="illustration"
               width="230"

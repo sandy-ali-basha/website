@@ -1,8 +1,7 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Grid, TextField, Typography } from "@mui/material";
 import CAccordion from "components/modules/Accordion";
 import SearchInput from "components/modules/SearchInput";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
 
 const SideDrawer = ({
   valuetext,
@@ -14,8 +13,8 @@ const SideDrawer = ({
   handleCheked,
   searchResults,
   setSearchResults,
-  ClearFilter,
-  selectedAttributes,
+  searchTerm,
+  setSearchTerm,
 }) => {
   const { t } = useTranslation("index");
 
@@ -28,54 +27,48 @@ const SideDrawer = ({
         pb: 3,
       }}
     >
-      <SearchInput searchResults={searchResults} setSearchResults={setSearchResults} />
+      <SearchInput
+        searchResults={searchResults}
+        setSearchResults={setSearchResults}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
 
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
         {t("Options")}:
       </Typography>
-
-      <CAccordion
-        data={data}
-        handleCheked={handleCheked}
-        selectedAttributes={selectedAttributes}
-      />
+      {/* // * Accourdion */}
+      <CAccordion data={data} handleCheked={handleCheked} />
 
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
         {t("Price")} {t("currency")}
       </Typography>
-
       <Box dir="ltr">
         <Grid container spacing={2} alignItems="center">
+          {/* Input for Minimum Value */}
           <Grid item xs={6}>
             <TextField
               label={t("Min Price")}
               type="number"
-              value={minValue || ""}
+              value={minValue}
               onChange={handleMinChange}
-              inputProps={{ min: 0, max: maxValue }}
+              inputProps={{ min: 0, max: maxValue }} // Ensure min doesn't go beyond max
               fullWidth
             />
           </Grid>
+
+          {/* Input for Maximum Value */}
           <Grid item xs={6}>
             <TextField
               label={t("Max Price")}
               type="number"
-              value={maxValue || ""}
+              value={maxValue}
               onChange={handleMaxChange}
-              inputProps={{ min: minValue }}
+              inputProps={{ min: minValue }} // Ensure max doesn't go below min
               fullWidth
             />
           </Grid>
         </Grid>
-
-        <Button
-          variant="outlined"
-          sx={{ mt: 2 }}
-          onClick={ClearFilter}
-          fullWidth
-        >
-          {t("Clear Filter")}
-        </Button>
       </Box>
     </Box>
   );

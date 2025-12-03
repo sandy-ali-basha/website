@@ -1,15 +1,11 @@
-import { _show_product } from "api/Product/show_product";
-import { useQuery } from "react-query";
+import { useGetAccourdion, useShowProduct } from "hooks/Product/useShowProduct";
+import react, { useState } from "react";
+import { useParams } from "react-router-dom";
 
-export const useGetAccourdion = (id) => {
-  const { data, isLoading } = useQuery(
-    ["product-acc", id], // ✅ use a stable key array
-    () => _show_product.acc(id),
-    {
-      keepPreviousData: true,
-      enabled: !!id, // ✅ only fetch if id exists
-    }
-  );
+export const useAccourdion = () => {
+  const params = useParams();
+  const { data, isLoading } = useGetAccourdion(params.id);
+
   return {
     data,
     isLoading,

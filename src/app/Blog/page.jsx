@@ -8,9 +8,9 @@ import { useTranslation } from "react-i18next";
 export default function Blog() {
   const { data } = useBlogs();
   const { t } = useTranslation("index");
- useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Container sx={{ mt: 20 }}>
       <Typography
@@ -33,7 +33,7 @@ export default function Blog() {
             style={{ width: "80vw", borderRadius: "10px", height: "70vh" }}
           />
         ) : (
-          <img
+          <img loading="lazy"
             style={{
               width: "80vw",
               borderRadius: "10px",
@@ -56,7 +56,7 @@ export default function Blog() {
       </Box> */}
 
       {data?.posts?.length > 1 &&
-        data?.posts?.map((item, index) => <BlogCard key={index} post={item} />)}
+        data?.posts?.map((item, index) => <BlogCard key={index} {...item} />)}
     </Container>
   );
 }

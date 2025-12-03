@@ -1,4 +1,3 @@
-  
 import React from "react";
 import ProductImg from "assets/images/jar.png";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
@@ -9,6 +8,7 @@ export default function CartMenuItem() {
     <>
       <Box sx={{ display: "flex" }}>
         <img
+          loading="lazy"
           alt="cart"
           src={ProductImg}
           style={{ height: "10vh", width: "30%", objectFit: "contain" }}

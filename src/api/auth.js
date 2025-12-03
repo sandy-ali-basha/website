@@ -10,10 +10,10 @@ export const _AuthApi = {
   getUserData: (data) => {
     return _axios.post("/auth/google/callback", data).then((res) => res.data);
   },
+
   getProfile: (id) => {
     return _axios.get(`/customers/${id}`).then((res) => res.data);
   },
-  
 
   register: (data) => {
     return _axios.post("/register", data).then((res) => {
@@ -76,11 +76,9 @@ export const _AuthApi = {
         throw error;
       });
   },
-  delete : (id)=>{
-    return _axios
-      .delete(`/customers/${id}`)
-      .then((res) => {
-        return res;
-      })
-  }
+  delete: (id) => {
+    return _axios.delete(`/customers/${id}`).then((res) => {
+      return res;
+    });
+  },
 };

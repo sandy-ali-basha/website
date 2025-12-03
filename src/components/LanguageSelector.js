@@ -7,7 +7,7 @@ import { settingsStore } from "store/settingsStore";
 import axios from "axios";
 
 const LanguageSelector = () => {
-  const { t, i18n } = useTranslation("index");
+  const { t, i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const [direction, setDirection] = settingsStore((state) => [
     state.direction,

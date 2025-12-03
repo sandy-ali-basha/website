@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "@mui/material/Card";
-import { CardContent, CardMedia, Typography } from "@mui/material";
+import { CardContent, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import CardShimmer from "components/customs/loaders/CardShimmer";
 

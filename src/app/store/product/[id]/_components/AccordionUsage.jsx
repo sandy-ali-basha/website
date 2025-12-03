@@ -4,12 +4,10 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Loader from "components/modules/Loader";
-import { useParams } from "react-router-dom";
-import { useGetAccourdion } from "../hooks/useAccourdion";
 
- function AccordionUsage() {
-  const params = useParams();
-  const { data, isLoading } = useGetAccourdion(params.id);
+export default function AccordionUsage({ data, isLoading }) {
+  console.log(data);
+  console.log(data);
 
   return (
     <>
@@ -42,4 +40,3 @@ import { useGetAccourdion } from "../hooks/useAccourdion";
     </>
   );
 }
-export default AccordionUsage

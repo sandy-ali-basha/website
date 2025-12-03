@@ -6,6 +6,7 @@ import {
   Grid,
   Typography,
   CircularProgress,
+  Button,
   Card,
   Container,
   useMediaQuery,
@@ -22,7 +23,6 @@ import TabOrders from "./TabOrders";
 import TabAddresses from "./TabAddresses";
 import TabPoints from "./TabPoints";
 import { useTranslation } from "react-i18next";
-import TabCountry from "./TabCountry";
 
 const TabList = styled(MuiTabList)(({ theme }) => ({
   border: "0 !important",
@@ -95,11 +95,10 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
   const tabContentList = {
     account: <TabAccount />,
     security: <TabSecurity />,
-    // billing: <TabBilling apiPricingPlanData={apiPricingPlanData} />,
+    billing: <TabBilling apiPricingPlanData={apiPricingPlanData} />,
     orders: <TabOrders />,
     addresses: <TabAddresses />,
     points: <TabPoints />,
-    country: <TabCountry />,
   };
 
   return (
@@ -144,7 +143,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                         {!hideText && t("Security")}
                       </Box>
                     }
-                  />  
+                  />
                   {/* <Tab
                     value="billing"
                     label={
@@ -206,21 +205,6 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                       >
                         <Icon fontSize="1.25rem" icon="mdi:dollar" />
                         {!hideText && t("My Points")}
-                      </Box>
-                    }
-                  />
-                  <Tab
-                    value="Country"
-                    label={
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          ...(!hideText && { "& svg": { mr: 1 } }),
-                        }}
-                      >
-                        <Icon fontSize="1.25rem" icon="mdi:globe" />
-                        {!hideText && t("Country")}
                       </Box>
                     }
                   />

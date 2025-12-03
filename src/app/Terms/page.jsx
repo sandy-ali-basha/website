@@ -12,10 +12,9 @@ export default function Terms() {
     _terms.getTerm(params.id).then((res) => res?.data)
   );
   const { t } = useTranslation("index");
-    useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
-  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Container sx={{ mt: 20, textAlign: "center", my: 3 }}>
       {isLoading ? (

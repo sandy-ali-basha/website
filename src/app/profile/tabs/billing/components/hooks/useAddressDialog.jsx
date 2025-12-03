@@ -22,6 +22,8 @@ export const useAddressDialog = ({ handleClose }) => {
     state: yup.string().required(t("State is required")),
     line_one: yup.string().required(t("Address is required")),
     delivery_instructions: yup.string(),
+    longitude: yup.number().required(),
+    latitude: yup.number().required(),
   });
 
   const [loading, setLoading] = useState(false);
@@ -33,7 +35,7 @@ export const useAddressDialog = ({ handleClose }) => {
   };
 
   const formOptions = { resolver: yupResolver(schema) };
-  const { register, handleSubmit, formState, control, watch,setValue } =
+  const { register, handleSubmit, formState, control, setValue } =
     useForm(formOptions);
   const { errors } = formState;
   const queryClient = useQueryClient();
@@ -43,8 +45,8 @@ export const useAddressDialog = ({ handleClose }) => {
     {
       onSuccess: (res) => {
         if (res.code === 200) {
-          handleClose(); // Close dialog on successful creation
           queryClient.invalidateQueries(["addresses"]); // Invalidate queries to refresh address list
+          handleClose(); // Close dialog on successful creation
         }
         setLoading(false); // Stop loading after response
       },
@@ -85,8 +87,7 @@ export const useAddressDialog = ({ handleClose }) => {
     handleSubmit,
     t,
     control,
-    watch,
-    setValue,
     setChecked,
+    setValue,
   };
 };

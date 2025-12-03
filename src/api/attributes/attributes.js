@@ -13,7 +13,7 @@ export const _Attributes = {
   },
   getAttributeValues: async (id) => {
     return _axios
-      .get(`/product_attributes_values/attribute/${id}?all=false`, {
+      .get(`/product_attributes_values/attribute/${id}?all=true`, {
         headers: {
           ...HttpRequestInterceptor(),
         },

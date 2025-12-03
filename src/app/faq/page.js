@@ -20,9 +20,6 @@ import FaqFooter from "./_components/FaqFooter";
 // import FaqFooter from "./_components/FaqFooter";
 
 const FAQ = () => {
-   useEffect(() => {
-        window.scrollTo(0, 0);
-      }, []);
   // ** States\
   const apiData = {
     faqData: {

@@ -280,7 +280,12 @@ const PaymentMethodCard = () => {
                   }}
                 >
                   <div>
-                    <img height="25" alt={item.imgAlt} src={item.imgSrc} />
+                    <img
+                      loading="lazy"
+                      height="25"
+                      alt={item.imgAlt}
+                      src={item.imgSrc}
+                    />
                     <Box
                       sx={{
                         mt: 2,

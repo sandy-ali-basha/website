@@ -265,7 +265,8 @@ const BillingHistoryTable = () => {
                         {order.lines.map((line) => line.description).join(", ")}
                       </Typography>
                       <Typography sx={{ color: "text.secondary" }}>
-                        {t("Total")}: {order.total.toLocaleString()} {t("currency")}
+                        {t("Total")}: {order.total.toLocaleString()}{" "}
+                        {t("currency")}
                       </Typography>
                       <Tooltip title={label}>
                         <Chip

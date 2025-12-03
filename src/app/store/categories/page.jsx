@@ -50,7 +50,7 @@ export default function Categories() {
     AttrValuesData,
     AttrValuesLoading,
     selectedCategoryId,
-    t
+    t,
   } = useCategories();
 
   return (

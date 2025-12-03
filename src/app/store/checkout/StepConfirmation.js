@@ -151,8 +151,7 @@ const StepConfirmation = ({ orderResponse }) => {
                     }}
                   >
                     <Typography sx={{ color: "primary.main" }}>
-                      {item.unit_price.value.toLocaleString()}{" "}
-                      {t("currency")}
+                      {item.unit_price.value.toLocaleString()} {t("currency")}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -234,26 +233,25 @@ const StepConfirmation = ({ orderResponse }) => {
                 >
                   <Typography>{t("Sub Total")}</Typography>
                   <Typography sx={{ color: "text.secondary" }}>
-                    {orderResponse.sub_total.toLocaleString()}{" "}
+                    {orderResponse.sub_total.toLocaleString()} {t("currency")}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    mb: 4,
+                    gap: 2,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography>{t("Shipping")}</Typography>
+                  <Typography sx={{ color: "text.secondary" }}>
+                    {orderResponse.shipping_total.toLocaleString()}{" "}
                     {t("currency")}
                   </Typography>
                 </Box>
-                    <Box
-                      sx={{
-                        mb: 4,
-                        gap: 2,
-                        display: "flex",
-                        flexWrap: "wrap",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Typography>{t("Shipping")}</Typography>
-                      <Typography sx={{ color: "text.secondary" }}>
-                        {orderResponse.shipping_total.toLocaleString()}{" "}
-                        {t("currency")}
-                      </Typography>
-                    </Box>
                 <Box
                   sx={{
                     mb: 4,
@@ -321,7 +319,7 @@ const StepConfirmation = ({ orderResponse }) => {
               >
                 <Typography sx={{ fontWeight: 500 }}>{t("Total")}</Typography>
                 <Typography sx={{ fontWeight: 500 }}>
-                {orderResponse.total.toLocaleString()} {t("currency")}
+                  {orderResponse.total.toLocaleString()} {t("currency")}
                 </Typography>
               </Box>
             </CardContent>

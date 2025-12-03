@@ -9,26 +9,37 @@ import {
   IconButton,
   Tooltip,
   Badge,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import logo from "assets/images/logo.png";
 import {
-  FlagOutlined,
+  Flag,
   PersonOutlineOutlined,
   ShoppingCartOutlined,
 } from "@mui/icons-material";
 import { useNavBar } from "./useNavBar";
 import MenuButton from "components/modules/NavBar/MenuButton";
 import LanguageSelector from "components/LanguageSelector";
-import MenuIcon from "@mui/icons-material/Menu";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import CategoryDropdown from "components/CategoryDropdown";
+import MobileNavBar from "./MobileNavBar";
 import { _AuthApi } from "api/auth";
-import ChooseCityDialog from "components/ChooseCityDialog";
 
 function NavBar() {
+  const [brandsAnchorEl, setBrandsAnchorEl] = useState(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const isBrandsDropDownOpen = Boolean(brandsAnchorEl);
 
-  const { settings, pages, navigate, t } = useNavBar();
-  // Get the cart count from local storage
+  const { settings, navigate, pages, cities, brands, categories, t } =
+    useNavBar();
+
   const cartCount = parseInt(localStorage.getItem("cart_count")) || 0;
-  const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   return (
     <AppBar
@@ -36,7 +47,7 @@ function NavBar() {
       color="transparent"
       sx={{
         width: "100%",
-        boxShadow: "0px ",
+        boxShadow: "0px",
         background: "#6666663d",
         backdropFilter: "blur(5px)",
       }}
@@ -50,36 +61,39 @@ function NavBar() {
             href="/"
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex" },
+              display: { xs: "none", lg: "flex" },
             }}
           >
-            <img alt="logo" src={logo} style={{ width: "6vw" }} />
+            <img
+              loading="lazy"
+              alt="logo"
+              src={logo}
+              style={{ width: "6vw" }}
+            />
           </Typography>
-          <Box
-            sx={{
-              flexGrow: 1,
-              alignItems: "center",
-              display: { xs: "flex", md: "none" },
-            }}
-          >
-            <MenuButton
-              badgeNumber={0}
-              icon={<MenuIcon sx={{ color: "white" }} />}
-              menuItems={pages.map((item) => ({
-                ...item,
-                key: item.id,
-              }))}
+
+          {/* Mobile Navigation */}
+          <Box sx={{ display: { xs: "flex", lg: "none" } }}>
+            <MobileNavBar
+              pages={pages}
+              categories={categories}
+              brands={brands}
+              settings={settings}
+              t={t}
+              mobileOpen={mobileOpen}
+              handleDrawerToggle={handleDrawerToggle}
             />
           </Box>
+
           <Typography
             variant="h5"
             noWrap
             component="a"
             href="/"
             sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
+              mx: "auto",
+              display: { xs: "flex", lg: "none" },
+              flexGrow: 0,
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
@@ -87,37 +101,158 @@ function NavBar() {
               textDecoration: "none",
             }}
           >
-            <img alt="logo" style={{ width: "10vw" }} src={logo} />
+            <img
+              loading="lazy"
+              alt="logo"
+              style={{ width: "10vw" }}
+              src={logo}
+            />
           </Typography>
+
+          {/* Desktop Navigation */}
           <Box
             sx={{
               flexGrow: 1,
-              display: { xs: "none", md: "flex" },
+              display: { xs: "none", lg: "flex" },
               justifyContent: "center",
             }}
           >
-            {pages?.map((page) => (
+            {pages.slice(0, 2).map((page) => (
               <Button
                 key={page.id}
                 onClick={page.onClick}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "block",
+                }}
               >
                 {page.label}
               </Button>
             ))}
+
+            {categories &&
+              categories.map((e) => (
+                <CategoryDropdown
+                  key={e.id}
+                  translations={e.translations}
+                  items={e.values}
+                />
+              ))}
+
+            <div>
+              <Button
+                id="demo-positioned-button"
+                aria-controls={
+                  isBrandsDropDownOpen ? "demo-positioned-menu" : undefined
+                }
+                aria-haspopup="true"
+                aria-expanded={isBrandsDropDownOpen ? "true" : undefined}
+                onClick={(e) => setBrandsAnchorEl(e.currentTarget)}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                {t("Brands")}
+                {isBrandsDropDownOpen ? (
+                  <KeyboardArrowUp fontSize="small" />
+                ) : (
+                  <KeyboardArrowDown fontSize="small" />
+                )}
+              </Button>
+
+              <Menu
+                id="demo-positioned-menu"
+                anchorEl={brandsAnchorEl}
+                open={isBrandsDropDownOpen}
+                onClose={() => setBrandsAnchorEl(null)}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+              >
+                {brands &&
+                  brands?.map((e) => (
+                    <MenuItem
+                      key={e.id}
+                      onClick={() => setBrandsAnchorEl(null)}
+                    >
+                      <Link
+                        to={
+                          e.havePage ? `/store/categories/brand/${e.id}` : "#"
+                        }
+                        style={{
+                          display: "flex",
+                          textDecoration: "none",
+                          color: "#313131",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: "40px",
+                            height: "40px",
+                            paddingRight: "10px",
+                          }}
+                        >
+                          <img
+                            loading="lazy"
+                            src={e.images[0]}
+                            alt={e.name}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "contain",
+                            }}
+                          />
+                        </Box>
+                        {t(e.name)}
+                      </Link>
+                    </MenuItem>
+                  ))}
+              </Menu>
+            </div>
+
+            {pages[2] && (
+              <Button
+                onClick={pages[2].onClick}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "block",
+                }}
+              >
+                {pages[2].label}
+              </Button>
+            )}
           </Box>
-          <ChooseCityDialog open={open} setOpen={setOpen} />
+
+          <Box>
+            <MenuButton
+              tooltip={t("change city")}
+              icon={<Flag sx={{ color: "white" }} />}
+              menuItems={cities.map((item) => ({
+                ...item,
+                key: item.id,
+              }))}
+              defaultValue={localStorage.getItem("city")}
+            />
+          </Box>
 
           <LanguageSelector />
-          <IconButton id="basic-button" onClick={() => setOpen(true)}>
-            <FlagOutlined sx={{ color: "white" }} />
-          </IconButton>
+
           <Box sx={{ mx: "10px" }}>
             <Tooltip title={t("Show Cart")}>
               <IconButton
                 id="basic-button"
                 onClick={() => navigate("/store/checkout")}
-                badgeNumber={2}
               >
                 <Badge badgeContent={cartCount} color="primary" size="small">
                   <ShoppingCartOutlined sx={{ color: "white" }} />
@@ -125,7 +260,8 @@ function NavBar() {
               </IconButton>
             </Tooltip>
           </Box>
-          <Box sx={{ mx: "10px" }}>
+
+          <Box>
             {_AuthApi.getToken() ? (
               <MenuButton
                 icon={<PersonOutlineOutlined sx={{ color: "white" }} />}
@@ -133,11 +269,17 @@ function NavBar() {
                   ...item,
                   key: item.id,
                 }))}
+                sx={{ mx: "10px" }}
               />
             ) : (
               <Button
                 onClick={() => navigate("/login")}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  fontSize: { xs: "10px", sm: "14px" },
+                  display: { xs: "none", lg: "block" },
+                }}
               >
                 {t("sign in")}
               </Button>
@@ -145,9 +287,6 @@ function NavBar() {
           </Box>
         </Toolbar>
       </Container>
-      {/* <Box sx={{ background: "#ffffff9c" }}>
-        <Categories />
-      </Box> */}
     </AppBar>
   );
 }

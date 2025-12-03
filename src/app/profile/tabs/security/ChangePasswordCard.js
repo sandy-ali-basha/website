@@ -22,7 +22,10 @@ const defaultValues = {
 };
 
 const schema = yup.object().shape({
-  current_password: yup.string().min(8).required("Current password is required"),
+  current_password: yup
+    .string()
+    .min(8)
+    .required("Current password is required"),
   password: yup
     .string()
     .min(8, "Password must be at least 8 characters")
@@ -193,7 +196,9 @@ const ChangePasswordCard = () => {
                     label="Confirm New Password"
                     id="input-confirm-new-password"
                     error={Boolean(errors.password_confirmation)}
-                    type={values.showpassword_confirmation ? "text" : "password"}
+                    type={
+                      values.showpassword_confirmation ? "text" : "password"
+                    }
                     helperText={errors.password_confirmation?.message}
                     InputProps={{
                       endAdornment: (

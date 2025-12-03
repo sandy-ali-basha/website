@@ -4,9 +4,12 @@ import ProductCard from "../ProductCard";
 import { useTranslation } from "react-i18next";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
+import i18n from "i18n";
 
 export default function BrandProducts({ data }) {
   const { t } = useTranslation("index");
+
+  console.log("BrandProducts: ", data);
 
   return (
     data && (
@@ -15,14 +18,17 @@ export default function BrandProducts({ data }) {
           {t("Our best sellers")}
         </Typography>
         <Swiper
-          style={{ paddingTop: "2vh", paddingBottom: "2vh" }}
+          style={{
+            paddingTop: "2vh",
+            paddingBottom: "2vh",
+            direction: i18n.language === "en" ? "ltr" : "rtl",
+          }}
           spaceBetween={20}
           slidesPerView={2}
           autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
+            delay: 5000,
+            disableOnInteraction: true,
           }}
-          lazy={true}
           modules={[Autoplay]}
           breakpoints={{
             640: {
@@ -41,13 +47,7 @@ export default function BrandProducts({ data }) {
         >
           {data?.map((item, idx) => (
             <SwiperSlide key={idx}>
-              <ProductCard
-                productImage={item?.image?.image_path}
-                productName={item?.name}
-                Price={item?.price}
-                link={`/store/product/${item?.id}/${item.name}`}
-                purchasable={item?.purchasable === "always"}
-              />
+              <ProductCard product={item} />
             </SwiperSlide>
           ))}
         </Swiper>

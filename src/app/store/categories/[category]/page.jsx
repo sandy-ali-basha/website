@@ -7,7 +7,7 @@ import {
   Grid,
   Drawer,
   IconButton,
-  Button,
+  Skeleton,
 } from "@mui/material";
 import ProductCard from "components/modules/ProductCard";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -18,7 +18,6 @@ export default function Category() {
   const {
     data,
     isLoading,
-    // sort,
     valuetext,
     minValue,
     maxValue,
@@ -29,29 +28,39 @@ export default function Category() {
     mobileOpen,
     Attr,
     handleCheked,
-    searchResults,
-    setSearchResults,
-    ClearFilter,
   } = useCategory();
+
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {
+    if (Array.isArray(data?.data?.products)) {
+      setSearchResults(data.data.products);
+    }
+  }, [data?.data?.products]);
+
+  const productsToDisplay =
+    searchTerm.trim() === "" ? data?.data?.products ?? [] : searchResults;
+
   return (
-    <Box sx={{ pt: 12, px: 2 }}>
+    <Container sx={{ pt: 15 }}>
       <Typography
-        variant="h5"
+        variant="h3"
         color="initial"
-        sx={{ overflowWrap: "break-word" }}
+        sx={{ mb: 1, overflowWrap: "break-word" }}
       >
-        {t("Home")} / {t("Products")}
+        {t("Products")}
       </Typography>
 
       <Box
         sx={{
           display: "flex",
           alignItems: "flex-start",
-          my: 1,
+          my: 5,
           flexDirection: { xs: "column", md: "row" },
         }}
       >
@@ -67,15 +76,13 @@ export default function Category() {
           <IconButton color="inherit" edge="start" onClick={handleDrawerToggle}>
             <MenuIcon />
           </IconButton>
-          {/* <SortFilter data={Attr} /> */}
         </Box>
+
         <Drawer
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
+          ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: "block", md: "none" },
             "& .MuiDrawer-paper": { boxSizing: "border-box" },
@@ -83,7 +90,6 @@ export default function Category() {
         >
           <SideDrawer
             data={Attr}
-            ClearFilter={ClearFilter}
             minValue={minValue}
             maxValue={maxValue}
             handleMinChange={handleMinChange}
@@ -92,16 +98,13 @@ export default function Category() {
             handleCheked={handleCheked}
             searchResults={searchResults}
             setSearchResults={setSearchResults}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
           />
         </Drawer>
-        <Box
-          sx={{
-            display: { xs: "none", md: "block" },
-            mx: 1,
-          }}
-        >
+
+        <Box sx={{ display: { xs: "none", md: "block" }, mx: 1 }}>
           <SideDrawer
-            ClearFilter={ClearFilter}
             valuetext={valuetext}
             data={Attr}
             minValue={minValue}
@@ -109,8 +112,13 @@ export default function Category() {
             handleMinChange={handleMinChange}
             handleMaxChange={handleMaxChange}
             handleCheked={handleCheked}
+            searchResults={searchResults}
+            setSearchResults={setSearchResults}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
           />
         </Box>
+
         <Box
           component="main"
           sx={{
@@ -118,10 +126,7 @@ export default function Category() {
             width: { xs: "100%", md: `calc(100% - 30%)` },
           }}
         >
-          {" "}
-          {searchResults?.data?.products?.length === 0 ||
-          (data?.data?.products?.length === 0 &&
-            !searchResults?.data?.products) ? (
+          {productsToDisplay.length === 0 && !isLoading && (
             <Typography
               variant="body1"
               sx={{
@@ -135,53 +140,25 @@ export default function Category() {
             >
               {t("No Product Found")} <CloseRounded />
             </Typography>
-          ) : null}
+          )}
+
           <Grid container spacing={{ md: 2, xs: 1 }}>
             {isLoading &&
-              Array.from({ length: 5 }).map((_, index) => (
-                <Grid item xs={6} sm={6} md={4} lg={3} key={index}>
-                  <ProductCard loading={true} />
+              Array.from({ length: 6 }).map((_, index) => (
+                <Grid item xs={6} md={4} lg={3} key={index}>
+                  <Skeleton variant="rectangular" width="100%" height={400} />
                 </Grid>
               ))}
 
-            {searchResults?.data?.products &&
-              searchResults?.data?.products?.map((item, idx) => {
-                return (
-                  <Grid item key={idx} xs={6} sm={6} md={4} lg={3}>
-                    <ProductCard
-                      id={item?.id}
-                      productName={item.name}
-                      Price={item?.price}
-                      productImage={item?.images[0]?.image_path}
-                      link={`/store/product/${item.id}/${item.name}`}
-                      loading={false}
-                      purchasable={item?.purchasable === "always"}
-                      offer={item?.compare_price}
-                    />
-                  </Grid>
-                );
-              })}
-            {data?.data?.products &&
-              !searchResults?.data?.products &&
-              data?.data?.products?.map((item, idx) => {
-                return (
-                  <Grid item key={idx} xs={6} sm={6} md={4} lg={3}>
-                    <ProductCard
-                      id={item?.id}
-                      productName={item.name}
-                      Price={item?.price}
-                      productImage={item?.images[0]?.image_path}
-                      link={`/store/product/${item.id}/${item.name}`}
-                      loading={false}
-                      purchasable={item?.purchasable === "always"}
-                      offer={item?.compare_price}
-                    />
-                  </Grid>
-                );
-              })}
+            {productsToDisplay.length > 0 &&
+              productsToDisplay.map((item, idx) => (
+                <Grid item key={idx} xs={6} md={4} lg={3}>
+                  <ProductCard product={item} />
+                </Grid>
+              ))}
           </Grid>
         </Box>
       </Box>
-    </Box>
+    </Container>
   );
 }

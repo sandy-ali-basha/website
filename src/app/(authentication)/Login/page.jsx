@@ -16,18 +16,11 @@ import { Link } from "react-router-dom";
 import LoginComponent from "../loginGoogle";
 
 export default function Login() {
-  const {
-    errors,
-    register,
-    t,
-    handleSubmit,
-    onSubmit,
-    loading,
-    error,
-  } = useLogin();
-   useEffect(() => {
-        window.scrollTo(0, 0);
-      }, []);
+  const { errors, register, t, handleSubmit, onSubmit, loading, error } =
+    useLogin();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Box
       sx={{
@@ -39,6 +32,7 @@ export default function Login() {
       }}
     >
       {/* <img
+        loading="lazy"
         src={img}
         alt="gummie"
         objectFit="cover"
@@ -68,7 +62,12 @@ export default function Login() {
         component="form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <img style={{ margin: "auto", width: "30%" }} src={logo} alt="logo" />
+        <img
+          loading="lazy"
+          style={{ margin: "auto", width: "30%" }}
+          src={logo}
+          alt="logo"
+        />
         <Typography
           variant="h5"
           color="initial"

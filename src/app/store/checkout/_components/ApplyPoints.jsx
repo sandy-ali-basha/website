@@ -40,7 +40,7 @@ const ApplyPoints = ({ points }) => {
           sx={{ mr: 2 }}
           placeholder={t("Enter Points")}
           type="number"
-          inputProps={{ max: data?.points }} 
+          inputProps={{ max: data?.points }}
           onChange={(e) => setCouponCode(e.target.value)}
           onInput={(e) => {
             const value = parseInt(e.target.value, 10);
@@ -58,16 +58,16 @@ const ApplyPoints = ({ points }) => {
         </Button>
       </Box>
       {alert && <Alert severity="error">{alert}</Alert>}
-      {data?.points > 0 &&
-      <Alert
-        variant="outlined"
-        severity="info"
-        size="small"
-        sx={{background:"white"}}
-      >
-        {t("you have")} {data?.points} {t("points")}
-      </Alert>
-      }
+      {data?.points > 0 && (
+        <Alert
+          variant="outlined"
+          severity="info"
+          size="small"
+          sx={{ background: "white" }}
+        >
+          {t("you have")} {data?.points} {t("points")}
+        </Alert>
+      )}
     </>
   );
 };

@@ -1,29 +1,23 @@
-import { styled, alpha } from "@mui/material/styles";
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { _axios } from "../../interceptor/http-config";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
-
-export default function SearchInput({ searchResults, setSearchResults }) {
-  const [searchTerm, setSearchTerm] = useState("");
+export default function SearchInput({
+  searchResults,
+  setSearchResults,
+  searchTerm,
+  setSearchTerm,
+}) {
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = async (event) => {
     if (event.key === "Enter") {
+      setLoading(true);
+
       try {
         // Making an API call with axios
         const response = await _axios.get(`/search-by-name`, {
@@ -32,10 +26,46 @@ export default function SearchInput({ searchResults, setSearchResults }) {
           },
         });
 
+        const userCity = Number(localStorage.getItem("city"));
+
+        const filteredProducts = response.data.data.products.filter(
+          (product) => product.city_id === (userCity || 1)
+        );
+
         // Set the search results from the API response
-        setSearchResults(response.data);
+        setSearchResults(
+          response.data.data.products.length > 0 ? filteredProducts : []
+        );
+
+        if (filteredProducts.length > 0 && searchTerm) {
+          Swal.fire({
+            icon: "success",
+            title: t("searchSuccess", { count: filteredProducts.length }),
+            toast: true,
+            position: "bottom-end",
+            showConfirmButton: false,
+            timer: 5000,
+            customClass: {
+              container: "custom-swal",
+            },
+          });
+        } else if (filteredProducts.length === 0 && searchTerm) {
+          Swal.fire({
+            icon: "warning",
+            title: t("searchEmpty"),
+            toast: true,
+            position: "bottom-end",
+            showConfirmButton: false,
+            timer: 5000,
+            customClass: {
+              container: "custom-swal",
+            },
+          });
+        }
       } catch (error) {
         console.error("Error fetching search results", error);
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -58,25 +88,20 @@ export default function SearchInput({ searchResults, setSearchResults }) {
         <SearchIcon sx={{ color: "text.primary" }} />
 
         <InputBase
-          placeholder={t("Search…")}
+          placeholder={t("searchPlaceholder")}
           inputProps={{ "aria-label": "search" }}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyPress={handleSearch} // Trigger search on "Enter"
+          disabled={loading}
         />
-      </Box>
 
-      {/* Optionally display the search results */}
-      {searchResults && searchResults?.length > 0 && (
-        <div>
-          <h2>{t("Search Results:")}</h2>
-          <ul>
-            {searchResults.map((result, index) => (
-              <li key={index}>{result.name}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+        {loading && (
+          <Box sx={{ display: "flex" }}>
+            <CircularProgress size="1rem" />
+          </Box>
+        )}
+      </Box>
     </>
   );
 }

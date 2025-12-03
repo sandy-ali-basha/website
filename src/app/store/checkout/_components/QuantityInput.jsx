@@ -5,7 +5,6 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { _cart } from "api/cart/_cart";
 import { useQueryClient } from "react-query";
-import { _currencies } from "api/country/country";
 const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   return (
     <BaseNumberInput
@@ -30,55 +29,17 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
   );
 });
 
-export default function QuantityInput({ max, quantity, product, cartID }) {
-  console.log("QuantityInput product:", product);
-  const [currencies, setCurrencies] = React.useState([]);
-
-  // fetch currencies once
-  const fetchCurrencies = React.useCallback(async () => {
-    try {
-      const res = await _currencies.getAll();
-      if (res?.data) setCurrencies(res.data);
-      return res?.data || [];
-    } catch (err) {
-      console.error("Failed to fetch currencies", err);
-      return [];
-    }
-  }, []);
-
-  // Ensure currencies are loaded
-  let currencyList = currencies;
-
+export default function QuantityInput({ max, quantity, productID, cartID }) {
   const queryClient = useQueryClient();
   const handleQuantityChange = async (event, value) => {
-    if (!currencyList.length) {
-      currencyList = await fetchCurrencies(); // wait until currencies are fetched
-    }
-    // const currencyName = selectedVariant?.currency?.name;
-    // const currency_id = currencyObj?.id || 1; // fallback
-
-    // const currencyObj = currencyList.find(
-    //   (c) => c.name.toLowerCase() === currencyName?.toLowerCase()
-    // );
     const updatedQuantity = value;
     const data = {
       products: {
-        [product.id]: {
+        [productID]: {
           qty: updatedQuantity,
         },
       },
     };
-    // const data = {
-    //   currency_id,
-    //   user_id: user_data ? user_data?.id : null,
-    //   products: [
-    //     {
-    //       variant_id: selectedVariant?.id,
-    //       id: productId,
-    //       qty: 1,
-    //     },
-    //   ],
-    // };
 
     await _cart.UpdateCart({ data, cart_id: cartID }).then(() => {
       queryClient.invalidateQueries("cart");

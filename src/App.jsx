@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Routes, Route, Outlet } from "react-router-dom";
-import "./assets/css/style.scss";
 import Home from "app/page.jsx";
-
 import LoginPage from "./app/(authentication)/Login/page.jsx";
 import About from "./app/about/page.jsx";
 import BlogPage from "./app/Blog/page.jsx";
@@ -17,9 +15,6 @@ import StoreOffersPage from "./app/store/offers/page.jsx";
 import StoreProductPage from "./app/store/product/[id]/page.jsx";
 import TermsPage from "./app/Terms/page.jsx";
 import SignUp from "app/(authentication)/signUp/page.jsx";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 import { HttpRequestInterceptor } from "interceptor/http-request.interceptor";
 import ThemeProviderWrapper from "./ThemeProviderWrapper";
 import Layout from "layout/Layout";
@@ -35,14 +30,31 @@ import ShouldBeLogged from "middlewares/ShouldBeLogged";
 import GoogleCallback from "app/(authentication)/Login/GoogleCallback";
 import ChooseCityDialog from "components/ChooseCityDialog";
 import CookieConsent from "components/CookieConsent";
+import { createChat } from "@n8n/chat";
+
+import "@n8n/chat/style.css";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "./assets/css/style.scss";
 
 function App() {
   useEffect(() => {
     HttpRequestInterceptor();
     window.scrollTo(0, 0);
-    localStorage.setItem("i18nextLng", "en");
+    // localStorage.setItem("i18nextLng", "en");
   }, []);
-  const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
+
+  useEffect(() => {
+    createChat({
+      webhookUrl:
+        "https://n8n.srv832200.hstgr.cloud/webhook/81be035f-7336-4a1c-a953-bbdabd6329c6/chat",
+      initialMessages: [
+        "Hi there! 👋",
+        "I am the smart assistant from Dawaa Alhayat . How can I help you today?",
+      ],
+    });
+  }, []);
 
   return (
     <ThemeProviderWrapper>
@@ -77,10 +89,8 @@ function App() {
           content="Explore a wide range of quality medical products at Dawaa Alhayat."
         />
       </Helmet>
-
-      <ChooseCityDialog open={open} setOpen={setOpen} />
+      <ChooseCityDialog />
       <CookieConsent />
-
       <Routes>
         <Route
           path="/login"

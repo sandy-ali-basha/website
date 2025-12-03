@@ -27,7 +27,6 @@ import Swal from "sweetalert2";
 import ApplyCoupon from "./_components/ApplyCoupon";
 import ApplyPoints from "./_components/ApplyPoints";
 import emptyCart from "assets/images/empty-cart.webp";
-import BestSellers from "components/modules/home/BestSellers";
 import Simillar from "../product/[id]/_components/Simllar";
 
 const StyledList = styled(List)(({ theme }) => ({
@@ -61,19 +60,14 @@ const StepCart = ({ handleNext }) => {
   const { data, isLoading } = useCart(cart_id);
   const queryClient = useQueryClient();
   const userData = localStorage.getItem("userData");
-
-  const handleDeleteItem = (params) => {
-    const data = {
-      product_id: params?.id,
-      variant_id: params?.variant_id,
-    };
-
-    _cart.delete({ data, cart_id }).then((res) => {
+  const handleDeleteItem = (id) => {
+    _cart.delete({ id, cart_id }).then((res) => {
       // Invalidate the "cart" query to refetch the updated cart data
+
       if (res?.code === 200) {
         queryClient.invalidateQueries("cart");
         const currentCartCount =
-        parseInt(localStorage.getItem("cart_count")) || 0;
+          parseInt(localStorage.getItem("cart_count")) || 0;
         localStorage.setItem("cart_count", Math.max(currentCartCount - 1, 0));
         Swal.fire({
           icon: "success",
@@ -99,20 +93,6 @@ const StepCart = ({ handleNext }) => {
     });
   };
 
-  // Helper function to render product variants
-  const renderVariants = (options) => {
-    if (!options || options.length === 0) return null;
-
-    // Join the variant names into a single string
-    const variantString = options.map((option) => option.name).join(" - ");
-
-    return (
-      <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>
-        {t("Options")}: {variantString}
-      </Typography>
-    );
-  };
-
   return !cart_id ? (
     <Card
       sx={{
@@ -136,15 +116,12 @@ const StepCart = ({ handleNext }) => {
                 <Typography variant="h5" sx={{ mb: 2 }}>
                   <CardShimmer style={{ width: "100px", height: "20px" }} />
                 </Typography>
+              ) : data?.data?.products?.length > 0 ? (
+                <Typography variant="h5" sx={{ mb: 2 }}>
+                  {t("My Shopping Bag")} ({data?.data?.products?.length}{" "}
+                  {t("Items")})
+                </Typography>
               ) : (
-                data?.data?.products?.length > 0 ?? (
-                  <Typography variant="h5" sx={{ mb: 2 }}>
-                    {t("My Shopping Bag")} ({data?.data?.products?.length}{" "}
-                    {t("Items")})
-                  </Typography>
-                )
-              )}
-              {data?.data?.products?.length < 0 && (
                 <Card
                   sx={{
                     minHeight: "80vh",
@@ -154,11 +131,12 @@ const StepCart = ({ handleNext }) => {
                     flexDirection: "column",
                   }}
                 >
-                  <img alt=" " src={emptyCart} style={{ width: "40vw" }} />
-                  <Typography>
-                    {t("Your shopping page is empty")}
-                    {data?.data?.products?.length}
-                  </Typography>
+                  <img
+                    alt="Empty Cart"
+                    src={emptyCart}
+                    style={{ width: "40vw" }}
+                  />
+                  <Typography>{t("Your shopping page is empty")}</Typography>
                 </Card>
               )}
               <StyledList>
@@ -207,7 +185,7 @@ const StepCart = ({ handleNext }) => {
                         size="small"
                         className="remove-item"
                         sx={{ color: "text.primary" }}
-                        onClick={() => handleDeleteItem(item)}
+                        onClick={() => handleDeleteItem(item?.id)}
                       >
                         <Icon icon="tabler:x" fontSize={20} />
                       </IconButton>
@@ -219,18 +197,7 @@ const StepCart = ({ handleNext }) => {
                           >
                             <ListItemText primary={item?.name} />
                           </Link>
-
-                          {/* ⬇️ Display Variants Here ⬇️ */}
-                          {renderVariants(item?.options)}
-                          {/* ⬆️ Display Variants Here ⬆️ */}
-
-                          <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              mt: 1,
-                            }}
-                          >
+                          <Box sx={{ display: "flex", alignItems: "center" }}>
                             <Typography sx={{ mr: 1, color: "text.disabled" }}>
                               {t("Sold By")}:
                             </Typography>
@@ -254,10 +221,10 @@ const StepCart = ({ handleNext }) => {
                                 item?.stock > 10
                                   ? t("In Stock")
                                   : item?.stock === 1
-                                  ? t("Only 1 unit left")
-                                  : item?.stock > 1 && item?.stock <= 10
-                                  ? t("Few units left")
-                                  : t("Out Of Stock")
+                                    ? t("Only 1 unit left")
+                                    : item?.stock > 1 && item?.stock <= 10
+                                      ? t("Few units left")
+                                      : t("Out Of Stock")
                               }
                             />
                           </Box>
@@ -280,7 +247,7 @@ const StepCart = ({ handleNext }) => {
                                       : "initial"
                                   }
                                 >
-                                  {item?.compare_price} {t("currency")}
+                                  item?.compare_price {t("currency")}
                                 </Typography>
                               )}
                               {item?.price > 0 && (
@@ -303,7 +270,7 @@ const StepCart = ({ handleNext }) => {
                             }}
                           >
                             <QuantityInput
-                              product={item}
+                              productID={item?.id}
                               quantity={item?.quantity}
                               max={item?.stock}
                               cartID={cart_id}
@@ -467,8 +434,8 @@ const StepCart = ({ handleNext }) => {
             </Box>
           </Grid>
         )}
-        <Simillar id={data?.data?.products[0]?.id} />
       </Grid>
+      <Simillar id={data?.data?.products[0]?.id} />
     </Container>
   );
 };

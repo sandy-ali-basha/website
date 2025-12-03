@@ -28,16 +28,3 @@ export const _cities = {
     },
 
 };
-export const _currencies ={
-    getAll: async () => {
-        return _axios
-            .get(
-                `/currencies`, {
-                headers: {
-                    ...HttpRequestInterceptor()
-                }
-            }
-            )
-            .then((res) => res.data);
-    },
-}
