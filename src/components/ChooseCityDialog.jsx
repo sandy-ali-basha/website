@@ -1,6 +1,5 @@
 import { Dialog, DialogContent, DialogContentText } from "@mui/material";
 import logo from "assets/images/logo.png";
-import { useState } from "react";
 import ChooseCity from "./ChooseCity";
 import { useTranslation } from "react-i18next";
 
@@ -20,7 +19,7 @@ const ChooseCityDialog = ({open, setOpen}) => {
       >
         <img style={{ width: "50%", margin: "1rem auto" }} src={logo} alt="" />
         <DialogContentText textAlign={"center"} sx={{ fontSize: "1.5rem" }}>
-          {t("Select your city for a customized shopping journey")}
+          {t("Select your city for a customized shopping journey")}
           <ChooseCity onClose={() => setOpen(false)} />
         </DialogContentText>
       </DialogContent>

@@ -36,7 +36,7 @@ const resources = {
 };
 
 // Set initial language directly from localStorage
-const savedLanguage = localStorage.getItem("i18nextLng") || "en";
+const savedLanguage = localStorage.getItem("i18nextLng") || "ar";
 
 i18n
   .use(initReactI18next)

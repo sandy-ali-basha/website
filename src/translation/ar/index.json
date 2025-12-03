@@ -283,5 +283,8 @@
   "Position Overview": "نظرة عامة على الوظيفة",
   "FIB is a type of payment method where the recipient makes payment for the order at the time of delivery rather than in advance.": "FIB هو نوع من طرق الدفع حيث يقوم المستلم بدفع قيمة الطلب عند التسليم بدلاً من الدفع مقدمًا.",
   "Cash on Delivery is a payment method where the recipient makes payment for the order at the time of delivery rather than in advance.": "الدفع عند الاستلام هو طريقة دفع يقوم فيها المستلم بدفع قيمة الطلب عند التسليم بدلاً من الدفع مسبقاً.",
-  "Few units left":" تبقى وحدات قليلة"
-}
+  "Few units left": " تبقى وحدات قليلة",
+  "Select your city for a customized shopping journey": "اختر مدينتك لتجربة تسوق مخصصة",
+  "choose country": "اختر الدولة",
+  "choose city": "اختر المدينة",
+  "save":" حفظ"}

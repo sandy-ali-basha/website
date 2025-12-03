@@ -40,7 +40,9 @@ function App() {
   useEffect(() => {
     HttpRequestInterceptor();
     window.scrollTo(0, 0);
-    localStorage.setItem("i18nextLng", "en");
+ 
+    const i18nextLng = localStorage.getItem("i18nextLng");
+    if (!i18nextLng) localStorage.setItem("i18nextLng", "ar");
   }, []);
   const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
 
