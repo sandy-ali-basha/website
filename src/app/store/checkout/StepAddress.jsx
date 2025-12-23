@@ -1,0 +1,386 @@
+// ** React Imports
+import { useEffect } from "react";
+// ** MUI Imports
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import CardContent from "@mui/material/CardContent";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
+// ** Custom Components Imports
+import {
+  Card,
+  Chip,
+  Container,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+} from "@mui/material";
+import CustomRadioBasic from "components/customs/custom-radio/basic";
+import { Link, useNavigate } from "react-router-dom";
+import { useAddresses } from "hooks/addresses/useAddresses";
+import Loader from "components/modules/Loader";
+import { useTranslation } from "react-i18next";
+import { useCart } from "hooks/cart/useCart";
+import CardShimmer from "components/customs/loaders/CardShimmer";
+import { AddressStore } from "store/shippingStore";
+import { MailOutline, PhoneOutlined } from "@mui/icons-material";
+import RenderVariants from "./_components/RenderVariants";
+
+const StepAddress = ({
+  handleNext,
+  selectedBasicRadio,
+  setSelectedBasicRadio,
+}) => {
+  // const [selectedIconRadio, setSelectedIconRadio] = useState("standard");
+  const { data = { addresses: [] }, isLoading } = useAddresses();
+  const { t } = useTranslation("index");
+
+  const addresses = data?.addresses || [];
+
+  const addressData = addresses.map((address, index) => ({
+    shipping_price: address.shipping_price,
+    value: address.id,
+    isSelected: address.id === selectedBasicRadio,
+    title: `${address.title} ${address.first_name} ${address.last_name} ${
+      address.billing_default ? "(Default)" : ""
+    }`,
+    meta: address.shipping_default && (
+      <Chip
+        rounded
+        size="small"
+        skin="light"
+        label={"Shipping Default"}
+        color={"primary"}
+      />
+    ),
+    content: (
+      <Box
+        sx={{
+          mt: 0.5,
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Typography variant="body2" sx={{ mb: "auto" }}>
+          {address.city}, {address.state}, {address.country}
+          <br />
+          {address.line_one}
+          <br />
+          {address.postcode && `Postcode: ${address.postcode}.`}
+          <br />
+          {address.contact_phone && (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <PhoneOutlined /> {address.contact_phone}
+            </Box>
+          )}
+          <br />
+          {address.contact_mail && (
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <MailOutline /> {address.contact_mail}
+            </Box>
+          )}
+        </Typography>
+      </Box>
+    ),
+  }));
+
+  const [shippingAddress, setShippingAddress] = AddressStore((state) => [
+    state.shippingAddress,
+    state.setShippingAddress,
+  ]);
+
+  useEffect(() => {
+    const defaultAddress = addresses.find(
+      (address) => address.shipping_default
+    );
+    if (defaultAddress) {
+      setSelectedBasicRadio(defaultAddress.id);
+      setShippingAddress(defaultAddress);
+    }
+  }, [addresses, setSelectedBasicRadio, setShippingAddress]);
+
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const breakpointMD = useMediaQuery(theme.breakpoints.between("sm", "lg"));
+
+  const handleBasicRadioChange = (prop) => {
+    setSelectedBasicRadio(prop);
+  };
+  const handleAddNewAddress = () => navigate("/profile/addresses");
+
+  const cart_id = localStorage.getItem("cart_id");
+  const { data: cartData, isLoading: cartIsLoading } = useCart(cart_id);
+  if (isLoading) {
+    return (
+      <Typography sx={{ textAlign: "center", minHeight: "50vh" }}>
+        <Loader />
+      </Typography>
+    );
+  }
+
+  return (
+    <Container>
+      <Grid container spacing={6}>
+        <Grid item xs={12} lg={8}>
+          <Typography sx={{ mb: 4 }} variant="h6">
+            {t("Select your preferable address")}
+          </Typography>
+          <Grid container spacing={4}>
+            {addressData.map((item, index) => (
+              <CustomRadioBasic
+                key={index}
+                data={item}
+                name={`custom-radios-address ${index}`}
+                selected={selectedBasicRadio}
+                gridProps={{ sm: 6, xs: 12 }}
+                handleChange={handleBasicRadioChange}
+              />
+            ))}
+          </Grid>
+          <Button variant="tonal" sx={{ mt: 4 }} onClick={handleAddNewAddress}>
+            {t("Add new address")}
+          </Button>
+        </Grid>
+        <Grid item xs={12} lg={4}>
+          <Card sx={{ mb: 4, borderRadius: 3, boxShadow: 3 }}>
+            <CardContent>
+              <List>
+                {cartIsLoading ? (
+                  <ListItem sx={{ my: 2 }}>
+                    <Grid container sx={{ mx: 1 }}>
+                      <Grid item xs={12} md={4}>
+                        <CardShimmer
+                          style={{ width: "10vh", height: "10vh" }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={8}>
+                        <CardShimmer
+                          style={{ width: "100%", height: "10vh" }}
+                        />
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                ) : (
+                  cartData?.data?.products?.length > 0 &&
+                  cartData?.data?.products?.map((item, idx) => (
+                    <ListItem
+                      key={idx}
+                      sx={{ boxShadow: 1, borderRadius: 3, my: 2 }}
+                    >
+                      <ListItemAvatar
+                        key={item?.id}
+                        sx={{
+                          display: "flex",
+                          borderRadius: 3,
+                          width: "20%",
+                        }}
+                      >
+                        <img
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            borderRadius: "inherit",
+                          }}
+                          src={item?.images[0]?.image_path}
+                          alt={item?.name}
+                        />
+                      </ListItemAvatar>
+                      <Grid container sx={{ mx: 1 }}>
+                        <Grid item xs={12} md={12}>
+                          <Link
+                            to={`/store/product/${item?.id}/${item.name}`}
+                            style={{ textDecoration: "none" }}
+                          >
+                            <ListItemText primary={item?.name} />
+                          </Link>
+                          {/* ⬇️ Display Variants Here ⬇️ */}
+                          <RenderVariants options={item?.options} />
+                          {/* ⬆️ Display Variants Here ⬆️ */}
+                          <Box sx={{ display: "flex", mt: 0.5 }}>
+                            <Typography
+                              sx={{ color: "text.main", fontSize: "small" }}
+                            >
+                              {item?.quantity} x {item?.price.toLocaleString()}{" "}
+                              {t("currency")}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    </ListItem>
+                  ))
+                )}
+              </List>
+            </CardContent>
+            <Divider sx={{ m: "0 !important" }} />
+            <CardContent>
+              <Typography sx={{ mb: 4 }} variant="h6">
+                {t("Price Details")}
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                {/* bag total */}
+                <Box
+                  sx={{
+                    mb: 2,
+                    gap: 2,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography>{t("Sub Total")}</Typography>
+                  <Typography sx={{ color: "text.secondary" }}>
+                    {/* Assuming data?.data?.sub_total is in an integer unit (like fils or cents) and you display in a higher unit (like dinars or dollars) */}
+                    {(cartData?.data?.sub_total / 1000).toLocaleString()}{" "}
+                    {t("currency")}
+                  </Typography>
+                </Box>
+                {/* Delivery Charges */}
+                <Box
+                  sx={{
+                    gap: 2,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography>{t("Delivery Charges")}</Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {shippingAddress?.shipping_price > 0 && (
+                      <Typography
+                        variant="body2"
+                        sx={{ color: "text.secondary" }}
+                      >
+                        {(
+                          shippingAddress?.shipping_price / 1000
+                        ).toLocaleString()}
+                        {t("currency")}
+                      </Typography>
+                    )}
+                    {shippingAddress?.shipping_price === 0 && (
+                      <Chip color="success" label={t("FREE")}></Chip>
+                    )}
+                    {!shippingAddress && (
+                      <Typography
+                        variant="body2"
+                        sx={{ color: "text.secondary" }}
+                      >
+                        {t("Select Address")}
+                      </Typography>
+                    )}
+                  </Box>
+                </Box>
+                {/* discount_amount */}
+                {cartData?.data?.discount_amount > 0 && (
+                  <Box
+                    sx={{
+                      my: 2, // Added margin for separation
+                      gap: 2,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography>{t("Discount Amount")}</Typography>
+                    <Typography variant="body1" sx={{ color: "primary.main" }}>
+                      -{" "}
+                      {(
+                        cartData?.data?.discount_amount / 1000
+                      ).toLocaleString()}{" "}
+                      {t("currency")}
+                    </Typography>
+                  </Box>
+                )}
+                {/* points_used adjustment */}
+                {cartData?.data?.points_used > 0 && (
+                  <Box
+                    sx={{
+                      mt: 2,
+                      mb: 2, // Retained original bottom margin
+                      gap: 2,
+                      display: "flex",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography>{t("Points Discount")}</Typography>
+                    <Typography variant="body1" color="secondary">
+                      -{" "}
+                      {cartData?.data?.sub_total -
+                        cartData?.data?.sub_total_after_points >
+                      0
+                        ? (
+                            (cartData?.data?.sub_total -
+                              cartData?.data?.sub_total_after_points) /
+                            1000
+                          ).toLocaleString()
+                        : 0}{" "}
+                      {t("currency")}
+                    </Typography>
+                  </Box>
+                )}
+                <Divider sx={{ my: 2 }} />
+                {/* Final Total */}
+                <Box
+                  sx={{
+                    mt: 2,
+                    gap: 2,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography variant="h6">{t("Order Total")}</Typography>
+                  <Typography variant="h6" color="primary">
+                    {/* Calculation: sub_total_after_points (or sub_total_after_discount) + shipping_price */}
+                    {(
+                      (cartData?.data?.sub_total_after_points ||
+                        cartData?.data?.sub_total_after_discount ||
+                        cartData?.data?.sub_total) +
+                      (shippingAddress?.shipping_price || 0) / 1000
+                    ).toLocaleString()}{" "}
+                    {t("currency")}
+                  </Typography>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+          <Box
+            sx={{
+              display: "flex",
+              ...(breakpointMD ? { justifyContent: "flex-end" } : {}),
+            }}
+          >
+            <Button
+              fullWidth={!breakpointMD}
+              variant="contained"
+              onClick={handleNext}
+              sx={{ borderRadius: 3, boxShadow: 3 }}
+              disabled={!selectedBasicRadio}
+            >
+              {t("Place Order")}
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
+    </Container>
+  );
+};
+
+export default StepAddress;
