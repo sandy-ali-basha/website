@@ -53,7 +53,6 @@ export default function ProductVariants({
       (v) => v.city.toLowerCase() === localCityName.toLowerCase()
     );
     setFilteredVariants(filtered);
-    
   }, [localCityName, variants]);
 
   const selectedVariant = selectedVariantProp || localSelected;
@@ -140,16 +139,20 @@ export default function ProductVariants({
                           spacing={1}
                           sx={{ my: 1, flexWrap: "wrap" }}
                         >
-                          {variant.options?.map((opt, i) => (
-                            <Chip
-                              key={i}
-                              label={opt}
-                              size="small"
-                              color={isSelected ? "warning" : "default"}
-                              sx={{ textTransform: "capitalize" }}
-                            />
-                          ))}
+                          {variant.options?.map(
+                            (opt, i) =>
+                              opt.toLowerCase() !== "default" && (
+                                <Chip
+                                  key={i}
+                                  label={opt}
+                                  size="small"
+                                  color={isSelected ? "warning" : "default"}
+                                  sx={{ textTransform: "capitalize" }}
+                                />
+                              )
+                          )}
                         </Stack>
+
                         <ProductPrice variant={variant} />
 
                         <Typography

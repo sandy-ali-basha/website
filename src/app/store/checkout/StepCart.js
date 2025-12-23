@@ -28,6 +28,8 @@ import ApplyCoupon from "./_components/ApplyCoupon";
 import ApplyPoints from "./_components/ApplyPoints";
 import emptyCart from "assets/images/empty-cart.webp";
 import Simillar from "../product/[id]/_components/Simllar";
+import { useEffect } from "react";
+import RenderVariants from "./_components/RenderVariants";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -60,8 +62,19 @@ const StepCart = ({ handleNext }) => {
   const { data, isLoading } = useCart(cart_id);
   const queryClient = useQueryClient();
   const userData = localStorage.getItem("userData");
-  const handleDeleteItem = (id) => {
-    _cart.delete({ id, cart_id }).then((res) => {
+
+  useEffect(() => {
+    const cart_count = data?.data?.products?.length || 0;
+    localStorage.setItem("cart_count", Math.max(cart_count));
+  }, [data]);
+
+  const handleDeleteItem = (params) => {
+    const data = {
+      product_id: params?.id,
+      variant_id: params?.variant_id,
+    };
+
+    _cart.delete({ data, cart_id }).then((res) => {
       // Invalidate the "cart" query to refetch the updated cart data
 
       if (res?.code === 200) {
@@ -197,7 +210,19 @@ const StepCart = ({ handleNext }) => {
                           >
                             <ListItemText primary={item?.name} />
                           </Link>
-                          <Box sx={{ display: "flex", alignItems: "center" }}>
+
+                          {/* ⬇️ Display Variants Here ⬇️ */}
+                          <RenderVariants options={item?.options} />
+                          
+                          {/* ⬆️ Display Variants Here ⬆️ */}
+
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              mt: 1,
+                            }}
+                          >
                             <Typography sx={{ mr: 1, color: "text.disabled" }}>
                               {t("Sold By")}:
                             </Typography>

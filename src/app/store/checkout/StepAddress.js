@@ -28,6 +28,8 @@ import { useTranslation } from "react-i18next";
 import { useCart } from "hooks/cart/useCart";
 import CardShimmer from "components/customs/loaders/CardShimmer";
 import { AddressStore } from "store/shippingStore";
+import { MailOutline, PhoneOutlined } from "@mui/icons-material";
+import RenderVariants from "./_components/RenderVariants";
 
 const StepAddress = ({
   handleNext,
@@ -189,7 +191,8 @@ const StepAddress = ({
                           >
                             <ListItemText primary={item?.name} />
                           </Link>
-
+                          {/* ⬇️ Display Variants Here ⬇️ */}
+                          <RenderVariants options={item?.options} />
                           <Box sx={{ display: "flex" }}>
                             <Typography sx={{ color: "text.main" }}>
                               {item?.price.toLocaleString()} {t("currency")}
@@ -250,6 +253,14 @@ const StepAddress = ({
                     {shippingAddress?.shipping_price === 0 && (
                       <Chip color="success" label={t("FREE")}></Chip>
                     )}
+                    {!shippingAddress && (
+                      <Typography
+                        variant="body2"
+                        sx={{ color: "text.secondary" }}
+                      >
+                        {t("Select Address")}
+                      </Typography>
+                    )}
                   </Box>
                 </Box>
                 {/* discount_amount */}
@@ -285,11 +296,44 @@ const StepAddress = ({
                   >
                     <Typography>{t("Sub Total After Points Used")}</Typography>
                     <Typography variant="body1" color="secondary">
-                      {cartData?.data?.sub_total_after_points.toLocaleString()}{" "}
+                      -{" "}
+                      {cartData?.data?.sub_total -
+                        cartData?.data?.sub_total_after_points >
+                      0
+                        ? (
+                            (cartData?.data?.sub_total -
+                              cartData?.data?.sub_total_after_points) /
+                            1000
+                          ).toLocaleString()
+                        : 0}{" "}
                       {t("currency")}
                     </Typography>
                   </Box>
                 )}
+                <Divider sx={{ my: 2 }} />
+                {/* Final Total */}
+                <Box
+                  sx={{
+                    mt: 2,
+                    gap: 2,
+                    display: "flex",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography variant="h6">{t("Order Total")}</Typography>
+                  <Typography variant="h6" color="primary">
+                    {/* Calculation: sub_total_after_points (or sub_total_after_discount) + shipping_price */}
+                    {(
+                      (cartData?.data?.sub_total_after_points ||
+                        cartData?.data?.sub_total_after_discount ||
+                        cartData?.data?.sub_total) +
+                      (shippingAddress?.shipping_price || 0) / 1000
+                    ).toLocaleString()}{" "}
+                    {t("currency")}
+                  </Typography>
+                </Box>
               </Box>
             </CardContent>
           </Card>
