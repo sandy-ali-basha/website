@@ -1,7 +1,8 @@
-import { Box, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import CAccordion from "components/modules/Accordion";
 import SearchInput from "components/modules/SearchInput";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 const SideDrawer = ({
   valuetext,
@@ -11,6 +12,8 @@ const SideDrawer = ({
   handleMaxChange,
   data,
   handleCheked,
+  ClearFilter,
+  selectedAttributes,
   searchResults,
   setSearchResults,
   searchTerm,
@@ -33,42 +36,52 @@ const SideDrawer = ({
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
       />
-
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
         {t("Options")}:
       </Typography>
-      {/* // * Accourdion */}
-      <CAccordion data={data} handleCheked={handleCheked} />
+
+      <CAccordion
+        data={data}
+        handleCheked={handleCheked}
+        selectedAttributes={selectedAttributes}
+      />
 
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
         {t("Price")} {t("currency")}
       </Typography>
+
       <Box dir="ltr">
         <Grid container spacing={2} alignItems="center">
-          {/* Input for Minimum Value */}
           <Grid item xs={6}>
             <TextField
               label={t("Min Price")}
               type="number"
-              value={minValue}
+              value={minValue || ""}
               onChange={handleMinChange}
-              inputProps={{ min: 0, max: maxValue }} // Ensure min doesn't go beyond max
+              inputProps={{ min: 0, max: maxValue }}
               fullWidth
             />
           </Grid>
-
-          {/* Input for Maximum Value */}
           <Grid item xs={6}>
             <TextField
               label={t("Max Price")}
               type="number"
-              value={maxValue}
+              value={maxValue || ""}
               onChange={handleMaxChange}
-              inputProps={{ min: minValue }} // Ensure max doesn't go below min
+              inputProps={{ min: minValue }}
               fullWidth
             />
           </Grid>
         </Grid>
+
+        <Button
+          variant="outlined"
+          sx={{ mt: 2 }}
+          onClick={ClearFilter}
+          fullWidth
+        >
+          {t("Clear Filter")}
+        </Button>
       </Box>
     </Box>
   );

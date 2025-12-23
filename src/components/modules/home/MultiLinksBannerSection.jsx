@@ -13,7 +13,7 @@ const MultiLinksBannerSection = () => {
     <>
       {isLoading ? (
         <Skeleton height={"80dvh"} width="100%" />
-      ) : (
+      ) : data && (
         <Box
           sx={{
             height: { xs: "35dvh", sm: "80dvh" },
@@ -22,12 +22,12 @@ const MultiLinksBannerSection = () => {
         >
           <img
             loading="lazy"
-            src={data.image}
+            src={data?.image}
             alt="multi btns"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
 
-          {data.translations.links.length > 1 ? (
+          {data?.translations.links.length > 1 ? (
             <ButtonGroup
               sx={{
                 position: "absolute",

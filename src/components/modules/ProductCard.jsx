@@ -14,18 +14,20 @@ import defaultImg from "assets/images/defaultImg.jpg";
 import { useAddToCart } from "hooks/cart/useAddToCart";
 import { AddShoppingCart } from "@mui/icons-material";
 
-export default function ProductCard({
-  productName,
-  Price,
-  productImage,
-  offer,
-  link,
-  loading,
-  id,
-  purchasable,
-}) {
+export default function ProductCard({ product, loading }) {
   const { handleAddToCart, loadingCart } = useAddToCart();
+  if (!product) return <></>;
 
+  const productImage = product?.images
+    ? product?.images[0]?.image_path
+    : product.image
+      ? product.image.image_path
+      : "";
+  const productName = product.name;
+  const link = `/store/product/${product?.id}/${product.name}`;
+  const purchasable = product.purchasable === "always";
+
+  const id = product.id;
   return (
     <Card sx={{ boxShadow: 3, borderRadius: 3, height: "100%" }}>
       {" "}
@@ -81,37 +83,6 @@ export default function ProductCard({
             mt: 1,
           }}
         >
-          <Box>
-            <Typography
-              variant="body1"
-              sx={{
-                textDecoration: offer ? "line-through" : "none",
-                fontSize: offer ? "small" : "inherit",
-              }}
-              color={offer ? "text.secondary" : "initial"}
-            >
-              {/* {loading ? (
-                <CardShimmer
-                  style={{
-                    width: "100%",
-                    height: "20px",
-                    borderRadius: "12px",
-                  }}
-                />
-              ) : (
-                <>
-                  {offer > 0 ? offer.toLocaleString() : Price.toLocaleString()}{" "}
-                  {t("currency")}
-                </>
-              )} */}
-            </Typography>
-            {/* {offer > 0 && (
-              <Typography variant="body1" color="initial">
-                {Price.toLocaleString()} {t("currency")}
-              </Typography>
-            )} */}
-          </Box>
-
           {purchasable && !loading && (
             <Button
               variant="outlined"

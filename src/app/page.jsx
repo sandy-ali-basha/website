@@ -40,20 +40,21 @@ export default function Home() {
       </Box>
     );
 
-  if (!showHideData || !data) return <></>;
+  // if (!showHideData || !data) return <></>;
+  //todo un comment this line after api fix
 
   return (
     <>
       {/* <SpinAndWin/> */}
-      <CaroselSection isLoading={isLoading} />
+      <CaroselSection />
 
       <BrandsSection />
 
       <CategoriesSection />
 
-      {showHideData.flags.hot_descounts && <DiscountSection />}
+      {showHideData?.flags?.hot_descounts && <DiscountSection />}
 
-      {showHideData.flags.static_videos && <Reels />}
+      {showHideData?.flags?.static_videos && <Reels />}
 
       <AnimatedText
         text={data?.["home.page.textSectionTwo"]?.value?.text?.[i18n.language]}
