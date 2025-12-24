@@ -1,5 +1,6 @@
 import { _axios } from "../../interceptor/http-config";
 import { HttpRequestInterceptor } from "interceptor/http-request.interceptor";
+
 export const _cart = {
   index: async (id) => {
     try {
@@ -48,12 +49,10 @@ export const _cart = {
       .then((res) => res.data);
   },
 
-  delete: async ({ id, cart_id }) => {
+  delete: async ({ data, cart_id }) => {
     return _axios
       .delete(`cart/${cart_id}`, {
-        data: {
-          product_id: id,
-        },
+        data: data,
       })
       .then((res) => res.data);
   },

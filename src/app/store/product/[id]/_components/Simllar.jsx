@@ -17,8 +17,15 @@ export default function Simillar({ id }) {
           </Typography>
           <Grid container spacing={1}>
             <Grid item xs="12" md="4">
-              {data?.data?.products?.map((item) => (
-                <ProductCard key={item.id} product={item} />
+              {data?.data?.products?.map((item, idx) => (
+                <ProductCard
+                  productImage={item?.image}
+                  productName={item?.name}
+                  Price={item?.price?.value}
+                  link={`/store/product/${item?.id}/${item.name}`}
+                  purchasable={item?.purchasable === "always"}
+                  offer={item?.compare_price}
+                />
               ))}
             </Grid>
           </Grid>
