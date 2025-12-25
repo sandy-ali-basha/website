@@ -84,7 +84,7 @@ export default function Brand() {
         <Grid container sx={{ my: 6 }}>
           <Grid
             item
-            md={6} 
+            md={6}
             sx={{
               display: "flex",
               alignItems: "center",

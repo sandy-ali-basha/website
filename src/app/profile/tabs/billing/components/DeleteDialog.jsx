@@ -7,7 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useTranslation } from "react-i18next";
 import { useDeleteAddress } from "hooks/addresses/useDeleteAddresses";
-import ButtonLoader from "components/customs/ButtonLoader";
+import { LoadingButton } from "@mui/lab";
 
 const DeleteDialog = ({ id, open, handleClose }) => {
   const { t } = useTranslation("index");
@@ -40,13 +40,14 @@ const DeleteDialog = ({ id, open, handleClose }) => {
         <DialogActions>
           <Button onClick={handleClose}>{t("Disagree")}</Button>
 
-          <ButtonLoader
+          <LoadingButton
             onClick={() => DeleteAddress()}
             loading={loading}
-            disableOnLoading
+            variant="contained"
+            disabled={loading}
           >
             {t("Agree")}
-          </ButtonLoader>
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </React.Fragment>

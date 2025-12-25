@@ -34,6 +34,7 @@ export default function BlogPost() {
           />
         ) : (
           <img
+            loading="lazy"
             style={{
               width: "80vw",
               borderRadius: "10px",

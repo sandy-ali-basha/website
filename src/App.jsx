@@ -5,7 +5,6 @@ import "./assets/css/style.scss";
 import Home from "app/page.jsx";
 import LoginPage from "./app/(authentication)/Login/page.jsx";
 import ShouldNotBeLogged from "middlewares/ShouldNotBeLogged";
-
 import About from "./app/about/page.jsx";
 import BlogPage from "./app/Blog/page.jsx";
 import BlogPost from "./app/Blog/[id]/page.jsx";

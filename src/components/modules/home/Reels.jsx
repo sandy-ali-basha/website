@@ -1,17 +1,32 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, Skeleton, Typography } from "@mui/material";
 import "swiper/css";
+import { useHomeSection } from "hooks/home/useHome";
+import i18n from "i18n.js";
 
-export default function Reels({ data = [] }) {
- const [loadingStatus, setLoadingStatus] = useState(() => data.map(() => true));
+export default function Reels() {
+  const { data, isLoading } = useHomeSection(4);
+
+  // 👉 backend items
+  const items = useMemo(() => data?.data?.items || [], [data?.data?.items]);
 
   const videoRefs = useRef([]);
   const observer = useRef(null);
+  const [loadingStatus, setLoadingStatus] = useState([]);
 
-  // Lazy load videos using IntersectionObserver
+  /* Initialize loading state when items arrive */
   useEffect(() => {
+    if (items.length) {
+      setLoadingStatus(new Array(items.length).fill(true));
+    }
+  }, [items.length]);
+
+  /* Lazy-load videos */
+  useEffect(() => {
+    if (!items.length) return;
+
     observer.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -30,86 +45,98 @@ export default function Reels({ data = [] }) {
       if (video) observer.current.observe(video);
     });
 
-    return () => {
-      observer.current?.disconnect();
-    };
-  }, [data]);
+    return () => observer.current?.disconnect();
+  }, [items]);
 
   const handleVideoLoad = (index) => {
     setLoadingStatus((prev) => {
-      const updated = [...prev];
-      updated[index] = false;
-      return updated;
+      const next = [...prev];
+      next[index] = false;
+      return next;
     });
   };
 
   return (
     <Swiper
-      spaceBetween={5}
+      spaceBetween={8}
       slidesPerView={3}
-      style={{ paddingTop: "2vh", paddingBottom: "2vh" }}
       modules={[Autoplay]}
-      autoplay={{
-        delay: 5000,
-        disableOnInteraction: false,
-      }}
+      autoplay={{ delay: 5000, disableOnInteraction: false }}
       breakpoints={{
         640: { slidesPerView: 3 },
         768: { slidesPerView: 3 },
         1024: { slidesPerView: 4 },
       }}
+      style={{ padding: "2vh 0" }}
     >
-      {data.map((reel, idx) => (
-        <SwiperSlide key={idx}>
+      {(isLoading ? Array.from(new Array(4)) : items).map((item, idx) => (
+        <SwiperSlide key={item?.id || idx}>
           <Box
             sx={{
               position: "relative",
               borderRadius: 2,
               overflow: "hidden",
-              cursor: "pointer",
+              cursor: item?.cta_link ? "pointer" : "default",
             }}
-            onClick={() => {
-              if (reel.link) window.open(reel.link, "_blank");
-            }}
+            onClick={() =>
+              item?.cta_link && window.open(item.cta_link, "_blank")
+            }
           >
-            {loadingStatus[idx] && (
+            {/* Skeleton */}
+            {(isLoading || loadingStatus[idx]) && (
+              <Skeleton
+                variant="rectangular"
+                animation="wave"
+                sx={{ width: "100%", height: 300 }}
+              />
+            )}
+
+            {/* Overlay */}
+            {!isLoading && (
               <Box
                 sx={{
                   position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
+                  inset: 0,
+                  zIndex: 2,
                   display: "flex",
-                  alignItems: "center",
+                  flexDirection: "column",
                   justifyContent: "center",
-                  backgroundColor: "#f5f5f5",
+                  alignItems: "center",
+                  textAlign: "center",
+                  px: 2,
+                  background: "rgba(0,0,0,0.35)",
                 }}
               >
-                <CircularProgress size={40} />
+                <Typography variant="h6" color="white">
+                  {item?.[`title_${i18n.language}`]}
+                </Typography>
+                <Typography variant="body2" color="white">
+                  {item?.[`description_${i18n.language}`]
+                    ?.replace(/<\/?[^>]+(>|$)/g, "")}
+                </Typography>
               </Box>
             )}
 
-            <video
-              ref={(el) => (videoRefs.current[idx] = el)}
-              style={{
-                width: "100%",
-                height: "auto",
-                display: loadingStatus[idx] ? "none" : "block",
-                borderRadius: 10,
-                objectFit: "cover",
-              }}
-              onLoadedData={() => handleVideoLoad(idx)}
-              data-src={reel.videoSrc}
-              preload="metadata"
-              muted
-              loop
-              playsInline
-              autoPlay
-            >
-              <source type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            {/* Video */}
+            {!isLoading && (
+              <video
+                ref={(el) => (videoRefs.current[idx] = el)}
+                style={{
+                  width: "100%",
+                  height: 300,
+                  objectFit: "cover",
+                  backgroundColor: "#f2f2f2",
+                  display: loadingStatus[idx] ? "none" : "block",
+                }}
+                data-src={item?.image} // 🔁 will be video URL
+                onLoadedData={() => handleVideoLoad(idx)}
+                muted
+                loop
+                playsInline
+                autoPlay
+                preload="metadata"
+              />
+            )}
           </Box>
         </SwiperSlide>
       ))}

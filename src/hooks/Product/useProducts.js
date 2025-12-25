@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 
 export const useProducts = (body) => {
   const { data, isLoading } = useQuery(
-    ["product", body],
+    ["products", body],
     () => _ProductApi.filter(body).then((res) => res),
     {
       keepPreviousData: true,
@@ -17,8 +17,8 @@ export const useProducts = (body) => {
 };
 export const useAllProducts = () => {
   const { data, isLoading } = useQuery(
-    ["product"],
-    () => _ProductApi.filter().then((res) => res),
+    ["all-products"],
+    () => _ProductApi.index().then((res) => res),
     {
       keepPreviousData: true,
     }

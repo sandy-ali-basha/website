@@ -1,6 +1,5 @@
 import { Box, Typography, Button, TextField, Alert } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -64,6 +63,7 @@ const ForgetPassword = () => {
         }}
       >
         {/* <img
+          loading="lazy"
           src={img}
           alt="gummie"
           style={{

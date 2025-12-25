@@ -22,6 +22,8 @@ export const useEditAddress = ({ handleClose, id }) => {
     state: yup.string().required(t("State is required")),
     line_one: yup.string().required(t("Address is required")),
     delivery_instructions: yup.string(),
+    longitude: yup.number(),
+    latitude: yup.number(),
   });
 
   const [loading, setLoading] = useState(false);
@@ -58,6 +60,8 @@ export const useEditAddress = ({ handleClose, id }) => {
   const userData = JSON.parse(localStorage.getItem("userData"));
 
   const handleCreate = (input) => {
+    console.log("input: ", input);
+
     if (!userData || !userData.user_id) {
       console.error("User data is not available.");
       return;

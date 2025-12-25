@@ -105,7 +105,7 @@ const TabCountry = () => {
             value={selectedCity}
             onChange={handleCityChange}
           >
-            {cities.map((city) => (
+            {cities?.map((city) => (
               <MenuItem key={city.id} value={city.id}>
                 {city.name}
               </MenuItem>

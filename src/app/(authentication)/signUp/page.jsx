@@ -9,10 +9,7 @@ import {
   IconButton,
   Alert,
 } from "@mui/material";
-import {
-  Visibility,
-  VisibilityOff,
-} from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import React, { useEffect } from "react";
 
 import img from "../../../assets/images/hero-image (3).jpg";
@@ -36,9 +33,9 @@ function SignUp() {
     onSubmit,
     t,
   } = useSignUp();
- useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Box
       sx={{
@@ -51,6 +48,7 @@ function SignUp() {
       }}
     >
       {/* <img
+        loading="lazy"
         src={img}
         alt="gummie"
         objectFit="cover"
@@ -81,6 +79,7 @@ function SignUp() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <img
+          loading="lazy"
           style={{ margin: "auto", width: "30%", height: "100px" }}
           src={logo}
           alt="logo"

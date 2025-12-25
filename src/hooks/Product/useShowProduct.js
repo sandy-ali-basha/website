@@ -15,8 +15,19 @@ export const useShowProduct = (id) => {
     isLoading,
   };
 };
-
-
+export const useGetAccourdion = (id) => {
+  const { data, isLoading } = useQuery(
+    [`product acc/${id}`],
+    () => _show_product.acc(id).then((res) => res),
+    {
+      keepPreviousData: true,
+    }
+  );
+  return {
+    data,
+    isLoading,
+  };
+};
 export const useGetSlider = (id) => {
   const { data, isLoading } = useQuery(
     [`product slider/${id}`],
@@ -30,7 +41,6 @@ export const useGetSlider = (id) => {
     isLoading,
   };
 };
-
 export const useGetFeatures = (id) => {
   const { data, isLoading } = useQuery(
     [`productFeatures/${id}`],

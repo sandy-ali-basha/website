@@ -6,6 +6,9 @@
   "Enter your Email to continue": "أدخل بريدك الإلكتروني للمتابعة",
   "We have sent you an email with a link to reset your password. Please check your inbox and follow the instructions to restore access to your account. If you do not see the email in your inbox, please check your spam or junk folder.": "لقد أرسلنا لك بريدًا إلكترونيًا يحتوي على رابط لإعادة تعيين كلمة المرور الخاصة بك. يرجى التحقق من صندوق الوارد الخاص بك واتباع التعليمات لاستعادة الوصول إلى حسابك. إذا لم تجد البريد الإلكتروني في صندوق الوارد، يرجى التحقق من مجلد البريد العشوائي أو البريد غير المرغوب فيه.",
   "Send Reset Email": "إرسال بريد إعادة التعيين",
+  "Discounts": "وصل حديثًا",
+  "Hot Discounts": "عروض لا تُفوّت",
+  "No Offers at the moment!": "لا توجد عروض في الوقت الحالي!",
   "Description": "الوصف",
   "You May Also Like": "قد يعجبك أيضًا",
   "Add To Cart": "أضف إلى السلة",
@@ -132,6 +135,9 @@
   "Special Offers": "عروض خاصة",
   "currency": "دينار عراقي",
   "Something went wrong. Please try again.": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+  "searchPlaceholder": "ابحث…",
+  "searchSuccess": "{{count}} منتج/منتجات تطابق بحثك",
+  "searchEmpty": "لا يوجد منتج يطابق بحثك",
   "Oops...": "عذراً...",
   "error": "خطأ",
   "Your order cancellation has been requested and needs acceptance.": "تم طلب إلغاء طلبك ويحتاج إلى الموافقة.",
@@ -280,6 +286,8 @@
   "Teamwork": "العمل الجماعي",
   "and encourage collaboration among our team members": "ونشجع على التعاون بين أعضاء فريقنا",
   ",and we strive to create a work environment where everyone feels": "ونحن نسعى جاهدين لخلق بيئة عمل حيث يشعر الجميع",
+  "Quick view": "معرفة المزيد",
+  "Quick shop": "شراء",
   "Position Overview": "نظرة عامة على الوظيفة",
   "FIB is a type of payment method where the recipient makes payment for the order at the time of delivery rather than in advance.": "FIB هو نوع من طرق الدفع حيث يقوم المستلم بدفع قيمة الطلب عند التسليم بدلاً من الدفع مقدمًا.",
   "Cash on Delivery is a payment method where the recipient makes payment for the order at the time of delivery rather than in advance.": "الدفع عند الاستلام هو طريقة دفع يقوم فيها المستلم بدفع قيمة الطلب عند التسليم بدلاً من الدفع مسبقاً.",
@@ -287,4 +295,6 @@
   "Select your city for a customized shopping journey": "اختر مدينتك لتجربة تسوق مخصصة",
   "choose country": "اختر الدولة",
   "choose city": "اختر المدينة",
-  "save":" حفظ"}
+  "save":" حفظ",
+"Add your location on the map":" أضف موقعك على الخريطة"
+}

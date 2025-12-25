@@ -14,7 +14,7 @@
   letter-spacing: -0.04em;
   background: linear-gradient(180deg, #6f6ca6 0%, #499ebd 100%);
   -webkit-background-clip: text;
-          background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
   filter: drop-shadow(0 5px 0.2rem rgba(77, 77, 77, 0.1529411765));
@@ -28,7 +28,7 @@
   position: absolute;
   width: 100px;
   -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 @media only screen and (max-width: 600px) {
   .animatedText .floatingGummie {
@@ -72,7 +72,7 @@
 .animatedText .floatingGar {
   transform: translate(0px, 40px);
   -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
   width: 40vw;
   filter: drop-shadow(0 10px 0.3rem rgba(77, 77, 77, 0.3215686275));
 }
@@ -84,7 +84,7 @@
 .animatedText .floatingGar2 {
   transform: translate(0px, -80px);
   -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
   width: 550px;
   filter: drop-shadow(0 10px 0.3rem rgba(77, 77, 77, 0.3215686275));
 }
@@ -96,7 +96,13 @@
 
 .shimmer-line {
   background: #f6f7f8;
-  background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 10%, #f6f7f8 40%, #f6f7f8 100%);
+  background-image: linear-gradient(
+    to right,
+    #f6f7f8 0%,
+    #edeef1 10%,
+    #f6f7f8 40%,
+    #f6f7f8 100%
+  );
   background-repeat: no-repeat;
   background-size: 1000px 100%;
   display: inline-block;
@@ -119,4 +125,4 @@
 
 .swal2-container {
   z-index: 50000 !important; /* Apply the z-index */
-}/*# sourceMappingURL=style.css.map */
+} /*# sourceMappingURL=style.css.map */

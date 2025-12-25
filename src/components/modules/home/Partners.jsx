@@ -45,7 +45,7 @@ function BrandImage({ item }) {
   };
 
   return (
-    <Grid xl="2" md="3" sm="4" s="6" item mt="2">
+    <Grid xl="2" md="3" sm="4" xs="6" item mt="2">
       {item?.havePage ? (
         <Link
           to={"store/categories/brand/" + item.id}
@@ -60,7 +60,7 @@ function BrandImage({ item }) {
           )}
 
           <img
-            lazy
+            lazyLoading
             alt="logo"
             style={{
               width: "70%",
@@ -77,7 +77,7 @@ function BrandImage({ item }) {
         </Link>
       ) : (
         <img
-          lazy
+          lazyLoading
           alt="logo"
           style={{
             width: "70%",

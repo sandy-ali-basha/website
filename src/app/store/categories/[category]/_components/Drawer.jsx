@@ -12,10 +12,12 @@ const SideDrawer = ({
   handleMaxChange,
   data,
   handleCheked,
-  searchResults,
-  setSearchResults,
   ClearFilter,
   selectedAttributes,
+  searchResults,
+  setSearchResults,
+  searchTerm,
+  setSearchTerm,
 }) => {
   const { t } = useTranslation("index");
 
@@ -28,8 +30,12 @@ const SideDrawer = ({
         pb: 3,
       }}
     >
-      <SearchInput searchResults={searchResults} setSearchResults={setSearchResults} />
-
+      <SearchInput
+        searchResults={searchResults}
+        setSearchResults={setSearchResults}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
         {t("Options")}:
       </Typography>

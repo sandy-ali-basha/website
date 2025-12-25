@@ -59,8 +59,8 @@ export default function MenuButton({
             sx={{
               // eslint-disable-next-line eqeqeq
               border: item.id == defaultValue ? "1px solid #218ea7" : "none",
-              borderRadius:1,
-              mx:1
+              borderRadius: 1,
+              mx: 1,
             }}
             key={index} // Alternatively, you can use a unique property like item.label or item.id if available
             onClick={() => {
@@ -68,7 +68,7 @@ export default function MenuButton({
               handleClose();
             }}
           >
-            {item.label} 
+            {item.label}
           </MenuItem>
         ))}
       </Menu>

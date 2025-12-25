@@ -10,6 +10,7 @@
   "Home": "Home",
   "Products": "Products",
   "Careers": "Careers",
+  "Brands": "Brands",
   "Special Offers": "Special Offers",
   "Contact Us": "Contact Us",
   "Change Language": "Change Language",
@@ -31,8 +32,7 @@
   "Delivery Charges": "Delivery Charges",
   "Apply": "Apply",
   "Points": "Points",
-  "Total":"Total",
-  "change city":"change city",
-  "My Points":"My Points",
-  "Location":"Location"
+  "Total": "Total",
+  "change city": "change city",
+  "My Points": "My Points"
 }

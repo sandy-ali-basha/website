@@ -6,6 +6,9 @@
   "Enter your Email to continue": "بۆ بەردەوام بوون ئیمەیڵەکەت داخڵ بکە",
   "We have sent you an email with a link to reset your password. Please check your inbox and follow the instructions to restore access to your account. If you do not see the email in your inbox, please check your spam or junk folder.": "ئێمە ئیمەیڵێکمان بۆ ناردوویت کە بەستەرێکی تێدایە بۆ بەدەستهێنانی وشەی نهێنی. تکایە ئیمەیڵەکەت بپشکنە و ڕێنماییەکان جێبەجێ بکە بۆ گەڕاندنەوەی  ئەکاونتەکەت. ئەگەر ئیمەیڵەکەت لە ئیمەیڵەکەتدا نەبینی، تکایە فۆڵدەری سپام یان جنک بپشکنە. ",
   "Send Reset Email": "ناردنی ئیمەیڵی ڕییسێتکردن",
+  "Discounts": "گەیشتووی نوێ",
+  "Hot Discounts": "داھاتە گەرماوەکان",
+  "No Offers at the moment!": "هیچ پێشنیارێک نییە لە ئێستادا!",
   "Description": "وەسف",
   "You May Also Like": "تڕەنگە دڵخوازت بێت",
   "Add To Cart": "زیادکردن بۆ سەبەتە",
@@ -127,6 +130,9 @@
   "pleas Login to view your points": "تکایە چوونە ژوورەوە بۆ بینینی خاڵەکانت",
   "Special Offers": "ئۆفەری تایبەت",
   "Something went wrong. Please try again.": "هەڵەیەک ڕووی دا. تکایە دووبارە هەوڵ بدەوە.",
+  "searchPlaceholder": "گەڕان…",
+  "searchSuccess": "{{count}} بەرهەم گەڕانەکەت پەیوەندیدا",
+  "searchEmpty": "هیچ بەرهەمێک پەیوەندیدا بە گەڕانەکەت",
   "Oops...": "ئوپس...",
   "error": "هەڵە",
   "Your order cancellation has been requested and needs acceptance.": "داوای هەڵوەشاندنی داواکاریەکەت کرا و پێویستە پەسەند بکرێت.",
@@ -263,9 +269,14 @@
   "and encourage collaboration among our team members": "و ئێمە هاوکاریکردن لەنێوان ئەندامەکانی تیممان دا پشتگیری دەکەین.",
 
   ",and we strive to create a work environment where everyone feel": "کاتێک شریتی تاهر بەرز دەکەیتەوە، ژینگە و ئازادی عەفرین دەبینیت.",
+  "Please Choose Payment method": "تکایە پارەدانی پێشنیار بکە",
+  "Quick view": "بینینی خێرا",
+  "Quick shop": "فرۆشتنی خێرا",
   "Position Overview": "پوختەی کار",
   "Few units left": "چەند یەکەمی کەمە",
   "choose country": "وڵات هەلبژێرە",
   "choose city": "شار هەلبژێرە",
   "Select your city for a customized shopping journey": "شارەکەت هەلبژێرە بۆ گەشتێکی کڕینی تایبەتی",
-  "save": "پاشەکەوتکردن"}
+  "save": "پاشەکەوتکردن",
+  "Add your location on the map": "شوێنەکەت لەسەر نەخشە زیاد بکە"
+}

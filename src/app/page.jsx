@@ -1,166 +1,83 @@
-import React, { useEffect, useRef} from "react";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import { Button, Grid } from "@mui/material";
-import { Swiper, SwiperSlide } from "swiper/react";
-import AnimatedText from "../components/modules/home/AnimatedText.jsx";
 import Qoute from "../components/modules/home/Qoute.jsx";
-import Partners from "../components/modules/home/Partners.jsx";
-import { Autoplay } from "swiper/modules";
-import gsap from "gsap";
-import { settingsStore } from "store/settingsStore.js";
-import { useHome, useHomeSlider } from "hooks/home/useHome.js";
-import Loader from "components/modules/Loader.jsx";
-import HomeGrid from "components/modules/home/HomeGrid.jsx";
-import BestSellers from "components/modules/home/BestSellers.jsx";
-import { Link } from "react-router-dom";
-import i18n from "../i18n.js";
+import { useHome } from "hooks/home/useHome.js";
+import LatestProducts from "components/modules/home/LatestProducts.jsx";
 import Reels from "components/modules/home/Reels.jsx";
+import BrandsSection from "components/modules/home/BrandsSection.jsx";
+import CategoriesSection from "components/modules/home/CategoriesSection.jsx";
+import DiscountSection from "components/modules/home/DiscountSection.jsx";
+import CaroselSection from "components/modules/home/CaroselSection.jsx";
+import SpecialOffersSection from "components/SpecialOffersSection.jsx";
+import MultiLinksBannerSection from "components/modules/home/MultiLinksBannerSection.jsx";
+import { useQuery } from "react-query";
+import { _Home } from "api/Home/home.js";
+import { Box } from "@mui/material";
+import Loader from "components/modules/Loader.jsx";
+import AnimatedText from "components/modules/home/AnimatedText.jsx";
+import i18n from "i18n.js";
+import Partners from "../components/modules/home/Partners.jsx";
+import HomeGrid from "components/modules/home/HomeGrid.jsx";
 import ParallaxSlides from "components/modules/home/ParallaxSlides.jsx";
 
 export default function Home() {
-  const [direction] = settingsStore((state) => [state.direction]);
-  const gummieBox = useRef(null);
-
-  useEffect(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: gummieBox.current,
-        start: "top center",
-        end: "bottom center",
-      },
-    });
-
-    tl.to(gummieBox.current, {
-      rotate: direction === "ltr" ? -40 : 40,
-      duration: 1,
-      x: direction === "ltr" ? -100 : 100,
-      ease: "power1.inOut",
-    });
-  }, [direction]);
-
   const { data, isLoading } = useHome();
-  const { data: slider, isLoading: sliderLoading } = useHomeSlider();
- 
+
+  const { data: showHideData, isLoading: isShowHideSectinosLoading } = useQuery(
+    {
+      queryFn: () => _Home.getShowHideSections(),
+      queryKey: ["showHideSections"],
+    }
+  );
+
+  if (isLoading || isShowHideSectinosLoading)
+    return (
+      <Box
+        sx={{
+          my: 5,
+          height: "50vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Loader />
+      </Box>
+    );
+
+  // if (!showHideData || !data) return <></>;
+  //todo un comment this line after api fix
+
   return (
     <>
-      {isLoading && sliderLoading && (
-        <Box
-          sx={{
-            my: 5,
-            height: "50vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Loader />
-        </Box>
-      )}
-      <Box sx={{ mt: { xs: "5vh", sm: "0px" } }}>
-        {slider && (
-          <Swiper
-            autoplay={{
-              delay: 2500,
-              disableOnInteraction: false,
-            }}
-            lazy={true}
-            modules={[Autoplay]}
-          >
-            {slider?.home_slides?.map((item, index) => (
-              <SwiperSlide key={index}>
-                <Link to={item?.link}>
-                  <Box
-                    sx={{
-                      position: "relative",
-                      aspectRatio: "16/9",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      color: "white",
-                      textAlign: "center",
-                      background: "#6A83B0",
-                    }}
-                  >
-                    <img
-                      src={item?.image}
-                      alt={`Slide ${index + 1}`}
-                      style={{
-                        objectFit: "cover",
-                        width: "100%",
-                        height: "100%",
-                        position: "absolute",
-                      }}
-                      lazy
-                    />
-                  </Box>
-                </Link>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        )}
-      </Box>
+      {/* <SpinAndWin/> */}
+      <CaroselSection />
 
-      {data && (
-        <>
-          <Container>
-            {/* <Grid 
-              container
-              sx={{
-                background: "#F4F4F4",
-                my: 6,
-                borderRadius: 2,
-                px: 5,
-                py: 4,
-              }}
-            >
-              <Grid item sm="6">
-                <Typography variant="h5" color="initial">
-                  {data?.["home.page.cta"]?.value?.title?.[i18n.language] ?? " "}
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  {data?.["home.page.cta"]?.value?.subtitle?.[i18n.language] ?? " "}
-                </Typography>
-              </Grid>
-              <Grid
-                sm="6"
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  color="primary"
-                  variant="contained"
-                  sx={{ px: 3 }}
-                  href={data?.["home.page.cta"]?.value?.subtitle?.[i18n.language]}
-                >
-                  {"Shop Now"}
-                </Button>
-              </Grid>
-            </Grid> */}
-          </Container>
-          <Reels />
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            <AnimatedText
-              text={
-                data?.["home.page.textSectionTwo"]?.value?.text?.[i18n.language]
-              }
-            />
-          </Box>
-          <BestSellers />
-          <Qoute
-            data={data?.["home.page.videoText"]}
-            video={data?.["home.page.video"]?.video}
-          />
-          <Partners />
-          <HomeGrid />
-          <ParallaxSlides />
-        </>
+      <BrandsSection />
+
+      <CategoriesSection />
+
+      {showHideData?.flags?.hot_descounts && <DiscountSection />}
+
+      {showHideData?.flags?.static_videos && <Reels />}
+
+      <AnimatedText
+        text={data?.["home.page.textSectionTwo"]?.value?.text?.[i18n.language]}
+      ></AnimatedText>
+
+      <SpecialOffersSection isInHomePage />
+
+      <MultiLinksBannerSection />
+
+      <LatestProducts />
+
+      {data && data["home.page.videoText"].value.show === "true" && (
+        <Qoute
+          data={data?.["home.page.videoText"]}
+          video={data?.["home.page.video"]?.video}
+        />
       )}
+      <Partners />
+      <HomeGrid />
+      <ParallaxSlides />
     </>
   );
 }

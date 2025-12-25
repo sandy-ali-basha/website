@@ -10,6 +10,10 @@
   "Home": "الصفحة الرئيسية",
   "Products": "المنتجات",
   "Careers": "الوظائف",
+  "Brands": "العلامات التجارية",
+  "life stage": "مرحلة الحياة",
+  "Supplements as needed": "مكملات حسب الحاجة",
+  "Indications": "الاستطبابات",
   "Special Offers": "العروض الخاصة",
   "Contact Us": "اتصل بنا",
   "Change Language": "تغيير اللغة",
@@ -32,6 +36,5 @@
   "Apply": "تطبيق",
   "Points": "النقاط",
   "Total": "الإجمالي",
-  "My Points":"نقاطي",
-  "Location":"الموقع"
+  "My Points": "نقاطي"
 }

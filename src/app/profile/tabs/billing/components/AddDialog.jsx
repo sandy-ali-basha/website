@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
 import {
   Dialog,
@@ -16,10 +16,14 @@ import {
   FormControl,
   Box,
   FormHelperText,
+  InputLabel,
 } from "@mui/material";
+
 import ButtonLoader from "components/customs/ButtonLoader";
+import LocationPicker from "./LocationPicker";
 import { useAddressDialog } from "./hooks/useAddressDialog";
-import { _countries } from "api/country/countries"; // your region API (actually regions here)
+import { _cities } from "api/country/country";
+import { _countries } from "api/country/countries";
 
 const AddDialog = ({ open, handleClose }) => {
   const {
@@ -31,8 +35,8 @@ const AddDialog = ({ open, handleClose }) => {
     handleSubmit,
     control,
     t,
-    watch,
     setValue,
+    watch,
   } = useAddressDialog({ handleClose });
 
   const [countries, setCountries] = useState([]);
@@ -50,6 +54,25 @@ const AddDialog = ({ open, handleClose }) => {
     });
   }, []);
 
+  const [location, setLocation] = useState([
+    4899113.013567734, 4326807.948463461,
+  ]); // Default coordinates (Erbil center)
+
+  console.log("location: ", location);
+
+  useEffect(() => {
+    if (location) {
+      setValue("longitude", location[0]);
+      setValue("latitude", location[1]);
+    }
+  }, [location, setValue]);
+
+  const resetOnClose = () => {
+    const form = document.querySelector("form");
+    if (form) form.reset();
+    handleClose();
+  };
+
   // update cities when region changes
   React.useEffect(() => {
     if (selectedRegion) {
@@ -65,20 +88,44 @@ const AddDialog = ({ open, handleClose }) => {
   return (
     <Dialog
       open={open}
-      onClose={() => {
-        const form = document.querySelector("form");
-        if (form) form.reset();
-        handleClose();
-      }}
-      aria-labelledby="alert-dialog-title"
+      onClose={resetOnClose}
       scroll="paper"
+      aria-labelledby="add-address-dialog-title"
       PaperProps={{
         component: "form",
         onSubmit: handleSubmit(handleCreate),
       }}
+      maxWidth="lg"
+      fullWidth
     >
-      <DialogTitle id="scroll-dialog-title">{t("Add New Address")}</DialogTitle>
-      <DialogContent>
+      <DialogTitle id="add-address-dialog-title">
+        {t("Add New Address")}
+      </DialogTitle>
+
+      <DialogContent
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "repeat(1,1fr)", md: "repeat(2,1fr)" },
+          gap: 2.5,
+          alignItems: "center",
+        }}
+      >
+        {/* Map picker */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1.5,
+            height: { xs: "50dvh", md: "100%" },
+          }}
+        >
+          <Typography variant="subtitle1">
+            {t("Add your location on the map")}
+          </Typography>
+          <LocationPicker setLocation={setLocation} locaiton={location} />
+        </Box>
+
+        {/* Address form */}
         <Grid container spacing={2} sx={{ pt: 1 }}>
           {/* FIRST NAME + TITLE */}
           <Grid item xs={12} sm={6}>

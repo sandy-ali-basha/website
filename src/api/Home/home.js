@@ -22,6 +22,25 @@ export const _Home = {
       .then((res) => res.data);
   },
 
+  getMultiLinksBanners: () =>
+    _axios
+      .get("home/multi-link-banners", {
+        headers: {
+          translations: "true",
+        },
+      })
+      .then((res) => res.data?.data[0]),
+
+  getShowHideSections: async () => {
+    try {
+      const res = await _axios.get("/feature-flags");
+      return res.data?.data;
+    } catch (error) {
+      console.error("Failed to get feature flags:", error);
+      throw error;
+    }
+  },
+  
   getSection: ({ id }) =>
     _axios.get("home_page/section/" + id).then((res) => res.data?.data),
 };

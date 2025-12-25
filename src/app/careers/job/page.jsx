@@ -1,6 +1,14 @@
-import { Box, Button, Chip, Container, Grid, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  Container,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { useCareer } from "hooks/careers/useCreers";
-import React, { useEffect } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 

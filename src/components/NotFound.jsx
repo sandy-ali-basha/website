@@ -12,7 +12,12 @@ const NotFound = () => {
         height: "100vh",
       }}
     >
-      <img style={{ width: "40vw" }} src={notFoundImg} />
+      <img
+        loading="lazy"
+        alt="Not Found"
+        style={{ width: "40vw" }}
+        src={notFoundImg}
+      />
       <Typography variant="h2">Page Not Found</Typography>
     </Box>
   );
