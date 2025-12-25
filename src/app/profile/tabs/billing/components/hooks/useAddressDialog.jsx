@@ -11,7 +11,7 @@ export const useAddressDialog = ({ handleClose }) => {
 
   // Schema validation using Yup
   const schema = yup.object().shape({
-    title: yup.string().required(t("Title is required")),
+      title: yup.string().required(t("Title is required")),
     first_name: yup.string().required(t("First name is required")),
     last_name: yup.string().required(t("Last name is required")),
     contact_email: yup
@@ -35,7 +35,7 @@ export const useAddressDialog = ({ handleClose }) => {
   };
 
   const formOptions = { resolver: yupResolver(schema) };
-  const { register, handleSubmit, formState, control, setValue } =
+  const { register,watch, handleSubmit, formState, control, setValue } =
     useForm(formOptions);
   const { errors } = formState;
   const queryClient = useQueryClient();
@@ -89,5 +89,6 @@ export const useAddressDialog = ({ handleClose }) => {
     control,
     setChecked,
     setValue,
+    watch
   };
 };

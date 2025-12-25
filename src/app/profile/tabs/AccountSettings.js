@@ -6,7 +6,6 @@ import {
   Grid,
   Typography,
   CircularProgress,
-  Button,
   Card,
   Container,
   useMediaQuery,
@@ -15,7 +14,6 @@ import {
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import MuiTabList from "@mui/lab/TabList";
-import Icon from "components/modules/icon";
 import TabAccount from "./TabAccount";
 import TabBilling from "./TabBilling";
 import TabSecurity from "./TabSecurity";
@@ -23,6 +21,8 @@ import TabOrders from "./TabOrders";
 import TabAddresses from "./TabAddresses";
 import TabPoints from "./TabPoints";
 import { useTranslation } from "react-i18next";
+import TabCountry from "./TabCountry";
+import { LocationCity, Lock, Money, People, PinDrop, ShoppingCart, ShoppingCartCheckout } from "@mui/icons-material";
 
 const TabList = styled(MuiTabList)(({ theme }) => ({
   border: "0 !important",
@@ -95,10 +95,11 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
   const tabContentList = {
     account: <TabAccount />,
     security: <TabSecurity />,
-    billing: <TabBilling apiPricingPlanData={apiPricingPlanData} />,
+    // billing: <TabBilling apiPricingPlanData={apiPricingPlanData} />,
     orders: <TabOrders />,
     addresses: <TabAddresses />,
     points: <TabPoints />,
+    country: <TabCountry />,
   };
 
   return (
@@ -124,7 +125,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                           ...(!hideText && { "& svg": { mr: 1 } }),
                         }}
                       >
-                        <Icon fontSize="1.25rem" icon="tabler:users" />
+                        <People/>
                         {!hideText && t("Account")}
                       </Box>
                     }
@@ -139,11 +140,11 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                           ...(!hideText && { "& svg": { mr: 1 } }),
                         }}
                       >
-                        <Icon fontSize="1.25rem" icon="tabler:lock" />
+                        <Lock/>
                         {!hideText && t("Security")}
                       </Box>
                     }
-                  />
+                  />  
                   {/* <Tab
                     value="billing"
                     label={
@@ -154,7 +155,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                           ...(!hideText && { "& svg": { mr: 1 } }),
                         }}
                       >
-                        <Icon fontSize="1.25rem" icon="tabler:file-text" />
+                       <FileText/>
                         {!hideText && t("Billing")}
                       </Box>
                     }
@@ -169,7 +170,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                           ...(!hideText && { "& svg": { mr: 1 } }),
                         }}
                       >
-                        <Icon fontSize="1.25rem" icon="tabler:shopping-cart" />
+                        <ShoppingCartCheckout/>
                         {!hideText && t("Orders")}
                       </Box>
                     }
@@ -184,10 +185,7 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                           ...(!hideText && { "& svg": { mr: 1 } }),
                         }}
                       >
-                        <Icon
-                          fontSize="1.25rem"
-                          icon="mdi:address-marker-outline"
-                        />
+                       <PinDrop/>
                         {!hideText && t("Addresses")}
                       </Box>
                     }
@@ -203,8 +201,23 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                           ...(!hideText && { "& svg": { mr: 1 } }),
                         }}
                       >
-                        <Icon fontSize="1.25rem" icon="mdi:dollar" />
+                        <Money/>
                         {!hideText && t("My Points")}
+                      </Box>
+                    }
+                  />
+                  <Tab
+                    value="Country"
+                    label={
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          ...(!hideText && { "& svg": { mr: 1 } }),
+                        }}
+                      >
+                       <LocationCity/>
+                        {!hideText && t("Country")}
                       </Box>
                     }
                   />

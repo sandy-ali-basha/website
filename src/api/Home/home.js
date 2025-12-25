@@ -40,4 +40,7 @@ export const _Home = {
       throw error;
     }
   },
+  
+  getSection: ({ id }) =>
+    _axios.get("home_page/section/" + id).then((res) => res.data?.data),
 };

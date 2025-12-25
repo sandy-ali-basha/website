@@ -30,6 +30,7 @@ import emptyCart from "assets/images/empty-cart.webp";
 import Simillar from "../product/[id]/_components/Simllar";
 import { useEffect } from "react";
 import RenderVariants from "./_components/RenderVariants";
+import { Delete } from "@mui/icons-material";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -200,7 +201,7 @@ const StepCart = ({ handleNext }) => {
                         sx={{ color: "text.primary" }}
                         onClick={() => handleDeleteItem(item?.id)}
                       >
-                        <Icon icon="tabler:x" fontSize={20} />
+                      <Delete/>
                       </IconButton>
                       <Grid container sx={{ mx: 1 }}>
                         <Grid item xs={12} md={8}>
@@ -213,7 +214,7 @@ const StepCart = ({ handleNext }) => {
 
                           {/* ⬇️ Display Variants Here ⬇️ */}
                           <RenderVariants options={item?.options} />
-                          
+
                           {/* ⬆️ Display Variants Here ⬆️ */}
 
                           <Box
@@ -246,10 +247,10 @@ const StepCart = ({ handleNext }) => {
                                 item?.stock > 10
                                   ? t("In Stock")
                                   : item?.stock === 1
-                                    ? t("Only 1 unit left")
-                                    : item?.stock > 1 && item?.stock <= 10
-                                      ? t("Few units left")
-                                      : t("Out Of Stock")
+                                  ? t("Only 1 unit left")
+                                  : item?.stock > 1 && item?.stock <= 10
+                                  ? t("Few units left")
+                                  : t("Out Of Stock")
                               }
                             />
                           </Box>
@@ -460,7 +461,9 @@ const StepCart = ({ handleNext }) => {
           </Grid>
         )}
       </Grid>
-      <Simillar id={data?.data?.products[0]?.id} />
+      {data?.data?.products?.length > 0 && (
+        <Simillar id={data?.data?.products[0]?.id} />
+      )}
     </Container>
   );
 };

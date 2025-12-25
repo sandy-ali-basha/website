@@ -11,9 +11,9 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import InputAdornment from "@mui/material/InputAdornment";
 import * as yup from "yup";
-import Icon from "components/modules/icon";
 import { Alert, TextField } from "@mui/material";
 import { _AuthApi } from "api/auth";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const defaultValues = {
   password: "",
@@ -126,14 +126,11 @@ const ChangePasswordCard = () => {
                             onMouseDown={(e) => e.preventDefault()}
                             onClick={handleClickShowcurrent_password}
                           >
-                            <Icon
-                              fontSize="1.25rem"
-                              icon={
-                                values.showcurrent_password
-                                  ? "tabler:eye"
-                                  : "tabler:eye-off"
-                              }
-                            />
+                            {values.showpassword ? (
+                              <Visibility />
+                            ) : (
+                              <VisibilityOff />
+                            )}
                           </IconButton>
                         </InputAdornment>
                       ),
@@ -167,14 +164,11 @@ const ChangePasswordCard = () => {
                             onClick={handleClickShowpassword}
                             onMouseDown={(e) => e.preventDefault()}
                           >
-                            <Icon
-                              fontSize="1.25rem"
-                              icon={
-                                values.showpassword
-                                  ? "tabler:eye"
-                                  : "tabler:eye-off"
-                              }
-                            />
+                            {values.showpassword ? (
+                              <Visibility />
+                            ) : (
+                              <VisibilityOff />
+                            )}
                           </IconButton>
                         </InputAdornment>
                       ),
@@ -208,14 +202,11 @@ const ChangePasswordCard = () => {
                             onMouseDown={(e) => e.preventDefault()}
                             onClick={handleClickShowpassword_confirmation}
                           >
-                            <Icon
-                              fontSize="1.25rem"
-                              icon={
-                                values.showpassword_confirmation
-                                  ? "tabler:eye"
-                                  : "tabler:eye-off"
-                              }
-                            />
+                            {values.showpassword ? (
+                              <Visibility />
+                            ) : (
+                              <VisibilityOff />
+                            )}
                           </IconButton>
                         </InputAdornment>
                       ),

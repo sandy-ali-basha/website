@@ -55,7 +55,7 @@ export const _cart = {
         data: data,
       })
       .then((res) => res.data);
-  },
+  }, 
   coupon: async ({ data }) => {
     return _axios.post(`/coupon`, data).then((res) => res.data);
   },
