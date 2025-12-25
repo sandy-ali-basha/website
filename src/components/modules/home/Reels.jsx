@@ -1,142 +1,143 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
+import { Box, Skeleton, Typography } from "@mui/material";
+import "swiper/css";
+import { useHomeSection } from "hooks/home/useHome";
+import i18n from "i18n.js";
 
-// Video imports
-import ved3Ar from "assets/reels/ar/3.m4v";
-import ved2Ar from "assets/reels/ar/2.m4v";
-import ved1Ar from "assets/reels/ar/1.m4v";
-import ved4Ar from "assets/reels/ar/4.m4v";
-import ved5Ar from "assets/reels/ar/5.m4v";
+export default function Reels() {
+  const { data, isLoading } = useHomeSection(4);
 
-import ved3En from "assets/reels/en/3.m4v";
-import ved2En from "assets/reels/en/2.m4v";
-import ved1En from "assets/reels/en/1.m4v";
-import ved4En from "assets/reels/en/4.m4v";
-import ved5En from "assets/reels/en/5.m4v";
+  // 👉 backend items
+  const items = useMemo(() => data?.data?.items || [], [data?.data?.items]);
 
-import ved3Kr from "assets/reels/kr/3.m4v";
-import ved2Kr from "assets/reels/kr/2.m4v";
-import ved1Kr from "assets/reels/kr/1.m4v";
-import ved4Kr from "assets/reels/kr/4.m4v";
-import ved5Kr from "assets/reels/kr/5.m4v";
-
-const Shimmer = () => (
-  <div
-    style={{
-      width: "100%",
-      height: "80vh",
-      backgroundColor: "#f0f0f0",
-      animation: "shimmer 1.5s infinite linear",
-      borderRadius: 10,
-    }}
-  />
-);
-
-export default function Reels({ data }) {
-  const { i18n } = useTranslation("index");
-  const VediosAr = [ved3Ar, ved2Ar, ved5Ar, ved1Ar, ved4Ar];
-  const VediosEn = [ved3En, ved2En, ved5En, ved1En, ved4En];
-  const VediosKr = [ved3Kr, ved2Kr, ved5Kr, ved1Kr, ved4Kr];
-  const selectedVideos =
-    i18n.language === "ar"
-      ? VediosAr
-      : i18n.language === "en"
-        ? VediosEn
-        : VediosKr;
-
-  const [loadingStatus, setLoadingStatus] = useState(
-    selectedVideos.map(() => true)
-  );
   const videoRefs = useRef([]);
+  const observer = useRef(null);
+  const [loadingStatus, setLoadingStatus] = useState([]);
 
-  const handleVideoLoad = (index) => {
-    setLoadingStatus((status) => {
-      const newStatus = [...status];
-      newStatus[index] = false; // Video has loaded
-      return newStatus;
-    });
-  };
-
-  const observer = useRef();
-
+  /* Initialize loading state when items arrive */
   useEffect(() => {
+    if (items.length) {
+      setLoadingStatus(new Array(items.length).fill(true));
+    }
+  }, [items.length]);
+
+  /* Lazy-load videos */
+  useEffect(() => {
+    if (!items.length) return;
+
     observer.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const video = entry.target;
-            if (video.dataset.src) {
-              video.src = video.dataset.src;
-              video.load();
-              video.play(); // Optionally auto-play video
-            }
-            observer.current.unobserve(video); // Stop observing after loading
+          const video = entry.target;
+          if (entry.isIntersecting && video.dataset.src) {
+            video.src = video.dataset.src;
+            video.load();
+            observer.current.unobserve(video);
           }
         });
       },
       { threshold: 0.25 }
     );
 
-    return () => {
-      observer.current.disconnect(); // Cleanup observer on component unmount
-    };
-  }, []);
-
-  useEffect(() => {
     videoRefs.current.forEach((video) => {
       if (video) observer.current.observe(video);
     });
-  }, [selectedVideos]);
+
+    return () => observer.current?.disconnect();
+  }, [items]);
+
+  const handleVideoLoad = (index) => {
+    setLoadingStatus((prev) => {
+      const next = [...prev];
+      next[index] = false;
+      return next;
+    });
+  };
 
   return (
     <Swiper
-      style={{
-        paddingTop: "2vh",
-        paddingBottom: "2vh",
-        direction: i18n.language === "en" ? "ltr" : "rtl",
-      }}
-      spaceBetween={5}
+      spaceBetween={8}
       slidesPerView={3}
       modules={[Autoplay]}
+      autoplay={{ delay: 5000, disableOnInteraction: false }}
       breakpoints={{
-        640: { slidesPerView: 3, spaceBetween: 5 },
-        768: { slidesPerView: 3, spaceBetween: 5 },
-        1024: { slidesPerView: 4, spaceBetween: 5 },
+        640: { slidesPerView: 3 },
+        768: { slidesPerView: 3 },
+        1024: { slidesPerView: 4 },
       }}
-      autoplay={{
-        delay: 5000,
-        disableOnInteraction: false,
-      }}
-      grabCursor
+      style={{ padding: "2vh 0" }}
     >
-      {selectedVideos.map((videoSrc, idx) => (
-        <SwiperSlide key={idx}>
-          {loadingStatus[idx] && <Shimmer />}
-
-          <video
-            ref={(el) => (videoRefs.current[idx] = el)}
-            style={{
-              display: loadingStatus[idx] ? "none" : "block",
-              width: "100%",
-              height: "auto",
-              objectFit: "cover",
-              borderRadius: 10,
+      {(isLoading ? Array.from(new Array(4)) : items).map((item, idx) => (
+        <SwiperSlide key={item?.id || idx}>
+          <Box
+            sx={{
+              position: "relative",
+              borderRadius: 2,
+              overflow: "hidden",
+              cursor: item?.cta_link ? "pointer" : "default",
             }}
-            onLoadedData={() => {
-              console.log(`Video ${idx} loaded`); // Debug log
-              handleVideoLoad(idx);
-            }}
-            src={videoSrc}
-            preload="metadata"
-            muted
-            loop
-            autoPlay
+            onClick={() =>
+              item?.cta_link && window.open(item.cta_link, "_blank")
+            }
           >
-            <source type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+            {/* Skeleton */}
+            {(isLoading || loadingStatus[idx]) && (
+              <Skeleton
+                variant="rectangular"
+                animation="wave"
+                sx={{ width: "100%", height: 300 }}
+              />
+            )}
+
+            {/* Overlay */}
+            {!isLoading && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  zIndex: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                  px: 2,
+                  background: "rgba(0,0,0,0.35)",
+                }}
+              >
+                <Typography variant="h6" color="white">
+                  {item?.[`title_${i18n.language}`]}
+                </Typography>
+                <Typography variant="body2" color="white">
+                  {item?.[`description_${i18n.language}`]
+                    ?.replace(/<\/?[^>]+(>|$)/g, "")}
+                </Typography>
+              </Box>
+            )}
+
+            {/* Video */}
+            {!isLoading && (
+              <video
+                ref={(el) => (videoRefs.current[idx] = el)}
+                style={{
+                  width: "100%",
+                  height: 300,
+                  objectFit: "cover",
+                  backgroundColor: "#f2f2f2",
+                  display: loadingStatus[idx] ? "none" : "block",
+                }}
+                data-src={item?.image} // 🔁 will be video URL
+                onLoadedData={() => handleVideoLoad(idx)}
+                muted
+                loop
+                playsInline
+                autoPlay
+                preload="metadata"
+              />
+            )}
+          </Box>
         </SwiperSlide>
       ))}
     </Swiper>
