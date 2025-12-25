@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Routes, Route, Outlet } from "react-router-dom";
 import Home from "app/page.jsx";
@@ -42,8 +42,9 @@ function App() {
   useEffect(() => {
     HttpRequestInterceptor();
     window.scrollTo(0, 0);
-    // localStorage.setItem("i18nextLng", "en");
   }, []);
+  
+  const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
 
   useEffect(() => {
     createChat({
@@ -54,7 +55,7 @@ function App() {
         "I am the smart assistant from Dawaa Alhayat . How can I help you today?",
       ],
     });
- 
+
     const i18nextLng = localStorage.getItem("i18nextLng");
     if (!i18nextLng) localStorage.setItem("i18nextLng", "ar");
   }, []);
@@ -92,7 +93,7 @@ function App() {
           content="Explore a wide range of quality medical products at Dawaa Alhayat."
         />
       </Helmet>
-      <ChooseCityDialog />
+      <ChooseCityDialog open={open} setOpen={setOpen} />
       <CookieConsent />
       <Routes>
         <Route
