@@ -37,7 +37,7 @@ const AddDialog = ({ open, handleClose }) => {
 
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
-
+  console.log("cities", cities);
   // watch selected region to update city list
   const selectedRegion = watch("city");
   console.log("selectedRegion", selectedRegion);
@@ -176,11 +176,12 @@ const AddDialog = ({ open, handleClose }) => {
                       : t("Select country first")}
                   </Box>
                 </MenuItem>
-                {cities.map((item) => (
-                  <MenuItem value={item.name} key={item.id}>
-                    <Box sx={{ color: "text.main" }}>{item.name}</Box>
-                  </MenuItem>
-                ))}
+                {cities.length > 0 &&
+                  cities?.map((item) => (
+                    <MenuItem value={item.name} key={item.id}>
+                      <Box sx={{ color: "text.main" }}>{item.name}</Box>
+                    </MenuItem>
+                  ))}
               </Select>
               <FormHelperText>{errors.state?.message}</FormHelperText>
             </FormControl>
