@@ -3,9 +3,9 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import i18n from "i18n.js";
 import { useHomeSection } from "hooks/home/useHome";
 import defaultImage from "assets/images/defaultImg.jpg";
+import i18n from "i18n";
 
 gsap.registerPlugin(ScrollTrigger);
 

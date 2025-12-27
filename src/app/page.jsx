@@ -13,10 +13,10 @@ import { _Home } from "api/Home/home.js";
 import { Box } from "@mui/material";
 import Loader from "components/modules/Loader.jsx";
 import AnimatedText from "components/modules/home/AnimatedText.jsx";
-import i18n from "i18n.js";
 import Partners from "../components/modules/home/Partners.jsx";
 import HomeGrid from "components/modules/home/HomeGrid.jsx";
 import ParallaxSlides from "components/modules/home/ParallaxSlides.jsx";
+import i18n from "i18next";
 
 export default function Home() {
   const { data, isLoading } = useHome();
@@ -75,7 +75,6 @@ export default function Home() {
           video={data?.["home.page.video"]?.video}
         />
       )}
-      <Partners />
       <HomeGrid />
       <ParallaxSlides />
     </>

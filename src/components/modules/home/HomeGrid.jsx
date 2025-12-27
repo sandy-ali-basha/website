@@ -1,6 +1,6 @@
 import { Box, Container, Grid, Typography, Skeleton } from "@mui/material";
 import { useHomeSection } from "hooks/home/useHome";
-import i18n from "i18n.js";
+import i18n from "i18n";
 import defaultImage from "assets/images/defaultImg.jpg";
 
 const HomeGrid = () => {

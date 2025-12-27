@@ -61,8 +61,8 @@ export default function Product() {
             selectedVariant={selectedVariant}
           />
           <ProductVariants
+            isLoading={isLoading}
             variants={data?.data?.variants}
-            loading={isLoading}
             onSelect={handleVariantSelect}
             selectedVariantProp={selectedVariant} // controlled mode
           />

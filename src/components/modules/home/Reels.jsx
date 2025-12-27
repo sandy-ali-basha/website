@@ -4,7 +4,7 @@ import { Autoplay } from "swiper/modules";
 import { Box, Skeleton, Typography } from "@mui/material";
 import "swiper/css";
 import { useHomeSection } from "hooks/home/useHome";
-import i18n from "i18n.js";
+import i18n from "i18n";
 
 export default function Reels() {
   const { data, isLoading } = useHomeSection(4);
