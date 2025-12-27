@@ -3,17 +3,20 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { FilterStore } from "store/filterStore";
 
-const CategoryDropdown = ({ translations, items }) => {
+const CategoryDropdown = ({ translations, items, itemId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [categoryItem, setCategoryItem] = useState(null);
   const open = Boolean(anchorEl);
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language; // Get current language (e.g., "en", "ar", "kr")
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    console.log("Clicked", event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -73,7 +76,7 @@ const CategoryDropdown = ({ translations, items }) => {
             sx={{ p: 0 }}
           >
             <Link
-              to={`/store`}
+              to={`/store/${itemId}/${item.id}`}
               style={{
                 textDecoration: "none",
                 color: "#313131",

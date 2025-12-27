@@ -10,7 +10,7 @@ const SideDrawer = ({
   maxValue,
   handleMinChange,
   handleMaxChange,
-  data,
+  Attributes,
   handleCheked,
   ClearFilter,
   selectedAttributes,
@@ -41,7 +41,7 @@ const SideDrawer = ({
       </Typography>
 
       <CAccordion
-        data={data}
+        Attributes={Attributes}
         handleCheked={handleCheked}
         selectedAttributes={selectedAttributes}
       />

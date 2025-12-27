@@ -2,7 +2,7 @@ import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useAttributes } from "hooks/attributes/useAttributes";
 import { useProducts } from "hooks/Product/useProducts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
@@ -14,17 +14,18 @@ export const useCategory = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { t } = useTranslation("index");
   const params = useParams();
-  const { data: Attr, isLoading: AttrLoading } = useAttributes();
+  const { data: Attributes, isLoading: AttrLoading } = useAttributes();
+
   const [attr, setAttr] = useState();
   const [attValue, setAttrValue] = useState();
 
-  const body = {
-    filters: {
-      [attr]: attValue,
-    },
-    min_price: minValue,
-    max_price: maxValue,
-  };
+const body = {
+  filters: attr && attValue
+    ? { [attr]: attValue }
+    : {},
+  min_price: minValue,
+  max_price: maxValue,
+};
 
   console.log("body: ", body);
 
@@ -51,6 +52,13 @@ export const useCategory = () => {
     setAttr(attr);
   };
 
+  useEffect(() => {
+    if (params?.attr_id && params?.attr_valueid) {
+      setAttr(params?.attr_id);
+      setAttrValue(Number(params?.attr_valueid));
+    }
+  }, [params?.attr_id, params?.attr_valueid]);
+
   return {
     data,
     isLoading,
@@ -64,7 +72,7 @@ export const useCategory = () => {
     params,
     t,
     mobileOpen,
-    Attr,
+    Attributes,
     AttrLoading,
     handleCheked,
     attr,

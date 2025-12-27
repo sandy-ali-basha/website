@@ -26,7 +26,7 @@ export default function Category() {
     handleDrawerToggle,
     t,
     mobileOpen,
-    Attr,
+    Attributes,
     handleCheked,
   } = useCategory();
 
@@ -89,7 +89,7 @@ export default function Category() {
           }}
         >
           <SideDrawer
-            data={Attr}
+            Attributes={Attributes}
             minValue={minValue}
             maxValue={maxValue}
             handleMinChange={handleMinChange}
@@ -106,7 +106,7 @@ export default function Category() {
         <Box sx={{ display: { xs: "none", md: "block" }, mx: 1 }}>
           <SideDrawer
             valuetext={valuetext}
-            data={Attr}
+            Attributes={Attributes}
             minValue={minValue}
             maxValue={maxValue}
             handleMinChange={handleMinChange}
