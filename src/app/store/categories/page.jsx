@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import Typography from "@mui/material/Typography";
 import { Container, Divider, Box, Tabs, Tab, Grid } from "@mui/material";

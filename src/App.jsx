@@ -153,7 +153,7 @@ function App() {
             element={<StoreCategoriesPage />}
           />
           <Route path="/store/categories/brand/:id" exact element={<Brand />} />
-          <Route path="/store" element={<StoreCategoryPage />} />
+          <Route path="/store/:attr_id?/:attr_valueid?" element={<StoreCategoryPage />} />
           <Route path="/store/checkout" element={<StoreCheckoutPage />} />
           <Route path="/store/offers" element={<StoreOffersPage />} />
           <Route
