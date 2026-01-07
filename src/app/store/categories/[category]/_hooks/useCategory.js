@@ -4,7 +4,7 @@ import { useAttributes } from "hooks/attributes/useAttributes";
 import { useProducts } from "hooks/Product/useProducts";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const useCategory = () => {
   const theme = useTheme();
@@ -19,13 +19,11 @@ export const useCategory = () => {
   const [attr, setAttr] = useState();
   const [attValue, setAttrValue] = useState();
 
-const body = {
-  filters: attr && attValue
-    ? { [attr]: attValue }
-    : {},
-  min_price: minValue,
-  max_price: maxValue,
-};
+  const body = {
+    filters: attr && attValue ? { [attr]: attValue } : {},
+    min_price: minValue,
+    max_price: maxValue,
+  };
 
   console.log("body: ", body);
 
@@ -59,11 +57,23 @@ const body = {
     }
   }, [params?.attr_id, params?.attr_valueid]);
 
+  const navigate = useNavigate();
+
+  const ClearFilter = () => {
+    setAttr(undefined);
+    setAttrValue(undefined);
+    setMinValue(undefined);
+    setMaxValue(undefined);
+    setMobileOpen(false);
+    navigate(`/store`);
+  };
+
   return {
     data,
     isLoading,
     isMobile,
     valuetext,
+    ClearFilter,
     minValue,
     maxValue,
     handleMinChange,

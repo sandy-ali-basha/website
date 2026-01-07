@@ -52,7 +52,7 @@ export const useNavBar = () => {
     return (
       response?.data?.state?.map((city) => ({
         id: city.id,
-        label: city.name,
+        label: city.name.replace("state.", ""),
         onClick: () => {
           localStorage.setItem("city", city.id);
           window.location.reload();

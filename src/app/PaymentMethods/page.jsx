@@ -2,6 +2,7 @@ import { Box, Chip, Container, Typography } from "@mui/material";
 import React from "react";
 
 export default function PaymentMethods() {
+  
   return (
     <>
       <Container sx={{ mt: 20, textAlign: "center" }}>

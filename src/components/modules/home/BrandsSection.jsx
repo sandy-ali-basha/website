@@ -12,7 +12,7 @@ const BrandsSection = () => {
           display: "flex",
           gap: "25px",
           flexWrap: "wrap",
-          justifyContent: { xs: "center", sm: "space-evenly" },
+          justifyContent: { xs: "center" },
         }}
       >
         {isLoading || !brands ? (
@@ -42,15 +42,14 @@ const BrandsSection = () => {
                   sx={{
                     borderRadius: "50%",
                     overflow: "hidden",
-                    width: { xs: 100, sm: 150 },
-                    height: { xs: 100, sm: 150 },
+                    width: { xs: '40vw', sm: 200 },
+                    height: { xs: '40vw', sm: 200 },
                     border: "3px solid #cccccc",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                     transition: "0.3s ease-in-out",
                     bgColor: (theme) => theme.palette.background.paper,
-
                     "&:hover": {
                       borderColor: (theme) => theme.palette.primary.main,
                     },

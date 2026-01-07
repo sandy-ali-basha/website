@@ -142,7 +142,10 @@ const MobileNavBar = ({
                   <List component="div" disablePadding>
                     {category.values.map((item) => (
                       <ListItem key={item.id} sx={{ pl: 4 }} disablePadding>
-                        <ListItemButton component={Link} to={`/store`}>
+                        <ListItemButton
+                          component={Link}
+                          to={`/store/${category.id}/${item.id}`}
+                        >
                           <ListItemText primary={getTranslatedValue(item)} />
                         </ListItemButton>
                       </ListItem>

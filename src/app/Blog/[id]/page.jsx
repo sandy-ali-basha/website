@@ -9,6 +9,9 @@ export default function BlogPost() {
   const { id } = useParams();
   const { data, isLoading } = useBlog(id);
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Container sx={{ my: 20 }}>
       <Chip sx={{ background: "rgba(194, 238, 252, 1)" }} label="Blog"></Chip>

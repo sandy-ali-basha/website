@@ -8,6 +8,9 @@ import SpecialOffersSection from "components/SpecialOffersSection";
 export default function Offers() {
   const { t } = useOffersPage();
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Container sx={{ pt: 15, minHeight: "100vh" }}>
       <img loading="lazy" src={img} style={{ width: "100%" }} alt="img" />

@@ -16,7 +16,6 @@ const CategoryDropdown = ({ translations, items, itemId }) => {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    console.log("Clicked", event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);

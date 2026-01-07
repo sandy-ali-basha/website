@@ -28,6 +28,7 @@ export default function Category() {
     mobileOpen,
     Attributes,
     handleCheked,
+    ClearFilter,
   } = useCategory();
 
   const [searchResults, setSearchResults] = useState([]);
@@ -100,6 +101,7 @@ export default function Category() {
             setSearchResults={setSearchResults}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
+            ClearFilter={ClearFilter}
           />
         </Drawer>
 
@@ -116,6 +118,7 @@ export default function Category() {
             setSearchResults={setSearchResults}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
+            ClearFilter={ClearFilter}
           />
         </Box>
 

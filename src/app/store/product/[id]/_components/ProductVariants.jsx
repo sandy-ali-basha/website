@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -32,17 +32,12 @@ export default function ProductVariants({
   ========================== */
   const cityId = localStorage.getItem("city");
 
-  const {
-    data: localCityName,
-    isLoading: cityLoading,
-  } = useQuery(
+  const { data: localCityName, isLoading: cityLoading } = useQuery(
     ["city-name", cityId],
     async () => {
       if (!cityId) return null;
       const res = await _cities.index();
-      const cityObj = res?.data?.state?.find(
-        (c) => c.id === parseInt(cityId)
-      );
+      const cityObj = res?.data?.state?.find((c) => c.id === parseInt(cityId));
       return cityObj?.value || null;
     },
     {
@@ -52,47 +47,45 @@ export default function ProductVariants({
   );
 
   /* =========================
-     Filter Variants
+    Filter Variants
   ========================== */
   const filteredVariants = useMemo(() => {
     if (!variants || !localCityName) return [];
     return variants.filter(
-      (v) =>
-        v.city?.toLowerCase() === localCityName.toLowerCase()
+      (v) => v.city?.toLowerCase() === localCityName.toLowerCase()
     );
   }, [variants, localCityName]);
 
   const selectedVariant = selectedVariantProp || localSelected;
 
   /* =========================
-     Init First Variant
-  ========================== */
-  useMemo(() => {
+   Init First Variant (by city)
+========================== */
+  useEffect(() => {
     if (
       isLoading ||
       cityLoading ||
       selectedVariantProp ||
       filteredVariants.length === 0 ||
       initCalledRef.current
-    )
+    ) {
       return;
+    }
 
     const firstAvailable =
-      filteredVariants.find((v) => v.inventory > 0) ||
-      filteredVariants[0];
+      filteredVariants.find((v) => v.inventory > 0) || filteredVariants[0];
 
     if (firstAvailable) {
       setLocalSelected(firstAvailable);
       onSelect?.(firstAvailable);
       initCalledRef.current = true;
     }
-  }, [
-    filteredVariants,
-    isLoading,
-    cityLoading,
-    selectedVariantProp,
-    onSelect,
-  ]);
+  }, [filteredVariants, isLoading, cityLoading, selectedVariantProp, onSelect]);
+
+  useEffect(() => {
+    initCalledRef.current = false;
+    setLocalSelected(null);
+  }, [localCityName]);
 
   const handleSelect = (variant) => {
     if (!variant || variant.inventory === 0) return;
@@ -129,8 +122,7 @@ export default function ProductVariants({
               </Grid>
             ))
           : filteredVariants.map((variant) => {
-              const isSelected =
-                selectedVariant?.id === variant.id;
+              const isSelected = selectedVariant?.id === variant.id;
               const isDisabled = variant.inventory === 0;
 
               return (
@@ -138,13 +130,9 @@ export default function ProductVariants({
                   <Card
                     variant="outlined"
                     sx={{
-                      borderColor: isSelected
-                        ? "primary.main"
-                        : "grey.300",
+                      borderColor: isSelected ? "primary.main" : "grey.300",
                       opacity: isDisabled ? 0.55 : 1,
-                      cursor: isDisabled
-                        ? "not-allowed"
-                        : "pointer",
+                      cursor: isDisabled ? "not-allowed" : "pointer",
                       transition: "all .15s ease",
                     }}
                   >
@@ -153,12 +141,8 @@ export default function ProductVariants({
                       onClick={() => handleSelect(variant)}
                     >
                       <CardContent>
-                        <Typography
-                          variant="body2"
-                          sx={{ mb: 1 }}
-                        >
-                          {t("Pack of")} :{" "}
-                          {variant.unit_quantity}
+                        <Typography variant="body2" sx={{ mb: 1 }}>
+                          {t("Pack of")} : {variant.unit_quantity}
                         </Typography>
 
                         <Divider />
@@ -170,20 +154,14 @@ export default function ProductVariants({
                         >
                           {variant.options?.map(
                             (opt, i) =>
-                              opt.toLowerCase() !==
-                                "default" && (
+                              opt.toLowerCase() !== "default" && (
                                 <Chip
                                   key={i}
                                   label={opt}
                                   size="small"
-                                  color={
-                                    isSelected
-                                      ? "warning"
-                                      : "default"
-                                  }
+                                  color={isSelected ? "warning" : "default"}
                                   sx={{
-                                    textTransform:
-                                      "capitalize",
+                                    textTransform: "capitalize",
                                   }}
                                 />
                               )

@@ -29,16 +29,6 @@ export default function Product() {
 
   useEffect(() => window.scrollTo(0, 0), []);
 
-  // reset when product changes
-  useEffect(() => {
-    if (!isLoading && data?.data) {
-      const variants = data.data.variants || [];
-      const firstAvailable =
-        variants.find((v) => v.storage_qty > 0) || variants[0] || null;
-      setSelectedVariant(firstAvailable);
-    }
-  }, [data, isLoading, setSelectedVariant]);
-
   // stable callback to avoid recreating function each render
   const handleVariantSelect = useCallback(
     (variant) => {
@@ -64,7 +54,6 @@ export default function Product() {
             isLoading={isLoading}
             variants={data?.data?.variants}
             onSelect={handleVariantSelect}
-            selectedVariantProp={selectedVariant} // controlled mode
           />
 
           <ProductFeatures features={features} loading={featuresLoading} />

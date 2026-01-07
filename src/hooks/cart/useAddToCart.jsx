@@ -59,7 +59,7 @@ export const useAddToCart = (coupon_code) => {
         currency_id,
         user_id: user_data ? user_data?.id : null,
         products: [
-          {
+          { 
             variant_id: selectedVariant?.id,
             id: productId,
             qty: 1,

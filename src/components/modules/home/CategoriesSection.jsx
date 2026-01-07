@@ -94,7 +94,7 @@ const CategoryCard = ({ category }) => {
             },
           }}
           variant="outlined"
-          onClick={() => navigate("/store")}
+          onClick={() => navigate(`/store/${category.id}/0`)}
         >
           {t("Shop now")}
         </Button>

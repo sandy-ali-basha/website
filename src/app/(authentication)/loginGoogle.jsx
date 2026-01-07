@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 
 function LoginButton() {
   const navigate = useNavigate();
-
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
       _AuthApi

@@ -52,6 +52,10 @@ export default function Categories() {
     t,
   } = useCategories();
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   return (
     <Container sx={{ pt: 15 }}>
       <Typography

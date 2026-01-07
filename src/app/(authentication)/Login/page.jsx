@@ -7,7 +7,6 @@ import {
   Alert,
 } from "@mui/material";
 import React, { useEffect } from "react";
-import img from "../../../assets/images/hero-image (3).jpg";
 import logo from "../../../assets/images/logo.png";
 import ButtonLoader from "components/customs/ButtonLoader";
 import { useLogin } from "./hooks/useLogin";
@@ -31,21 +30,6 @@ export default function Login() {
         minHeight: "100vh",
       }}
     >
-      {/* <img
-        loading="lazy"
-        src={img}
-        alt="gummie"
-        objectFit="cover"
-        quality={100}
-        style={{
-          position: "absolute",
-          left: "0px",
-          top: "0px",
-          width: "100%",
-          height: "100%",
-          zIndex: "-1",
-        }}
-      /> */}
       <Box
         sx={{
           width: { md: "35%", sm: "80%" },

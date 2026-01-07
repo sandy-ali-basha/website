@@ -75,6 +75,9 @@ export const useCategories = () => {
     };
   }
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return {
     value,
     TabPanel,

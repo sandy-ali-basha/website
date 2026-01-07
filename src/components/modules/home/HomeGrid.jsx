@@ -13,7 +13,7 @@ const HomeGrid = () => {
       <Grid container spacing={2}>
         {/* Large section on the left */}
         <Grid item xs={12} p={1} md={6}>
-          <Box sx={{ borderRadius: 4, position: "relative", height: "90vh" }}>
+          <Box sx={{ borderRadius: 4, position: "relative", height:{lg: "90vh", md: "90vh", xs: "40vh"} }}>
             {isLoading ? (
               <Skeleton
                 variant="rectangular"
@@ -78,7 +78,7 @@ const HomeGrid = () => {
               sx={{
                 borderRadius: 4,
                 position: "relative",
-                height: "50%",
+                height: { md: "50%", xs: "40vh" },
                 mb: i !== (isLoading ? 1 : items.slice(1).length - 1) ? 2 : 0,
                 overflow: "hidden",
               }}

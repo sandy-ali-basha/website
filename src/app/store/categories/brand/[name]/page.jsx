@@ -14,6 +14,9 @@ export default function Brand() {
   const { id } = useParams(); // Get the brand ID from the URL params
   const { data, isLoading } = useBrandPage(id);
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   if (isLoading)
     return (
       <Box

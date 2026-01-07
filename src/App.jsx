@@ -31,18 +31,19 @@ import ResetPassword from "app/(authentication)/forgetPassword/ResetPassword";
 import Brand from "app/store/categories/brand/[name]/page";
 import NotFound from "components/NotFound";
 import ShouldBeLogged from "middlewares/ShouldBeLogged";
-import GoogleCallback from "app/(authentication)/Login/GoogleCallback";
 import ChooseCityDialog from "components/ChooseCityDialog";
-// import CookieConsent from "components/CookieConsent";
 
 function App() {
   useEffect(() => {
     HttpRequestInterceptor();
     window.scrollTo(0, 0);
+    localStorage.setItem("cart_count", 0);
+    localStorage.setItem("direction", "rtl");
 
     const i18nextLng = localStorage.getItem("i18nextLng");
     if (!i18nextLng) localStorage.setItem("i18nextLng", "ar");
   }, []);
+
   const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
 
   return (
@@ -129,7 +130,6 @@ function App() {
             </ShouldNotBeLogged>
           }
         />
-        <Route path="/auth/google" element={<GoogleCallback />}></Route>
 
         <Route
           element={
@@ -153,7 +153,10 @@ function App() {
             element={<StoreCategoriesPage />}
           />
           <Route path="/store/categories/brand/:id" exact element={<Brand />} />
-          <Route path="/store/:attr_id?/:attr_valueid?" element={<StoreCategoryPage />} />
+          <Route
+            path="/store/:attr_id?/:attr_valueid?"
+            element={<StoreCategoryPage />}
+          />
           <Route path="/store/checkout" element={<StoreCheckoutPage />} />
           <Route path="/store/offers" element={<StoreOffersPage />} />
           <Route
