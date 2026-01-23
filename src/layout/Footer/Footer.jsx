@@ -7,6 +7,7 @@ import {
   Link,
   Box,
   Tooltip,
+  Toolbar,
 } from "@mui/material";
 import React from "react";
 import logo from "assets/images/logo_white.png";
@@ -15,6 +16,14 @@ import { _terms } from "api/terms/terms";
 import { useQuery } from "react-query";
 import CardShimmer from "components/customs/loaders/CardShimmer";
 import { useHomeSection } from "hooks/home/useHome";
+import {
+  Facebook,
+  Instagram,
+  LinkedIn,
+  Mail,
+  WhatsApp,
+} from "@mui/icons-material";
+import { useContactUs } from "hooks/contactUs/useContactUs";
 
 function Footer() {
   const { t, i18n } = useTranslation("index");
@@ -29,21 +38,17 @@ function Footer() {
 
   const { data: termsData, isLoading: isLoadingTerms } = useQuery(
     ["terms"],
-    () => _terms.getTerms().then((res) => res?.data)
+    () => _terms.getTerms().then((res) => res?.data),
   );
+  const { data, isLoading } = useContactUs();
 
-  const { data: socialData } = useHomeSection(3);
-
-  const getLangTitle = (item) => {
-    const lang = i18n.language;
-    return (
-      item?.[`title_${lang}`] ||
-      item?.title_en ||
-      item?.title_ar ||
-      item?.title_kr ||
-      ""
-    );
-  };
+  const socialData = [
+    { title: "facebook", icon: <Facebook sx={{ color: "white" }} />, link: data?.data[0]?.facebook },
+    { title: "instagram", icon: <Instagram sx={{ color: "white" }} />, link: data?.data[0]?.instagram },
+    { title: "linkedin", icon: <LinkedIn sx={{ color: "white" }} />, link: data?.data[0]?.linkedin },
+    { title: "whatsapp", icon: <WhatsApp sx={{ color: "white" }} />, link: `https://wa.me${data?.data[0]?.whatsapp}` },
+    { title: "email", icon: <Mail sx={{ color: "white" }} />, link: data?.data[0]?.email },
+  ];
 
   return (
     <footer style={{ background: "#6A83B0" }}>
@@ -67,16 +72,17 @@ function Footer() {
               gap: "10px",
             }}
           >
-            <Button
-              sx={{ color: "white", borderColor: "white" }}
-              variant="outlined"
-              href={`mailto:${socialData?.items?.find(i => i.title_en === "phone")?.cta_link}`}
-            >
-              {t("contact")}
-            </Button>
+            <Tooltip title={socialData?.title}>
+              <Button
+                sx={{ color: "white", borderColor: "white" }}
+                variant="outlined"
+                href={`mailto:${socialData?.items?.find((i) => i.title === "whatsapp")?.link}`}
+              >
+                {t("contact")}
+              </Button>
+            </Tooltip>
           </Grid>
-
-          {/* Menu Items */}
+      {/* Menu Items */}
           <Grid
             xs={12}
             md={6}
@@ -101,7 +107,6 @@ function Footer() {
               </Button>
             ))}
           </Grid>
-
           {/* Social Icons */}
           <Grid
             md={6}
@@ -115,19 +120,15 @@ function Footer() {
             }}
             item
           >
-            {socialData?.items?.map((item) => (
-              <Tooltip key={item.id} title={getLangTitle(item)}>
+            {socialData?.map((item) => (
+              <Tooltip key={item.id} title={item?.title}>
                 <IconButton
-                  href={item.cta_link}
-                  aria-label={getLangTitle(item)}
+                  href={item.link}
+                  aria-label={item?.title}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img
-                    src={item.image}
-                    alt={getLangTitle(item)}
-                    style={{ width: 24, height: 24, filter: "brightness(0) invert(1)" }}
-                  />
+                  {item.icon}
                 </IconButton>
               </Tooltip>
             ))}

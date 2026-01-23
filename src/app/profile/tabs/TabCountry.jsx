@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { _countries } from "api/country/countries";
+import i18next from "i18next";
 
 const TabCountry = () => {
   const { t } = useTranslation("index");
@@ -90,7 +91,7 @@ const TabCountry = () => {
           >
             {countries.map((country) => (
               <MenuItem key={country.id} value={country.id}>
-                {country.name}
+                 {country[`name_${i18next.language}`] || country.name}
               </MenuItem>
             ))}
           </Select>
@@ -107,7 +108,7 @@ const TabCountry = () => {
           >
             {cities?.map((city) => (
               <MenuItem key={city.id} value={city.id}>
-                {city.name}
+                  {city[`name_${i18next.language}`] || city.name}
               </MenuItem>
             ))}
           </Select>

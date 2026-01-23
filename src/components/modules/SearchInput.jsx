@@ -26,30 +26,12 @@ export default function SearchInput({
           },
         });
 
-        const userCity = Number(localStorage.getItem("city"));
-
-        const filteredProducts = response.data.data.products.filter(
-          (product) => product.city_id === (userCity || 1)
-        );
-
         // Set the search results from the API response
         setSearchResults(
-          response.data.data.products.length > 0 ? filteredProducts : []
+          response.data.data.products
         );
 
-        if (filteredProducts.length > 0 && searchTerm) {
-          Swal.fire({
-            icon: "success",
-            title: t("searchSuccess", { count: filteredProducts.length }),
-            toast: true,
-            position: "bottom-end",
-            showConfirmButton: false,
-            timer: 5000,
-            customClass: {
-              container: "custom-swal",
-            },
-          });
-        } else if (filteredProducts.length === 0 && searchTerm) {
+        if (searchResults.length === 0 && searchTerm) {
           Swal.fire({
             icon: "warning",
             title: t("searchEmpty"),

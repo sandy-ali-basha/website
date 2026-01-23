@@ -13,6 +13,7 @@ import ProductCard from "components/modules/ProductCard";
 import MenuIcon from "@mui/icons-material/Menu";
 import SideDrawer from "./_components/Drawer";
 import { CloseRounded } from "@mui/icons-material";
+import { Helmet } from "react-helmet";
 
 export default function Category() {
   const {
@@ -45,123 +46,143 @@ export default function Category() {
   }, [data?.data?.products]);
 
   const productsToDisplay =
-    searchTerm.trim() === "" ? data?.data?.products ?? [] : searchResults;
+    searchTerm.trim() === "" ? (data?.data?.products ?? []) : searchResults;
 
   return (
-    <Container sx={{ pt: 15 }}>
-      <Typography
-        variant="h3"
-        color="initial"
-        sx={{ mb: 1, overflowWrap: "break-word" }}
-      >
-        {t("Products")}
-      </Typography>
+    <>
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: data?.data?.category?.[`name_${i18n.language}`] || "Products",
+            description:
+              data?.data?.category?.[`description_${i18n.language}`] ||
+              "Medical products category",
+            url: window.location.href,
+          })}
+        </script>
+      </Helmet>
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "flex-start",
-          my: 5,
-          flexDirection: { xs: "column", md: "row" },
-        }}
-      >
+      <Container sx={{ pt: 15 }}>
+        <Typography
+          variant="h3"
+          color="initial"
+          sx={{ mb: 1, overflowWrap: "break-word" }}
+        >
+          {t("Products")}
+        </Typography>
+
         <Box
           sx={{
+            display: "flex",
             alignItems: "flex-start",
-            width: "100%",
-            justifyContent: { xs: "space-between", md: "flex-start" },
-            mb: { xs: 2, md: 0 },
-            display: { md: "none", xs: "flex" },
+            my: 5,
+            flexDirection: { xs: "column", md: "row" },
           }}
         >
-          <IconButton color="inherit" edge="start" onClick={handleDrawerToggle}>
-            <MenuIcon />
-          </IconButton>
-        </Box>
-
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }}
-          sx={{
-            display: { xs: "block", md: "none" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box" },
-          }}
-        >
-          <SideDrawer
-            Attributes={Attributes}
-            minValue={minValue}
-            maxValue={maxValue}
-            handleMinChange={handleMinChange}
-            handleMaxChange={handleMaxChange}
-            valuetext={valuetext}
-            handleCheked={handleCheked}
-            searchResults={searchResults}
-            setSearchResults={setSearchResults}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            ClearFilter={ClearFilter}
-          />
-        </Drawer>
-
-        <Box sx={{ display: { xs: "none", md: "block" }, mx: 1 }}>
-          <SideDrawer
-            valuetext={valuetext}
-            Attributes={Attributes}
-            minValue={minValue}
-            maxValue={maxValue}
-            handleMinChange={handleMinChange}
-            handleMaxChange={handleMaxChange}
-            handleCheked={handleCheked}
-            searchResults={searchResults}
-            setSearchResults={setSearchResults}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            ClearFilter={ClearFilter}
-          />
-        </Box>
-
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            width: { xs: "100%", md: `calc(100% - 30%)` },
-          }}
-        >
-          {productsToDisplay.length === 0 && !isLoading && (
-            <Typography
-              variant="body1"
-              sx={{
-                my: 10,
-                textAlign: "center",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 2,
-              }}
+          <Box
+            sx={{
+              alignItems: "flex-start",
+              width: "100%",
+              justifyContent: { xs: "space-between", md: "flex-start" },
+              mb: { xs: 2, md: 0 },
+              display: { md: "none", xs: "flex" },
+            }}
+          >
+            <IconButton
+              color="inherit"
+              edge="start"
+              onClick={handleDrawerToggle}
             >
-              {t("No Product Found")} <CloseRounded />
-            </Typography>
-          )}
+              <MenuIcon />
+            </IconButton>
+          </Box>
 
-          <Grid container spacing={{ md: 2, xs: 1 }}>
-            {isLoading &&
-              Array.from({ length: 6 }).map((_, index) => (
-                <Grid item xs={6} md={4} lg={3} key={index}>
-                  <Skeleton variant="rectangular" width="100%" height={400} />
-                </Grid>
-              ))}
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{ keepMounted: true }}
+            sx={{
+              display: { xs: "block", md: "none" },
+              "& .MuiDrawer-paper": { boxSizing: "border-box" },
+            }}
+          >
+            <SideDrawer
+              Attributes={Attributes}
+              minValue={minValue}
+              maxValue={maxValue}
+              handleMinChange={handleMinChange}
+              handleMaxChange={handleMaxChange}
+              valuetext={valuetext}
+              handleCheked={handleCheked}
+              searchResults={searchResults}
+              setSearchResults={setSearchResults}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              ClearFilter={ClearFilter}
+            />
+          </Drawer>
 
-            {productsToDisplay.length > 0 &&
-              productsToDisplay.map((item, idx) => (
-                <Grid item key={idx} xs={6} md={4} lg={3}>
-                  <ProductCard product={item} />
-                </Grid>
-              ))}
-          </Grid>
+          <Box sx={{ display: { xs: "none", md: "block" }, mx: 1 }}>
+            <SideDrawer
+              valuetext={valuetext}
+              Attributes={Attributes}
+              minValue={minValue}
+              maxValue={maxValue}
+              handleMinChange={handleMinChange}
+              handleMaxChange={handleMaxChange}
+              handleCheked={handleCheked}
+              searchResults={searchResults}
+              setSearchResults={setSearchResults}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              ClearFilter={ClearFilter}
+            />
+          </Box>
+
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              width: { xs: "100%", md: `calc(100% - 30%)` },
+            }}
+          >
+            {productsToDisplay.length === 0 && !isLoading && (
+              <Typography
+                variant="body1"
+                sx={{
+                  my: 10,
+                  textAlign: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 2,
+                }}
+              >
+                {t("No Product Found")} <CloseRounded />
+              </Typography>
+            )}
+
+            <Grid container spacing={{ md: 2, xs: 1 }}>
+              {isLoading &&
+                Array.from({ length: 6 }).map((_, index) => (
+                  <Grid item xs={6} md={4} lg={3} key={index}>
+                    <Skeleton variant="rectangular" width="100%" height={400} />
+                  </Grid>
+                ))}
+
+              {productsToDisplay.length > 0 &&
+                productsToDisplay.map((item, idx) => (
+                  <Grid item key={idx} xs={6} md={4} lg={3}>
+                    <ProductCard product={item} />
+                  </Grid>
+                ))}
+            </Grid>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </>
   );
 }

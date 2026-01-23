@@ -132,7 +132,7 @@ function NavBar() {
             ))}
 
             {categories &&
-              categories.map((e) => (
+              categories.slice(0, 3).map((e) => (
                 <CategoryDropdown
                   key={e.id}
                   translations={e.translations}

@@ -24,9 +24,6 @@ export const useCategory = () => {
     min_price: minValue,
     max_price: maxValue,
   };
-
-  console.log("body: ", body);
-
   const { data, isLoading } = useProducts(body);
 
   function valuetext(value) {

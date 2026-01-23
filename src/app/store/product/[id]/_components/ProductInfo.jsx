@@ -5,6 +5,7 @@ import { PaidRounded } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import ProductPrice from "./ProductPrice";
+import { Helmet } from "react-helmet";
 
 export default function ProductInfo({ data, isLoading, selectedVariant }) {
   const { t } = useTranslation("index");
@@ -31,6 +32,35 @@ export default function ProductInfo({ data, isLoading, selectedVariant }) {
 
   return (
     <>
+      <Helmet>
+        <title>
+          {product?.name
+            ? `${product.name} | Your Store Name`
+            : "Product | Your Store Name"}
+        </title>
+
+        <meta
+          name="description"
+          content={
+            product?.short_description ||
+            product?.description?.replace(/<[^>]*>?/gm, "").slice(0, 160)
+          }
+        />
+
+        {/* Open Graph (للسوشيال ميديا) */}
+        <meta property="og:title" content={product?.name} />
+        <meta property="og:description" content={product?.short_description} />
+        <meta property="og:image" content={product?.images?.[0]?.url} />
+        <meta property="og:type" content="product" />
+
+        {/* Keywords */}
+        {product?.tags && (
+          <meta
+            name="keywords"
+            content={product.tags.map((t) => t.name).join(", ")}
+          />
+        )}
+      </Helmet>
       {/* Name */}
       {isLoading ? (
         <CardShimmer />

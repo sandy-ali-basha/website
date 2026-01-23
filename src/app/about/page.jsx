@@ -15,31 +15,44 @@ import partner0 from "assets/images/partner-0.avif";
 import bg from "assets/images/Asset2.svg";
 import { useTranslation } from "react-i18next";
 import video from "assets/videos/DawaaAlHayatValues.m4v";
-import { useHome } from "hooks/home/useHome";
 import i18n from "i18n";
+import { useAbout } from "hooks/about/useAbout";
+import { useHome } from "hooks/home/useHome";
 
 export default function About() {
   const { t } = useTranslation("about");
+  const { data, isLoading } = useAbout();
+  
   const [showMore, setShowMore] = React.useState(false);
-  const { data } = useHome();
+
+  const { data: homeData } = useHome();
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Get the text
+  // -------------------------
+  // Normalize API data
+  // -------------------------
+  const sections = React.useMemo(() => {
+    if (!Array.isArray(data)) return {};
+    return data.reduce((acc, item) => {
+      const key = item.section?.toLowerCase();
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(item);
+      return acc;
+    }, {});
+  }, [data]);
+
+  const welcome = sections.welcome?.[0];
+  const mission = sections.mission?.[0];
+  const visionData = sections.vision?.[0];
+  const culture = sections.culture?.[0];
+
   const text =
-    data?.["home.page.textSectionOne"]?.value?.text?.[i18n.language] || "";
+    homeData?.["home.page.textSectionOne"]?.value?.text?.[i18n.language] || "";
 
-  // Define the max length before showing "View More"
   const maxLength = 1200; // adjust the length as needed
-
-  // Function to toggle between showing more or less
-  const handleToggle = () => {
-    setShowMore(!showMore);
-  };
-
-  // Determine if the text is long enough to be truncated
   const isLongText = text.length > maxLength;
   const displayedText = showMore ? text : text.substring(0, maxLength);
 
@@ -53,7 +66,9 @@ export default function About() {
       }}
     >
       <img src={image} alt="Hero" style={{ width: "100%" }} />
+
       <Container maxWidth="lg" sx={{ mb: 4 }}>
+        {/* ================= Welcome ================= */}
         <Box
           sx={{
             minHeight: "80vh",
@@ -68,59 +83,52 @@ export default function About() {
             <img
               src={logo}
               alt="dawaa alhayat logo"
-              style={{
-                width: "15vw",
-                mb: "10vh",
+              style={{ width: "15vw", mb: "10vh" }}
+            />
+          </Box>
+
+          <Typography variant="h4" sx={{ textAlign: "center", mt: 3 }}>
+            {welcome?.title}
+          </Typography>
+
+          <Box sx={{ width: { md: "75vw", sm: "95vw" }, mx: "auto", my: 5 }}>
+            <Typography
+              variant="body1"
+              sx={{ mt: 1, textAlign: "center" }}
+              dangerouslySetInnerHTML={{
+                __html: welcome?.description || "",
               }}
             />
           </Box>
-          <Typography variant="h4" sx={{ textAlign: "center", mt: 3 }}>
-            {t("Welcome to Dawaa Al Hayat")}
-          </Typography>
-          <Box sx={{ width: { md: "75vw", sm: "95vw" }, mx: "auto", my: 5 }}>
-            <Typography variant="body1" sx={{ mt: 1, textAlign: "center" }}>
-              {t(
-                "Dawaa Al Hayat was born in 2012 as an entrepreneurial project of its founders to invest their experience in the pharmaceutical distribution sector to reach a premium position in the Iraqi market."
-              )}
-            </Typography>
-            <Typography variant="body1" sx={{ mt: 1, textAlign: "center" }}>
-              {t(
-                "With Three Main offices (Baghdad, Erbil, & Sulimanya), Dawaa Al Hayat maintains a strong presence in most Iraqi areas and nowadays, it is one of the fast-growing Iraqi pharma distributors."
-              )}
-            </Typography>
-            <Typography variant="body1" sx={{ mt: 1, textAlign: "center" }}>
-              {t(
-                "The core business of the company is directed to the sales, promotion and distribution of high-quality (Pharmaceuticals, Dietary Supplements) that cover key therapeutic areas in the Iraqi market, both private and governmental sectors."
-              )}
-            </Typography>
-          </Box>
         </Box>
 
-        {/* CEO Message Section */}
+        {/* ================= CEO Message ================= */}
         <Grid container sx={{ mb: 15 }} spacing="5">
           <Grid md="4">
             <Box sx={{ width: { xs: "70%", lg: "100%" }, mx: "auto" }}>
               <img
                 loading="lazy"
-                src={data?.["home.page.textSectionOne"]?.image}
+                src={homeData?.["home.page.textSectionOne"]?.image}
                 alt="CEO"
                 style={{ width: "100%" }}
               />
             </Box>
           </Grid>
+
           <Grid md="8" sx={{ px: 5 }}>
             <Typography
-              dangerouslySetInnerHTML={{
-                __html: displayedText,
-              }}
-            ></Typography>
+              dangerouslySetInnerHTML={{ __html: displayedText }}
+            />
             {isLongText && (
-              <Button onClick={handleToggle}>
+              <Button onClick={() => setShowMore(!showMore)}>
                 {showMore ? "View Less" : "View More"}
               </Button>
             )}
+            
           </Grid>
         </Grid>
+
+        {/* ================= Mission / Vision ================= */}
         <Grid container spacing={3}>
           <Grid md="12" item>
             <Grid container spacing={2} sx={{ mb: 5 }}>
@@ -139,7 +147,7 @@ export default function About() {
                   }}
                 >
                   <img
-                    src={misiion}
+                    src={visionData?.image_url || misiion}
                     style={{
                       borderRadius: "12px",
                       objectFit: "contain",
@@ -149,15 +157,18 @@ export default function About() {
                     alt=""
                   />
                   <Typography variant="h5" sx={{ textAlign: "center" }}>
-                    {t("Vision")}
+                    {visionData?.title}
                   </Typography>
-                  <Typography variant="body1" sx={{ textAlign: "center" }}>
-                    {t(
-                      "“ Being a leader in the pharma business to make people’s life better by providing excellent & Innovative products”."
-                    )}
-                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ textAlign: "center" }}
+                    dangerouslySetInnerHTML={{
+                      __html: visionData?.description || "",
+                    }}
+                  />
                 </Box>
               </Grid>
+
               <Grid md="6" item>
                 <Box
                   sx={{
@@ -173,7 +184,7 @@ export default function About() {
                   }}
                 >
                   <img
-                    src={vision}
+                    src={mission?.image_url || vision}
                     style={{
                       borderRadius: 4,
                       objectFit: "contain",
@@ -183,17 +194,21 @@ export default function About() {
                     alt=""
                   />
                   <Typography variant="h5" sx={{ textAlign: "center" }}>
-                    {t("Mission")}
+                    {mission?.title}
                   </Typography>
-                  <Typography variant="body1" sx={{ textAlign: "center" }}>
-                    {t(
-                      "“Matching the health community requirements, by applying the highest standards of selecting, importing, storing, & distributing the products, to ensure the health care providers and people”."
-                    )}
-                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ textAlign: "center" }}
+                    dangerouslySetInnerHTML={{
+                      __html: mission?.description || "",
+                    }}
+                  />
                 </Box>
               </Grid>
             </Grid>
           </Grid>
+
+          {/* ================= Video ================= */}
           <Grid md="12">
             <video
               style={{
@@ -206,43 +221,27 @@ export default function About() {
               loop
               muted
             >
-              <source src={video} type="video/mp4"></source>
-              Your browser does not support the video tag.
+              <source src={video} type="video/mp4" />
             </video>
           </Grid>
+
+          {/* ================= Culture ================= */}
           <Grid md="6" item sx={{ my: 6 }}>
-            <Box>
-              <Box>
-                <Typography
-                  variant="h3"
-                  sx={{
-                    textAlign: "center",
-                    fontWeight: "400",
-                  }}
-                >
-                  {t("Our culture")}
-                </Typography>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    textAlign: "center",
-                    mt: 2,
-                    width: "90%",
-                    mx: "auto",
-                    fontWeight: "400",
-                  }}
-                >
-                  {t("We_believe")}
-                  <br />
-                  {t("every_voice")}
-                </Typography>
-              </Box>
-            </Box>
+            <Typography variant="h3" sx={{ textAlign: "center" }}>
+              {culture?.title}
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{ textAlign: "center", mt: 2, width: "90%", mx: "auto" }}
+              dangerouslySetInnerHTML={{
+                __html: culture?.description || "",
+              }}
+            />
           </Grid>
 
           <Grid item md="6">
             <img
-              src={image2}
+              src={culture?.image_url || image2}
               style={{
                 borderRadius: 5,
                 width: "100%",
@@ -253,61 +252,34 @@ export default function About() {
             />
           </Grid>
 
+          {/* ================= Partners ================= */}
           <Grid item md="12">
-            <Typography
-              variant="h4"
-              color="initial"
-              sx={{ textAlign: "center" }}
-            >
+            <Typography variant="h4" sx={{ textAlign: "center" }}>
               {t("Our Partners")}
             </Typography>
+
             <Typography
               variant="body1"
-              color="initial"
               sx={{ textAlign: "center", mt: 5 }}
             >
               {t(
-                "We understand the importance of forging key collaborations with vendors and partners alike as we aim to ensure providing our clients with the best value propositions possible. Therefore, we continue to establish strategic alliances with other reputable players in the market."
+                "We understand the importance of forging key collaborations with vendors and partners alike as we aim to ensure providing our clients with the best value propositions possible.",
               )}
             </Typography>
+
             <Box
               sx={{
                 display: "flex",
-                alignItems: "center",
                 justifyContent: "center",
                 gap: 2,
                 my: 2,
-                flexDirection: "row",
               }}
             >
-              <Box sx={{ width: { xs: "20vw", md: "15vw", lg: "10vw" } }}>
-                <img
-                  src={partner3}
-                  style={{ width: "100%" }}
-                  alt="partner logo"
-                />
-              </Box>
-              <Box sx={{ width: { xs: "20vw", md: "15vw", lg: "10vw" } }}>
-                <img
-                  src={partner2}
-                  style={{ width: "100%" }}
-                  alt="partner logo"
-                />
-              </Box>
-              <Box sx={{ width: { xs: "20vw", md: "15vw", lg: "10vw" } }}>
-                <img
-                  src={partner1}
-                  style={{ width: "100%" }}
-                  alt="partner logo"
-                />
-              </Box>
-              <Box sx={{ width: { xs: "20vw", md: "15vw", lg: "10vw" } }}>
-                <img
-                  src={partner0}
-                  style={{ width: "100%" }}
-                  alt="partner logo"
-                />
-              </Box>
+              {[partner3, partner2, partner1, partner0].map((p, i) => (
+                <Box key={i} sx={{ width: { xs: "20vw", md: "15vw", lg: "10vw" } }}>
+                  <img src={p} style={{ width: "100%" }} alt="partner" />
+                </Box>
+              ))}
             </Box>
           </Grid>
         </Grid>

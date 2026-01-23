@@ -24,6 +24,7 @@ import LocationPicker from "./LocationPicker";
 import { useAddressDialog } from "./hooks/useAddressDialog";
 import { _cities } from "api/country/country";
 import { _countries } from "api/country/countries";
+import i18next from "i18next";
 
 const AddDialog = ({ open, handleClose }) => {
   const {
@@ -41,10 +42,9 @@ const AddDialog = ({ open, handleClose }) => {
 
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
-  console.log("cities", cities);
+
   // watch selected region to update city list
   const selectedRegion = watch("city");
-  console.log("selectedRegion", selectedRegion);
 
   useMemo(() => {
     _countries.index().then((response) => {
@@ -57,8 +57,6 @@ const AddDialog = ({ open, handleClose }) => {
   const [location, setLocation] = useState([
     4899113.013567734, 4326807.948463461,
   ]); // Default coordinates (Erbil center)
-
-  console.log("location: ", location);
 
   useEffect(() => {
     if (location) {
@@ -198,7 +196,9 @@ const AddDialog = ({ open, handleClose }) => {
                 </MenuItem>
                 {countries?.map((item) => (
                   <MenuItem value={item.name} key={item.id}>
-                    <Box sx={{ color: "text.main" }}>{item.name}</Box>
+                    <Box sx={{ color: "text.main" }}>
+                      {item[`name_${i18next.language}`] || item.name}
+                    </Box>
                   </MenuItem>
                 ))}
               </Select>
@@ -226,7 +226,9 @@ const AddDialog = ({ open, handleClose }) => {
                 {cities.length > 0 &&
                   cities?.map((item) => (
                     <MenuItem value={item.name} key={item.id}>
-                      <Box sx={{ color: "text.main" }}>{item.name}</Box>
+                      <Box sx={{ color: "text.main" }}>
+                          {item[`name_${i18next.language}`] || item.name}
+                      </Box>
                     </MenuItem>
                   ))}
               </Select>

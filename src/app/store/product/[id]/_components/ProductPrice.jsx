@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { PaidRounded } from "@mui/icons-material";
 
 export default function ProductPrice({ variant }) {
-  console.log("Rendering ProductPrice with variant:", variant);
+
   const { t } = useTranslation("index");
   if (!variant) return null;
   const start = variant?.compare_price_start_date

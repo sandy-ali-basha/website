@@ -18,7 +18,15 @@ import * as yup from "yup";
 import ButtonLoader from "components/customs/ButtonLoader";
 import Swal from "sweetalert2";
 import { useHomeSection } from "hooks/home/useHome";
-import { Map } from "@mui/icons-material";
+import {
+  Email,
+  Facebook,
+  Instagram,
+  LinkedIn,
+  Map,
+  WhatsApp,
+} from "@mui/icons-material";
+import { useContactUs } from "hooks/contactUs/useContactUs";
 
 export default function ContactUs() {
   const { t, i18n } = useTranslation("index");
@@ -39,8 +47,6 @@ export default function ContactUs() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const { data: socialData } = useHomeSection(3);
 
   async function createPost(data) {
     setLoading(true);
@@ -70,6 +76,11 @@ export default function ContactUs() {
     mutate(input);
     setLoading(true);
   };
+
+  const { data, isLoading } = useContactUs();
+
+  console.log("data", data?.data);
+
   return (
     <Container sx={{ my: 20 }}>
       <Box sx={{ width: { md: "50%" } }}>
@@ -177,63 +188,117 @@ export default function ContactUs() {
           <Typography sx={{ mt: 3, fontWeight: "500" }} variant="body1">
             {t("Our Contact Info")}
           </Typography>
-          {socialData?.items?.map((item) => {
-            const title =
-              item[`title_${i18n.language}`] ||
-              item.title_en ||
-              item.title_ar ||
-              item.title_kr;
-
-            const description =
-              item[`description_${i18n.language}`] ||
-              item.description_en ||
-              item.description_ar ||
-              item.description_kr;
-
-            return (
-              <Tooltip key={item.id} title={description} arrow>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "start",
-                    my: 2,
-                    gap: 1,
-                    color: "text.main",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    width: "fit-content",
-                  }}
-                >
-                  {/* Icon image */}
-                  <img
-                    src={item.image}
-                    alt={title}
-                    style={{
-                      width: 22,
-                      height: 22,
-                      objectFit: "contain",
-                      filter: "brightness(0) invert(1)",
-                    }}
-                  />
-
-                  {/* Link */}
-                  <Link
-                    style={{ color: "initial", textDecoration: "none" }}
-                    href={
-                      title?.toLowerCase() === "email"
-                        ? `mailto:${item.cta_link}`
-                        : item.cta_link
-                    }
-                    aria-label={title}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {title}
-                  </Link>
-                </Box>
-              </Tooltip>
-            );
-          })}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              my: 2,
+              gap: 1,
+              color: "text.main",
+              alignItems: "center",
+              cursor: "pointer",
+              width: "fit-content",
+            }}
+          >
+            <Email />
+            {/* Link */}
+            <Link
+              style={{ color: "initial", textDecoration: "none" }}
+              href={`mailto:${data?.data[0]?.email}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {data?.data[0]?.email}
+            </Link>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              my: 2,
+              gap: 1,
+              color: "text.main",
+              alignItems: "center",
+              cursor: "pointer",
+              width: "fit-content",
+            }}
+          >
+            <Facebook />
+            <Link
+              style={{ color: "initial", textDecoration: "none" }}
+              href={data?.data[0]?.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Facebook
+            </Link>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              my: 2,
+              gap: 1,
+              color: "text.main",
+              alignItems: "center",
+              cursor: "pointer",
+              width: "fit-content",
+            }}
+          >
+            <Instagram />
+            <Link
+              style={{ color: "initial", textDecoration: "none" }}
+              href={data?.data[0]?.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              instagram
+            </Link>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              my: 2,
+              gap: 1,
+              color: "text.main",
+              alignItems: "center",
+              cursor: "pointer",
+              width: "fit-content",
+            }}
+          >
+            <LinkedIn />
+            <Link
+              style={{ color: "initial", textDecoration: "none" }}
+              href={data?.data[0]?.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              linkedin
+            </Link>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              my: 2,
+              gap: 1,
+              color: "text.main",
+              alignItems: "center",
+              cursor: "pointer",
+              width: "fit-content",
+            }}
+          >
+            <WhatsApp />
+            <Link
+              style={{ color: "initial", textDecoration: "none" }}
+              href={`wa.me${data?.data[0]?.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              whatsapp
+            </Link>
+          </Box>
         </Grid>
         <Grid
           sx={{
@@ -268,19 +333,20 @@ export default function ContactUs() {
           <Box sx={{ width: "100%", mt: 3, display: "flex", gap: 1 }}>
             <Map sx={{ pe: 1 }} />{" "}
             <Typography variant="body1" color="initial">
-              {t("Baghdad Office:")}
+              {data?.data[0]?.locations[0]?.office_name}
             </Typography>
             <a href="https://maps.app.goo.gl/NgbhGFS5KkDjLGXDA" color="initial">
-              Building No. 66, Alkhadraa cross, Baghdad, Iraq
+              {data?.data[0]?.locations[0]?.address}
             </a>
           </Box>
           <Box sx={{ width: "100%", mt: 3, display: "flex", gap: 1 }}>
             <Map />{" "}
             <Typography variant="body1" color="initial">
-              {t("Sulaymaniya office:")}
+              {data?.data[0]?.locations[1]?.office_name}
             </Typography>
             <a href="https://maps.app.goo.gl/bBXyAZ89f1pXREmJ7" color="initial">
-              Villa No.47, German Village 1, 60m St, Sulaymaniyah, Iraq
+              {data?.data[0]?.locations[1]?.address}
+              
             </a>
           </Box>
         </Grid>

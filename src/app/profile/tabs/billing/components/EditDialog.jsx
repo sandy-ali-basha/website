@@ -23,6 +23,7 @@ import { useQuery } from "react-query";
 import Loader from "components/modules/Loader";
 import { _countries } from "api/country/countries"; // regions API
 import { useEditAddress } from "./hooks/useEditAddress";
+import i18next from "i18next";
 
 const EditDialog = ({ open, handleClose, id }) => {
   const {
@@ -57,7 +58,7 @@ const EditDialog = ({ open, handleClose, id }) => {
   const { data, isLoading } = useQuery(
     ["addresses", `id-${id}`],
     () => _addresses.get(id).then((res) => res?.data),
-    {}
+    {},
   );
 
   // Preload form values once address data is available
@@ -196,7 +197,9 @@ const EditDialog = ({ open, handleClose, id }) => {
                   </MenuItem>
                   {regions.map((item) => (
                     <MenuItem key={item.id} value={item.name}>
-                      <Box sx={{ color: "text.main" }}>{item.name}</Box>
+                      <Box sx={{ color: "text.main" }}>
+                        {item[`name_${i18next.language}`] || item.name}
+                      </Box>
                     </MenuItem>
                   ))}
                 </Select>
@@ -223,25 +226,15 @@ const EditDialog = ({ open, handleClose, id }) => {
                   </MenuItem>
                   {cities.map((item) => (
                     <MenuItem key={item.id} value={item.name}>
-                      <Box sx={{ color: "text.main" }}>{item.name}</Box>
+                      <Box sx={{ color: "text.main" }}>
+                        {item[`name_${i18next.language}`] || item.name}
+                      </Box>
                     </MenuItem>
                   ))}
                 </Select>
                 <FormHelperText>{errors.state?.message}</FormHelperText>
               </FormControl>
             </Grid>
-
-            {/* State */}
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label={t("State")}
-                placeholder="State"
-                {...register("state")}
-                error={!!errors.state}
-                helperText={errors.state?.message || ""}
-              />
-            </Grid> */}
 
             {/* Contact Email */}
             <Grid item xs={12} sm={6}>
@@ -299,9 +292,7 @@ const EditDialog = ({ open, handleClose, id }) => {
 
             {/* Default Address */}
             <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
-              <Checkbox
-                onChange={handleChange}
-              />
+              <Checkbox onChange={handleChange} />
               <Typography variant="body2">
                 {t("Default address for shipping")}
               </Typography>
