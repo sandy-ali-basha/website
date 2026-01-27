@@ -24,13 +24,39 @@ export default function ProductCard({ product, loading }) {
       ? product.image.image_path
       : "";
   const productName = product.name;
-  const link = `/store/product/${product?.id}/${product.name}`;
+  const link = `/store/product/${product?.id}/${product.name.replace(/\s+/g, "-")}`;
   const purchasable = product.purchasable === "always";
 
   const id = product.id;
   return (
-    <Card sx={{ boxShadow: 3, borderRadius: 3, height: "100%" }}>
-      {" "}
+    <Card
+      sx={{
+        boxShadow: 3,
+        borderRadius: 3,
+        height: "100%",
+        position: "relative",
+      }}
+    >
+      {product.tag && (
+      <Box
+        sx={{
+          position: "absolute",
+          top: 35,
+          right: -1,
+          backgroundColor: "#ff4444",
+          color: "white",
+          padding: "5px 24px 5px 12px",
+          borderRadius: "8px 0px 0px 8px",
+          fontSize: "12px",
+          fontWeight: "bold",
+          zIndex: 10,
+          boxShadow:
+            "0px 3px 3px 0px rgba(0, 0, 0, 0.25), inset 3px 0px 3px 0px rgb(0 0 0 / 20%)",
+        }}
+      >
+        {product.tag}
+      </Box>
+      )}
       <Link
         disabled={!loading}
         to={link}
@@ -89,7 +115,6 @@ export default function ProductCard({ product, loading }) {
               size="small"
               onClick={() => handleAddToCart(id)}
             >
-              {/* <CircularProgress style={{ width: "100%", height: "auto" }} /> */}
               {loadingCart ? (
                 <CircularProgress style={{ width: "50%", height: "auto" }} />
               ) : (

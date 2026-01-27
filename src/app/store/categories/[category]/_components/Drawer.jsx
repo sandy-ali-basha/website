@@ -2,7 +2,6 @@ import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import CAccordion from "components/modules/Accordion";
 import SearchInput from "components/modules/SearchInput";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
 
 const SideDrawer = ({
   valuetext,
@@ -13,29 +12,26 @@ const SideDrawer = ({
   Attributes,
   handleCheked,
   ClearFilter,
-  selectedAttributes,
   searchResults,
   setSearchResults,
   searchTerm,
   setSearchTerm,
+  filters,
+  expandedId,
+  setExpandedId,
 }) => {
   const { t } = useTranslation("index");
+  const lang = localStorage.getItem("i18nextLng");
 
   return (
-    <Box
-      sx={{
-        borderColor: "divider",
-        width: 250,
-        px: 2,
-        pb: 3,
-      }}
-    >
+    <Box sx={{ borderColor: "divider", width: 250, px: 2, pb: 3 }}>
       <SearchInput
         searchResults={searchResults}
         setSearchResults={setSearchResults}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
       />
+
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
         {t("Options")}:
       </Typography>
@@ -43,7 +39,11 @@ const SideDrawer = ({
       <CAccordion
         Attributes={Attributes}
         handleCheked={handleCheked}
-        selectedAttributes={selectedAttributes}
+        filters={filters}
+        expandedId={expandedId}
+        setExpandedId={setExpandedId}
+        lang={lang}
+        t={t}
       />
 
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
@@ -74,12 +74,7 @@ const SideDrawer = ({
           </Grid>
         </Grid>
 
-        <Button
-          variant="outlined"
-          sx={{ mt: 2 }}
-          onClick={ClearFilter}
-          fullWidth
-        >
+        <Button variant="outlined" sx={{ mt: 2 }} onClick={ClearFilter} fullWidth>
           {t("Clear Filter")}
         </Button>
       </Box>

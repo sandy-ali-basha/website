@@ -15,6 +15,7 @@ export const useProducts = (body) => {
     isLoading,
   };
 };
+
 export const useAllProducts = () => {
   const { data, isLoading } = useQuery(
     ["all-products"],

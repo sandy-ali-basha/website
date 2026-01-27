@@ -14,6 +14,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SideDrawer from "./_components/Drawer";
 import { CloseRounded } from "@mui/icons-material";
 import { Helmet } from "react-helmet";
+import { useTranslation } from "react-i18next";
 
 export default function Category() {
   const {
@@ -25,12 +26,15 @@ export default function Category() {
     handleMinChange,
     handleMaxChange,
     handleDrawerToggle,
-    t,
     mobileOpen,
     Attributes,
     handleCheked,
     ClearFilter,
+    filters,
+    expandedId,
+    setExpandedId,
   } = useCategory();
+  const { t } = useTranslation("index");
 
   const [searchResults, setSearchResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -122,6 +126,9 @@ export default function Category() {
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
               ClearFilter={ClearFilter}
+              filters={filters}
+              expandedId={expandedId}
+              setExpandedId={setExpandedId}
             />
           </Drawer>
 
@@ -139,6 +146,9 @@ export default function Category() {
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
               ClearFilter={ClearFilter}
+              filters={filters}
+              expandedId={expandedId}
+              setExpandedId={setExpandedId}
             />
           </Box>
 
