@@ -68,7 +68,7 @@ export default function PharmacyLocator() {
       lat: 33.3152,
       lng: 44.3661,
       city: "Baghdad",
-      hasProducts: true,
+
       phone: "+964 1 555 0101",
       address: "الكرادة داخل، شارع 52",
     },
@@ -88,7 +88,7 @@ export default function PharmacyLocator() {
       lat: 33.3121,
       lng: 44.3523,
       city: "Baghdad",
-      hasProducts: true,
+
       phone: "+964 1 555 0103",
       address: "الزيونة، شارع الربيع",
     },
@@ -98,7 +98,7 @@ export default function PharmacyLocator() {
       lat: 33.5138,
       lng: 36.2765,
       city: "Damascus",
-      hasProducts: true,
+
       phone: "+963 11 555 0104",
       address: "أبو رمانة، شارع العابد",
     },
@@ -118,7 +118,7 @@ export default function PharmacyLocator() {
       lat: 33.5268,
       lng: 36.3127,
       city: "Damascus",
-      hasProducts: true,
+
       phone: "+963 11 555 0106",
       address: "كفرسوسة، شارع الجلاء",
     },
@@ -143,7 +143,7 @@ export default function PharmacyLocator() {
           lng: pos.coords.longitude,
         });
       },
-      () => alert(t("locationDenied"))
+      () => alert(t("locationDenied")),
     );
   };
 
@@ -206,11 +206,7 @@ export default function PharmacyLocator() {
       {/* MAP */}
       <Box sx={{ height: 450, borderRadius: 3, overflow: "hidden", mb: 4 }}>
         <MapContainer
-          center={
-            location
-              ? [location.lat, location.lng]
-              : [33.3152, 44.3661]
-          }
+          center={location ? [location.lat, location.lng] : [33.3152, 44.3661]}
           zoom={location ? 13 : 6}
           style={{ height: "100%", width: "100%" }}
         >
@@ -284,12 +280,6 @@ export default function PharmacyLocator() {
               <Typography variant="body2" color="text.secondary">
                 {p.phone}
               </Typography>
-
-              {p.hasProducts && (
-                <Typography mt={1} color="success.main" fontWeight={600}>
-                  {t("hasProducts")}
-                </Typography>
-              )}
             </CardContent>
           </Card>
         ))}
