@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { useCategories } from "./_hooks/useCategories";
 import CategoryCard from "./_components/CategoryCard";
 import Loader from "components/modules/Loader";
+import Seo from "components/Seo";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -58,6 +59,11 @@ export default function Categories() {
   
   return (
     <Container sx={{ pt: 15 }}>
+      <Seo
+        title="Categories"
+        description="Browse Dawaa Alhayat product categories to find trusted healthcare items."
+        keywords="Dawaa Alhayat categories, medical products"
+      />
       <Typography
         variant="h3"
         color="initial"

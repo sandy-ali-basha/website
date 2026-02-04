@@ -4,9 +4,11 @@ import NavBar from "./header/NavBar";
 
 const Layout = ({ children }) => {
   return (
-    <div >
+    <div>
+      {/* Shared site navigation */}
       <NavBar />
-        {children}
+      <main className="page-content">{children}</main>
+      {/* Shared site footer */}
       <Footer />
     </div>
   );

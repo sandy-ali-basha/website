@@ -8,9 +8,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useCareer } from "hooks/careers/useCreers";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import Seo from "components/Seo";
 
 export default function Job() {
   const { id } = useParams();
@@ -23,6 +24,11 @@ export default function Job() {
 
   return (
     <Container sx={{ my: 22 }}>
+      <Seo
+        title={data?.vacancy_name || "Career Opportunity"}
+        description="Review job details and apply for open roles at Dawaa Alhayat."
+        keywords="Dawaa Alhayat jobs, careers, healthcare"
+      />
       <Grid container spacing={5}>
         <Grid item xs={8}>
           <Typography variant="body2" color="initial">

@@ -15,6 +15,8 @@ import SideDrawer from "./_components/Drawer";
 import { CloseRounded } from "@mui/icons-material";
 import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
+import i18n from "i18n";
+import Seo from "components/Seo";
 
 export default function Category() {
   const {
@@ -55,6 +57,14 @@ export default function Category() {
 
   return (
     <>
+      <Seo
+        title={data?.data?.category?.[`name_${i18n.language}`] || "Products"}
+        description={
+          data?.data?.category?.[`description_${i18n.language}`] ||
+          "Explore medical products by category at Dawaa Alhayat."
+        }
+        keywords="medical products, categories, Dawaa Alhayat"
+      />
       <Helmet>
         <script type="application/ld+json">
           {JSON.stringify({

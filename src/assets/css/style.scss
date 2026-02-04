@@ -57,6 +57,35 @@
   --chat--toggle--size: 80px;
 }
 
+// Global responsive defaults for media-heavy pages.
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+.page-content {
+  min-height: 60vh;
+}
+
+@media (max-width: 900px) {
+  .page-content {
+    padding-inline: 12px;
+  }
+}
+
 .chat-window-toggle:not(:hover) {
   svg {
     display: none !important; // Hide default icon

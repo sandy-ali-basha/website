@@ -27,6 +27,7 @@ import {
   WhatsApp,
 } from "@mui/icons-material";
 import { useContactUs } from "hooks/contactUs/useContactUs";
+import Seo from "components/Seo";
 
 export default function ContactUs() {
   const { t, i18n } = useTranslation("index");
@@ -83,6 +84,11 @@ export default function ContactUs() {
 
   return (
     <Container sx={{ my: 20 }}>
+      <Seo
+        title="Contact Us"
+        description="Get in touch with Dawaa Alhayat for support, inquiries, or partnership opportunities."
+        keywords="contact Dawaa Alhayat, customer support, healthcare"
+      />
       <Box sx={{ width: { md: "50%" } }}>
         <Typography
           variant="h2"

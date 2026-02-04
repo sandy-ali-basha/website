@@ -18,9 +18,9 @@ import i18n from "i18next";
 import { useEffect, useState } from "react";
 import Cta from "components/modules/home/Cta.jsx";
 import TextSectionOne from "components/modules/home/TextSecotionOne.jsx";
+import Seo from "components/Seo";
 
 export default function Home() {
-
   const { data, isLoading } = useHome();
 
   const [sections, setSections] = useState([]);
@@ -103,6 +103,11 @@ export default function Home() {
   else
     return (
       <>
+        <Seo
+          title="Home"
+          description="Shop medical products, explore offers, and discover trusted healthcare brands at Dawaa Alhayat."
+          keywords="Dawaa Alhayat, medical products, pharmacy, healthcare, offers"
+        />
         {/* <SpinAndWin/> */}
         <CaroselSection />
 

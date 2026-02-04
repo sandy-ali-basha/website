@@ -23,6 +23,7 @@ import { ValueStore } from "store/categoryStore";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@emotion/react";
 import StepperWrapper from "./_components/StepperWrapper";
+import Seo from "components/Seo";
 
 // ** Styled Stepper Component
 const Stepper = styled(MuiStepper)(({ theme }) => ({
@@ -238,6 +239,11 @@ const Checkout = () => {
 
   return (
     <Card>
+      <Seo
+        title="Checkout"
+        description="Complete your Dawaa Alhayat purchase securely with multiple payment options."
+        keywords="checkout, payment, Dawaa Alhayat"
+      />
       <CardContent sx={{ pt: 11, pb: 5 }}>
         <StepperWrapper>
           <Stepper

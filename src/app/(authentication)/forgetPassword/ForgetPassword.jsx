@@ -7,6 +7,7 @@ import { _AuthApi } from "api/auth";
 import img from "../../../assets/images/hero-image (3).jpg";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "components/LanguageSelector";
+import Seo from "components/Seo";
 
 const ForgetPassword = () => {
   const { t } = useTranslation("auth");
@@ -51,6 +52,11 @@ const ForgetPassword = () => {
 
   return (
     <>
+      <Seo
+        title="Forgot Password"
+        description="Reset your Dawaa Alhayat account password securely."
+        keywords="forgot password, reset password, Dawaa Alhayat"
+      />
       <Box
         sx={{
           position: "relative",

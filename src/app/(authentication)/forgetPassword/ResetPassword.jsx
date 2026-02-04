@@ -8,6 +8,7 @@ import img from "../../../assets/images/hero-image (3).jpg";
 import { _AuthApi } from "api/auth";
 import { Alert, Box, Button, Grid, TextField, Typography } from "@mui/material";
 import LanguageSelector from "components/LanguageSelector";
+import Seo from "components/Seo";
 
 const ResetPassword = () => {
   const { t } = useTranslation("index");
@@ -56,6 +57,11 @@ const ResetPassword = () => {
   };
   return (
     <>
+      <Seo
+        title="Reset Password"
+        description="Set a new password for your Dawaa Alhayat account."
+        keywords="reset password, Dawaa Alhayat"
+      />
       <Box
         sx={{
           position: "relative",

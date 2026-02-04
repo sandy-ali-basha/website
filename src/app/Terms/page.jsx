@@ -5,6 +5,7 @@ import { LoaderIcon } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import Seo from "components/Seo";
 
 export default function Terms() {
   const params = useParams();
@@ -17,6 +18,11 @@ export default function Terms() {
   }, []);
   return (
     <Container sx={{ mt: 20, textAlign: "center", my: 3 }}>
+      <Seo
+        title="Terms & Conditions"
+        description="Read Dawaa Alhayat terms and conditions to learn more about your rights and responsibilities."
+        keywords="terms, conditions, Dawaa Alhayat"
+      />
       {isLoading ? (
         <Box
           sx={{
