@@ -287,5 +287,13 @@
   "Select a Country": "Select a Country",
   "Pack of": "Pack of",
   "Few units left": "Few units left",
-  "Add your location on the map": "Add your location on the map"
+  "Add your location on the map": "Add your location on the map",
+  "PHtitle": "Pharmacy Finder",
+  "subtitle": "Find the nearest pharmacy near you",
+  "useLocation": "Use my current location",
+  "nearbyPharmacies": "Nearby Pharmacies",
+  "rating": "Rating",
+  "loading": "Loading map...",
+   "cityZip": "City / ZIP",
+   "pharmacies":" Pharmacies"
 }

@@ -214,7 +214,7 @@ function NavBar() {
                             }}
                           />
                         </Box>
-                        {t(e.name)}
+                        {e.name}
                       </Link>
                     </MenuItem>
                   ))}

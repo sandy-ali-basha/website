@@ -4,16 +4,14 @@ import { useQuery } from "react-query";
 export const useHome = () => {
   const { data, isLoading } = useQuery(
     ["home"],
-    () => _Home.settings().then((res) => res?.data),
-    {
-      keepPreviousData: true,
-    }
+    () => _Home.tabs().then((res) => res?.data)
   );
   return {
     data,
     isLoading,
   };
 };
+
 export const useHomeSlider = () => {
   const { data, isLoading } = useQuery(
     ["homeSlider"],

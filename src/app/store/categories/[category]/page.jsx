@@ -34,6 +34,7 @@ export default function Category() {
     expandedId,
     setExpandedId,
   } = useCategory();
+  
   const { t } = useTranslation("index");
 
   const [searchResults, setSearchResults] = useState([]);

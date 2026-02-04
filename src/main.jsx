@@ -25,10 +25,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <BrowserRouter>
           <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             <App />
+            <ReactQueryDevtools initialIsOpen={false} />
           </GoogleOAuthProvider>
         </BrowserRouter>
-        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </SnackbarProvider>
-  </RTLProvider>
+  </RTLProvider>,
 );

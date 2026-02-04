@@ -11,6 +11,15 @@ export const _Home = {
       })
       .then((res) => res.data);
   },
+  tabs: async () => {
+    return _axios
+      .get(`/home/tabs`, {
+        headers: {
+          ...HttpRequestInterceptor(),
+        },
+      })
+      .then((res) => res.data);
+  },
 
   slider: async () => {
     return _axios

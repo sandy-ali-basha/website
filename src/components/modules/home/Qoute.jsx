@@ -1,7 +1,8 @@
 import { Box, Container, Typography } from "@mui/material";
 import React from "react";
 
-export default function Qoute({ data, video }) {
+export default function Qoute({ data }) {
+  console.log("Qoute data:", data);
   return (
     <Box
       sx={{
@@ -27,24 +28,9 @@ export default function Qoute({ data, video }) {
         loop
         muted
       >
-        <source src={video} type="video/mp4"></source>
+        <source src={data?.vedio} type="video/mp4"></source>
         Your browser does not support the video tag.
       </video>
-      {/* <Box
-          sx={{
-            position: "absolute",
-            zIndex: 1,
-            backdropFilter: "blur(20px)",
-            p: 5,
-            mx: 10,
-            borderRadius: "10px",
-            background: "#ffffff10",
-          }}
-        >
-          <Typography variant="h4" color="initial" sx={{ fontWeight: "bold" }}>
-            {data?.value?.[lang]}
-          </Typography>
-        </Box> */}
     </Box>
   );
 }

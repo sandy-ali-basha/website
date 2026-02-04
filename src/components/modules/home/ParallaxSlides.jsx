@@ -72,10 +72,9 @@ function SlidePanel({ item, index }) {
   );
 }
 
-export default function ParallaxSlides() {
+export default function ParallaxSlides({ data, isLoading }) {
   const containerRef = useRef(null);
 
-  const { data, isLoading } = useHomeSection(2);
   const slides = useMemo(() => data?.items || [], [data]);
 
   /* GSAP */

@@ -8,27 +8,85 @@ import DiscountSection from "components/modules/home/DiscountSection.jsx";
 import CaroselSection from "components/modules/home/CaroselSection.jsx";
 import SpecialOffersSection from "components/SpecialOffersSection.jsx";
 import MultiLinksBannerSection from "components/modules/home/MultiLinksBannerSection.jsx";
-import { useQuery } from "react-query";
 import { _Home } from "api/Home/home.js";
 import { Box } from "@mui/material";
 import Loader from "components/modules/Loader.jsx";
 import AnimatedText from "components/modules/home/AnimatedText.jsx";
-import Partners from "../components/modules/home/Partners.jsx";
 import HomeGrid from "components/modules/home/HomeGrid.jsx";
 import ParallaxSlides from "components/modules/home/ParallaxSlides.jsx";
 import i18n from "i18next";
+import { useEffect, useState } from "react";
+import Cta from "components/modules/home/Cta.jsx";
+import TextSectionOne from "components/modules/home/TextSecotionOne.jsx";
 
 export default function Home() {
+
   const { data, isLoading } = useHome();
 
-  const { data: showHideData, isLoading: isShowHideSectinosLoading } = useQuery(
-    {
-      queryFn: () => _Home.getShowHideSections(),
-      queryKey: ["showHideSections"],
-    }
-  );
+  const [sections, setSections] = useState([]);
+  useEffect(() => {
+    if(data)
+    setSections(data?.slice().sort((a, b) => a.order - b.order));
+  }, [data]);
 
-  if (isLoading || isShowHideSectinosLoading)
+  const renderSection = (data) => {
+    switch (data.type) {
+      case "parallax":
+        return (
+          <ParallaxSlides key={data.id} data={data} isLoading={isLoading} />
+        );
+      case "grid":
+        return <HomeGrid key={data.id} data={data} isLoading={isLoading} />;
+      case "reels":
+        return <Reels key={data.id} data={data} isLoading={isLoading} />;
+
+      default:
+        return null;
+    }
+  };
+
+  const renderSetting = (data, lang) => {
+    switch (data.name) {
+      case "home.page.cta":
+        return <Cta key={data.id} data={data.value}  />;
+      case "home.page.textSectionOne":
+        return <TextSectionOne key={data.id} data={data.value}  />;
+      case "home.page.textSectionTwo":
+        return (
+          <AnimatedText key={data.id} text={data.value.text?.[i18n.language]} />
+        );
+      case "home.page.video":
+        return (
+          <Qoute
+            key={data.id}
+            data={data}
+          />
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  const HomeRenderer = () => {
+    return (
+      <>
+        {sections?.map((block) => {
+          if (block.type === "section") {
+            return renderSection(block.data);
+          }
+
+          if (block.type === "setting") {
+            return renderSetting(block.data);
+          }
+
+          return null;
+        })}
+      </>
+    );
+  };
+
+  if (isLoading)
     return (
       <Box
         sx={{
@@ -42,41 +100,24 @@ export default function Home() {
         <Loader />
       </Box>
     );
+  else
+    return (
+      <>
+        {/* <SpinAndWin/> */}
+        <CaroselSection />
 
-  // if (!showHideData || !data) return <></>;
-  //todo un comment this line after api fix
+        <BrandsSection />
 
-  return (
-    <>
-      {/* <SpinAndWin/> */}
-      <CaroselSection />
+        <CategoriesSection />
 
-      <BrandsSection />
+        <DiscountSection />
+        <SpecialOffersSection isInHomePage />
 
-      <CategoriesSection />
+        <MultiLinksBannerSection />
 
-      {showHideData?.flags?.hot_descounts && <DiscountSection />}
+        <LatestProducts />
 
-      {showHideData?.flags?.static_videos && <Reels />}
-
-      <AnimatedText
-        text={data?.["home.page.textSectionTwo"]?.value?.text?.[i18n.language]}
-      ></AnimatedText>
-
-      <SpecialOffersSection isInHomePage />
-
-      <MultiLinksBannerSection />
-
-      <LatestProducts />
-
-      {data && data["home.page.videoText"].value.show === "true" && (
-        <Qoute
-          data={data?.["home.page.videoText"]}
-          video={data?.["home.page.video"]?.video}
-        />
-      )}
-      <HomeGrid />
-      <ParallaxSlides />
-    </>
-  );
+        <HomeRenderer sections={sections} />
+      </>
+    );
 }

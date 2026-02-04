@@ -32,6 +32,13 @@ import Brand from "app/store/categories/brand/[name]/page";
 import NotFound from "components/NotFound";
 import ShouldBeLogged from "middlewares/ShouldBeLogged";
 import ChooseCityDialog from "components/ChooseCityDialog";
+import { createChat } from "@n8n/chat";
+
+import "@n8n/chat/style.css";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import PharmacyLocator from "app/pharmacy/PharmacyLocator.jsx";
 
 function App() {
   useEffect(() => {
@@ -45,6 +52,17 @@ function App() {
   }, []);
 
   const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
+
+  useEffect(() => {
+    createChat({
+      webhookUrl:
+        "https://n8n.srv832200.hstgr.cloud/webhook/81be035f-7336-4a1c-a953-bbdabd6329c6/chat",
+      initialMessages: [
+        "Hi there! 👋",
+        "I am the smart assistant from Dawaa Alhayat . How can I help you today?",
+      ],
+    });
+  }, []);
 
   return (
     <ThemeProviderWrapper>
@@ -151,6 +169,11 @@ function App() {
             path="/store/categories"
             exact
             element={<StoreCategoriesPage />}
+          />
+          <Route
+            path="/pharmacy-locator"
+            exact
+            element={<PharmacyLocator />}
           />
           <Route path="/store/categories/brand/:id" exact element={<Brand />} />
           <Route

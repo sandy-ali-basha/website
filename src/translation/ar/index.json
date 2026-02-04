@@ -295,6 +295,13 @@
   "Select your city for a customized shopping journey": "اختر مدينتك لتجربة تسوق مخصصة",
   "choose country": "اختر الدولة",
   "choose city": "اختر المدينة",
-  "save":" حفظ",
-"Add your location on the map":" أضف موقعك على الخريطة"
+  "save": " حفظ",
+  "Add your location on the map": " أضف موقعك على الخريطة",
+  "PHtitle": "مكتشف الصيدلية",
+  "subtitle": "اعثر على أقرب صيدلية بالقرب منك",
+  "useLocation": "استخدام موقعي الحالي",
+  "nearbyPharmacies": "صيدليات قريبة منك",
+  "rating": "التقييم",
+  "cityZip": "المدينة / الرمز البريدي",
+  "pharmacies": "الصيدليات"
 }

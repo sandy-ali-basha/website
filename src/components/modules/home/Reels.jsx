@@ -6,9 +6,8 @@ import "swiper/css";
 import { useHomeSection } from "hooks/home/useHome";
 import i18n from "i18n";
 
-export default function Reels() {
-  const { data, isLoading } = useHomeSection(4);
-
+export default function Reels({ data, isLoading }) {
+  console.log("Reels data:", data);
   // 👉 backend items
   const items = useMemo(() => data?.data?.items || [], [data?.data?.items]);
 
@@ -38,7 +37,7 @@ export default function Reels() {
           }
         });
       },
-      { threshold: 0.25 }
+      { threshold: 0.25 },
     );
 
     videoRefs.current.forEach((video) => {
@@ -111,8 +110,10 @@ export default function Reels() {
                   {item?.[`title_${i18n.language}`]}
                 </Typography>
                 <Typography variant="body2" color="white">
-                  {item?.[`description_${i18n.language}`]
-                    ?.replace(/<\/?[^>]+(>|$)/g, "")}
+                  {item?.[`description_${i18n.language}`]?.replace(
+                    /<\/?[^>]+(>|$)/g,
+                    "",
+                  )}
                 </Typography>
               </Box>
             )}

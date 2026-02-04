@@ -3,9 +3,7 @@ import { useHomeSection } from "hooks/home/useHome";
 import i18n from "i18n";
 import defaultImage from "assets/images/defaultImg.jpg";
 
-const HomeGrid = () => {
-  const { data, isLoading } = useHomeSection(1);
-
+const HomeGrid = ({ data, isLoading }) => {
   const items = data?.items || [];
 
   return (
