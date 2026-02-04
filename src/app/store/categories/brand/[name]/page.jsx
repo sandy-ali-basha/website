@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { useBrandPage } from "hooks/brands/useBrand";
 import Loader from "components/modules/Loader";
 import BrandProducts from "components/modules/home/BrandProducts";
+import Seo from "components/Seo";
 
 export default function Brand() {
   const { id } = useParams(); // Get the brand ID from the URL params
@@ -33,7 +34,13 @@ export default function Brand() {
     );
 
   return (
-    <Box sx={{ mb: 4 }}>
+    <>
+      <Seo
+        title={data?.brand?.name || "Brand"}
+        description="Explore products by brand at Dawaa Alhayat."
+        keywords="brands, Dawaa Alhayat, medical products"
+      />
+      <Box sx={{ mb: 4 }}>
       <Swiper
         autoplay={{
           delay: 2500,
@@ -107,6 +114,7 @@ export default function Brand() {
 
         {data?.products && <BrandProducts data={data?.products} />}
       </Container>
-    </Box>
+      </Box>
+    </>
   );
 }

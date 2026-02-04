@@ -13,6 +13,7 @@ import { useLogin } from "./hooks/useLogin";
 import LanguageSelector from "components/LanguageSelector";
 import { Link } from "react-router-dom";
 import LoginComponent from "../loginGoogle";
+import Seo from "components/Seo";
 
 export default function Login() {
   const { errors, register, t, handleSubmit, onSubmit, loading, error } =
@@ -30,9 +31,14 @@ export default function Login() {
         minHeight: "100vh",
       }}
     >
-      <Box
-        sx={{
-          width: { md: "35%", sm: "80%" },
+      <Seo
+        title="Log In"
+        description="Access your Dawaa Alhayat account to manage orders and profile details."
+        keywords="login, Dawaa Alhayat, account"
+      />
+        <Box
+          sx={{
+          width: { xs: "90%", sm: "80%", md: "35%" },
           display: "flex",
           justifyContent: "center",
           alignItems: "stretch",

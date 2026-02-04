@@ -4,6 +4,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import CardShimmer from "components/customs/loaders/CardShimmer";
 import { useBlog } from "hooks/blog/useBlog";
+import Seo from "components/Seo";
 
 export default function BlogPost() {
   const { id } = useParams();
@@ -14,6 +15,15 @@ export default function BlogPost() {
   }, []);
   return (
     <Container sx={{ my: 20 }}>
+      <Seo
+        title={data?.title || "Blog Post"}
+        description={
+          data?.summary ||
+          data?.description ||
+          "Read the latest updates, health tips, and product news from Dawaa Alhayat."
+        }
+        keywords="Dawaa Alhayat blog, health news, medical products"
+      />
       <Chip sx={{ background: "rgba(194, 238, 252, 1)" }} label="Blog"></Chip>
       <Typography variant="h2" sx={{ fontWeight: "bold", mt: 3 }}>
         {isLoading ? (

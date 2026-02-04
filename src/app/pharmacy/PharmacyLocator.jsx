@@ -17,6 +17,7 @@ import MenuItem from "@mui/material/MenuItem";
 import SearchIcon from "@mui/icons-material/Search";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import Seo from "components/Seo";
 
 // 🔧 حل مشكلة أيقونة الماركر
 delete L.Icon.Default.prototype._getIconUrl;
@@ -150,6 +151,11 @@ export default function PharmacyLocator() {
 
   return (
     <Container maxWidth="lg" sx={{ direction: "rtl", py: 4, mt: 12 }}>
+      <Seo
+        title="Pharmacy Locator"
+        description="Find nearby pharmacies and get directions with the Dawaa Alhayat pharmacy locator."
+        keywords="pharmacy locator, Dawaa Alhayat, nearby pharmacies"
+      />
       {/* HERO */}
       <Box sx={{ bgcolor: "primary.main", borderRadius: 3, mb: 5 }}>
         <Stack direction={{ xs: "column", md: "row" }}>

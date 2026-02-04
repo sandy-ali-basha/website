@@ -18,6 +18,7 @@ import { useSignUp } from "./_hooks/useSignUp";
 import ButtonLoader from "components/customs/ButtonLoader";
 import GenderSelect from "components/customs/GenderSelect";
 import LanguageSelector from "components/LanguageSelector";
+import Seo from "components/Seo";
 import { Link } from "react-router-dom";
 import LoginComponent from "../loginGoogle";
 function SignUp() {
@@ -47,6 +48,11 @@ function SignUp() {
         py: 5,
       }}
     >
+      <Seo
+        title="Sign Up"
+        description="Create a Dawaa Alhayat account to track orders, manage addresses, and earn points."
+        keywords="sign up, register, Dawaa Alhayat"
+      />
       {/* <img
         loading="lazy"
         src={img}
@@ -62,9 +68,9 @@ function SignUp() {
           zIndex: "-1",
         }}
       /> */}
-      <Box
-        sx={{
-          width: { md: "35%", sm: "80%" },
+        <Box
+          sx={{
+          width: { xs: "90%", sm: "80%", md: "35%" },
           display: "flex",
           justifyContent: "center",
           alignItems: "stretch",

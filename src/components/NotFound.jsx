@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import notFoundImg from "../assets/images/notFound.svg";
+import Seo from "components/Seo";
 
 const NotFound = () => {
   return (
@@ -12,6 +13,11 @@ const NotFound = () => {
         height: "100vh",
       }}
     >
+      <Seo
+        title="Page Not Found"
+        description="The page you are looking for could not be found."
+        keywords="404, not found, Dawaa Alhayat"
+      />
       <img
         loading="lazy"
         alt="Not Found"

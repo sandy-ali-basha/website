@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
 import { Routes, Route, Outlet } from "react-router-dom";
 import "./assets/css/style.scss";
 import Home from "app/page.jsx";
@@ -33,6 +32,7 @@ import NotFound from "components/NotFound";
 import ShouldBeLogged from "middlewares/ShouldBeLogged";
 import ChooseCityDialog from "components/ChooseCityDialog";
 import { createChat } from "@n8n/chat";
+import Seo from "components/Seo";
 
 import "@n8n/chat/style.css";
 import "swiper/css";
@@ -66,37 +66,12 @@ function App() {
 
   return (
     <ThemeProviderWrapper>
-      <Helmet>
-        <title>Dawaa Alhayat - Buy Medical Products Online</title>
-        <meta
-          name="description"
-          content="Dawaa Alhayat offers a wide range of medical products. Shop online with us for quality and affordable healthcare products."
-        />
-        <meta
-          name="keywords"
-          content="medical products, healthcare, online store, Dawaa Alhayat"
-        />
-        <meta
-          property="og:title"
-          content="Dawaa Alhayat - Buy Medical Products Online"
-        />
-        <meta
-          property="og:description"
-          content="Explore a wide range of quality medical products at Dawaa Alhayat."
-        />
-        <meta property="og:image" content="URL_of_featured_image" />
-        <meta property="og:url" content="https://dawaaalhayat.com" />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content="Dawaa Alhayat - Buy Medical Products Online"
-        />
-        <meta
-          name="twitter:description"
-          content="Explore a wide range of quality medical products at Dawaa Alhayat."
-        />
-      </Helmet>
+      <Seo
+        title="Buy Medical Products Online"
+        description="Dawaa Alhayat offers a wide range of medical products. Shop online with us for quality and affordable healthcare products."
+        keywords="medical products, healthcare, online store, Dawaa Alhayat"
+        url="https://dawaaalhayat.com"
+      />
 
       <ChooseCityDialog open={open} setOpen={setOpen} />
       {/* <CookieConsent /> */}

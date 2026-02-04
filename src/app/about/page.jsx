@@ -18,6 +18,7 @@ import video from "assets/videos/DawaaAlHayatValues.m4v";
 import i18n from "i18n";
 import { useAbout } from "hooks/about/useAbout";
 import { useHome } from "hooks/home/useHome";
+import Seo from "components/Seo";
 
 export default function About() {
   const { t } = useTranslation("about");
@@ -57,15 +58,21 @@ export default function About() {
   const displayedText = showMore ? text : text.substring(0, maxLength);
 
   return (
-    <Box
-      sx={{
-        background: `url(${bg}) no-repeat`,
-        backgroundPosition: "65vw 30%",
-        backgroundSize: { md: "50%", xs: "110%" },
-        mt: { md: "0px", sm: "5vh", xs: "6vh" },
-      }}
-    >
-      <img src={image} alt="Hero" style={{ width: "100%" }} />
+    <>
+      <Seo
+        title="About Us"
+        description="Learn more about Dawaa Alhayat, our mission, values, and partnerships in the healthcare industry."
+        keywords="Dawaa Alhayat, about, mission, vision, values, healthcare"
+      />
+      <Box
+        sx={{
+          background: `url(${bg}) no-repeat`,
+          backgroundPosition: "65vw 30%",
+          backgroundSize: { md: "50%", xs: "110%" },
+          mt: { md: "0px", sm: "5vh", xs: "6vh" },
+        }}
+      >
+        <img src={image} alt="Hero" style={{ width: "100%" }} />
 
       <Container maxWidth="lg" sx={{ mb: 4 }}>
         {/* ================= Welcome ================= */}
@@ -284,6 +291,7 @@ export default function About() {
           </Grid>
         </Grid>
       </Container>
-    </Box>
+      </Box>
+    </>
   );
 }

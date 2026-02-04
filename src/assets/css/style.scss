@@ -17,15 +17,15 @@
   --chat--color-typing: #404040;
 
   --chat--spacing: 1rem;
-  --chat--border-radius: 0.25rem;
-  --chat--transition-duration: 0.15s;
+  --chat--border-radius: 16px;
+  --chat--transition-duration: 0.2s;
 
-  --chat--window--width: 400px;
-  --chat--window--height: 600px;
+  --chat--window--width: 380px;
+  --chat--window--height: 640px;
 
   --chat--header-height: auto;
   --chat--header--padding: var(--chat--spacing);
-  --chat--header--background: var(--chat--color-dark);
+  --chat--header--background: linear-gradient(135deg, #0bc3e6, #20b69e);
   --chat--header--color: var(--chat--color-light);
   --chat--header--border-top: none;
   --chat--header--border-bottom: none;
@@ -38,8 +38,8 @@
 
   --chat--textarea--height: 50px;
 
-  --chat--message--font-size: 1rem;
-  --chat--message--padding: var(--chat--spacing);
+  --chat--message--font-size: 0.95rem;
+  --chat--message--padding: 0.75rem 1rem;
   --chat--message--border-radius: var(--chat--border-radius);
   --chat--message-line-height: 1.8;
   --chat--message--bot--background: var(--chat--color-white);
@@ -54,7 +54,94 @@
   --chat--toggle--hover--background: var(--chat--color-primary-shade-50);
   --chat--toggle--active--background: var(--chat--color-primary-shade-100);
   --chat--toggle--color: var(--chat--color-white);
-  --chat--toggle--size: 80px;
+  --chat--toggle--size: 72px;
+}
+
+// Polished chat window styling for a more modern, rounded UI.
+.chat-window {
+  border-radius: 20px;
+  box-shadow: 0 22px 50px rgba(16, 19, 48, 0.18);
+  overflow: hidden;
+}
+
+.chat-window-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.chat-message {
+  border-radius: 18px;
+}
+
+.chat-window-body {
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+}
+
+.chat-message-bot {
+  border: 1px solid rgba(16, 19, 48, 0.06);
+  box-shadow: 0 8px 16px rgba(16, 19, 48, 0.08);
+}
+
+.chat-message-user {
+  box-shadow: 0 8px 16px rgba(12, 195, 230, 0.25);
+}
+
+.chat-input {
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(16, 19, 48, 0.12);
+}
+
+.chat-window-toggle {
+  border-radius: 999px !important;
+  box-shadow: 0 14px 30px rgba(6, 197, 230, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 35px rgba(6, 197, 230, 0.4);
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --chat--window--width: 92vw;
+    --chat--window--height: 70vh;
+    --chat--toggle--size: 64px;
+  }
+
+  .chat-window {
+    border-radius: 18px;
+  }
+}
+
+// Global responsive defaults for media-heavy pages.
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+.page-content {
+  min-height: 60vh;
+}
+
+@media (max-width: 900px) {
+  .page-content {
+    padding-inline: 12px;
+  }
 }
 
 .chat-window-toggle:not(:hover) {

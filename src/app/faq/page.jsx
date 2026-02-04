@@ -16,6 +16,7 @@ import Icon from "components/modules/icon";
 import FAQS from "./_components/Faqs";
 import FaqHeader from "./_components/FaqHeader";
 import FaqFooter from "./_components/FaqFooter";
+import Seo from "components/Seo";
 // import FaqHeader from "./_components/FaqHeader";
 // import FaqFooter from "./_components/FaqFooter";
 
@@ -166,6 +167,11 @@ const FAQ = () => {
   );
   return (
     <Fragment>
+      <Seo
+        title="FAQ"
+        description="Find answers to common questions about orders, payments, and returns."
+        keywords="FAQ, Dawaa Alhayat, support, returns, payments"
+      />
       <FaqHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       {data !== null ? (
         <FAQS data={data} activeTab={activeTab} handleChange={handleChange} />

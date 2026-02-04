@@ -9,6 +9,7 @@ import JobCard from "./component/JobCard";
 import { useCareers } from "hooks/careers/useCreers";
 import { LoaderIcon } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import Seo from "components/Seo";
 
 export default function Careers() {
   const { data, isLoading } = useCareers();
@@ -20,6 +21,11 @@ export default function Careers() {
 
   return (
     <Box sx={{ mt: 10 }}>
+      <Seo
+        title="Careers"
+        description="Explore career opportunities at Dawaa Alhayat and join our healthcare team."
+        keywords="Dawaa Alhayat careers, jobs, healthcare"
+      />
       <Container
         sx={{
           pt: 7,
