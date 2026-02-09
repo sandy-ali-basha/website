@@ -18,6 +18,7 @@ export default function Qoute({ data }) {
       }}
     >
       <video
+        key={data?.value}
         style={{
           width: "100%",
           aspectRatio: "16/9",
@@ -27,9 +28,9 @@ export default function Qoute({ data }) {
         autoPlay
         loop
         muted
+        playsInline
       >
-        <source src={data?.vedio} type="video/mp4"></source>
-        Your browser does not support the video tag.
+        <source src={data?.value} type="video/mp4" />
       </video>
     </Box>
   );
