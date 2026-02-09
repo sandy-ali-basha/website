@@ -11,7 +11,7 @@ export const usePharmacies = () => {
   );
 
   return {
-    data: data || [],
+    data: data?.data?.pharmacies || [],
     isLoading,
   };
 };

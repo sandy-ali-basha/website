@@ -18,6 +18,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import Seo from "components/Seo";
+import { usePharmacies } from "hooks/pharmacies/usePharmacies";
 
 // 🔧 حل مشكلة أيقونة الماركر
 delete L.Icon.Default.prototype._getIconUrl;
@@ -54,84 +55,25 @@ function MapSizeFix({ location }) {
 
 export default function PharmacyLocator() {
   const { t } = useTranslation("index");
+  const { data: pharmacies, isLoading } = usePharmacies();
 
   const [location, setLocation] = useState(null);
   const [radius, setRadius] = useState(10000);
   const [searchText, setSearchText] = useState("");
   const [selectedPharmacyId, setSelectedPharmacyId] = useState(null);
 
-  // 🔹 بيانات تجريبية
-  const pharmacies = [
-    {
-      id: 1,
-      name: "صيدلية الشفاء",
-      lat: 33.3152,
-      lng: 44.3661,
-      city: "Baghdad",
-
-      phone: "+964 1 555 0101",
-      address: "الكرادة داخل، شارع 52",
-    },
-    {
-      id: 2,
-      name: "صيدلية النور",
-      lat: 33.3205,
-      lng: 44.3612,
-      city: "Baghdad",
-      hasProducts: false,
-      phone: "+964 1 555 0102",
-      address: "المنصور، شارع 14",
-    },
-    {
-      id: 3,
-      name: "صيدلية الرافدين",
-      lat: 33.3121,
-      lng: 44.3523,
-      city: "Baghdad",
-
-      phone: "+964 1 555 0103",
-      address: "الزيونة، شارع الربيع",
-    },
-    {
-      id: 4,
-      name: "صيدلية الحياة",
-      lat: 33.5138,
-      lng: 36.2765,
-      city: "Damascus",
-
-      phone: "+963 11 555 0104",
-      address: "أبو رمانة، شارع العابد",
-    },
-    {
-      id: 5,
-      name: "صيدلية الشام",
-      lat: 33.5102,
-      lng: 36.2914,
-      city: "Damascus",
-      hasProducts: false,
-      phone: "+963 11 555 0105",
-      address: "المزة، شارع 30",
-    },
-    {
-      id: 6,
-      name: "صيدلية الياسمين",
-      lat: 33.5268,
-      lng: 36.3127,
-      city: "Damascus",
-
-      phone: "+963 11 555 0106",
-      address: "كفرسوسة، شارع الجلاء",
-    },
-  ];
-
-  const isLoading = false;
+  const normalizedPharmacies = pharmacies.map((pharmacy) => ({
+    ...pharmacy,
+    lat: Number(pharmacy.lat),
+    lng: Number(pharmacy.lng),
+  }));
   const normalizedSearch = searchText.trim().toLowerCase();
-  const filteredPharmacies = pharmacies.filter((pharmacy) => {
+  const filteredPharmacies = normalizedPharmacies.filter((pharmacy) => {
     if (!normalizedSearch) return true;
     return (
-      pharmacy.name.toLowerCase().includes(normalizedSearch) ||
-      pharmacy.city.toLowerCase().includes(normalizedSearch) ||
-      pharmacy.address.toLowerCase().includes(normalizedSearch)
+      pharmacy.name?.toLowerCase().includes(normalizedSearch) ||
+      pharmacy.city?.toLowerCase().includes(normalizedSearch) ||
+      pharmacy.address?.toLowerCase().includes(normalizedSearch)
     );
   });
 
