@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import { Box, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
 import { LanguageOutlined } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { useQueryClient } from "react-query";
 import { settingsStore } from "store/settingsStore";
 import axios from "axios";
 
 const LanguageSelector = () => {
   const { t, i18n } = useTranslation("index");
+  const queryClient = useQueryClient();
   const [anchorEl, setAnchorEl] = useState(null);
   const [direction, setDirection] = settingsStore((state) => [
     state.direction,
@@ -15,6 +17,11 @@ const LanguageSelector = () => {
   ]);
 
   const handleLanguageChange = async (lang) => {
+    if (i18n.language === lang) {
+      setAnchorEl(null);
+      return;
+    }
+
     const newDirection = lang === "ar" || lang === "kr" ? "rtl" : "ltr";
 
     // Set localStorage before changing language to avoid revert
@@ -26,6 +33,9 @@ const LanguageSelector = () => {
 
     // Set Axios locale header
     axios.defaults.headers.common["locale"] = lang;
+
+    // Refresh backend-driven data so it is requested with the new locale
+    await queryClient.invalidateQueries();
 
     setAnchorEl(null);
   };
