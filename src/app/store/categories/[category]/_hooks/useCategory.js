@@ -62,26 +62,6 @@ export const useCategory = () => {
     });
   };
 
-  /* ------------------ URL support (optional but solid) ------------------ */
-  useEffect(() => {
-    if (!params?.attr_id || !params?.attr_valueid) return;
-
-    const attrId = Number(params.attr_id);
-    const valueId = Number(params.attr_valueid);
-
-    setFilters((prev) => {
-      // ⛔ لا تعيد تعبئة بعد Clear
-      if (Object.keys(prev).length === 0) return prev;
-
-      return {
-        ...prev,
-        [attrId]: prev[attrId]
-          ? [...new Set([...prev[attrId], valueId])]
-          : [valueId],
-      };
-    });
-  }, [params?.attr_id, params?.attr_valueid]);
-
   /* ------------------ clear ------------------ */
   const ClearFilter = () => {
     setFilters({});
@@ -93,20 +73,21 @@ export const useCategory = () => {
   };
 
   useEffect(() => {
-    if (!params.attr_id || !params.attr_valueid) return;
+    if (!params.attr_id) {
+      setExpandedId(null);
+      return;
+    }
 
     const attrId = Number(params.attr_id);
-
     const valueIds = params.attr_valueid
-      .split(",")
-      .map((id) => Number(id))
-      .filter(Boolean);
+      ? params.attr_valueid.split(",").map((id) => Number(id))
+      : [];
 
     setExpandedId(attrId);
-
-    valueIds.forEach((valueId) => {
-      handleCheked(attrId, valueId);
-    });
+    setFilters((prev) => ({
+      ...prev,
+      [attrId]: valueIds,
+    }));
   }, [params.attr_id, params.attr_valueid]);
 
   return {
