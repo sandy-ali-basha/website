@@ -11,6 +11,16 @@ export const useHome = () => {
     isLoading,
   };
 };
+export const useHomeSections = () => {
+  const { data, isLoading } = useQuery(
+    ["homeSections"],
+    () => _Home.settings().then((res) => res?.data)
+  );
+  return {
+    data,
+    isLoading,
+  };
+};
 
 export const useHomeSlider = () => {
   const { data, isLoading } = useQuery(

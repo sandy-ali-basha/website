@@ -17,16 +17,14 @@ import { useTranslation } from "react-i18next";
 import video from "assets/videos/DawaaAlHayatValues.m4v";
 import i18n from "i18n";
 import { useAbout } from "hooks/about/useAbout";
-import { useHome } from "hooks/home/useHome";
+import { useHomeSections } from "hooks/home/useHome";
 import Seo from "components/Seo";
 
 export default function About() {
   const { t } = useTranslation("about");
-  const { data, isLoading } = useAbout();
-  
+  const { data, isLoading } = useAbout();  
   const [showMore, setShowMore] = React.useState(false);
-
-  const { data: homeData } = useHome();
+  const { data: homeData } = useHomeSections();
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -35,21 +33,18 @@ export default function About() {
   // -------------------------
   // Normalize API data
   // -------------------------
-  const sections = React.useMemo(() => {
+const sections = React.useMemo(() => {
     if (!Array.isArray(data)) return {};
+    // Map data using 'id' as the key for direct lookup
     return data.reduce((acc, item) => {
-      const key = item.section?.toLowerCase();
-      if (!acc[key]) acc[key] = [];
-      acc[key].push(item);
+      acc[item.about_us_id] = item;
       return acc;
     }, {});
   }, [data]);
-
-  const welcome = sections.welcome?.[0];
-  const mission = sections.mission?.[0];
-  const visionData = sections.vision?.[0];
-  const culture = sections.culture?.[0];
-
+const welcome = sections[31];
+  const mission = sections[34];
+  const visionData = sections[36];
+  const culture = sections[38];
   const text =
     homeData?.["home.page.textSectionOne"]?.value?.text?.[i18n.language] || "";
 
