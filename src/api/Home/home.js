@@ -17,5 +17,15 @@ export const _Home = {
       }
     }).then((res) => res.data);
   },
+
+  freeShipping: async () => {
+    return _axios
+      .get(`/home/free_shipping`, {
+        headers: {
+          ...HttpRequestInterceptor(),
+        },
+      })
+      .then((res) => res.data);
+  },
  
 };

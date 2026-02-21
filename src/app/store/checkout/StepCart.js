@@ -28,6 +28,7 @@ import ApplyCoupon from "./_components/ApplyCoupon";
 import ApplyPoints from "./_components/ApplyPoints";
 import emptyCart from "assets/images/empty-cart.webp";
 import BestSellers from "components/modules/home/BestSellers";
+import { useFreeShipping } from "hooks/home/useHome";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -58,8 +59,13 @@ const StepCart = ({ handleNext }) => {
   const { t } = useTranslation("index");
   const cart_id = localStorage.getItem("cart_id");
   const { data, isLoading } = useCart(cart_id);
+  const { data: freeShippingData } = useFreeShipping();
   const queryClient = useQueryClient();
   const userData = localStorage.getItem("userData");
+  const freeShippingLimit = freeShippingData?.free_shipping_limit || 0;
+  const cartSubtotal = data?.data?.sub_total || 0;
+  const hasFreeShipping =
+    freeShippingLimit > 0 && cartSubtotal >= freeShippingLimit;
   const handleDeleteItem = (id) => {
     _cart.delete({ id, cart_id }).then((res) => {
       // Invalidate the "cart" query to refetch the updated cart data
@@ -363,6 +369,15 @@ const StepCart = ({ handleNext }) => {
               )}
 
               <Divider sx={{ my: "0 !important" }} />
+              {hasFreeShipping && (
+                <CardContent sx={{ pt: 2, pb: 0 }}>
+                  <Chip
+                    color="success"
+                    label={t("You got free shipping")}
+                    sx={{ width: "100%", fontWeight: 600 }}
+                  />
+                </CardContent>
+              )}
               <CardContent
                 sx={{ py: (theme) => `${theme.spacing(3.5)} !important` }}
               >
