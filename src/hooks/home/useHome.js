@@ -59,14 +59,10 @@ export const useFreeShipping = () => {
   const { data, isLoading } = useQuery(
     ["freeShipping"],
     () => _Home.freeShipping().then((res) => res?.data),
-    {
-      enabled: !!id, // query runs only when id exists
-    },
   );
 
   return {
     data,
-    isLoading,
-    refetch,
+    isLoading
   };
 };

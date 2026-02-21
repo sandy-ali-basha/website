@@ -365,5 +365,6 @@
   "your password does not match": "وشەی نهێنی تۆ ناگونجێت",
   "yourLocation": "شوێنەکەت",
   "© 2026 Dawaa Alhayat. All rights reserved.": "© 2026 دواء الحياة. هەموو مافەکان پارێزراون.",
-  "You got free shipping": "تۆ گەیاندنی خۆڕاییت وەرگرت"
+  "You got free shipping": "تۆ گەیاندنی خۆڕاییت وەرگرت",
+    "Complete your cart with {{amount}} to get free shipping": "کارتی کڕینت بە {{amount}} تەواو بکە بۆ وەرگرتنی گەیاندنی خۆڕایی"
 }

@@ -14,7 +14,7 @@ import ListItemText from "@mui/material/ListItemText";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import { styled } from "@mui/material/styles";
-import { Card, Chip, Container } from "@mui/material";
+import { Alert, Card, Chip, Container } from "@mui/material";
 // ** Icon Imports
 import Icon from "components/modules/icon";
 import { useTranslation } from "react-i18next";
@@ -28,7 +28,7 @@ import ApplyCoupon from "./_components/ApplyCoupon";
 import ApplyPoints from "./_components/ApplyPoints";
 import emptyCart from "assets/images/empty-cart.webp";
 import Simillar from "../product/[id]/_components/Simllar";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import RenderVariants from "./_components/RenderVariants";
 import BestSellers from "components/modules/home/BestSellers";
 import { useFreeShipping } from "hooks/home/useHome";
@@ -58,21 +58,58 @@ const StepCart = ({ handleNext }) => {
   const breakpointMD = useMediaQuery((theme) =>
     theme.breakpoints.between("sm", "lg"),
   );
-
   const { t } = useTranslation("index");
   const cart_id = localStorage.getItem("cart_id");
   const { data, isLoading } = useCart(cart_id);
   const { data: freeShippingData } = useFreeShipping();
+  const [message, setMessage] = useState(false);
   const queryClient = useQueryClient();
   const userData = localStorage.getItem("userData");
   const freeShippingLimit = freeShippingData?.free_shipping_limit || 0;
   const cartSubtotal = data?.data?.sub_total || 0;
+
   const hasFreeShipping =
     freeShippingLimit > 0 && cartSubtotal >= freeShippingLimit;
+  const remainingForFreeShipping = Math.max(
+    freeShippingLimit - cartSubtotal,
+    0,
+  );
+
+  const isCloseToFreeShipping =
+    freeShippingLimit > 0 &&
+    remainingForFreeShipping > 0 &&
+    remainingForFreeShipping <= freeShippingLimit * 0.2;
+
+  const shownRemainingRef = useRef(null);
+
   useEffect(() => {
     const cart_count = data?.data?.products?.length || 0;
     localStorage.setItem("cart_count", Math.max(cart_count));
   }, [data]);
+
+  useEffect(() => {
+    if (!cart_id || !data?.data?.products?.length) return;
+
+    if (hasFreeShipping || !isCloseToFreeShipping) {
+      shownRemainingRef.current = null;
+      return;
+    }
+
+    const remainingAmount = `${(remainingForFreeShipping / 1000).toFixed(3)} ${t(
+      "currency",
+    )}`;
+
+    if (shownRemainingRef.current === remainingAmount) return;
+    shownRemainingRef.current = remainingAmount;
+    setMessage(true);
+  }, [
+    cart_id,
+    data?.data?.products?.length,
+    hasFreeShipping,
+    isCloseToFreeShipping,
+    remainingForFreeShipping,
+    t,
+  ]);
 
   const handleDeleteItem = (params) => {
     const data = {
@@ -128,6 +165,18 @@ const StepCart = ({ handleNext }) => {
     <Container>
       <Grid container spacing={2}>
         <Grid item xs={12} lg={8}>
+          {message && (
+        <Alert
+          severity="info"
+          sx={{ mb: 2 }}
+          onClose={() => setMessage(false)}
+        >
+          {t("Complete your cart with {{amount}} to get free shipping", {
+            amount: shownRemainingRef.current,
+          })}
+        </Alert>
+      )}
+
           {cart_id && (
             <>
               {isLoading ? (
@@ -142,6 +191,7 @@ const StepCart = ({ handleNext }) => {
                   </Typography>
                 )
               )}
+
               {data?.data?.products?.length < 0 && (
                 <Card
                   sx={{
@@ -159,6 +209,7 @@ const StepCart = ({ handleNext }) => {
                   </Typography>
                 </Card>
               )}
+
               <StyledList>
                 {isLoading ? (
                   <ListItem sx={{ boxShadow: 3, borderRadius: 3, my: 2 }}>

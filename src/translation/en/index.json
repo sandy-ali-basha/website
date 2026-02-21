@@ -370,5 +370,6 @@
   "your password does not match": "your password does not match",
   "yourLocation": "yourLocation",
   "© 2026 Dawaa Alhayat. All rights reserved.": "© 2026 Dawaa Alhayat. All rights reserved.",
-  "You got free shipping":"You got free shipping"
+  "You got free shipping":"You got free shipping",
+  "Complete your cart with {{amount}} to get free shipping":"Complete your cart with {{amount}} to get free shipping"
 }
