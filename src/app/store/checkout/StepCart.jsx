@@ -30,6 +30,8 @@ import emptyCart from "assets/images/empty-cart.webp";
 import Simillar from "../product/[id]/_components/Simllar";
 import { useEffect } from "react";
 import RenderVariants from "./_components/RenderVariants";
+import BestSellers from "components/modules/home/BestSellers";
+import { useFreeShipping } from "hooks/home/useHome";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -54,15 +56,19 @@ const StyledList = styled(List)(({ theme }) => ({
 
 const StepCart = ({ handleNext }) => {
   const breakpointMD = useMediaQuery((theme) =>
-    theme.breakpoints.between("sm", "lg")
+    theme.breakpoints.between("sm", "lg"),
   );
 
   const { t } = useTranslation("index");
   const cart_id = localStorage.getItem("cart_id");
   const { data, isLoading } = useCart(cart_id);
+  const { data: freeShippingData } = useFreeShipping();
   const queryClient = useQueryClient();
   const userData = localStorage.getItem("userData");
-
+  const freeShippingLimit = freeShippingData?.free_shipping_limit || 0;
+  const cartSubtotal = data?.data?.sub_total || 0;
+  const hasFreeShipping =
+    freeShippingLimit > 0 && cartSubtotal >= freeShippingLimit;
   useEffect(() => {
     const cart_count = data?.data?.products?.length || 0;
     localStorage.setItem("cart_count", Math.max(cart_count));
@@ -104,7 +110,6 @@ const StepCart = ({ handleNext }) => {
         });
     });
   };
-
 
   return !cart_id ? (
     <Card
@@ -215,7 +220,7 @@ const StepCart = ({ handleNext }) => {
 
                           {/* ⬇️ Display Variants Here ⬇️ */}
                           <RenderVariants options={item?.options} />
-                          
+
                           {/* ⬆️ Display Variants Here ⬆️ */}
 
                           <Box
@@ -248,10 +253,10 @@ const StepCart = ({ handleNext }) => {
                                 item?.stock > 10
                                   ? t("In Stock")
                                   : item?.stock === 1
-                                  ? t("Only 1 unit left")
-                                  : item?.stock > 1 && item?.stock <= 10
-                                  ? t("Few units left")
-                                  : t("Out Of Stock")
+                                    ? t("Only 1 unit left")
+                                    : item?.stock > 1 && item?.stock <= 10
+                                      ? t("Few units left")
+                                      : t("Out Of Stock")
                               }
                             />
                           </Box>
@@ -393,6 +398,15 @@ const StepCart = ({ handleNext }) => {
               )}
 
               <Divider sx={{ my: "0 !important" }} />
+              {hasFreeShipping && (
+                <CardContent sx={{ pt: 2, pb: 0 }}>
+                  <Chip
+                    color="success"
+                    label={t("You got free shipping")}
+                    sx={{ width: "100%", fontWeight: 600 }}
+                  />
+                </CardContent>
+              )}
               <CardContent
                 sx={{ py: (theme) => `${theme.spacing(3.5)} !important` }}
               >

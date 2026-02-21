@@ -20,7 +20,7 @@ export const _Home = {
       })
       .then((res) => res.data);
   },
-  
+
   tabs: async () => {
     return _axios
       .get(`/home/tabs`, {
@@ -59,7 +59,17 @@ export const _Home = {
       throw error;
     }
   },
-  
+
   getSection: ({ id }) =>
     _axios.get("home_page/section/" + id).then((res) => res.data?.data),
+
+  freeShipping: async () => {
+    return _axios
+      .get(`/home/free_shipping`, {
+        headers: {
+          ...HttpRequestInterceptor(),
+        },
+      })
+      .then((res) => res.data);
+  },
 };
