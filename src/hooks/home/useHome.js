@@ -27,3 +27,18 @@ export const useHomeSlider = () => {
     isLoading,
   };
 };
+
+export const useFreeShipping = () => {
+  const { data, isLoading } = useQuery(
+    ["freeShipping"],
+    () => _Home.freeShipping().then((res) => res?.data),
+    {
+      keepPreviousData: true,
+    }
+  );
+
+  return {
+    data,
+    isLoading,
+  };
+};
