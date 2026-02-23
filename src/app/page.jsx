@@ -72,6 +72,12 @@ export default function Home() {
     return (
       <>
         {sections?.map((block) => {
+          const isActive = Number(block?.data?.active) === 1;
+
+          if (!isActive) {
+            return null;
+          }
+
           if (block.type === "section") {
             return renderSection(block.data);
           }
