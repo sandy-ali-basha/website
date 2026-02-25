@@ -81,13 +81,24 @@ export const useNavBar = () => {
 
   const { categories } = useFetchCategories();
 
+  const visibleNavbarCategories = categories.filter((category) => {
+    if (typeof category?.navActive === "boolean") {
+      return category.navActive;
+    }
+
+    return Number(category?.navActive) === 1;
+  });
+
   return {
     settings,
     pages,
     navigate,
     cities,
     brands,
-    categories: categories.length > 4 ? categories.slice(0, 4) : categories,
+    categories:
+      visibleNavbarCategories.length > 4
+        ? visibleNavbarCategories.slice(0, 4)
+        : visibleNavbarCategories,
     t,
   };
 };
