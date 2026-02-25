@@ -85,6 +85,7 @@ export const useNavBar = () => {
   );
 
   const { categories } = useFetchCategories();
+  const activeCategories = categories.filter((category) => category?.status !== 0);
 
   return {
     settings,
@@ -92,7 +93,10 @@ export const useNavBar = () => {
     navigate,
     cities,
     brands,
-    categories: categories.length > 4 ? categories.slice(0, 4) : categories,
+    categories:
+      activeCategories.length > 4
+        ? activeCategories.slice(0, 4)
+        : activeCategories,
     t,
   };
 };
