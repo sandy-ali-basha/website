@@ -13,7 +13,6 @@ const CategoryDropdown = ({ translations, items, itemId }) => {
   const open = Boolean(anchorEl);
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language; // Get current language (e.g., "en", "ar", "kr")
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };

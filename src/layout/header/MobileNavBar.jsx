@@ -124,7 +124,7 @@ const MobileNavBar = ({
                       primary={
                         category.translations.find(
                           (t) => t.locale === currentLanguage
-                        )?.title
+                        )?.title || category.title
                       }
                     />
                     {openCategories[category.id] ? (

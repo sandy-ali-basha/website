@@ -137,6 +137,7 @@ function NavBar() {
                   key={e.id}
                   translations={e.translations}
                   items={e.values}
+                  itemId={e.id}
                 />
               ))}
 
