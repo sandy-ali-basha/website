@@ -7,20 +7,21 @@ import { useHomeSection } from "hooks/home/useHome";
 import i18n from "i18n";
 
 export default function Reels({ data, isLoading }) {
-  console.log("Reels data:", data);
   // 👉 backend items
   const items = useMemo(() => data?.data?.items || [], [data?.data?.items]);
 
   const videoRefs = useRef([]);
   const observer = useRef(null);
   const [loadingStatus, setLoadingStatus] = useState([]);
+  const [videoErrorStatus, setVideoErrorStatus] = useState([]);
 
   /* Initialize loading state when items arrive */
   useEffect(() => {
     if (items.length) {
-      setLoadingStatus(new Array(items.length).fill(true));
+      setLoadingStatus(items.map((item) => Boolean(item?.image)));
+      setVideoErrorStatus(new Array(items.length).fill(false));
     }
-  }, [items.length]);
+  }, [items]);
 
   /* Lazy-load videos */
   useEffect(() => {
@@ -53,6 +54,15 @@ export default function Reels({ data, isLoading }) {
       next[index] = false;
       return next;
     });
+  };
+
+  const handleVideoError = (index) => {
+    setVideoErrorStatus((prev) => {
+      const next = [...prev];
+      next[index] = true;
+      return next;
+    });
+    handleVideoLoad(index);
   };
 
   return (
@@ -120,23 +130,46 @@ export default function Reels({ data, isLoading }) {
 
             {/* Video */}
             {!isLoading && (
-              <video
-                ref={(el) => (videoRefs.current[idx] = el)}
-                style={{
-                  width: "100%",
-                  height: 300,
-                  objectFit: "cover",
-                  backgroundColor: "#f2f2f2",
-                  display: loadingStatus[idx] ? "none" : "block",
-                }}
-                data-src={item?.image} // 🔁 will be video URL
-                onLoadedData={() => handleVideoLoad(idx)}
-                muted
-                loop
-                playsInline
-                autoPlay
-                preload="metadata"
-              />
+              <>
+                {(!item?.image || videoErrorStatus[idx]) && (
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: 300,
+                      background:
+                        "linear-gradient(135deg, rgba(44,62,80,1) 0%, rgba(52,152,219,1) 100%)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "white",
+                    }}
+                  >
+                    <Typography variant="body2">Video unavailable</Typography>
+                  </Box>
+                )}
+
+                <video
+                  ref={(el) => (videoRefs.current[idx] = el)}
+                  style={{
+                    width: "100%",
+                    height: 300,
+                    objectFit: "cover",
+                    backgroundColor: "#f2f2f2",
+                    display:
+                      loadingStatus[idx] || !item?.image || videoErrorStatus[idx]
+                        ? "none"
+                        : "block",
+                  }}
+                  data-src={item?.image} // 🔁 will be video URL
+                  onLoadedData={() => handleVideoLoad(idx)}
+                  onError={() => handleVideoError(idx)}
+                  muted
+                  loop
+                  playsInline
+                  autoPlay
+                  preload="metadata"
+                />
+              </>
             )}
           </Box>
         </SwiperSlide>
