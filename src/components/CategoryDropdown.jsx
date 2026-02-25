@@ -6,17 +6,11 @@ import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const CategoryDropdown = ({ translations, items, itemId, image }) => {
+const CategoryDropdown = ({ translations, items, itemId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language; // Get current language (e.g., "en", "ar", "kr")
-  const imageUrl = image?.startsWith("http")
-    ? image
-    : image
-      ? `https://v2.dawaaalhayat.com${image}`
-      : null;
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -55,19 +49,6 @@ const CategoryDropdown = ({ translations, items, itemId, image }) => {
           alignItems: "center",
         }}
       >
-        {imageUrl && (
-          <img
-            loading="lazy"
-            src={imageUrl}
-            alt={translations.find((t) => t.locale === currentLanguage)?.title}
-            style={{
-              width: 24,
-              height: 24,
-              objectFit: "contain",
-              marginRight: 8,
-            }}
-          />
-        )}
         {translations.find((t) => t.locale === currentLanguage)?.title}{" "}
         {open ? (
           <KeyboardArrowUp fontSize="small" />
