@@ -7,6 +7,7 @@ export default function ProductPrice({ variant }) {
 
   const { t } = useTranslation("index");
   if (!variant) return null;
+
   const start = variant?.compare_price_start_date
     ? new Date(variant.compare_price_start_date)
     : null;
@@ -14,6 +15,8 @@ export default function ProductPrice({ variant }) {
   const end = variant?.compare_price_end_date
     ? new Date(variant.compare_price_end_date)
     : null;
+console.log("start", start);
+console.log("end", end);
 
   const now = new Date();
 
@@ -23,13 +26,16 @@ export default function ProductPrice({ variant }) {
     !isNaN(start) &&
     !isNaN(end);
 
-  const isActiveDiscount =
-    variant.compare_price &&
-    variant.compare_price < variant.price &&
-    isValidDateRange &&
-    now >= start &&
-    now <= end;
+  const hasDiscount =
+  variant.compare_price &&
+  variant.compare_price > variant.price;
 
+  const isWithinDateRange =
+  start && end
+    ? now >= start && now <= end
+    : true;
+
+const isActiveDiscount = hasDiscount && isWithinDateRange;
   // Calculate time left
   let timeLeft = "";
   if (isActiveDiscount) {

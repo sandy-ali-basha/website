@@ -26,7 +26,8 @@ export const useLogin = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const oldCartId = localStorage.getItem("cart_id");
+  
   const onSubmit = (input) => {
     setLoading(true);
     _AuthApi
@@ -35,14 +36,18 @@ export const useLogin = () => {
         if (res?.data?.code === 200) {
           _AuthApi.storeToken(res?.data?.data?.token);
           localStorage.setItem("userData", JSON.stringify(res.data.data));
-          if (res?.data?.data?.cart_id)
-            localStorage.setItem("cart_id", res?.data?.data?.cart_id);
+
+          if (!oldCartId) {
+            if (res?.data?.data?.cart_id)
+              localStorage.setItem("cart_id", res?.data?.data?.cart_id);
+          }
+
           navigate("/");
         } else {
           setError(
             res?.data?.error?.message ||
               res?.data?.error ||
-              "An unexpected error occurred"
+              "An unexpected error occurred",
           );
         }
         setLoading(true);

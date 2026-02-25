@@ -110,7 +110,7 @@ const StepCart = ({ handleNext }) => {
     remainingForFreeShipping,
     t,
   ]);
-
+  console.log("simelar", data);
   const handleDeleteItem = (params) => {
     const data = {
       product_id: params?.id,
@@ -166,16 +166,16 @@ const StepCart = ({ handleNext }) => {
       <Grid container spacing={2}>
         <Grid item xs={12} lg={8}>
           {message && (
-        <Alert
-          severity="info"
-          sx={{ mb: 2 }}
-          onClose={() => setMessage(false)}
-        >
-          {t("Complete your cart with {{amount}} to get free shipping", {
-            amount: shownRemainingRef.current,
-          })}
-        </Alert>
-      )}
+            <Alert
+              severity="info"
+              sx={{ mb: 2 }}
+              onClose={() => setMessage(false)}
+            >
+              {t("Complete your cart with {{amount}} to get free shipping", {
+                amount: shownRemainingRef.current,
+              })}
+            </Alert>
+          )}
 
           {cart_id && (
             <>
@@ -191,25 +191,24 @@ const StepCart = ({ handleNext }) => {
                   </Typography>
                 )
               )}
-
-              {data?.data?.products?.length < 0 && (
-                <Card
-                  sx={{
-                    minHeight: "80vh",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "column",
-                  }}
-                >
-                  <img alt=" " src={emptyCart} style={{ width: "40vw" }} />
-                  <Typography>
-                    {t("Your shopping page is empty")}
-                    {data?.data?.products?.length}
-                  </Typography>
-                </Card>
-              )}
-
+              {data?.data?.products?.length < 0 ||
+                (!data?.data?.products && (
+                  <Card
+                    sx={{
+                      minHeight: "80vh",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <img alt=" " src={emptyCart} style={{ width: "40vw" }} />
+                    <Typography>
+                      {t("Your shopping page is empty")}
+                      {data?.data?.products?.length}
+                    </Typography>
+                  </Card>
+                ))}
               <StyledList>
                 {isLoading ? (
                   <ListItem sx={{ boxShadow: 3, borderRadius: 3, my: 2 }}>
@@ -369,164 +368,166 @@ const StepCart = ({ handleNext }) => {
           )}
         </Grid>
         {data?.data?.products?.length > 0 && (
-          <Grid item xs={12} lg={4}>
-            <Box
-              sx={{
-                mb: 2,
-                borderRadius: 3,
-                boxShadow: 3,
-              }}
-            >
-              <CardContent>
-                <Typography sx={{ mb: 2 }} variant="h6">
-                  {t("Price Details")}
-                </Typography>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <>
+            <Grid item xs={12} lg={4}>
+              <Box
+                sx={{
+                  mb: 2,
+                  borderRadius: 3,
+                  boxShadow: 3,
+                }}
+              >
+                <CardContent>
+                  <Typography sx={{ mb: 2 }} variant="h6">
+                    {t("Price Details")}
+                  </Typography>
+                  <Box sx={{ display: "flex", flexDirection: "column" }}>
+                    <Box
+                      sx={{
+                        mb: 2,
+                        gap: 2,
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography>{t("Bag Total")}</Typography>
+                      <Typography sx={{ color: "text.secondary" }}>
+                        {data?.data?.discount_amount > 0
+                          ? data?.data?.sub_total_after_points.toLocaleString()
+                          : data?.data?.sub_total.toLocaleString()}{" "}
+                        {t("currency")}
+                      </Typography>
+                    </Box>
+
+                    {data?.data?.discount_amount > 0 && (
+                      <Box
+                        sx={{
+                          mb: 2,
+                          gap: 2,
+                          display: "flex",
+                          flexWrap: "wrap",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography>{t("Discount Amount")}</Typography>
+                        <Typography variant="h6" sx={{ color: "primary.main" }}>
+                          {data?.data?.discount_amount.toLocaleString()}{" "}
+                          {t("currency")}
+                        </Typography>
+                      </Box>
+                    )}
+
+                    {data?.data?.points_used > 0 && (
+                      <Box
+                        sx={{
+                          mb: 2,
+                          gap: 2,
+                          display: "flex",
+                          flexWrap: "wrap",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography>{t("Points Used")}</Typography>
+                        <Typography variant="body2" color="secondary">
+                          {data?.data?.points_used}
+                        </Typography>
+                      </Box>
+                    )}
+                  </Box>
+                </CardContent>
+
+                <Divider sx={{ my: "0 !important" }} />
+                {userData && (
+                  <CardContent>
+                    <ApplyCoupon />
+                    <ApplyPoints />
+                  </CardContent>
+                )}
+
+                <Divider sx={{ my: "0 !important" }} />
+                {hasFreeShipping && (
+                  <CardContent sx={{ pt: 2, pb: 0 }}>
+                    <Chip
+                      color="success"
+                      label={t("You got free shipping")}
+                      sx={{ width: "100%", fontWeight: 600 }}
+                    />
+                  </CardContent>
+                )}
+                <CardContent
+                  sx={{ py: (theme) => `${theme.spacing(3.5)} !important` }}
+                >
                   <Box
                     sx={{
                       mb: 2,
                       gap: 2,
                       display: "flex",
                       flexWrap: "wrap",
-                      alignItems: "center",
+                      alignItems: "start",
                       justifyContent: "space-between",
                     }}
                   >
-                    <Typography>{t("Bag Total")}</Typography>
-                    <Typography sx={{ color: "text.secondary" }}>
-                      {data?.data?.discount_amount > 0
-                        ? data?.data?.sub_total_after_points.toLocaleString()
-                        : data?.data?.sub_total.toLocaleString()}{" "}
-                      {t("currency")}
-                    </Typography>
-                  </Box>
-
-                  {data?.data?.discount_amount > 0 && (
-                    <Box
-                      sx={{
-                        mb: 2,
-                        gap: 2,
-                        display: "flex",
-                        flexWrap: "wrap",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Typography>{t("Discount Amount")}</Typography>
-                      <Typography variant="h6" sx={{ color: "primary.main" }}>
-                        {data?.data?.discount_amount.toLocaleString()}{" "}
-                        {t("currency")}
-                      </Typography>
-                    </Box>
-                  )}
-
-                  {data?.data?.points_used > 0 && (
-                    <Box
-                      sx={{
-                        mb: 2,
-                        gap: 2,
-                        display: "flex",
-                        flexWrap: "wrap",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Typography>{t("Points Used")}</Typography>
-                      <Typography variant="body2" color="secondary">
-                        {data?.data?.points_used}
-                      </Typography>
-                    </Box>
-                  )}
-                </Box>
-              </CardContent>
-
-              <Divider sx={{ my: "0 !important" }} />
-              {userData && (
-                <CardContent>
-                  <ApplyCoupon />
-                  <ApplyPoints />
-                </CardContent>
-              )}
-
-              <Divider sx={{ my: "0 !important" }} />
-              {hasFreeShipping && (
-                <CardContent sx={{ pt: 2, pb: 0 }}>
-                  <Chip
-                    color="success"
-                    label={t("You got free shipping")}
-                    sx={{ width: "100%", fontWeight: 600 }}
-                  />
-                </CardContent>
-              )}
-              <CardContent
-                sx={{ py: (theme) => `${theme.spacing(3.5)} !important` }}
-              >
-                <Box
-                  sx={{
-                    mb: 2,
-                    gap: 2,
-                    display: "flex",
-                    flexWrap: "wrap",
-                    alignItems: "start",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography>{t("Order Total")}</Typography>
-                  <Box>
-                    <Typography
-                      sx={{
-                        color: "text.secondary",
-                        textDecoration:
-                          data?.data?.discount_amount > 0 ||
-                          data?.data?.points_used > 0
-                            ? "line-through"
-                            : "none",
-                        fontSize:
-                          data?.data?.discount_amount > 0 ||
-                          data?.data?.points_used > 0
-                            ? "small"
-                            : "initial",
-                      }}
-                    >
-                      {data?.data?.sub_total.toLocaleString()} {t("currency")}
-                    </Typography>
-
-                    {data?.data?.points_used > 0 && (
+                    <Typography>{t("Order Total")}</Typography>
+                    <Box>
                       <Typography
-                        variant="h6"
                         sx={{
-                          color: "secondary.main",
-                          textDecoration: "none",
+                          color: "text.secondary",
+                          textDecoration:
+                            data?.data?.discount_amount > 0 ||
+                            data?.data?.points_used > 0
+                              ? "line-through"
+                              : "none",
+                          fontSize:
+                            data?.data?.discount_amount > 0 ||
+                            data?.data?.points_used > 0
+                              ? "small"
+                              : "initial",
                         }}
                       >
-                        {data?.data?.sub_total_after_points.toLocaleString()}{" "}
-                        {t("currency")}
+                        {data?.data?.sub_total.toLocaleString()} {t("currency")}
                       </Typography>
-                    )}
+
+                      {data?.data?.points_used > 0 && (
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            color: "secondary.main",
+                            textDecoration: "none",
+                          }}
+                        >
+                          {data?.data?.sub_total_after_points.toLocaleString()}{" "}
+                          {t("currency")}
+                        </Typography>
+                      )}
+                    </Box>
                   </Box>
-                </Box>
-              </CardContent>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                ...(breakpointMD ? { justifyContent: "flex-end" } : {}),
-              }}
-            >
-              <Button
-                fullWidth={!breakpointMD}
-                variant="contained"
-                onClick={handleNext}
-                sx={{ borderRadius: 3 }}
-                color="secondary"
-                disabled={!userData}
+                </CardContent>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  ...(breakpointMD ? { justifyContent: "flex-end" } : {}),
+                }}
               >
-                {userData ? t("Place Order") : t("pleas Log in to order")}
-              </Button>
-            </Box>
-          </Grid>
+                <Button
+                  fullWidth={!breakpointMD}
+                  variant="contained"
+                  onClick={handleNext}
+                  sx={{ borderRadius: 3 }}
+                  color="secondary"
+                  disabled={!userData}
+                >
+                  {userData ? t("Place Order") : t("pleas Log in to order")}
+                </Button>
+              </Box>
+            </Grid>
+            <Simillar id={data?.data?.products[0]?.id} />
+          </>
         )}
-        <Simillar id={data?.data?.products[0]?.id} />
       </Grid>
     </Container>
   );

@@ -28,6 +28,7 @@ import {
   LocalShipping,
   Pending,
   Sync,
+  VisibilityRounded,
 } from "@mui/icons-material";
 import { _axios } from "interceptor/http-config";
 import Swal from "sweetalert2";
@@ -204,7 +205,7 @@ const BillingHistoryTable = () => {
             </IconButton>
           )}
           <IconButton onClick={() => handleOrderClick(row)}>
-            <Eye />
+            <VisibilityRounded />
           </IconButton>
         </>
       ),
@@ -290,7 +291,7 @@ const BillingHistoryTable = () => {
                         onClick={() => handleOrderClick(order)}
                         color="primary"
                       >
-                        <Eye />
+                        <VisibilityRounded />
                       </IconButton>
                     </CardContent>
                   </Card>
