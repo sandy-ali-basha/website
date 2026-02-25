@@ -8,8 +8,8 @@ import i18n from "i18n";
 
 export default function Reels({ data, isLoading }) {
   // 👉 backend items
-  const items = useMemo(() => data?.data?.items || [], [data?.data?.items]);
-
+  const items = useMemo(() => data?.items || [], [data?.items]);
+console.log("Reels data", data)
   const videoRefs = useRef([]);
   const observer = useRef(null);
   const [loadingStatus, setLoadingStatus] = useState([]);
@@ -66,6 +66,7 @@ export default function Reels({ data, isLoading }) {
   };
 
   return (
+    <>
     <Swiper
       spaceBetween={8}
       slidesPerView={3}
@@ -96,7 +97,7 @@ export default function Reels({ data, isLoading }) {
               <Skeleton
                 variant="rectangular"
                 animation="wave"
-                sx={{ width: "100%", height: 300 }}
+                sx={{ width: "100%", height: 500 }}
               />
             )}
 
@@ -113,7 +114,7 @@ export default function Reels({ data, isLoading }) {
                   alignItems: "center",
                   textAlign: "center",
                   px: 2,
-                  background: "rgba(0,0,0,0.35)",
+                  background: "rgba(0, 0, 0, 0.03)",
                 }}
               >
                 <Typography variant="h6" color="white">
@@ -135,9 +136,9 @@ export default function Reels({ data, isLoading }) {
                   <Box
                     sx={{
                       width: "100%",
-                      height: 300,
+                      height: 500,
                       background:
-                        "linear-gradient(135deg, rgba(44,62,80,1) 0%, rgba(52,152,219,1) 100%)",
+                        "linear-gradient(135deg, rgba(44, 62, 80, 0.21) 0%, rgba(52, 152, 219, 0.26) 100%)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -152,7 +153,7 @@ export default function Reels({ data, isLoading }) {
                   ref={(el) => (videoRefs.current[idx] = el)}
                   style={{
                     width: "100%",
-                    height: 300,
+                    height: 500,
                     objectFit: "cover",
                     backgroundColor: "#f2f2f2",
                     display:
@@ -175,5 +176,6 @@ export default function Reels({ data, isLoading }) {
         </SwiperSlide>
       ))}
     </Swiper>
+    </>
   );
 }
