@@ -47,7 +47,7 @@ const CategoryCard = ({ category }) => {
         {category.image && (
           <img
             loading="lazy"
-            src={`https://v2.dawaaalhayat.com${category.image}`}
+            src={category.image}
             alt={getTranslatedTitle(category)}
             style={{
               width: "50%",
@@ -151,7 +151,7 @@ const CategoriesSection = () => {
       grabCursor
     >
       {categories.map((category) => (
-        <SwiperSlide key={category.id} style={{ paddingBottom: "10px" }}>
+      category.status !== 0 &&  <SwiperSlide key={category.id} style={{ paddingBottom: "10px" }}>
           <CategoryCard category={category} />
         </SwiperSlide>
       ))}

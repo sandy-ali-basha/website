@@ -52,7 +52,7 @@ export const useNavBar = () => {
     return (
       response?.data?.state?.map((city) => ({
         id: city.id,
-        label: city.name.replace("state.", ""),
+        label: city.name,
         onClick: () => {
           localStorage.setItem("city", city.id);
           window.location.reload();
@@ -62,11 +62,6 @@ export const useNavBar = () => {
   });
 
   const pages = [
-    {
-      id: "1",
-      onClick: () => navigate("/pharmacy-locator"),
-      label: t("pharmacies"),
-    },
     {
       id: "1",
       onClick: () => navigate("/store"),
@@ -85,7 +80,6 @@ export const useNavBar = () => {
   );
 
   const { categories } = useFetchCategories();
-  const activeCategories = categories.filter((category) => category?.status !== 0);
 
   return {
     settings,
@@ -93,10 +87,7 @@ export const useNavBar = () => {
     navigate,
     cities,
     brands,
-    categories:
-      activeCategories.length > 4
-        ? activeCategories.slice(0, 4)
-        : activeCategories,
+    categories: categories.length > 4 ? categories.slice(0, 4) : categories,
     t,
   };
 };

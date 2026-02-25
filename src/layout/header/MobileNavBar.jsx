@@ -46,13 +46,6 @@ const MobileNavBar = ({
   const currentLanguage = i18n.language;
 
   // Function to get the translated value for the current language
-  const getCategoryImageUrl = (image) =>
-    image?.startsWith("http")
-      ? image
-      : image
-        ? `https://v2.dawaaalhayat.com${image}`
-        : null;
-
   const getTranslatedValue = (item) => {
     // Try current language first
     let translation = item.translations?.find(
@@ -127,38 +120,13 @@ const MobileNavBar = ({
                   <ListItemButton
                     onClick={() => handleCategoryToggle(category.id)}
                   >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 2,
-                        flex: 1,
-                      }}
-                    >
-                      {getCategoryImageUrl(category.image) && (
-                        <img
-                          loading="lazy"
-                          src={getCategoryImageUrl(category.image)}
-                          alt={
-                            category.translations.find(
-                              (t) => t.locale === currentLanguage
-                            )?.title || category.title
-                          }
-                          style={{
-                            width: 32,
-                            height: 32,
-                            objectFit: "contain",
-                          }}
-                        />
-                      )}
-                      <ListItemText
-                        primary={
-                          category.translations.find(
-                            (t) => t.locale === currentLanguage
-                          )?.title || category.title
-                        }
-                      />
-                    </Box>
+                    <ListItemText
+                      primary={
+                        category.translations.find(
+                          (t) => t.locale === currentLanguage
+                        )?.title
+                      }
+                    />
                     {openCategories[category.id] ? (
                       <ExpandLess />
                     ) : (
@@ -174,10 +142,7 @@ const MobileNavBar = ({
                   <List component="div" disablePadding>
                     {category.values.map((item) => (
                       <ListItem key={item.id} sx={{ pl: 4 }} disablePadding>
-                        <ListItemButton
-                          component={Link}
-                          to={`/store/${category.id}/${item.id}`}
-                        >
+                        <ListItemButton component={Link} to={`/store`}>
                           <ListItemText primary={getTranslatedValue(item)} />
                         </ListItemButton>
                       </ListItem>

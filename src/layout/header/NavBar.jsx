@@ -132,13 +132,11 @@ function NavBar() {
             ))}
 
             {categories &&
-              categories.slice(0, 3).map((e) => (
+              categories.map((e) => (
                 <CategoryDropdown
                   key={e.id}
                   translations={e.translations}
                   items={e.values}
-                  itemId={e.id}
-                  image={e.image}
                 />
               ))}
 
@@ -215,7 +213,7 @@ function NavBar() {
                             }}
                           />
                         </Box>
-                        {e.name}
+                        {t(e.name)}
                       </Link>
                     </MenuItem>
                   ))}
