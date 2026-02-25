@@ -46,6 +46,13 @@ const MobileNavBar = ({
   const currentLanguage = i18n.language;
 
   // Function to get the translated value for the current language
+  const getCategoryImageUrl = (image) =>
+    image?.startsWith("http")
+      ? image
+      : image
+        ? `https://v2.dawaaalhayat.com${image}`
+        : null;
+
   const getTranslatedValue = (item) => {
     // Try current language first
     let translation = item.translations?.find(
@@ -120,13 +127,38 @@ const MobileNavBar = ({
                   <ListItemButton
                     onClick={() => handleCategoryToggle(category.id)}
                   >
-                    <ListItemText
-                      primary={
-                        category.translations.find(
-                          (t) => t.locale === currentLanguage
-                        )?.title
-                      }
-                    />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 2,
+                        flex: 1,
+                      }}
+                    >
+                      {getCategoryImageUrl(category.image) && (
+                        <img
+                          loading="lazy"
+                          src={getCategoryImageUrl(category.image)}
+                          alt={
+                            category.translations.find(
+                              (t) => t.locale === currentLanguage
+                            )?.title || category.title
+                          }
+                          style={{
+                            width: 32,
+                            height: 32,
+                            objectFit: "contain",
+                          }}
+                        />
+                      )}
+                      <ListItemText
+                        primary={
+                          category.translations.find(
+                            (t) => t.locale === currentLanguage
+                          )?.title || category.title
+                        }
+                      />
+                    </Box>
                     {openCategories[category.id] ? (
                       <ExpandLess />
                     ) : (

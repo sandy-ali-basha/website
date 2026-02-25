@@ -138,6 +138,7 @@ function NavBar() {
                   translations={e.translations}
                   items={e.values}
                   itemId={e.id}
+                  image={e.image}
                 />
               ))}
 
