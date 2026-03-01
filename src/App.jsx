@@ -75,6 +75,9 @@ function App() {
   }, []);
 
   const [open, setOpen] = useState(false);
+  const [cityDialogMessage, setCityDialogMessage] = useState(
+    "Select your city for a customized shopping journey"
+  );
 
   useEffect(() => {
     createChat({
@@ -88,6 +91,11 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const showCityDialog = (message) => {
+      setCityDialogMessage(message);
+      setOpen(true);
+    };
+
     const tryAutoSelectCity = async () => {
       const savedCity = localStorage.getItem("city");
       if (savedCity) {
@@ -95,15 +103,12 @@ function App() {
         return;
       }
 
-      const alreadyTriedAutoDetect =
-        localStorage.getItem("city_auto_detected") === "1";
-
-      if (alreadyTriedAutoDetect || !navigator.geolocation) {
-        setOpen(true);
+      if (!navigator.geolocation) {
+        showCityDialog(
+          "We couldn't locate your city automatically. Please choose your city."
+        );
         return;
       }
-
-      localStorage.setItem("city_auto_detected", "1");
 
       try {
         const position = await new Promise((resolve, reject) => {
@@ -133,14 +138,13 @@ function App() {
             .filter(Boolean)
             .map(normalizeCityName);
 
-          return cityNames.some(
-            (cityName) =>
-              locationCandidates.some(
-                (candidate) =>
-                  cityName === candidate ||
-                  cityName.includes(candidate) ||
-                  candidate.includes(cityName)
-              )
+          return cityNames.some((cityName) =>
+            locationCandidates.some(
+              (candidate) =>
+                cityName === candidate ||
+                cityName.includes(candidate) ||
+                candidate.includes(cityName)
+            )
           );
         });
 
@@ -149,11 +153,15 @@ function App() {
           setOpen(false);
           return;
         }
-      } catch (error) {
-        // Fall back to manual city selection dialog.
-      }
 
-      setOpen(true);
+        showCityDialog(
+          "We couldn't locate your city automatically. Please choose your city."
+        );
+      } catch (error) {
+        showCityDialog(
+          "We couldn't locate your city automatically. Please choose your city."
+        );
+      }
     };
 
     tryAutoSelectCity();
@@ -168,7 +176,11 @@ function App() {
         url="https://dawaaalhayat.com"
       />
 
-      <ChooseCityDialog open={open} setOpen={setOpen} />
+      <ChooseCityDialog
+        open={open}
+        setOpen={setOpen}
+        description={cityDialogMessage}
+      />
       {/* <CookieConsent /> */}
 
       <Routes>
