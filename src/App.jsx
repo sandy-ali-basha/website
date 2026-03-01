@@ -161,7 +161,7 @@ function App() {
           _countries.index(),
         ]);
         const appCities = collectAppCities(citiesResponse, regionsResponse);
-
+console.log("App Cities:", appCities);
         const matchedCity = appCities.find((city) => {
           const cityNames = [
             city?.name,
