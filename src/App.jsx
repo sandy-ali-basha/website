@@ -34,6 +34,7 @@ import ChooseCityDialog from "components/ChooseCityDialog";
 import { createChat } from "@n8n/chat";
 import Seo from "components/Seo";
 import { _cities } from "api/country/country";
+import { _countries } from "api/country/countries";
 
 import "@n8n/chat/style.css";
 import "swiper/css";
@@ -50,6 +51,30 @@ const normalizeCityName = (value = "") =>
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
     .replace(/[^\p{L}\p{N}]/gu, "");
+
+
+const collectAppCities = (citiesResponse, regionsResponse) => {
+  const directCities = citiesResponse?.data?.state || [];
+
+  const regionCities = (regionsResponse?.data || []).flatMap((region) =>
+    (region?.cities || []).map((city) => ({
+      ...city,
+      regionName: region?.name,
+      regionNameEn: region?.name_en,
+      regionNameAr: region?.name_ar,
+    }))
+  );
+
+  const citiesById = new Map();
+
+  [...directCities, ...regionCities].forEach((city) => {
+    if (!city?.id) return;
+    const existing = citiesById.get(city.id) || {};
+    citiesById.set(city.id, { ...existing, ...city });
+  });
+
+  return Array.from(citiesById.values());
+};
 
 const cityNameCandidatesFromLocation = (address = {}) => {
   return [
@@ -131,11 +156,20 @@ function App() {
           geocodeData?.address || {}
         ).map(normalizeCityName);
 
-        const citiesResponse = await _cities.index();
-        const appCities = citiesResponse?.data?.state || [];
+        const [citiesResponse, regionsResponse] = await Promise.all([
+          _cities.index(),
+          _countries.index(),
+        ]);
+        const appCities = collectAppCities(citiesResponse, regionsResponse);
 
         const matchedCity = appCities.find((city) => {
-          const cityNames = [city?.name, city?.name_en, city?.name_ar, city?.value]
+          const cityNames = [
+            city?.name,
+            city?.name_en,
+            city?.name_ar,
+            city?.value,
+            city?.inv_name,
+          ]
             .filter(Boolean)
             .map(normalizeCityName);
 
