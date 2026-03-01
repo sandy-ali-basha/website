@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
 import "./assets/css/style.scss";
 import Home from "app/page.jsx";
@@ -30,11 +30,9 @@ import ResetPassword from "app/(authentication)/forgetPassword/ResetPassword";
 import Brand from "app/store/categories/brand/[name]/page";
 import NotFound from "components/NotFound";
 import ShouldBeLogged from "middlewares/ShouldBeLogged";
-import ChooseCityDialog from "components/ChooseCityDialog";
 import { createChat } from "@n8n/chat";
 import Seo from "components/Seo";
-import { _cities } from "api/country/country";
-import { _countries } from "api/country/countries";
+import CitySelectorGate from "components/CitySelectorGate";
 
 import "@n8n/chat/style.css";
 import "swiper/css";
@@ -42,69 +40,6 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import PharmacyLocator from "app/pharmacy/PharmacyLocator.jsx";
 
-
-const normalizeCityName = (value = "") =>
-  value
-    .toString()
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^\p{L}\p{N}]/gu, "");
-
-const hasSimilarCityNamePart = (source = "", target = "") => {
-  if (!source || !target) return false;
-
-  if (source === target || source.includes(target) || target.includes(source)) {
-    return true;
-  }
-
-  const minChunkLength = 5;
-  for (let i = 0; i <= target.length - minChunkLength; i += 1) {
-    const chunk = target.slice(i, i + minChunkLength);
-    if (source.includes(chunk)) {
-      return true;
-    }
-  }
-
-  return false;
-};
-
-
-const collectAppCities = (citiesResponse, regionsResponse) => {
-  const directCities = citiesResponse?.data?.state || [];
-
-  const regionCities = (regionsResponse?.data || []).flatMap((region) =>
-    (region?.cities || []).map((city) => ({
-      ...city,
-      regionName: region?.name,
-      regionNameEn: region?.name_en,
-      regionNameAr: region?.name_ar,
-    }))
-  );
-
-  const citiesById = new Map();
-
-  [...directCities, ...regionCities].forEach((city) => {
-    if (!city?.id) return;
-    const existing = citiesById.get(city.id) || {};
-    citiesById.set(city.id, { ...existing, ...city });
-  });
-
-  return Array.from(citiesById.values());
-};
-
-const cityNameCandidatesFromLocation = (address = {}) => {
-  return [
-    address.city,
-    address.town,
-    address.village,
-    address.municipality,
-    address.county,
-    address.state_district,
-    address.state,
-  ].filter(Boolean);
-};
 
 function App() {
 
@@ -118,21 +53,6 @@ function App() {
     document.documentElement.dir = "rtl";
   }, []);
 
-  const [open, setOpen] = useState(false);
-  const [cityDialogMessage, setCityDialogMessage] = useState(
-    "Select your city for a customized shopping journey"
-  );
-
-  useEffect(() => {
-    createChat({
-      webhookUrl:
-        "https://n8n.srv832200.hstgr.cloud/webhook/81be035f-7336-4a1c-a953-bbdabd6329c6/chat",
-      initialMessages: [
-        "Hi there! 👋",
-        "I am the smart assistant from Dawaa Alhayat . How can I help you today?",
-      ],
-    });
-  }, []);
 
   useEffect(() => {
     const showCityDialog = (message) => {
@@ -229,14 +149,10 @@ console.log("App Cities:", appCities);
         url="https://dawaaalhayat.com"
       />
 
-      <ChooseCityDialog
-        open={open}
-        setOpen={setOpen}
-        description={cityDialogMessage}
-      />
       {/* <CookieConsent /> */}
 
-      <Routes>
+      <CitySelectorGate>
+        <Routes>
         <Route
           path="/login"
           element={
@@ -324,7 +240,8 @@ console.log("App Cities:", appCities);
           <Route path="/terms/:id" element={<TermsPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
-      </Routes>
+        </Routes>
+      </CitySelectorGate>
     </ThemeProviderWrapper>
   );
 }
