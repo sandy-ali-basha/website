@@ -4,7 +4,7 @@ import { _cities } from "api/country/country";
 import { _countries } from "api/country/countries";
 import { _Brands } from "api/brand/brands";
 import { useQuery } from "react-query";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFetchCategories } from "hooks/useFetchCategories";
 
 
@@ -28,9 +28,25 @@ const mergeCities = (citiesResponse, regionsResponse) => {
 };
 
 export const useNavBar = () => {
+  const [isCityResolving, setIsCityResolving] = useState(
+    localStorage.getItem("city_resolving") === "1"
+  );
   const { t } = useTranslation("navbar");
 
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const onResolvingChanged = (event) => {
+      setIsCityResolving(Boolean(event?.detail?.resolving));
+    };
+
+    window.addEventListener("city-resolving-changed", onResolvingChanged);
+
+    return () => {
+      window.removeEventListener("city-resolving-changed", onResolvingChanged);
+    };
+  }, []);
 
   const settings = [
     {
@@ -136,6 +152,7 @@ export const useNavBar = () => {
     navigate,
     cities,
     selectedCityLabel,
+    isCityResolving,
     brands,
     categories:
       visibleNavbarCategories.length > 4
