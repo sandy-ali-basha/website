@@ -41,14 +41,15 @@ import "swiper/css/navigation";
 import PharmacyLocator from "app/pharmacy/PharmacyLocator.jsx";
 
 function App() {
+
   useEffect(() => {
     HttpRequestInterceptor();
     window.scrollTo(0, 0);
     localStorage.setItem("cart_count", 0);
-    localStorage.setItem("direction", "rtl");
-
     const i18nextLng = localStorage.getItem("i18nextLng");
     if (!i18nextLng) localStorage.setItem("i18nextLng", "ar");
+    localStorage.setItem("direction", "rtl");
+    document.documentElement.dir = "rtl";
   }, []);
 
   const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);

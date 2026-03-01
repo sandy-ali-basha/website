@@ -37,8 +37,9 @@ export const useNavBar = () => {
       label: t("My Points"),
       onClick: () => navigate("/profile/points"),
     },
+   
     {
-      id: 7,
+      id: 8,
       label: t("Log out"),
       onClick: () => {
         localStorage.clear();
@@ -71,6 +72,11 @@ export const useNavBar = () => {
       id: "4",
       onClick: () => navigate("/store/offers"),
       label: t("Special Offers"),
+    },
+    {
+      id: 7,
+      label: t("pharmacies"),
+      onClick: () => navigate("/pharmacy-locator"),
     },
     { id: "5", onClick: () => navigate("/contact-us"), label: t("Contact Us") },
   ];

@@ -151,7 +151,7 @@ const CategoriesSection = () => {
       grabCursor
     >
       {categories.map((category) => (
-      category.status !== 0 &&  <SwiperSlide key={category.id} style={{ paddingBottom: "10px" }}>
+      category.status &&  <SwiperSlide key={category.id} style={{ paddingBottom: "10px" }}>
           <CategoryCard category={category} />
         </SwiperSlide>
       ))}

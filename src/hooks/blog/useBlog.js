@@ -14,6 +14,7 @@ export const useBlogs = () => {
     isLoading,
   };
 };
+
 export const useBlog = (id) => {
   const { data, isLoading } = useQuery(
     ["_blog", id],
