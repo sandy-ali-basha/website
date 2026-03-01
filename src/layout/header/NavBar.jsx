@@ -11,6 +11,7 @@ import {
   Badge,
   Menu,
   MenuItem,
+  CircularProgress,
 } from "@mui/material";
 import logo from "assets/images/logo.png";
 import {
@@ -38,6 +39,7 @@ function NavBar() {
     pages,
     cities,
     selectedCityLabel,
+    isCityResolving,
     brands,
     categories,
     t,
@@ -259,6 +261,13 @@ function NavBar() {
               >
                 {selectedCityLabel}
               </Typography>
+            )}
+            {isCityResolving && (
+              <CircularProgress
+                size={16}
+                thickness={6}
+                sx={{ color: "white", mx: 1 }}
+              />
             )}
             <MenuButton
               tooltip={t("change city")}

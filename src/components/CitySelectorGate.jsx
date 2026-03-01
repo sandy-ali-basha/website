@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Box } from "@mui/material";
-import Loader from "components/modules/Loader";
 import ChooseCityDialog from "components/ChooseCityDialog";
 import { _cities } from "api/country/country";
 import { _countries } from "api/country/countries";
@@ -70,6 +68,13 @@ const cityNameCandidatesFromLocation = (address = {}) => {
 const AUTO_LOCATE_FAIL_MESSAGE =
   "We couldn't locate your city automatically. Please choose your city.";
 
+const setCityResolving = (value) => {
+  localStorage.setItem("city_resolving", value ? "1" : "0");
+  window.dispatchEvent(
+    new CustomEvent("city-resolving-changed", { detail: { resolving: value } })
+  );
+};
+
 const CitySelectorGate = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [isCityResolving, setIsCityResolving] = useState(
@@ -84,6 +89,7 @@ const CitySelectorGate = ({ children }) => {
       setCityDialogMessage(message);
       setOpen(true);
       setIsCityResolving(false);
+      setCityResolving(false);
     };
 
     const tryAutoSelectCity = async () => {
@@ -91,10 +97,12 @@ const CitySelectorGate = ({ children }) => {
       if (savedCity) {
         setOpen(false);
         setIsCityResolving(false);
+        setCityResolving(false);
         return;
       }
 
       setIsCityResolving(true);
+      setCityResolving(true);
 
       if (!navigator.geolocation) {
         showCityDialog(AUTO_LOCATE_FAIL_MESSAGE);
@@ -152,6 +160,7 @@ const CitySelectorGate = ({ children }) => {
           localStorage.setItem("city", String(matchedCity.id));
           setOpen(false);
           setIsCityResolving(false);
+          setCityResolving(false);
           return;
         }
 
@@ -164,6 +173,12 @@ const CitySelectorGate = ({ children }) => {
     tryAutoSelectCity();
   }, []);
 
+  useEffect(() => {
+    if (!isCityResolving) {
+      setCityResolving(false);
+    }
+  }, [isCityResolving]);
+
   return (
     <>
       <ChooseCityDialog
@@ -172,20 +187,7 @@ const CitySelectorGate = ({ children }) => {
         description={cityDialogMessage}
       />
 
-      {isCityResolving ? (
-        <Box
-          sx={{
-            minHeight: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Loader />
-        </Box>
-      ) : (
-        children
-      )}
+      {children}
     </>
   );
 };
