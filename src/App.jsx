@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 import { Routes, Route, Outlet } from "react-router-dom";
 import "./assets/css/style.scss";
 import Home from "app/page.jsx";
@@ -33,6 +34,7 @@ import ShouldBeLogged from "middlewares/ShouldBeLogged";
 import ChooseCityDialog from "components/ChooseCityDialog";
 import { createChat } from "@n8n/chat";
 import Seo from "components/Seo";
+import Loader from "components/modules/Loader";
 import { _cities } from "api/country/country";
 import { _countries } from "api/country/countries";
 
@@ -118,6 +120,9 @@ function App() {
   }, []);
 
   const [open, setOpen] = useState(false);
+  const [isCityResolving, setIsCityResolving] = useState(
+    !localStorage.getItem("city")
+  );
   const [cityDialogMessage, setCityDialogMessage] = useState(
     "Select your city for a customized shopping journey"
   );
@@ -137,14 +142,18 @@ function App() {
     const showCityDialog = (message) => {
       setCityDialogMessage(message);
       setOpen(true);
+      setIsCityResolving(false);
     };
 
     const tryAutoSelectCity = async () => {
       const savedCity = localStorage.getItem("city");
       if (savedCity) {
         setOpen(false);
+        setIsCityResolving(false);
         return;
       }
+
+      setIsCityResolving(true);
 
       if (!navigator.geolocation) {
         showCityDialog(
@@ -203,6 +212,7 @@ function App() {
         if (matchedCity?.id) {
           localStorage.setItem("city", String(matchedCity.id));
           setOpen(false);
+          setIsCityResolving(false);
           return;
         }
 
@@ -235,7 +245,19 @@ function App() {
       />
       {/* <CookieConsent /> */}
 
-      <Routes>
+      {isCityResolving ? (
+        <Box
+          sx={{
+            minHeight: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Loader />
+        </Box>
+      ) : (
+        <Routes>
         <Route
           path="/login"
           element={
@@ -323,7 +345,8 @@ function App() {
           <Route path="/terms/:id" element={<TermsPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
-      </Routes>
+        </Routes>
+      )}
     </ThemeProviderWrapper>
   );
 }
