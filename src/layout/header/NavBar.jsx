@@ -32,7 +32,16 @@ function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isBrandsDropDownOpen = Boolean(brandsAnchorEl);
 
-  const { settings, navigate, pages, cities, brands, categories, t } =
+  const {
+    settings,
+    navigate,
+    pages,
+    cities,
+    selectedCityLabel,
+    brands,
+    categories,
+    t,
+  } =
     useNavBar();
 
   const cartCount = parseInt(localStorage.getItem("cart_count")) || 0;
@@ -235,7 +244,22 @@ function NavBar() {
             )}
           </Box>
 
-          <Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {!!selectedCityLabel && (
+              <Typography
+                sx={{
+                  color: "white",
+                  fontSize: { xs: "12px", md: "14px" },
+                  display: { xs: "none", sm: "block" },
+                  maxWidth: "110px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {selectedCityLabel}
+              </Typography>
+            )}
             <MenuButton
               tooltip={t("change city")}
               icon={<Flag sx={{ color: "white" }} />}
