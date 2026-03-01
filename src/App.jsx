@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
 import "./assets/css/style.scss";
 import Home from "app/page.jsx";
@@ -30,15 +30,16 @@ import ResetPassword from "app/(authentication)/forgetPassword/ResetPassword";
 import Brand from "app/store/categories/brand/[name]/page";
 import NotFound from "components/NotFound";
 import ShouldBeLogged from "middlewares/ShouldBeLogged";
-import ChooseCityDialog from "components/ChooseCityDialog";
 import { createChat } from "@n8n/chat";
 import Seo from "components/Seo";
+import CitySelectorGate from "components/CitySelectorGate";
 
 import "@n8n/chat/style.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import PharmacyLocator from "app/pharmacy/PharmacyLocator.jsx";
+
 
 function App() {
   useEffect(() => {
@@ -51,18 +52,6 @@ function App() {
     if (!i18nextLng) localStorage.setItem("i18nextLng", "ar");
   }, []);
 
-  const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
-
-  useEffect(() => {
-    createChat({
-      webhookUrl:
-        "https://n8n.srv832200.hstgr.cloud/webhook/81be035f-7336-4a1c-a953-bbdabd6329c6/chat",
-      initialMessages: [
-        "Hi there! 👋",
-        "I am the smart assistant from Dawaa Alhayat . How can I help you today?",
-      ],
-    });
-  }, []);
 
   return (
     <ThemeProviderWrapper>
@@ -73,10 +62,10 @@ function App() {
         url="https://dawaaalhayat.com"
       />
 
-      <ChooseCityDialog open={open} setOpen={setOpen} />
       {/* <CookieConsent /> */}
 
-      <Routes>
+      <CitySelectorGate>
+        <Routes>
         <Route
           path="/login"
           element={
@@ -164,7 +153,8 @@ function App() {
           <Route path="/terms/:id" element={<TermsPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
-      </Routes>
+        </Routes>
+      </CitySelectorGate>
     </ThemeProviderWrapper>
   );
 }
