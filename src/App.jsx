@@ -52,6 +52,24 @@ const normalizeCityName = (value = "") =>
     .replace(/[̀-ͯ]/g, "")
     .replace(/[^\p{L}\p{N}]/gu, "");
 
+const hasSimilarCityNamePart = (source = "", target = "") => {
+  if (!source || !target) return false;
+
+  if (source === target || source.includes(target) || target.includes(source)) {
+    return true;
+  }
+
+  const minChunkLength = 5;
+  for (let i = 0; i <= target.length - minChunkLength; i += 1) {
+    const chunk = target.slice(i, i + minChunkLength);
+    if (source.includes(chunk)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 
 const collectAppCities = (citiesResponse, regionsResponse) => {
   const directCities = citiesResponse?.data?.state || [];
@@ -152,9 +170,12 @@ function App() {
         );
         const geocodeData = await geocodeResponse.json();
 
-        const locationCandidates = cityNameCandidatesFromLocation(
-          geocodeData?.address || {}
-        ).map(normalizeCityName);
+        const locationCandidates = [
+          ...cityNameCandidatesFromLocation(geocodeData?.address || {}),
+          ...(geocodeData?.display_name?.split(",") || []),
+        ]
+          .map(normalizeCityName)
+          .filter(Boolean);
 
         const [citiesResponse, regionsResponse] = await Promise.all([
           _cities.index(),
@@ -174,11 +195,8 @@ console.log("App Cities:", appCities);
             .map(normalizeCityName);
 
           return cityNames.some((cityName) =>
-            locationCandidates.some(
-              (candidate) =>
-                cityName === candidate ||
-                cityName.includes(candidate) ||
-                candidate.includes(cityName)
+            locationCandidates.some((candidate) =>
+              hasSimilarCityNamePart(candidate, cityName)
             )
           );
         });
