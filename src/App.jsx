@@ -33,12 +33,35 @@ import ShouldBeLogged from "middlewares/ShouldBeLogged";
 import ChooseCityDialog from "components/ChooseCityDialog";
 import { createChat } from "@n8n/chat";
 import Seo from "components/Seo";
+import { _cities } from "api/country/country";
 
 import "@n8n/chat/style.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import PharmacyLocator from "app/pharmacy/PharmacyLocator.jsx";
+
+
+const normalizeCityName = (value = "") =>
+  value
+    .toString()
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^\p{L}\p{N}]/gu, "");
+
+const cityNameCandidatesFromLocation = (address = {}) => {
+  return [
+    address.city,
+    address.town,
+    address.village,
+    address.municipality,
+    address.county,
+    address.state_district,
+    address.state,
+  ].filter(Boolean);
+};
 
 function App() {
   useEffect(() => {
@@ -51,7 +74,7 @@ function App() {
     if (!i18nextLng) localStorage.setItem("i18nextLng", "ar");
   }, []);
 
-  const [open, setOpen] = useState(localStorage.getItem("city") ? false : true);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     createChat({
@@ -62,6 +85,78 @@ function App() {
         "I am the smart assistant from Dawaa Alhayat . How can I help you today?",
       ],
     });
+  }, []);
+
+  useEffect(() => {
+    const tryAutoSelectCity = async () => {
+      const savedCity = localStorage.getItem("city");
+      if (savedCity) {
+        setOpen(false);
+        return;
+      }
+
+      const alreadyTriedAutoDetect =
+        localStorage.getItem("city_auto_detected") === "1";
+
+      if (alreadyTriedAutoDetect || !navigator.geolocation) {
+        setOpen(true);
+        return;
+      }
+
+      localStorage.setItem("city_auto_detected", "1");
+
+      try {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: false,
+            timeout: 10000,
+            maximumAge: 60 * 60 * 1000,
+          });
+        });
+
+        const { latitude, longitude } = position.coords;
+
+        const geocodeResponse = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
+        );
+        const geocodeData = await geocodeResponse.json();
+
+        const locationCandidates = cityNameCandidatesFromLocation(
+          geocodeData?.address || {}
+        ).map(normalizeCityName);
+
+        const citiesResponse = await _cities.index();
+        const appCities = citiesResponse?.data?.state || [];
+
+        const matchedCity = appCities.find((city) => {
+          const cityNames = [city?.name, city?.name_en, city?.name_ar, city?.value]
+            .filter(Boolean)
+            .map(normalizeCityName);
+
+          return cityNames.some(
+            (cityName) =>
+              locationCandidates.some(
+                (candidate) =>
+                  cityName === candidate ||
+                  cityName.includes(candidate) ||
+                  candidate.includes(cityName)
+              )
+          );
+        });
+
+        if (matchedCity?.id) {
+          localStorage.setItem("city", String(matchedCity.id));
+          setOpen(false);
+          return;
+        }
+      } catch (error) {
+        // Fall back to manual city selection dialog.
+      }
+
+      setOpen(true);
+    };
+
+    tryAutoSelectCity();
   }, []);
 
   return (
