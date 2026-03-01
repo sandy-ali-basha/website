@@ -1,10 +1,31 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { _cities } from "api/country/country";
+import { _countries } from "api/country/countries";
 import { _Brands } from "api/brand/brands";
 import { useQuery } from "react-query";
 import { useMemo } from "react";
 import { useFetchCategories } from "hooks/useFetchCategories";
+
+
+const cityLabel = (city = {}) =>
+  city?.name || city?.value || city?.inv_name || city?.name_en || city?.name_ar || "";
+
+const mergeCities = (citiesResponse, regionsResponse) => {
+  const directCities = citiesResponse?.data?.state || [];
+  const regionCities = (regionsResponse?.data || []).flatMap(
+    (region) => region?.cities || []
+  );
+
+  const map = new Map();
+  [...directCities, ...regionCities].forEach((city) => {
+    if (!city?.id) return;
+    const existing = map.get(city.id) || {};
+    map.set(city.id, { ...existing, ...city });
+  });
+
+  return Array.from(map.values());
+};
 
 export const useNavBar = () => {
   const { t } = useTranslation("navbar");
@@ -49,17 +70,19 @@ export const useNavBar = () => {
   ];
 
   const { data: cities = [] } = useQuery(["cities"], async () => {
-    const response = await _cities.index();
-    return (
-      response?.data?.state?.map((city) => ({
-        id: city.id,
-        label: city.name,
-        onClick: () => {
-          localStorage.setItem("city", city.id);
-          window.location.reload();
-        },
-      })) || []
-    );
+    const [citiesResponse, regionsResponse] = await Promise.all([
+      _cities.index(),
+      _countries.index(),
+    ]);
+
+    return mergeCities(citiesResponse, regionsResponse).map((city) => ({
+      id: city.id,
+      label: cityLabel(city),
+      onClick: () => {
+        localStorage.setItem("city", city.id);
+        window.location.reload();
+      },
+    }));
   });
 
   const selectedCityLabel = useMemo(() => {
