@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { _cities } from "api/country/country";
 import { _Brands } from "api/brand/brands";
 import { useQuery } from "react-query";
+import { useMemo } from "react";
 import { useFetchCategories } from "hooks/useFetchCategories";
 
 export const useNavBar = () => {
@@ -62,6 +63,17 @@ export const useNavBar = () => {
     );
   });
 
+  const selectedCityLabel = useMemo(() => {
+    const selectedCityId = localStorage.getItem("city");
+    if (!selectedCityId) return "";
+
+    const selectedCity = cities.find(
+      (city) => String(city.id) === String(selectedCityId)
+    );
+
+    return selectedCity?.label || "";
+  }, [cities]);
+
   const pages = [
     {
       id: "1",
@@ -100,6 +112,7 @@ export const useNavBar = () => {
     pages,
     navigate,
     cities,
+    selectedCityLabel,
     brands,
     categories:
       visibleNavbarCategories.length > 4
