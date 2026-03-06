@@ -22,6 +22,12 @@ import Seo from "components/Seo";
 
 export default function Home() {
   const { data, isLoading } = useHome();
+  const currentLanguage = i18n.resolvedLanguage || i18n.language || "en";
+  const isRtl =
+    currentLanguage.startsWith("ar") ||
+    currentLanguage.startsWith("kr") ||
+    currentLanguage.startsWith("ku");
+  const pageDirection = isRtl ? "rtl" : "ltr";
 
   const [sections, setSections] = useState([]);
   useEffect(() => {
@@ -108,7 +114,7 @@ export default function Home() {
     );
   else
     return (
-      <>
+      <Box dir={pageDirection} sx={{ textAlign: "start" }}>
         <Seo
           title="Home"
           description="Shop medical products, explore offers, and discover trusted healthcare brands at Dawaa Alhayat."
@@ -122,6 +128,7 @@ export default function Home() {
         <CategoriesSection />
 
         <DiscountSection />
+        
         <SpecialOffersSection isInHomePage />
 
         <MultiLinksBannerSection />
@@ -129,6 +136,6 @@ export default function Home() {
         <LatestProducts />
 
         <HomeRenderer sections={sections} />
-      </>
+      </Box>
     );
 }

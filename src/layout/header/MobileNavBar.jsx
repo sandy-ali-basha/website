@@ -30,6 +30,7 @@ const MobileNavBar = ({
 }) => {
   const [openCategories, setOpenCategories] = useState({});
   const [openBrands, setOpenBrands] = useState(false);
+  const closeDrawer = () => handleDrawerToggle(false);
 
   const handleCategoryToggle = (categoryId) => {
     setOpenCategories((prev) => ({
@@ -81,7 +82,7 @@ const MobileNavBar = ({
       <Drawer
         anchor={"left"}
         open={mobileOpen}
-        onClose={handleDrawerToggle}
+        onClose={closeDrawer}
         ModalProps={{
           keepMounted: true,
         }}
@@ -106,7 +107,12 @@ const MobileNavBar = ({
           {/* Pages */}
           {pages.slice(0, 2).map((page) => (
             <ListItem key={page.id} disablePadding>
-              <ListItemButton onClick={page.onClick}>
+              <ListItemButton
+                onClick={() => {
+                  page.onClick();
+                  closeDrawer();
+                }}
+              >
                 <ListItemText primary={page.label} />
               </ListItemButton>
             </ListItem>
@@ -142,7 +148,11 @@ const MobileNavBar = ({
                   <List component="div" disablePadding>
                     {category.values.map((item) => (
                       <ListItem key={item.id} sx={{ pl: 4 }} disablePadding>
-                        <ListItemButton component={Link} to={`/store`}>
+                        <ListItemButton
+                          component={Link}
+                          to={`/store`}
+                          onClick={closeDrawer}
+                        >
                           <ListItemText primary={getTranslatedValue(item)} />
                         </ListItemButton>
                       </ListItem>
@@ -171,7 +181,7 @@ const MobileNavBar = ({
                           ? `/store/categories/brand/${brand.id}`
                           : "#"
                       }
-                      onClick={handleDrawerToggle}
+                      onClick={closeDrawer}
                     >
                       <Box
                         sx={{
@@ -201,7 +211,12 @@ const MobileNavBar = ({
           {/* Contact Page */}
           {pages[2] && (
             <ListItem disablePadding>
-              <ListItemButton onClick={pages[2].onClick}>
+              <ListItemButton
+                onClick={() => {
+                  pages[2].onClick();
+                  closeDrawer();
+                }}
+              >
                 <ListItemText primary={pages[2].label} />
               </ListItemButton>
             </ListItem>
@@ -215,6 +230,7 @@ const MobileNavBar = ({
             <Button variant="contained" sx={{ padding: 0, width: "100%" }}>
               <Link
                 to="/login"
+                onClick={closeDrawer}
                 style={{
                   color: "white",
                   display: "block",

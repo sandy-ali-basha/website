@@ -20,6 +20,7 @@ import { formatDate } from "date-fns";
 const colors = ["#4caf50", "#ff9800", "#2196f3", "#e91e63", "#9c27b0"];
 
 function SpecialOffersSection({ isInHomePage }) {
+  
   const { t, i18n } = useTranslation("index");
 
   const [copiedId, setCopiedId] = useState(null);

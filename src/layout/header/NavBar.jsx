@@ -48,8 +48,10 @@ function NavBar() {
 
   const cartCount = parseInt(localStorage.getItem("cart_count")) || 0;
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+  const handleDrawerToggle = (nextOpen) => {
+    setMobileOpen((prevOpen) =>
+      typeof nextOpen === "boolean" ? nextOpen : !prevOpen
+    );
   };
 
   return (
