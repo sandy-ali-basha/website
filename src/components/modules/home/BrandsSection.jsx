@@ -1,63 +1,73 @@
 import { Box, Container, Skeleton, Typography } from "@mui/material";
 import { useBrand } from "hooks/brands/useBrand";
 import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const BrandsSection = () => {
   const { data: brands, isLoading } = useBrand();
 
   return (
     <Container sx={{ padding: "60px 0" }}>
-      <Box
-        sx={{
-          display: "flex",
-          gap: "25px",
-          flexWrap: "wrap",
-          justifyContent: { xs: "center" },
-        }}
-      >
-        {isLoading || !brands ? (
-          <>
-            {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton
-                key={i}
-                sx={{
-                  width: { xs: 100, sm: 150 },
-                  height: { xs: 100, sm: 150 },
-                }}
-                variant="circular"
-              />
-            ))}
-          </>
-        ) : (
-          <>
-            {brands.brands.map((brand) => (
+      {isLoading || !brands ? (
+        <Box
+          sx={{
+            display: "flex",
+            gap: "25px",
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton
+              key={i}
+              sx={{
+                width: { xs: 100, sm: 150 },
+                height: { xs: 100, sm: 150 },
+              }}
+              variant="circular"
+            />
+          ))}
+        </Box>
+      ) : (
+        <Swiper
+          spaceBetween={25}
+          slidesPerView={1}
+          breakpoints={{
+            640: { slidesPerView: 2 },
+            768: { slidesPerView: 3 },
+            1024: { slidesPerView: 4 },
+          }}
+          autoplay
+        >
+          {brands.brands.map((brand) => (
+            <SwiperSlide key={brand.id}>
               <Link
                 to={
                   brand.havePage ? `/store/categories/brand/${brand.id}` : "#"
                 }
                 style={{ textDecoration: "none" }}
-                key={brand.id}
               >
                 <Box
                   sx={{
-                    borderRadius: "50%",
                     overflow: "hidden",
-                    width: { xs: '50vw',md:"40vw", sm: 200 },
-                    height: { xs: '50vw',md:"40vw", sm: 200 },
-                    border: "3px solid #cccccc",
+                    width: { xs: "50vw", md: "40vw", sm: 200, lg: "10vw" },
+                    height: { xs: "50vw", md: "40vw", sm: 200, lg: "10vw" },
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    margin: "0 auto",
                     transition: "0.3s ease-in-out",
                     bgColor: (theme) => theme.palette.background.paper,
                     "&:hover": {
                       borderColor: (theme) => theme.palette.primary.main,
                     },
-
                     "& img": {
                       transition: "0.7s ease-in-out",
                     },
-
                     "&:hover img": {
                       transform: "scale(1.1)",
                     },
@@ -66,7 +76,6 @@ const BrandsSection = () => {
                   <img
                     loading="lazy"
                     src={brand.images[0]}
-                    
                     alt={brand.name}
                     style={{
                       width: "80%",
@@ -91,10 +100,10 @@ const BrandsSection = () => {
                     : brand.name.toUpperCase()}
                 </Typography>
               </Link>
-            ))}
-          </>
-        )}
-      </Box>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
     </Container>
   );
 };

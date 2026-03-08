@@ -133,7 +133,7 @@ export default function Home() {
         <CaroselSection />
   
         <DiscountSection />
-        <MultiLinksBannerSection />
+        {/* <MultiLinksBannerSection /> */}
 
         <HomeRenderer sections={sections} />
       </Box>

@@ -40,7 +40,6 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import PharmacyLocator from "app/pharmacy/PharmacyLocator.jsx";
 
-
 function App() {
 
   useEffect(() => {
@@ -51,8 +50,15 @@ function App() {
     if (!i18nextLng) localStorage.setItem("i18nextLng", "ar");
     localStorage.setItem("direction", "rtl");
     document.documentElement.dir = "rtl";
+    createChat({
+      webhookUrl:
+        "https://n8n.srv832200.hstgr.cloud/webhook/81be035f-7336-4a1c-a953-bbdabd6329c6/chat",
+      initialMessages: [
+        "Hi there! 👋",
+        "I am the smart assistant from Dawaa Alhayat . How can I help you today?",
+      ],
+    });
   }, []);
-
 
   useEffect(() => {
     const showCityDialog = (message) => {

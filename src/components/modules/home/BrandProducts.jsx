@@ -8,9 +8,6 @@ import i18n from "i18n";
 
 export default function BrandProducts({ data }) {
   const { t } = useTranslation("index");
-
-  console.log("BrandProducts: ", data);
-
   return (
     data && (
       <Container>
