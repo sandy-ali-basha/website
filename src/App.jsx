@@ -39,9 +39,12 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import PharmacyLocator from "app/pharmacy/PharmacyLocator.jsx";
+import { useQueryClient } from "react-query";
+import { CITY_CHANGED_EVENT } from "utils/citySelection";
 
 
 function App() {
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     HttpRequestInterceptor();
@@ -54,91 +57,18 @@ function App() {
   }, []);
 
 
+
   useEffect(() => {
-    const showCityDialog = (message) => {
-      setCityDialogMessage(message);
-      setOpen(true);
+    const onCityChanged = () => {
+      queryClient.invalidateQueries();
     };
 
-    const tryAutoSelectCity = async () => {
-      const savedCity = localStorage.getItem("city");
-      if (savedCity) {
-        setOpen(false);
-        return;
-      }
+    window.addEventListener(CITY_CHANGED_EVENT, onCityChanged);
 
-      if (!navigator.geolocation) {
-        showCityDialog(
-          "We couldn't locate your city automatically. Please choose your city."
-        );
-        return;
-      }
-
-      try {
-        const position = await new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject, {
-            enableHighAccuracy: false,
-            timeout: 10000,
-            maximumAge: 60 * 60 * 1000,
-          });
-        });
-
-        const { latitude, longitude } = position.coords;
-
-        const geocodeResponse = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
-        );
-        const geocodeData = await geocodeResponse.json();
-
-        const locationCandidates = [
-          ...cityNameCandidatesFromLocation(geocodeData?.address || {}),
-          ...(geocodeData?.display_name?.split(",") || []),
-        ]
-          .map(normalizeCityName)
-          .filter(Boolean);
-
-        const [citiesResponse, regionsResponse] = await Promise.all([
-          _cities.index(),
-          _countries.index(),
-        ]);
-        const appCities = collectAppCities(citiesResponse, regionsResponse);
-console.log("App Cities:", appCities);
-        const matchedCity = appCities.find((city) => {
-          const cityNames = [
-            city?.name,
-            city?.name_en,
-            city?.name_ar,
-            city?.value,
-            city?.inv_name,
-          ]
-            .filter(Boolean)
-            .map(normalizeCityName);
-
-          return cityNames.some((cityName) =>
-            locationCandidates.some((candidate) =>
-              hasSimilarCityNamePart(candidate, cityName)
-            )
-          );
-        });
-
-        if (matchedCity?.id) {
-          localStorage.setItem("city", String(matchedCity.id));
-          setOpen(false);
-          return;
-        }
-
-        showCityDialog(
-          "We couldn't locate your city automatically. Please choose your city."
-        );
-      } catch (error) {
-        showCityDialog(
-          "We couldn't locate your city automatically. Please choose your city."
-        );
-      }
+    return () => {
+      window.removeEventListener(CITY_CHANGED_EVENT, onCityChanged);
     };
-
-    tryAutoSelectCity();
-  }, []);
+  }, [queryClient]);
 
   return (
     <ThemeProviderWrapper>

@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { _countries } from "api/country/countries";
 import { _cities } from "api/country/country";
+import { getCityLabel, setSelectedCity as persistSelectedCity } from "utils/citySelection";
 
 const ChooseCity = ({ onClose }) => {
   const { t } = useTranslation("index");
@@ -77,9 +78,17 @@ const ChooseCity = ({ onClose }) => {
 
   // When clicking Save
   const handleSave = () => {
-    localStorage.setItem("city", selectedCity);
-    if (onClose) onClose(); // Close dialog
-    window.location.reload(); // Reload to apply changes
+    const selectedCityObj = cities.find(
+      (city) => String(city.id) === String(selectedCity)
+    );
+
+    persistSelectedCity({
+      cityId: selectedCity,
+      cityLabel: getCityLabel(selectedCityObj),
+      countryId: selectedCountry,
+    });
+
+    if (onClose) onClose();
   };
 
   return (  
