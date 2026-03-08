@@ -12,6 +12,8 @@ const normalizeCityName = (value = "") =>
     .replace(/[̀-ͯ]/g, "")
     .replace(/[^\p{L}\p{N}]/gu, "");
 
+const MIN_CITY_CHUNK_LENGTH = 5;
+
 const hasSimilarCityNamePart = (source = "", target = "") => {
   if (!source || !target) return false;
 
@@ -19,9 +21,8 @@ const hasSimilarCityNamePart = (source = "", target = "") => {
     return true;
   }
 
-  const minChunkLength = 5;
-  for (let i = 0; i <= target.length - minChunkLength; i += 1) {
-    const chunk = target.slice(i, i + minChunkLength);
+  for (let i = 0; i <= target.length - MIN_CITY_CHUNK_LENGTH; i += 1) {
+    const chunk = target.slice(i, i + MIN_CITY_CHUNK_LENGTH);
     if (source.includes(chunk)) {
       return true;
     }
@@ -51,6 +52,109 @@ const collectAppCities = (citiesResponse, regionsResponse) => {
   });
 
   return Array.from(citiesById.values());
+};
+
+
+const buildCityLookup = (appCities = []) => {
+  const citiesById = new Map();
+  const exactNameToCity = new Map();
+  const chunkToCityIds = new Map();
+
+  appCities.forEach((city) => {
+    if (!city?.id) return;
+
+    const normalizedNames = [
+      city?.name,
+      city?.name_en,
+      city?.name_ar,
+      city?.value,
+      city?.inv_name,
+    ]
+      .filter(Boolean)
+      .map(normalizeCityName)
+      .filter(Boolean);
+
+    if (!normalizedNames.length) return;
+
+    const dedupedNames = Array.from(new Set(normalizedNames));
+    citiesById.set(city.id, { city, names: dedupedNames });
+
+    dedupedNames.forEach((name) => {
+      if (!exactNameToCity.has(name)) {
+        exactNameToCity.set(name, city);
+      }
+
+      if (name.length < MIN_CITY_CHUNK_LENGTH) {
+        return;
+      }
+
+      for (let i = 0; i <= name.length - MIN_CITY_CHUNK_LENGTH; i += 1) {
+        const chunk = name.slice(i, i + MIN_CITY_CHUNK_LENGTH);
+        if (!chunkToCityIds.has(chunk)) {
+          chunkToCityIds.set(chunk, new Set());
+        }
+        chunkToCityIds.get(chunk).add(city.id);
+      }
+    });
+  });
+
+  return { citiesById, exactNameToCity, chunkToCityIds };
+};
+
+const findMatchedCity = (locationCandidates = [], lookup) => {
+  const { citiesById, exactNameToCity, chunkToCityIds } = lookup;
+
+  for (const candidate of locationCandidates) {
+    const exactMatch = exactNameToCity.get(candidate);
+    if (exactMatch?.id) {
+      return exactMatch;
+    }
+  }
+
+  const candidateCityIds = new Set();
+
+  locationCandidates.forEach((candidate) => {
+    if (candidate.length < MIN_CITY_CHUNK_LENGTH) {
+      return;
+    }
+
+    for (let i = 0; i <= candidate.length - MIN_CITY_CHUNK_LENGTH; i += 1) {
+      const chunk = candidate.slice(i, i + MIN_CITY_CHUNK_LENGTH);
+      const ids = chunkToCityIds.get(chunk);
+      if (!ids) continue;
+
+      ids.forEach((id) => candidateCityIds.add(id));
+    }
+  });
+
+  for (const cityId of candidateCityIds) {
+    const cityEntry = citiesById.get(cityId);
+    if (!cityEntry) continue;
+
+    const matched = cityEntry.names.some((cityName) =>
+      locationCandidates.some((candidate) =>
+        hasSimilarCityNamePart(candidate, cityName)
+      )
+    );
+
+    if (matched) {
+      return cityEntry.city;
+    }
+  }
+
+  for (const cityEntry of citiesById.values()) {
+    const matched = cityEntry.names.some((cityName) =>
+      locationCandidates.some((candidate) =>
+        hasSimilarCityNamePart(candidate, cityName)
+      )
+    );
+
+    if (matched) {
+      return cityEntry.city;
+    }
+  }
+
+  return null;
 };
 
 const cityNameCandidatesFromLocation = (address = {}) => {
@@ -137,24 +241,8 @@ const CitySelectorGate = ({ children }) => {
           _countries.index(),
         ]);
         const appCities = collectAppCities(citiesResponse, regionsResponse);
-
-        const matchedCity = appCities.find((city) => {
-          const cityNames = [
-            city?.name,
-            city?.name_en,
-            city?.name_ar,
-            city?.value,
-            city?.inv_name,
-          ]
-            .filter(Boolean)
-            .map(normalizeCityName);
-
-          return cityNames.some((cityName) =>
-            locationCandidates.some((candidate) =>
-              hasSimilarCityNamePart(candidate, cityName)
-            )
-          );
-        });
+        const cityLookup = buildCityLookup(appCities);
+        const matchedCity = findMatchedCity(locationCandidates, cityLookup);
 
         if (matchedCity?.id) {
           localStorage.setItem("city", String(matchedCity.id));
