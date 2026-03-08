@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
-import "./assets/css/style.scss";
 import Home from "app/page.jsx";
 import LoginPage from "./app/(authentication)/Login/page.jsx";
 import ShouldNotBeLogged from "middlewares/ShouldNotBeLogged";
@@ -35,6 +34,7 @@ import Seo from "components/Seo";
 import CitySelectorGate from "components/CitySelectorGate";
 
 import "@n8n/chat/style.css";
+import "./assets/css/style.scss";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
