@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
 import ProductPrice from "./ProductPrice";
 import { _cities } from "api/country/country";
+import { useSelectedCity } from "hooks/useSelectedCity";
 
 export default function ProductVariants({
   variants = [],
@@ -30,15 +31,19 @@ export default function ProductVariants({
   /* =========================
      Fetch City Name
   ========================== */
-  const cityId = localStorage.getItem("city");
+  const cityId = useSelectedCity();
 
   const { data: localCityName, isLoading: cityLoading } = useQuery(
     ["city-name", cityId],
     async () => {
       if (!cityId) return null;
+
+      const storedCityLabel = localStorage.getItem("city_label");
+      if (storedCityLabel) return storedCityLabel;
+
       const res = await _cities.index();
       const cityObj = res?.data?.state?.find((c) => c.id === parseInt(cityId));
-      return cityObj?.value || null;
+      return cityObj?.value || cityObj?.name || null;
     },
     {
       enabled: !!cityId,

@@ -13,6 +13,7 @@ import {
 import { _countries } from "api/country/countries";
 import i18next from "i18next";
 import { _cities } from "api/country/country";
+import { getCityLabel, setSelectedCity as persistSelectedCity } from "utils/citySelection";
 
 const TabCountry = () => {
   const { t } = useTranslation("index");
@@ -79,8 +80,15 @@ const TabCountry = () => {
 
   // When clicking Save
   const handleSave = () => {
-    localStorage.setItem("city", selectedCity);
-    window.location.reload();
+    const selectedCityObj = cities.find(
+      (city) => String(city.id) === String(selectedCity)
+    );
+
+    persistSelectedCity({
+      cityId: selectedCity,
+      cityLabel: getCityLabel(selectedCityObj),
+      countryId: selectedCountry,
+    });
   };
 
   return (

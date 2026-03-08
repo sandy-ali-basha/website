@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ChooseCityDialog from "components/ChooseCityDialog";
 import { _cities } from "api/country/country";
 import { _countries } from "api/country/countries";
+import { getCityLabel, setSelectedCity } from "utils/citySelection";
 
 const normalizeCityName = (value = "") =>
   value
@@ -245,7 +246,11 @@ const CitySelectorGate = ({ children }) => {
         const matchedCity = findMatchedCity(locationCandidates, cityLookup);
 
         if (matchedCity?.id) {
-          localStorage.setItem("city", String(matchedCity.id));
+          setSelectedCity({
+            cityId: matchedCity.id,
+            cityLabel: getCityLabel(matchedCity),
+            countryId: matchedCity.country_id,
+          });
           setOpen(false);
           setIsCityResolving(false);
           setCityResolving(false);

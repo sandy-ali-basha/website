@@ -4,12 +4,10 @@ import { _cities } from "api/country/country";
 import { _countries } from "api/country/countries";
 import { _Brands } from "api/brand/brands";
 import { useQuery } from "react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { CITY_CHANGED_EVENT, setSelectedCity } from "utils/citySelection";
 import { useFetchCategories } from "hooks/useFetchCategories";
 
-
-const cityLabel = (city = {}) =>
-  city?.name || city?.value || city?.inv_name || city?.name_en || city?.name_ar || "";
 
 const mergeCities = (citiesResponse, regionsResponse) => {
   const directCities = citiesResponse?.data?.state || [];
@@ -32,6 +30,9 @@ export const useNavBar = () => {
     localStorage.getItem("city_resolving") === "1"
   );
   const { t } = useTranslation("navbar");
+  const [selectedCityLabel, setSelectedCityLabel] = useState(
+    localStorage.getItem("city_label") || ""
+  );
 
   const navigate = useNavigate();
 
@@ -45,6 +46,28 @@ export const useNavBar = () => {
 
     return () => {
       window.removeEventListener("city-resolving-changed", onResolvingChanged);
+    };
+  }, []);
+
+  useEffect(() => {
+    const syncLabelFromStorage = () => {
+      setSelectedCityLabel(localStorage.getItem("city_label") || "");
+    };
+
+    const onCityChanged = (event) => {
+      const nextLabel = event?.detail?.cityLabel;
+      if (nextLabel) {
+        setSelectedCityLabel(nextLabel);
+        return;
+      }
+
+      syncLabelFromStorage();
+    };
+
+    window.addEventListener(CITY_CHANGED_EVENT, onCityChanged);
+
+    return () => {
+      window.removeEventListener(CITY_CHANGED_EVENT, onCityChanged);
     };
   }, []);
 
@@ -94,24 +117,33 @@ export const useNavBar = () => {
 
     return mergeCities(citiesResponse, regionsResponse).map((city) => ({
       id: city.id,
-      label: cityLabel(city),
+      label: city.label || city.name || city.value || city.name_en || city.name_ar || "",
       onClick: () => {
-        localStorage.setItem("city", city.id);
-        window.location.reload();
+        setSelectedCity({
+          cityId: city.id,
+          cityLabel: city.label || city.name || city.value || city.name_en || city.name_ar || "",
+        });
       },
     }));
   });
 
-  const selectedCityLabel = useMemo(() => {
+
+
+  useEffect(() => {
+    if (selectedCityLabel || !cities.length) return;
+
     const selectedCityId = localStorage.getItem("city");
-    if (!selectedCityId) return "";
+    if (!selectedCityId) return;
 
     const selectedCity = cities.find(
       (city) => String(city.id) === String(selectedCityId)
     );
 
-    return selectedCity?.label || "";
-  }, [cities]);
+    if (!selectedCity?.label) return;
+
+    localStorage.setItem("city_label", selectedCity.label);
+    setSelectedCityLabel(selectedCity.label);
+  }, [cities, selectedCityLabel]);
 
   const pages = [
     {

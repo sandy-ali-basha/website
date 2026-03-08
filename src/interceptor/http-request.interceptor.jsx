@@ -17,6 +17,7 @@ export const HttpRequestInterceptor = () => {
         request.headers.locale = ["en", "ar", "kr"].includes(i18n.language)
           ? i18n.language
           : "en";
+        request.headers.city = localStorage.getItem("city") || "";
       }
 
       return request;
