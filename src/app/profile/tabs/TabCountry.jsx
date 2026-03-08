@@ -12,12 +12,14 @@ import {
 } from "@mui/material";
 import { _countries } from "api/country/countries";
 import i18next from "i18next";
+import { _cities } from "api/country/country";
 
 const TabCountry = () => {
   const { t } = useTranslation("index");
 
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
+  const [loadingCities, setLoadingCities] = useState(false);
 
   const [selectedCountry, setSelectedCountry] = useState(
     localStorage.getItem("country") || ""
@@ -26,19 +28,31 @@ const TabCountry = () => {
     localStorage.getItem("city") || ""
   );
 
-  // Load all countries
+  const loadCitiesByCountry = async (countryId) => {
+    if (!countryId) {
+      setCities([]);
+      return;
+    }
+
+    setLoadingCities(true);
+    try {
+      const response = await _cities.viewCity(countryId);
+      setCities(response?.data?.state || []);
+    } finally {
+      setLoadingCities(false);
+    }
+  };
+
+  // Load countries list once, then load saved country cities lazily
   useEffect(() => {
     const fetchCountries = async () => {
       const response = await _countries.index();
       if (response.data) {
         setCountries(response.data);
 
-        // If we already have a saved country, load its cities
-        const savedCountry = response.data.find(
-          (c) => c.id === Number(localStorage.getItem("country"))
-        );
-        if (savedCountry) {
-          setCities(savedCountry.cities || []);
+        const savedCountryId = localStorage.getItem("country");
+        if (savedCountryId) {
+          await loadCitiesByCountry(savedCountryId);
         }
       }
     };
@@ -48,13 +62,10 @@ const TabCountry = () => {
 
   // When user selects a country
   const handleCountryChange = (event) => {
-    const countryId = event.target.value;
+    const countryId = String(event.target.value);
     setSelectedCountry(countryId);
     localStorage.setItem("country", countryId);
-
-    const selected = countries.find((c) => c.id === countryId);
-
-    setCities(selected?.cities || []);
+    loadCitiesByCountry(countryId);
 
     // Reset city
     setSelectedCity("");
@@ -98,7 +109,7 @@ const TabCountry = () => {
         </FormControl>
 
         {/* City Select */}
-        <FormControl fullWidth disabled={!selectedCountry}>
+        <FormControl fullWidth disabled={!selectedCountry || loadingCities}>
           <InputLabel id="city-select-label">{t("choose city")}</InputLabel>
           <Select
             labelId="city-select-label"
