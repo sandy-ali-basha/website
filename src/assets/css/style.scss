@@ -126,6 +126,51 @@
 .chat-window .chat-footer {
   background: #efefef !important;
   border-top: 1px solid #d8d8d8 !important;
+  padding: 0.65rem 0.5rem 0.5rem !important;
+}
+
+.chat-layout .chat-inputs,
+.chat-window .chat-inputs,
+.chat-layout [class*="chat-input-wrapper"],
+.chat-window [class*="chat-input-wrapper"] {
+  background: #f7f7f7 !important;
+  border: 1px solid #cdcdcd !important;
+  border-radius: 999px !important;
+  min-height: 58px;
+  padding: 0.4rem 0.45rem !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.chat-layout .chat-footer input,
+.chat-window .chat-footer input,
+.chat-layout .chat-footer textarea,
+.chat-window .chat-footer textarea {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #6b6b6b !important;
+  font-size: 1.05rem !important;
+  padding-inline: 0.65rem !important;
+  text-align: right;
+}
+
+.chat-layout .chat-footer input::placeholder,
+.chat-window .chat-footer input::placeholder,
+.chat-layout .chat-footer textarea::placeholder,
+.chat-window .chat-footer textarea::placeholder {
+  color: #8a8a8a !important;
+}
+
+.chat-layout .chat-footer button,
+.chat-window .chat-footer button {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 999px !important;
+  border: 1px solid #d7d7d7 !important;
+  background: #ededed !important;
+  color: #9b9ea5 !important;
+  box-shadow: none !important;
 }
 
 .chat-layout .chat-message,
