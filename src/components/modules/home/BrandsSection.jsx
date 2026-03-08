@@ -42,8 +42,8 @@ const BrandsSection = () => {
                   sx={{
                     borderRadius: "50%",
                     overflow: "hidden",
-                    width: { xs: '40vw', sm: 200 },
-                    height: { xs: '40vw', sm: 200 },
+                    width: { xs: '50vw',md:"40vw", sm: 200 },
+                    height: { xs: '50vw',md:"40vw", sm: 200 },
                     border: "3px solid #cccccc",
                     display: "flex",
                     justifyContent: "center",
@@ -66,6 +66,7 @@ const BrandsSection = () => {
                   <img
                     loading="lazy"
                     src={brand.images[0]}
+                    
                     alt={brand.name}
                     style={{
                       width: "80%",

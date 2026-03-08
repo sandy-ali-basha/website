@@ -62,26 +62,7 @@ function Footer() {
           </Grid>
 
           {/* Contact Button */}
-          <Grid
-            item
-            xs={6}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              gap: "10px",
-            }}
-          >
-            <Tooltip title={socialData?.title}>
-              <Button
-                sx={{ color: "white", borderColor: "white" }}
-                variant="outlined"
-                href={`mailto:${socialData?.items?.find((i) => i.title === "whatsapp")?.link}`}
-              >
-                {t("contact")}
-              </Button>
-            </Tooltip>
-          </Grid>
+         
       {/* Menu Items */}
           <Grid
             xs={12}

@@ -31,8 +31,8 @@ export default function Home() {
 
   const [sections, setSections] = useState([]);
   useEffect(() => {
-    if(data)
-    setSections(data?.slice().sort((a, b) => a.order - b.order));
+    if (data)
+      setSections(data?.slice().sort((a, b) => a.order - b.order));
   }, [data]);
 
   const renderSection = (data) => {
@@ -54,9 +54,9 @@ export default function Home() {
   const renderSetting = (data, lang) => {
     switch (data.name) {
       case "home.page.cta":
-        return <Cta key={data.id} data={data.value}  />;
+        return <Cta key={data.id} data={data.value} />;
       case "home.page.textSectionOne":
-        return <TextSectionOne key={data.id} data={data.value}  />;
+        return <TextSectionOne key={data.id} data={data.value} />;
       case "home.page.textSectionTwo":
         return (
           <AnimatedText key={data.id} text={data.value.text?.[i18n.language]} />
@@ -68,6 +68,14 @@ export default function Home() {
             data={data}
           />
         );
+      case "home.page.newProducts":
+        return <LatestProducts />
+      case "home.page.offers":
+        return  <SpecialOffersSection isInHomePage />
+      case "home.page.Brands":
+        return <BrandsSection />
+      case "home.page.categories":
+        return <CategoriesSection />
 
       default:
         return null;
@@ -121,19 +129,11 @@ export default function Home() {
           keywords="Dawaa Alhayat, medical products, pharmacy, healthcare, offers"
         />
         {/* <SpinAndWin/> */}
-        <CaroselSection />
-
-        <BrandsSection />
-
-        <CategoriesSection />
-
-        <DiscountSection />
         
-        <SpecialOffersSection isInHomePage />
-
+        <CaroselSection />
+  
+        <DiscountSection />
         <MultiLinksBannerSection />
-
-        <LatestProducts />
 
         <HomeRenderer sections={sections} />
       </Box>
