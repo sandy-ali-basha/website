@@ -31,14 +31,16 @@ const OrderReview = ({ item }) => {
   }, [t]);
 
   const rows = useMemo(() => {
-    return item?.lines?.map((order) => (
-      <TableRow key={order.id}>
-        <TableCell>{order.description}</TableCell> {/* Product */}
-        <TableCell>{order.unit_price.value}</TableCell> {/* Price */}
-        <TableCell>{order.unit_quantity}</TableCell> {/* Quantity */}
-        <TableCell>{order.total.value}</TableCell> {/* Total */}
-      </TableRow>
-    ));
+    return item?.lines
+      ?.filter((line) => line.type !== "shipping")
+      .map((order) => (
+        <TableRow key={order.id}>
+          <TableCell>{order.description}</TableCell> {/* Product */}
+          <TableCell>{order.unit_price.value}</TableCell> {/* Price */}
+          <TableCell>{order.unit_quantity}</TableCell> {/* Quantity */}
+          <TableCell>{order.total.value}</TableCell> {/* Total */}
+        </TableRow>
+      ));
   }, [item]);
   const getStatusDetails = (status) => {
     switch (status) {

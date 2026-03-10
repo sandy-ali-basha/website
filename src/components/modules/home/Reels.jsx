@@ -9,7 +9,7 @@ import i18n from "i18n";
 export default function Reels({ data, isLoading }) {
   // 👉 backend items
   const items = useMemo(() => data?.items || [], [data?.items]);
-console.log("Reels data", data)
+
   const videoRefs = useRef([]);
   const observer = useRef(null);
   const [loadingStatus, setLoadingStatus] = useState([]);

@@ -78,7 +78,7 @@ export default function ProductVariants({
     }
 
     const firstAvailable =
-      filteredVariants.find((v) => v.inventory > 0) || filteredVariants[0];
+      filteredVariants.find((v) => v.storage_qty > 0) || filteredVariants[0];
 
     if (firstAvailable) {
       setLocalSelected(firstAvailable);
@@ -93,7 +93,7 @@ export default function ProductVariants({
   }, [localCityName]);
 
   const handleSelect = (variant) => {
-    if (!variant || variant.inventory === 0) return;
+    if (!variant || variant.storage_qty === 0) return;
 
     if (selectedVariantProp) {
       onSelect?.(variant);
@@ -128,7 +128,7 @@ export default function ProductVariants({
             ))
           : filteredVariants.map((variant) => {
               const isSelected = selectedVariant?.id === variant.id;
-              const isDisabled = variant.inventory === 0;
+              const isDisabled = variant.storage_qty === 0;
 
               return (
                 <Grid item xs={12} sm={6} md={4} key={variant.id}>
@@ -181,19 +181,19 @@ export default function ProductVariants({
                             mt: 1,
                             color: isDisabled
                               ? "error.main"
-                              : variant.inventory < 10
+                              : variant.storage_qty < 10
                               ? "warning.main"
                               : "text.secondary",
                           }}
                         >
                           {isDisabled
                             ? t("Out of stock")
-                            : variant.inventory < 10
+                            : variant.storage_qty < 10
                             ? t("Hurry up! Only {{count}} left", {
-                                count: variant.inventory,
+                                count: variant.storage_qty,
                               })
                             : t("Available: {{count}}", {
-                                count: variant.inventory,
+                                count: variant.storage_qty,
                               })}
                         </Typography>
                       </CardContent>

@@ -9,10 +9,17 @@ import { CITY_CHANGED_EVENT, setSelectedCity } from "utils/citySelection";
 import { useFetchCategories } from "hooks/useFetchCategories";
 
 
+const isActiveRegionOrCity = (item) => {
+  if (item?.is_active === null || item?.is_active === undefined) return true;
+  if (typeof item?.is_active === "boolean") return item.is_active;
+  return Number(item?.is_active) === 1;
+};
+
 const mergeCities = (citiesResponse, regionsResponse) => {
-  const directCities = citiesResponse?.data?.state || [];
-  const regionCities = (regionsResponse?.data || []).flatMap(
-    (region) => region?.cities || []
+  const directCities = (citiesResponse?.data?.state || []).filter(isActiveRegionOrCity);
+  const activeRegions = (regionsResponse?.data || []).filter(isActiveRegionOrCity);
+  const regionCities = activeRegions.flatMap(
+    (region) => (region?.cities || []).filter(isActiveRegionOrCity)
   );
 
   const map = new Map();
@@ -193,3 +200,5 @@ export const useNavBar = () => {
     t,
   };
 };
+
+

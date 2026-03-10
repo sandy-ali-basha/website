@@ -25,6 +25,12 @@ import { _countries } from "api/country/countries"; // regions API
 import { useEditAddress } from "./hooks/useEditAddress";
 import i18next from "i18next";
 
+const isActiveRegionOrCity = (item) => {
+  if (item?.is_active === null || item?.is_active === undefined) return true;
+  if (typeof item?.is_active === "boolean") return item.is_active;
+  return Number(item?.is_active) === 1;
+};
+
 const EditDialog = ({ open, handleClose, id }) => {
   const {
     handleCreate,
@@ -49,7 +55,7 @@ const EditDialog = ({ open, handleClose, id }) => {
   useMemo(() => {
     _countries.index().then((response) => {
       if (response.code === 200) {
-        setRegions(response.data);
+        setRegions(response.data.filter(isActiveRegionOrCity));
       }
     });
   }, []);
@@ -82,7 +88,7 @@ const EditDialog = ({ open, handleClose, id }) => {
       const foundRegion = regions.find((r) => r.name === regionName);
 
       if (foundRegion) {
-        setCities(foundRegion.cities || []);
+        setCities((foundRegion.cities || []).filter(isActiveRegionOrCity));
 
         // State = city name coming from API
         const stateName = addr.state;
@@ -95,7 +101,7 @@ const EditDialog = ({ open, handleClose, id }) => {
   useEffect(() => {
     if (selectedRegion) {
       const selected = regions.find((r) => r.name === selectedRegion);
-      setCities(selected?.cities || []);
+      setCities((selected?.cities || []).filter(isActiveRegionOrCity));
       setValue("state", "");
     } else {
       setCities([]);
@@ -317,3 +323,5 @@ const EditDialog = ({ open, handleClose, id }) => {
 };
 
 export default EditDialog;
+
+

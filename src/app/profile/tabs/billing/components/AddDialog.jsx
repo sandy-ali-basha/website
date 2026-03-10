@@ -26,6 +26,12 @@ import { _cities } from "api/country/country";
 import { _countries } from "api/country/countries";
 import i18next from "i18next";
 
+const isActiveRegionOrCity = (item) => {
+  if (item?.is_active === null || item?.is_active === undefined) return true;
+  if (typeof item?.is_active === "boolean") return item.is_active;
+  return Number(item?.is_active) === 1;
+};
+
 const AddDialog = ({ open, handleClose }) => {
   const {
     handleCreate,
@@ -49,7 +55,7 @@ const AddDialog = ({ open, handleClose }) => {
   useMemo(() => {
     _countries.index().then((response) => {
       if (response.code === 200) {
-        setCountries(response.data);
+        setCountries(response.data.filter(isActiveRegionOrCity));
       }
     });
   }, []);
@@ -75,7 +81,7 @@ const AddDialog = ({ open, handleClose }) => {
   React.useEffect(() => {
     if (selectedRegion) {
       const selected = countries.find((r) => r.name === selectedRegion);
-      setCities(selected?.cities || []);
+      setCities((selected?.cities || []).filter(isActiveRegionOrCity));
       setValue("state", ""); // reset city when region changes
     } else {
       setCities([]);
@@ -328,3 +334,5 @@ const AddDialog = ({ open, handleClose }) => {
 };
 
 export default AddDialog;
+
+

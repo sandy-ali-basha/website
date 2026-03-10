@@ -177,7 +177,10 @@ const BillingHistoryTable = () => {
       headerName: t("Order Items"),
       renderCell: ({ row }) => (
         <Typography sx={{ color: "text.secondary" }}>
-          {row.lines.map((line) => line.description).join(", ")}
+          {row.lines
+            .filter((line) => line.type !== "shipping")
+            .map((line) => line.description)
+            .join(", ")}
         </Typography>
       ),
     },
@@ -262,7 +265,10 @@ const BillingHistoryTable = () => {
                       </Typography>
                       <Typography sx={{ color: "text.secondary" }}>
                         {t("Order Items")}:{" "}
-                        {order.lines.map((line) => line.description).join(", ")}
+                        {order.lines
+                          .filter((line) => line.type !== "shipping")
+                          .map((line) => line.description)
+                          .join(", ")}
                       </Typography>
                       <Typography sx={{ color: "text.secondary" }}>
                         {t("Total")}: {order.total.toLocaleString()} {t("currency")}

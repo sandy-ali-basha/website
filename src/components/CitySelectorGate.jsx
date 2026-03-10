@@ -15,6 +15,12 @@ const normalizeCityName = (value = "") =>
 
 const MIN_CITY_CHUNK_LENGTH = 5;
 
+const isActiveRegionOrCity = (item) => {
+  if (item?.is_active === null || item?.is_active === undefined) return true;
+  if (typeof item?.is_active === "boolean") return item.is_active;
+  return Number(item?.is_active) === 1;
+};
+
 const hasSimilarCityNamePart = (source = "", target = "") => {
   if (!source || !target) return false;
 
@@ -33,10 +39,12 @@ const hasSimilarCityNamePart = (source = "", target = "") => {
 };
 
 const collectAppCities = (citiesResponse, regionsResponse) => {
-  const directCities = citiesResponse?.data?.state || [];
+  const directCities = (citiesResponse?.data?.state || []).filter(isActiveRegionOrCity);
 
-  const regionCities = (regionsResponse?.data || []).flatMap((region) =>
-    (region?.cities || []).map((city) => ({
+  const activeRegions = (regionsResponse?.data || []).filter(isActiveRegionOrCity);
+
+  const regionCities = activeRegions.flatMap((region) =>
+    (region?.cities || []).filter(isActiveRegionOrCity).map((city) => ({
       ...city,
       regionName: region?.name,
       regionNameEn: region?.name_en,
@@ -286,3 +294,5 @@ const CitySelectorGate = ({ children }) => {
 };
 
 export default CitySelectorGate;
+
+

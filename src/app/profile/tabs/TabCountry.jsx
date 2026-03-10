@@ -15,6 +15,12 @@ import i18next from "i18next";
 import { _cities } from "api/country/country";
 import { getCityLabel, setSelectedCity as persistSelectedCity } from "utils/citySelection";
 
+const isActiveRegionOrCity = (item) => {
+  if (item?.is_active === null || item?.is_active === undefined) return true;
+  if (typeof item?.is_active === "boolean") return item.is_active;
+  return Number(item?.is_active) === 1;
+};
+
 const TabCountry = () => {
   const { t } = useTranslation("index");
 
@@ -38,7 +44,7 @@ const TabCountry = () => {
     setLoadingCities(true);
     try {
       const response = await _cities.viewCity(countryId);
-      setCities(response?.data?.state || []);
+      setCities((response?.data?.state || []).filter(isActiveRegionOrCity));
     } finally {
       setLoadingCities(false);
     }
@@ -49,7 +55,7 @@ const TabCountry = () => {
     const fetchCountries = async () => {
       const response = await _countries.index();
       if (response.data) {
-        setCountries(response.data);
+        setCountries(response.data.filter(isActiveRegionOrCity));
 
         const savedCountryId = localStorage.getItem("country");
         if (savedCountryId) {
@@ -149,3 +155,5 @@ const TabCountry = () => {
 };
 
 export default TabCountry;
+
+
