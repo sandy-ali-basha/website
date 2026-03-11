@@ -46,8 +46,8 @@ function Footer() {
     { title: "facebook", icon: <Facebook sx={{ color: "white" }} />, link: data?.data[0]?.facebook },
     { title: "instagram", icon: <Instagram sx={{ color: "white" }} />, link: data?.data[0]?.instagram },
     { title: "linkedin", icon: <LinkedIn sx={{ color: "white" }} />, link: data?.data[0]?.linkedin },
-    { title: "whatsapp", icon: <WhatsApp sx={{ color: "white" }} />, link: `https://wa.me${data?.data[0]?.whatsapp}` },
-    { title: "email", icon: <Mail sx={{ color: "white" }} />, link: data?.data[0]?.email },
+    { title: "whatsapp", icon: <WhatsApp sx={{ color: "white" }} />, link: `https://wa.me/${data?.data[0]?.whatsapp}` },
+    { title: "email", icon: <Mail sx={{ color: "white" }} />, link: `mailto:${data?.data[0]?.email}` },
   ];
 
   return (

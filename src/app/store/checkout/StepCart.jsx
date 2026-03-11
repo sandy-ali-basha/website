@@ -110,7 +110,6 @@ const StepCart = ({ handleNext }) => {
     remainingForFreeShipping,
     t,
   ]);
-  console.log("simelar", data);
   const handleDeleteItem = (params) => {
     const data = {
       product_id: params?.id,

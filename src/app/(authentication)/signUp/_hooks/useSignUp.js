@@ -9,6 +9,9 @@ import { useNavigate, useNavigation } from "react-router-dom";
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/;
 
+// Mobile phone validation - stricter validation for mobile numbers
+const mobilePhoneRegExp = /^(\+?[1-9]\d{1,14}|\+?[0-9]{10,15})$/;
+
 export const useSignUp = () => {
   const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState([]);
@@ -26,18 +29,31 @@ export const useSignUp = () => {
       .required(t("Email is required")),
     phone_number: yup
       .string()
-      .matches(phoneRegExp, t("Enter a valid phone number"))
-      .required(t("Phone number is required")),
+      .required(t("Phone number is required"))
+      .test(
+        "mobilePhone",
+        t("Enter a valid mobile phone number"),
+        function (value) {
+          if (!value) return false;
+          // Remove all non-digit characters except the leading +
+          const cleanPhone = value.replace(/[^\d+]/g, "");
+          // Accept either:
+          // 1. International format with country code: +[1-3 digits][7+ digits]
+          // 2. National format without country code: [10+ digits]
+          return /^(\+\d{1,3}\d{7,14}|\d{10,15})$/.test(cleanPhone);
+        }
+      ),
     password: yup
       .string()
       .required(t("Password is required"))
-      .min(6, t("The password must be at least six characters"))
-      .max(20, t("The password must be at most 20 characters")),
+      .min(8, t("Password must be at least 8 characters"))
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])/,
+        t("Must contain 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character")
+      ),
     password_confirmation: yup
       .string()
       .required(t("Confirm password is required"))
-      .min(6, t("The confirm password must be at least six characters"))
-      .max(20, t("The confirm password must be at most 20 characters"))
       .oneOf([yup.ref("password")], t("Your passwords do not match")),
     age: yup
       .date()
@@ -114,18 +130,21 @@ export const useSignUp = () => {
       ["age", "date"],
     ];
 
-    const data = fields.map(([key, type]) => ({
-      head: key.replace("_", " "),
-      type,
-      placeholder: key.replace("_", " "),
-      name: key,
-      register: key,
-      error: key,
-      helperText: key,
-    }));
+    const data = fields.map(([key, type]) => {
+      const label = key.replace(/_/g, " ");
+      return {
+        head: t(label),
+        type,
+        placeholder: t(label),
+        name: key,
+        register: key,
+        error: key,
+        helperText: key,
+      };
+    });
 
     setDetails(data);
-  }, []);
+  }, [t]);
 
   return {
     register,

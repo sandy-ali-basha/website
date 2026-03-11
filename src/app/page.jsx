@@ -70,8 +70,8 @@ export default function Home() {
         );
       case "home.page.newProducts":
         return <LatestProducts />
-      case "home.page.offers":
-        return  <SpecialOffersSection isInHomePage />
+      // case "home.page.offers":
+      //   return  <SpecialOffersSection isInHomePage />
       case "home.page.Brands":
         return <BrandsSection />
       case "home.page.categories":

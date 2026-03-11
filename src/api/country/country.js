@@ -18,7 +18,7 @@ export const _cities = {
     viewCity: async (id) => {
         return _axios
             .get(
-                `/user/cities?country_id=${id}`, {
+                `/cities?country_id=${id}`, {
                 headers: {
                     ...HttpRequestInterceptor()
                 }

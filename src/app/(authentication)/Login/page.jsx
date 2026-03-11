@@ -69,8 +69,8 @@ export default function Login() {
         <Box>
           <TextField
             sx={{ mt: 1, width: "100%" }}
-            placeholder="Email"
-            label="Email"
+            placeholder={t("Email")}
+            label={t("Email")}
             variant="outlined"
             type="email"
             size="small"
@@ -83,9 +83,9 @@ export default function Login() {
           <TextField
             variant="outlined"
             sx={{ mt: 1, width: "100%" }}
-            placeholder="Password"
+            placeholder={t("password")}
             type="password"
-            label="Password"
+            label={t("password")}
             size="small"
             {...register("password")}
             error={errors?.password?.message}

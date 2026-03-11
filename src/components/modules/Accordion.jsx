@@ -22,7 +22,7 @@ export default function CAccordion({
 
   return (
     <Box>
-      {Attributes?.product_attributes?.map((item) => (
+      {Attributes?.product_attributes?.filter(item => item.active_filter !== 0).map((item) => (
         <AttributeAccordionItem
           key={item.id}
           item={item}

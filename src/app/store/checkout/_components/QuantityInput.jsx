@@ -31,7 +31,7 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
 });
 
 export default function QuantityInput({ max, quantity, product, cartID }) {
-  console.log("QuantityInput product:", product);
+  
   const [currencies, setCurrencies] = React.useState([]);
 
   // fetch currencies once

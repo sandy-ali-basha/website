@@ -130,7 +130,7 @@ function NavBar() {
               justifyContent: "center",
             }}
           >
-            {pages.slice(0, 2).map((page) => (
+            {pages.slice(0, 1).map((page) => (
               <Button
                 key={page.id}
                 onClick={page.onClick}
@@ -233,19 +233,20 @@ function NavBar() {
                   ))}
               </Menu>
             </div>
-
-            {pages[2] && (
+            {pages.slice(1, 3).map((page) => (
               <Button
-                onClick={pages[2].onClick}
+                key={page.id}
+                onClick={page.onClick}
                 sx={{
                   my: 2,
                   color: "white",
                   display: "block",
                 }}
               >
-                {pages[2].label}
+                {page.label}
               </Button>
-            )}
+            ))}
+
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center" }}>

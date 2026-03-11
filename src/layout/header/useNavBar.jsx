@@ -158,11 +158,11 @@ export const useNavBar = () => {
       onClick: () => navigate("/store"),
       label: t("Products"),
     },
-    {
-      id: "4",
-      onClick: () => navigate("/store/offers"),
-      label: t("Special Offers"),
-    },
+    // {
+    //   id: "4",
+    //   onClick: () => navigate("/store/offers"),
+    //   label: t("Special Offers"),
+    // },
     {
       id: 7,
       label: t("pharmacies"),

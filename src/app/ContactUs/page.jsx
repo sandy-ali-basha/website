@@ -330,11 +330,7 @@ export default function ContactUs() {
                 height: "70vh",
               }}
             ></iframe>
-            <Typography variant="body1" color="initial">
-              {t("Erbil Office:")} <br />
-              Dawaa Alhayat Company <br />
-              Buildind. No. 206, Shoresh St. Khanzad, Erbil, Iraq
-            </Typography>
+          
           </Box>
           <Box sx={{ width: "100%", mt: 3, display: "flex", gap: 1 }}>
             <Map sx={{ pe: 1 }} />{" "}
