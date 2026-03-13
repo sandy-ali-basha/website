@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import ProductPrice from "./ProductPrice";
 import { useSelectedCity } from "hooks/useSelectedCity";
 import { useCityStore } from "store/cityStore";
+import { useNoOptionsStore } from "store/noOptionsStore";
 
 export default function ProductVariants({
   variants = [],
@@ -26,6 +27,9 @@ export default function ProductVariants({
 
   const [localSelected, setLocalSelected] = useState(null);
   const initCalledRef = useRef(false);
+  const setNoOptionsForCity = useNoOptionsStore(
+    (state) => state.setNoOptionsForCity
+  );
 
   /* =========================
      Resolve City Name
@@ -129,7 +133,14 @@ export default function ProductVariants({
   const showLoading = isLoading || cityLoading;
   const showEmptyState = !showLoading && filteredVariants.length === 0;
 
-  
+  useEffect(() => {
+    if (showLoading) {
+      setNoOptionsForCity(false);
+      return;
+    }
+    setNoOptionsForCity(filteredVariants.length === 0);
+  }, [showLoading, filteredVariants.length, setNoOptionsForCity]);
+
   return (
     <Box sx={{ my: 3 }}>
       <Typography variant="h6" sx={{ mb: 2 }}>
@@ -152,7 +163,7 @@ export default function ProductVariants({
           }}
         >
           <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            {t("Baghdad price")}
+            {t("Baghdad Governorate price")}
           </Typography>
           <ProductPrice variant={baghdadVariant} />
         </Box>

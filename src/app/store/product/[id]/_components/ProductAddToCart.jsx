@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { useNoOptionsStore } from "store/noOptionsStore";
 
 export default function ProductAddToCart({
   data,
@@ -9,7 +10,9 @@ export default function ProductAddToCart({
   handleAddToCart,
 }) {
   const { t } = useTranslation("index");
-
+const noOptionsForCity = useNoOptionsStore(
+    (state) => state.noOptionsForCity
+  );
   return (
     <Box display="flex" alignItems="center" justifyContent="center">
       <Button
@@ -18,7 +21,7 @@ export default function ProductAddToCart({
         variant="contained"
         color="secondary"
         onClick={() => handleAddToCart(data?.data?.id)}
-        disabled={isLoading}
+        disabled={isLoading || loadingCart || noOptionsForCity}
       >
         {loadingCart ? (
           <CircularProgress size={24} sx={{ color: "white" }} />
