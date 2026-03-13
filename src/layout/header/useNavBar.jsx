@@ -1,29 +1,29 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { _cities } from "api/country/country";
 import { _countries } from "api/country/countries";
 import { _Brands } from "api/brand/brands";
 import { useQuery } from "react-query";
 import { useEffect, useState } from "react";
 import { CITY_CHANGED_EVENT, setSelectedCity } from "utils/citySelection";
 import { useFetchCategories } from "hooks/useFetchCategories";
+import { useCityStore } from "store/cityStore";
 
-
-const isActiveRegionOrCity = (item) => {
-  if (item?.is_active === null || item?.is_active === undefined) return true;
-  if (typeof item?.is_active === "boolean") return item.is_active;
-  return Number(item?.is_active) === 1;
+const isActiveRegion = (region) => {
+  if (region?.is_active === null || region?.is_active === undefined) return true;
+  if (typeof region?.is_active === "boolean") return region.is_active;
+  return Number(region?.is_active) === 1;
 };
 
-const mergeCities = (citiesResponse, regionsResponse) => {
-  const directCities = (citiesResponse?.data?.state || []).filter(isActiveRegionOrCity);
-  const activeRegions = (regionsResponse?.data || []).filter(isActiveRegionOrCity);
-  const regionCities = activeRegions.flatMap(
-    (region) => (region?.cities || []).filter(isActiveRegionOrCity)
-  );
+const mergeCities = (regionsResponse) => {
+  const regions = Array.isArray(regionsResponse?.data)
+    ? regionsResponse.data
+    : [];
+
+  const activeRegions = regions.filter(isActiveRegion);
+  const regionCities = activeRegions.flatMap((region) => region?.cities || []);
 
   const map = new Map();
-  [...directCities, ...regionCities].forEach((city) => {
+  regionCities.forEach((city) => {
     if (!city?.id) return;
     const existing = map.get(city.id) || {};
     map.set(city.id, { ...existing, ...city });
@@ -36,13 +36,16 @@ export const useNavBar = () => {
   const [isCityResolving, setIsCityResolving] = useState(
     localStorage.getItem("city_resolving") === "1"
   );
+
   const { t } = useTranslation("navbar");
+
   const [selectedCityLabel, setSelectedCityLabel] = useState(
     localStorage.getItem("city_label") || ""
   );
 
-  const navigate = useNavigate();
+  const setCities = useCityStore((state) => state.setCities);
 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onResolvingChanged = (event) => {
@@ -105,7 +108,6 @@ export const useNavBar = () => {
       label: t("My Points"),
       onClick: () => navigate("/profile/points"),
     },
-   
     {
       id: 8,
       label: t("Log out"),
@@ -117,24 +119,34 @@ export const useNavBar = () => {
   ];
 
   const { data: cities = [] } = useQuery(["cities"], async () => {
-    const [citiesResponse, regionsResponse] = await Promise.all([
-      _cities.index(),
-      _countries.index(),
-    ]);
+    const regionsResponse = await _countries.index();
 
-    return mergeCities(citiesResponse, regionsResponse).map((city) => ({
+    const mergedCities = mergeCities(regionsResponse);
+    setCities(mergedCities);
+
+    return mergedCities.map((city) => ({
       id: city.id,
-      label: city.label || city.name || city.value || city.name_en || city.name_ar || "",
+      label:
+        city.label ||
+        city.name ||
+        city.value ||
+        city.name_en ||
+        city.name_ar ||
+        "",
       onClick: () => {
         setSelectedCity({
           cityId: city.id,
-          cityLabel: city.label || city.name || city.value || city.name_en || city.name_ar || "",
+          cityLabel:
+            city.label ||
+            city.name ||
+            city.value ||
+            city.name_en ||
+            city.name_ar ||
+            "",
         });
       },
     }));
   });
-
-
 
   useEffect(() => {
     if (selectedCityLabel || !cities.length) return;
@@ -168,7 +180,11 @@ export const useNavBar = () => {
       label: t("pharmacies"),
       onClick: () => navigate("/pharmacy-locator"),
     },
-    { id: "5", onClick: () => navigate("/contact-us"), label: t("Contact Us") },
+    {
+      id: "5",
+      onClick: () => navigate("/contact-us"),
+      label: t("Contact Us"),
+    },
   ];
 
   const { data: brands } = useQuery(["brands"], async () =>
@@ -193,12 +209,7 @@ export const useNavBar = () => {
     selectedCityLabel,
     isCityResolving,
     brands,
-    categories:
-      visibleNavbarCategories.length > 4
-        ? visibleNavbarCategories.slice(0, 4)
-        : visibleNavbarCategories,
+    categories: visibleNavbarCategories,
     t,
   };
 };
-
-

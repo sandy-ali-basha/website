@@ -32,6 +32,7 @@ import { useEffect, useRef, useState } from "react";
 import RenderVariants from "./_components/RenderVariants";
 import BestSellers from "components/modules/home/BestSellers";
 import { useFreeShipping } from "hooks/home/useHome";
+import ProductPrice from "../product/[id]/_components/ProductPrice";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -95,9 +96,7 @@ const StepCart = ({ handleNext }) => {
       return;
     }
 
-    const remainingAmount = `${(remainingForFreeShipping / 1000).toFixed(3)} ${t(
-      "currency",
-    )}`;
+    const remainingAmount = `${(remainingForFreeShipping / 1000).toFixed(3)}}`;
 
     if (shownRemainingRef.current === remainingAmount) return;
     shownRemainingRef.current = remainingAmount;
@@ -309,35 +308,8 @@ const StepCart = ({ handleNext }) => {
                               }
                             />
                           </Box>
-                          <Box sx={{ display: "flex" }}>
-                            <Box>
-                              {item?.compare_price > 0 && (
-                                <Typography
-                                  variant="body1"
-                                  sx={{
-                                    textDecoration: item?.compare_price
-                                      ? "line-through"
-                                      : "none",
-                                    fontSize: item?.compare_price
-                                      ? "small"
-                                      : "inherit",
-                                  }}
-                                  color={
-                                    item?.compare_price
-                                      ? "text.secondary"
-                                      : "initial"
-                                  }
-                                >
-                                  {item?.compare_price} {t("currency")}
-                                </Typography>
-                              )}
-                              {item?.price > 0 && (
-                                <Typography variant="body1" color="initial">
-                                  {item?.price.toLocaleString()} {t("currency")}
-                                </Typography>
-                              )}
-                            </Box>
-                          </Box>
+                          <ProductPrice variant={item?.variant} />
+
                         </Grid>
                         <Grid item xs={12} md={4} sx={{ mt: [4, 4, 6] }}>
                           <Box
@@ -396,27 +368,48 @@ const StepCart = ({ handleNext }) => {
                         {data?.data?.discount_amount > 0
                           ? data?.data?.sub_total_after_points.toLocaleString()
                           : data?.data?.sub_total.toLocaleString()}{" "}
-                        {t("currency")}
+                        
                       </Typography>
                     </Box>
 
                     {data?.data?.discount_amount > 0 && (
-                      <Box
-                        sx={{
-                          mb: 2,
-                          gap: 2,
-                          display: "flex",
-                          flexWrap: "wrap",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Typography>{t("Discount Amount")}</Typography>
-                        <Typography variant="h6" sx={{ color: "primary.main" }}>
-                          {data?.data?.discount_amount.toLocaleString()}{" "}
-                          {t("currency")}
-                        </Typography>
-                      </Box>
+                      <>
+                        {data?.data?.coupon_code && (
+                          <Box
+                            sx={{
+                              mb: 2,
+                              gap: 2,
+                              display: "flex",
+                              flexWrap: "wrap",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Typography>{t("Coupon Applied")}</Typography>
+                            <Chip
+                              label={data?.data?.coupon_code}
+                              color="success"
+                              size="small"
+                            />
+                          </Box>
+                        )}
+                        <Box
+                          sx={{
+                            mb: 2,
+                            gap: 2,
+                            display: "flex",
+                            flexWrap: "wrap",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Typography>{t("Discount Amount")}</Typography>
+                          <Typography variant="h6" sx={{ color: "primary.main" }}>
+                            {data?.data?.discount_amount.toLocaleString()}{" "}
+                          
+                          </Typography>
+                        </Box>
+                      </>
                     )}
 
                     {data?.data?.points_used > 0 && (
@@ -477,17 +470,17 @@ const StepCart = ({ handleNext }) => {
                           color: "text.secondary",
                           textDecoration:
                             data?.data?.discount_amount > 0 ||
-                            data?.data?.points_used > 0
+                              data?.data?.points_used > 0
                               ? "line-through"
                               : "none",
                           fontSize:
                             data?.data?.discount_amount > 0 ||
-                            data?.data?.points_used > 0
+                              data?.data?.points_used > 0
                               ? "small"
                               : "initial",
                         }}
                       >
-                        {data?.data?.sub_total.toLocaleString()} {t("currency")}
+                        {data?.data?.sub_total.toLocaleString()}
                       </Typography>
 
                       {data?.data?.points_used > 0 && (
@@ -499,7 +492,7 @@ const StepCart = ({ handleNext }) => {
                           }}
                         >
                           {data?.data?.sub_total_after_points.toLocaleString()}{" "}
-                          {t("currency")}
+                        
                         </Typography>
                       )}
                     </Box>

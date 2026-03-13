@@ -10,21 +10,34 @@ const ApplyCoupon = () => {
   const queryClient = useQueryClient();
   const [alert, setAlert] = useState();
   const [success, setSuccess] = useState();
+  const [appliedCoupon, setAppliedCoupon] = useState();
 
   const applyCoupone = () => {
+    const cart_id = localStorage.getItem("cart_id");
     const data = {
-      cart_id: localStorage.getItem("cart_id"),
+      cart_id: cart_id,
       coupon_code: couponCode,
     };
+    
     _cart.coupon({ data }).then((res) => {
-      console.log(res);
+      console.log("Coupon response:", res);
       if (res?.code === 200) {
-        queryClient.invalidateQueries("cart");
+        // Set applied coupon from response
+        setAppliedCoupon(res?.data?.coupon_code);
+        
+        // Invalidate cart query with exact key match
+        queryClient.invalidateQueries(["cart", cart_id]);
         setSuccess(true);
-      } else
-        setAlert(res?.error?.errors?.coupon_code[0] || "something went wrong");
+        setCouponCode("");
+      } else {
+        setAlert(res?.error?.errors?.coupon_code?.[0] || res?.message || "Something went wrong");
+      }
+    }).catch((error) => {
+      console.error("Coupon error:", error);
+      setAlert(error?.message || "Failed to apply coupon");
     });
   };
+  
   return (
     <>
       <Typography sx={{ mb: 1 }} variant="h6">
@@ -36,7 +49,11 @@ const ApplyCoupon = () => {
           size="small"
           sx={{ mr: 2 }}
           placeholder={t("Enter Promo Code")}
-          onChange={(e) => setCouponCode(e.target.value)}
+          value={couponCode || ""}
+          onChange={(e) => {
+            setCouponCode(e.target.value);
+            setAlert(null); // Clear error when user types
+          }}
           disabled={success}
         />
 
@@ -51,7 +68,8 @@ const ApplyCoupon = () => {
       {alert && <Alert severity="error">{alert}</Alert>}
       {success && (
         <Alert severity="success">
-          {t("Coupon applied successfully! You have received a discount.")}
+          {t("Coupon applied successfully! You have received a discount.")} 
+          {appliedCoupon && ` (${appliedCoupon})`}
         </Alert>
       )}
     </>

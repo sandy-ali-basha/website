@@ -47,7 +47,7 @@ const SideDrawer = ({
       />
 
       <Typography sx={{ mt: 2 }} variant="subtitle1" color="text.secondary">
-        {t("Price")} {t("currency")}
+        {t("Price")}
       </Typography>
 
       <Box dir="ltr">

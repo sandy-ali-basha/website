@@ -30,6 +30,7 @@ import CardShimmer from "components/customs/loaders/CardShimmer";
 import { AddressStore } from "store/shippingStore";
 import { MailOutline, PhoneOutlined } from "@mui/icons-material";
 import RenderVariants from "./_components/RenderVariants";
+import ProductPrice from "../product/[id]/_components/ProductPrice";
 
 const StepAddress = ({
   handleNext,
@@ -46,9 +47,8 @@ const StepAddress = ({
     shipping_price: address.shipping_price,
     value: address.id,
     isSelected: address.id === selectedBasicRadio,
-    title: `${address.title} ${address.first_name} ${address.last_name} ${
-      address.billing_default ? "(Default)" : ""
-    }`,
+    title: `${address.title} ${address.first_name} ${address.last_name} ${address.billing_default ? "(Default)" : ""
+      }`,
     meta: address.shipping_default && (
       <Chip
         rounded
@@ -203,14 +203,8 @@ const StepAddress = ({
                           {/* ⬇️ Display Variants Here ⬇️ */}
                           <RenderVariants options={item?.options} />
                           {/* ⬆️ Display Variants Here ⬆️ */}
-                          <Box sx={{ display: "flex", mt: 0.5 }}>
-                            <Typography
-                              sx={{ color: "text.main", fontSize: "small" }}
-                            >
-                              {item?.quantity} x {item?.price.toLocaleString()}{" "}
-                              {t("currency")}
-                            </Typography>
-                          </Box>
+                          <ProductPrice variant={item?.variant} />
+
                         </Grid>
                       </Grid>
                     </ListItem>
@@ -238,8 +232,7 @@ const StepAddress = ({
                   <Typography>{t("Sub Total")}</Typography>
                   <Typography sx={{ color: "text.secondary" }}>
                     {/* Assuming data?.data?.sub_total is in an integer unit (like fils or cents) and you display in a higher unit (like dinars or dollars) */}
-                    {(cartData?.data?.sub_total / 1000).toLocaleString()}{" "}
-                    {t("currency")}
+                    {cartData?.data?.sub_total }{" "}
                   </Typography>
                 </Box>
                 {/* Delivery Charges */}
@@ -264,10 +257,7 @@ const StepAddress = ({
                         variant="body2"
                         sx={{ color: "text.secondary" }}
                       >
-                        {(
-                          shippingAddress?.shipping_price / 1000
-                        ).toLocaleString()}
-                        {t("currency")}
+                        {shippingAddress?.shipping_price}
                       </Typography>
                     )}
                     {shippingAddress?.shipping_price === 0 && (
@@ -297,11 +287,8 @@ const StepAddress = ({
                   >
                     <Typography>{t("Discount Amount")}</Typography>
                     <Typography variant="body1" sx={{ color: "primary.main" }}>
-                      -{" "}
-                      {(
-                        cartData?.data?.discount_amount / 1000
-                      ).toLocaleString()}{" "}
-                      {t("currency")}
+                      {" "}
+                      {cartData?.data?.discount_amount}{" "}
                     </Typography>
                   </Box>
                 )}
@@ -323,14 +310,7 @@ const StepAddress = ({
                       -{" "}
                       {cartData?.data?.sub_total -
                         cartData?.data?.sub_total_after_points >
-                      0
-                        ? (
-                            (cartData?.data?.sub_total -
-                              cartData?.data?.sub_total_after_points) /
-                            1000
-                          ).toLocaleString()
-                        : 0}{" "}
-                      {t("currency")}
+                        0  ? ((cartData?.data?.sub_total -  cartData?.data?.sub_total_after_points)) : 0}{" "}
                     </Typography>
                   </Box>
                 )}
@@ -348,14 +328,12 @@ const StepAddress = ({
                 >
                   <Typography variant="h6">{t("Order Total")}</Typography>
                   <Typography variant="h6" color="primary">
-                    {/* Calculation: sub_total_after_points (or sub_total_after_discount) + shipping_price */}
-                    {(
+                   {(
                       (cartData?.data?.sub_total_after_points ||
                         cartData?.data?.sub_total_after_discount ||
                         cartData?.data?.sub_total) +
                       (shippingAddress?.shipping_price || 0) / 1000
-                    ).toLocaleString()}{" "}
-                    {t("currency")}
+                    )}{" "}
                   </Typography>
                 </Box>
               </Box>

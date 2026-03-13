@@ -12,10 +12,9 @@ import {
   Divider,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useQuery } from "react-query";
 import ProductPrice from "./ProductPrice";
-import { _cities } from "api/country/country";
 import { useSelectedCity } from "hooks/useSelectedCity";
+import { useCityStore } from "store/cityStore";
 
 export default function ProductVariants({
   variants = [],
@@ -29,27 +28,42 @@ export default function ProductVariants({
   const initCalledRef = useRef(false);
 
   /* =========================
-     Fetch City Name
+     Resolve City Name
   ========================== */
   const cityId = useSelectedCity();
+  const cities = useCityStore((state) => state.cities);
 
-  const { data: localCityName, isLoading: cityLoading } = useQuery(
-    ["city-name", cityId],
-    async () => {
-      if (!cityId) return null;
+  const localCityName = useMemo(() => {
+    if (!cityId) return null;
 
-      const storedCityLabel = localStorage.getItem("city_label");
-      if (storedCityLabel) return storedCityLabel;
+    const storedCityLabel = localStorage.getItem("city_label");
+    if (storedCityLabel) return storedCityLabel;
 
-      const res = await _cities.index();
-      const cityObj = res?.data?.state?.find((c) => c.id === parseInt(cityId));
-      return cityObj?.value || cityObj?.name || null;
-    },
-    {
-      enabled: !!cityId,
-      staleTime: Infinity,
-    }
-  );
+    const cityObj = cities.find((c) => String(c.id) === String(cityId));
+
+    return (
+      cityObj?.value ||
+      cityObj?.name ||
+      cityObj?.name_en ||
+      cityObj?.name_ar ||
+      cityObj?.label ||
+      null
+    );
+  }, [cityId, cities]);
+
+  const cityLoading = !!cityId && !localCityName && cities.length === 0;
+
+  const baghdadCityName = useMemo(() => {
+    const baghdad = cities.find((c) => String(c.id) === "37");
+    return (
+      baghdad?.value ||
+      baghdad?.name ||
+      baghdad?.name_en ||
+      baghdad?.name_ar ||
+      baghdad?.label ||
+      null
+    );
+  }, [cities]);
 
   /* =========================
     Filter Variants
@@ -60,6 +74,15 @@ export default function ProductVariants({
       (v) => v.city?.toLowerCase() === localCityName.toLowerCase()
     );
   }, [variants, localCityName]);
+
+  const baghdadVariant = useMemo(() => {
+    if (!baghdadCityName || !variants) return null;
+    return (
+      variants.find(
+        (v) => v.city?.toLowerCase() === baghdadCityName.toLowerCase()
+      ) || null
+    );
+  }, [variants, baghdadCityName]);
 
   const selectedVariant = selectedVariantProp || localSelected;
 
@@ -104,7 +127,9 @@ export default function ProductVariants({
   };
 
   const showLoading = isLoading || cityLoading;
+  const showEmptyState = !showLoading && filteredVariants.length === 0;
 
+  
   return (
     <Box sx={{ my: 3 }}>
       <Typography variant="h6" sx={{ mb: 2 }}>
@@ -112,8 +137,26 @@ export default function ProductVariants({
           ? t("Loading options...")
           : filteredVariants.length > 0
           ? t("Product Options")
-          : t("No Options Available")}
+          : t("No Options Available in your city")}
       </Typography>
+
+      {showEmptyState && baghdadVariant && (
+        <Box
+          sx={{
+            mb: 2,
+            p: 2,
+            border: "1px solid",
+            borderColor: "grey.300",
+            borderRadius: 2,
+            backgroundColor: "grey.50",
+          }}
+        >
+          <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            {t("Baghdad price")}
+          </Typography>
+          <ProductPrice variant={baghdadVariant} />
+        </Box>
+      )}
 
       <Grid container spacing={2}>
         {showLoading
@@ -192,9 +235,7 @@ export default function ProductVariants({
                             ? t("Hurry up! Only {{count}} left", {
                                 count: variant.storage_qty,
                               })
-                            : t("Available: {{count}}", {
-                                count: variant.storage_qty,
-                              })}
+                            : t("In Stock")}
                         </Typography>
                       </CardContent>
                     </CardActionArea>

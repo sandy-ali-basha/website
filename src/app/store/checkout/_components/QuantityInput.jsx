@@ -31,54 +31,15 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
 });
 
 export default function QuantityInput({ max, quantity, product, cartID }) {
-  
-  const [currencies, setCurrencies] = React.useState([]);
-
-  // fetch currencies once
-  const fetchCurrencies = React.useCallback(async () => {
-    try {
-      const res = await _currencies.getAll();
-      if (res?.data) setCurrencies(res.data);
-      return res?.data || [];
-    } catch (err) {
-      console.error("Failed to fetch currencies", err);
-      return [];
-    }
-  }, []);
-
-  // Ensure currencies are loaded
-  let currencyList = currencies;
-
   const queryClient = useQueryClient();
   const handleQuantityChange = async (event, value) => {
-    if (!currencyList.length) {
-      currencyList = await fetchCurrencies(); // wait until currencies are fetched
-    }
-    // const currencyName = selectedVariant?.currency?.name;
-    // const currency_id = currencyObj?.id || 1; // fallback
-
-    // const currencyObj = currencyList.find(
-    //   (c) => c.name.toLowerCase() === currencyName?.toLowerCase()
-    // );
     const updatedQuantity = value;
     const data = {
-      products: {
-        [product.id]: {
-          qty: updatedQuantity,
-        },
-      },
+      "currency_id": product?.variant?.currency?.id,
+      "products": [
+        { "variant_id": product.variant_id, "qty": updatedQuantity }
+      ]
     };
-    // const data = {
-    //   currency_id,
-    //   user_id: user_data ? user_data?.id : null,
-    //   products: [
-    //     {
-    //       variant_id: selectedVariant?.id,
-    //       id: productId,
-    //       qty: 1,
-    //     },
-    //   ],
-    // };
 
     await _cart.UpdateCart({ data, cart_id: cartID }).then(() => {
       queryClient.invalidateQueries("cart");
@@ -140,9 +101,8 @@ const StyledInput = styled("input")(
   color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
   background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
   border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
-  box-shadow: 0px 2px 4px ${
-    theme.palette.mode === "dark" ? "rgba(0,0,0, 0.5)" : "rgba(0,0,0, 0.05)"
-  };
+  box-shadow: 0px 2px 4px ${theme.palette.mode === "dark" ? "rgba(0,0,0, 0.5)" : "rgba(0,0,0, 0.05)"
+    };
   border-radius: 8px;
   margin: 0 8px;
   padding: 10px 12px;
@@ -157,8 +117,7 @@ const StyledInput = styled("input")(
 
   &:focus {
     border-color: ${blue[400]};
-    box-shadow: 0 0 0 3px ${
-      theme.palette.mode === "dark" ? blue[700] : blue[200]
+    box-shadow: 0 0 0 3px ${theme.palette.mode === "dark" ? blue[700] : blue[200]
     };
   }
 

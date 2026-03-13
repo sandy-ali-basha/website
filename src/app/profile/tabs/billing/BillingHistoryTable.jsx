@@ -191,7 +191,7 @@ const BillingHistoryTable = () => {
       headerName: t("total"),
       renderCell: ({ row }) => (
         <Typography sx={{ color: "text.secondary" }}>
-          {row.total.toLocaleString()} {t("currency")}
+          {row.total.toLocaleString()} 
         </Typography>
       ),
     },
@@ -271,7 +271,7 @@ const BillingHistoryTable = () => {
                           .join(", ")}
                       </Typography>
                       <Typography sx={{ color: "text.secondary" }}>
-                        {t("Total")}: {order.total.toLocaleString()} {t("currency")}
+                        {t("Total")}: {order.total.toLocaleString()}
                       </Typography>
                       <Tooltip title={label}>
                         <Chip

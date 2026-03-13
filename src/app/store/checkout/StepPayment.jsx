@@ -202,7 +202,7 @@ const StepPayment = ({ handleNext }) => {
                       <Typography>{t("Sub Total")}</Typography>
                       <Typography sx={{ color: "text.secondary" }}>
                         {cartData?.data?.sub_total.toLocaleString()}{" "}
-                        {t("currency")}
+                   
                       </Typography>
                     </Box>
 
@@ -220,7 +220,7 @@ const StepPayment = ({ handleNext }) => {
                         {shippingAddress?.shipping_price > 0 && (
                           <div>
                             {shippingAddress?.shipping_price.toLocaleString()}{" "}
-                            {t("currency")}
+                         
                           </div>
                         )}
                         {shippingAddress?.shipping_price === 0 && (
@@ -266,7 +266,7 @@ const StepPayment = ({ handleNext }) => {
                         </Typography>
                         <Typography variant="body1" color="secondary">
                           {cartData?.data?.sub_total_after_points.toLocaleString()}{" "}
-                          {t("currency")}
+                         
                         </Typography>
                       </Box>
                     )}
