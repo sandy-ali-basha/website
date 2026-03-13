@@ -9,12 +9,22 @@ export const _contact = {
     }),
 
   index: async () => {
-        return _axios
-          .get(`/contact_info`, {
-            headers: {
-              ...HttpRequestInterceptor(),
-            },
-          })
-          .then((res) => res?.data);
-      },
+    return _axios
+      .get(`/contact_info`, {
+        headers: {
+          ...HttpRequestInterceptor(),
+        },
+      })
+      .then((res) => res?.data);
+  },
+
+  locations: async () => {
+    return _axios
+      .get(`/contact_info/locations`, {
+        headers: {
+          ...HttpRequestInterceptor(),
+        },
+      })
+      .then((res) => res?.data);
+  },
 };

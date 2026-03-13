@@ -163,7 +163,7 @@ export default function ProductVariants({
           }}
         >
           <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            {t("Baghdad Governorate price")}
+            {t("Baghdad price")}
           </Typography>
           <ProductPrice variant={baghdadVariant} />
         </Box>

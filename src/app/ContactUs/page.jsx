@@ -5,7 +5,6 @@ import {
   Grid,
   Link,
   TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -17,7 +16,6 @@ import { _contact } from "api/contact/contact";
 import * as yup from "yup";
 import ButtonLoader from "components/customs/ButtonLoader";
 import Swal from "sweetalert2";
-import { useHomeSection } from "hooks/home/useHome";
 import {
   Email,
   Facebook,
@@ -27,10 +25,11 @@ import {
   WhatsApp,
 } from "@mui/icons-material";
 import { useContactUs } from "hooks/contactUs/useContactUs";
+import { useContactLocations } from "hooks/contactUs/useContactLocations";
 import Seo from "components/Seo";
 
 export default function ContactUs() {
-  const { t, i18n } = useTranslation("index");
+  const { t } = useTranslation("index");
   const [loading, setLoading] = useState(false);
 
   let schema = yup.object().shape({
@@ -78,9 +77,11 @@ export default function ContactUs() {
     setLoading(true);
   };
 
-  const { data, isLoading } = useContactUs();
+  const { data: contactData } = useContactUs();
+  const { data: locationsData } = useContactLocations();
+  const locations = locationsData?.data || [];
 
-  console.log("data", data?.data);
+  console.log("data", contactData?.data);
 
   return (
     <Container sx={{ my: 20 }}>
@@ -210,11 +211,11 @@ export default function ContactUs() {
             {/* Link */}
             <Link
               style={{ color: "initial", textDecoration: "none" }}
-              href={`mailto:${data?.data[0]?.email}`}
+              href={`mailto:${contactData?.data[0]?.email}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {data?.data[0]?.email}
+              {contactData?.data[0]?.email}
             </Link>
           </Box>
           <Box
@@ -232,7 +233,7 @@ export default function ContactUs() {
             <Facebook />
             <Link
               style={{ color: "initial", textDecoration: "none" }}
-              href={data?.data[0]?.facebook}
+              href={contactData?.data[0]?.facebook}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -254,7 +255,7 @@ export default function ContactUs() {
             <Instagram />
             <Link
               style={{ color: "initial", textDecoration: "none" }}
-              href={data?.data[0]?.instagram}
+              href={contactData?.data[0]?.instagram}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -276,7 +277,7 @@ export default function ContactUs() {
             <LinkedIn />
             <Link
               style={{ color: "initial", textDecoration: "none" }}
-              href={data?.data[0]?.linkedin}
+              href={contactData?.data[0]?.linkedin}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -298,7 +299,7 @@ export default function ContactUs() {
             <WhatsApp />
             <Link
               style={{ color: "initial", textDecoration: "none" }}
-              href={`wa.me${data?.data[0]?.whatsapp}`}
+              href={`wa.me${contactData?.data[0]?.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -332,27 +333,33 @@ export default function ContactUs() {
             ></iframe>
           
           </Box>
-          <Box sx={{ width: "100%", mt: 3, display: "flex", gap: 1 }}>
-            <Map sx={{ pe: 1 }} />{" "}
-            <Typography variant="body1" color="initial">
-              {data?.data[0]?.locations[0]?.office_name}
-            </Typography>
-            <a href="https://maps.app.goo.gl/NgbhGFS5KkDjLGXDA" color="initial">
-              {data?.data[0]?.locations[0]?.address}
-            </a>
-          </Box>
-          <Box sx={{ width: "100%", mt: 3, display: "flex", gap: 1 }}>
-            <Map />{" "}
-            <Typography variant="body1" color="initial">
-              {data?.data[0]?.locations[1]?.office_name}
-            </Typography>
-            <a href="https://maps.app.goo.gl/bBXyAZ89f1pXREmJ7" color="initial">
-              {data?.data[0]?.locations[1]?.address}
-              
-            </a>
-          </Box>
+          {locations.map((location, idx) => (
+            <Box
+              key={`${location.id}-${location.translation_id || idx}`}
+              sx={{ width: "100%", mt: 3, display: "flex", gap: 1 }}
+            >
+              <Map />
+              <Typography variant="body1" color="initial">
+                {location.office_name}
+              </Typography>
+              <Link
+                style={{ color: "initial", textDecoration: "none" }}
+                href={location.map_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {location.address}
+              </Link>
+            </Box>
+          ))}
         </Grid>
       </Grid>
     </Container>
   );
 }
+
+
+
+
+
+

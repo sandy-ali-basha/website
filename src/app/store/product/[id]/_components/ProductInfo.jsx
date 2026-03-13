@@ -28,6 +28,17 @@ export default function ProductInfo({ data, isLoading, selectedVariant }) {
     return product;
   }, [product, selectedVariant]);
 
+  const uniqueAttributes = useMemo(() => {
+    const attrs = displayData?.attributes || [];
+    const seen = new Set();
+    return attrs.filter((item) => {
+      const value = item?.value;
+      if (!value || seen.has(value)) return false;
+      seen.add(value);
+      return true;
+    });
+  }, [displayData?.attributes]);
+
   if (!product) return null;
 
   return (
@@ -82,7 +93,7 @@ export default function ProductInfo({ data, isLoading, selectedVariant }) {
           />
         )}
 
-        {displayData?.attributes?.map((item, idx) => (
+        {uniqueAttributes.map((item, idx) => (
           <Chip
             key={idx}
             label={item.value}
@@ -95,3 +106,4 @@ export default function ProductInfo({ data, isLoading, selectedVariant }) {
     </>
   );
 }
+
