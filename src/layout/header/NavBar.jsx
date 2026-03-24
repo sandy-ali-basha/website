@@ -42,7 +42,7 @@ function NavBar() {
       sx={{
         width: "100%",
         boxShadow: "0px",
-        background: "#6666663d",
+        background: ["#666666ab","#6666663d"],
         backdropFilter: "blur(5px)",
       }}
     >

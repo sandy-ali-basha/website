@@ -1,23 +1,24 @@
 import Qoute from "../components/modules/home/Qoute.jsx";
-import { useHome } from "hooks/home/useHome.js";
 import LatestProducts from "components/modules/home/LatestProducts.jsx";
 import Reels from "components/modules/home/Reels.jsx";
 import BrandsSection from "components/modules/home/BrandsSection.jsx";
 import CategoriesSection from "components/modules/home/CategoriesSection.jsx";
 import DiscountSection from "components/modules/home/DiscountSection.jsx";
 import CaroselSection from "components/modules/home/CaroselSection.jsx";
-import SpecialOffersSection from "components/SpecialOffersSection.jsx";
 import MultiLinksBannerSection from "components/modules/home/MultiLinksBannerSection.jsx";
+import TextSectionOne from "components/modules/home/TextSecotionOne.jsx";
+import ParallaxSlides from "components/modules/home/ParallaxSlides.jsx";
+import AnimatedText from "components/modules/home/AnimatedText.jsx";
+import Loader from "components/modules/Loader.jsx";
+import HomeGrid from "components/modules/home/HomeGrid.jsx";
+import Cta from "components/modules/home/Cta.jsx";
+
 import { _Home } from "api/Home/home.js";
 import { Box } from "@mui/material";
-import Loader from "components/modules/Loader.jsx";
-import AnimatedText from "components/modules/home/AnimatedText.jsx";
-import HomeGrid from "components/modules/home/HomeGrid.jsx";
-import ParallaxSlides from "components/modules/home/ParallaxSlides.jsx";
 import i18n from "i18next";
+import { useHome } from "hooks/home/useHome.js";
 import { useEffect, useState } from "react";
-import Cta from "components/modules/home/Cta.jsx";
-import TextSectionOne from "components/modules/home/TextSecotionOne.jsx";
+
 import Seo from "components/Seo";
 
 export default function Home() {
@@ -122,18 +123,16 @@ export default function Home() {
     );
   else
     return (
-      <Box dir={pageDirection} sx={{ textAlign: "start" }}>
+      <Box  dir={pageDirection} sx={{ textAlign: "start" }}>
         <Seo
           title="Home"
           description="Shop medical products, explore offers, and discover trusted healthcare brands at Dawaa Alhayat."
           keywords="Dawaa Alhayat, medical products, pharmacy, healthcare, offers"
         />
-        {/* <SpinAndWin/> */}
-        
+
         <CaroselSection />
-  
+
         <DiscountSection />
-        {/* <MultiLinksBannerSection /> */}
 
         <HomeRenderer sections={sections} />
       </Box>

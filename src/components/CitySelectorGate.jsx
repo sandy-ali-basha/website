@@ -63,7 +63,6 @@ const collectAppCities = (citiesResponse, regionsResponse) => {
   return Array.from(citiesById.values());
 };
 
-
 const buildCityLookup = (appCities = []) => {
   const citiesById = new Map();
   const exactNameToCity = new Map();
@@ -179,7 +178,7 @@ const cityNameCandidatesFromLocation = (address = {}) => {
 };
 
 const AUTO_LOCATE_FAIL_MESSAGE =
-  "We couldn't locate your city automatically. Please choose your city.";
+  ("We couldn't locate your city automatically. Please choose your city.");
 
 const setCityResolving = (value) => {
   localStorage.setItem("city_resolving", value ? "1" : "0");

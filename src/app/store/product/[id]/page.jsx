@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { Container, Grid, Box } from "@mui/material";
+import { Container, Grid, Box, Typography } from "@mui/material";
 import { useTheme } from "@emotion/react";
 
 // Custom Hooks
@@ -18,12 +18,15 @@ import ProductAddToCart from "./_components/ProductAddToCart";
 import Simillar from "./_components/Simllar";
 import ProductVariants from "./_components/ProductVariants";
 import AccordionUsage from "./_components/AccordionUsage";
+import { PaidRounded } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 export default function Product() {
   const theme = useTheme();
   const { data, isLoading } = useProduct();
   const { data: Slider, isLoading: SliderLoading } = useSlider();
   const { data: features, isLoading: featuresLoading } = useFeatures();
+  const { t } = useTranslation("index");
   const { handleAddToCart, loadingCart, selectedVariant, setSelectedVariant } =
     useAddToCart();
 
@@ -55,7 +58,16 @@ export default function Product() {
             variants={data?.data?.variants}
             onSelect={handleVariantSelect}
           />
-
+          {data?.data?.points > 0 && (
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ display: "inline-flex", gap: 1, my: 2, px: 2 }}
+            >
+              <PaidRounded color="warning" /> {t("you earn")} {data?.data?.points}{" "}
+              {t("points by purchasing this product")}
+            </Typography>
+          )}
           <ProductFeatures features={features} loading={featuresLoading} />
           <ProductAddToCart
             data={data}

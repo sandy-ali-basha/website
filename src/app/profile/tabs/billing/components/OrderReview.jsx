@@ -78,9 +78,10 @@ const OrderReview = ({ item }) => {
     <Box p={isMobile ? 1 : 3}>
       <Box
         display="flex"
-        justifyContent="space-between"
+        justifyContent={isMobile ? "center" : "space-between"}
         alignItems="center"
         mb={1}
+        flexDirection={isMobile ? "column" : "row"}
       >
         <Typography
           variant={isMobile ? "h6" : "h4"}
@@ -89,7 +90,7 @@ const OrderReview = ({ item }) => {
           {t("Order")} #{item?.reference ?? "N/A"}
         </Typography>
 
-        <Box display="flex" gap={2}>
+        <Box display="flex" flexDirection={"column"} gap={2}>
           <Tooltip title={label}>
             <Chip
               label={label}
@@ -104,11 +105,14 @@ const OrderReview = ({ item }) => {
               }}
             />
           </Tooltip>
+          <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
+            {item?.cancel_reason && `${t("Cancel Reason")}: ${item.cancel_reason}`}
+          </Typography>
         </Box>
       </Box>
 
-      <Typography color="textSecondary" variant="body2">
-        {t("Order Date")}: {item?.order_date ?? "N/A"}
+      <Typography textAlign={isMobile ? "center" : "auto"} color="textSecondary" variant="body2">
+        {t("Order Date")}: {item?.order_date ?? item?.created_at ?? "N/A"}
       </Typography>
 
       <Grid container spacing={isMobile ? 1 : 2} mt={2}>

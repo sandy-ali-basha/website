@@ -25,7 +25,7 @@ export default function LatestProducts() {
           }}
           // Enable lazy loading
           modules={[Autoplay]}
-          slidesPerView={2}
+          slidesPerView={1}
           breakpoints={{
             500: {
               slidesPerView: 2,

@@ -36,12 +36,31 @@ export default function ProductVariants({
   ========================== */
   const cityId = useSelectedCity();
   const cities = useCityStore((state) => state.cities);
-
+console.log("cities",cities)
   const localCityName = useMemo(() => {
     if (!cityId) return null;
 
     const storedCityLabel = localStorage.getItem("city_label");
-    if (storedCityLabel) return storedCityLabel;
+    if (storedCityLabel) {
+      const storedInList = cities.some((c) => {
+        const candidates = [
+          c.value,
+          c.name,
+          c.name_en,
+          c.name_ar,
+          c.label,
+        ];
+
+        return candidates.some(
+          (candidate) =>
+            candidate &&
+            candidate.toLowerCase() === storedCityLabel.toLowerCase()
+        );
+      });
+
+      if (storedInList) return storedCityLabel;
+      return null;
+    }
 
     const cityObj = cities.find((c) => String(c.id) === String(cityId));
 
@@ -72,6 +91,7 @@ export default function ProductVariants({
   /* =========================
     Filter Variants
   ========================== */
+  console.log("localCityName", localCityName);
   const filteredVariants = useMemo(() => {
     if (!variants || !localCityName) return [];
     return variants.filter(
@@ -140,6 +160,8 @@ export default function ProductVariants({
     }
     setNoOptionsForCity(filteredVariants.length === 0);
   }, [showLoading, filteredVariants.length, setNoOptionsForCity]);
+
+  console.log("filteredVariants", filteredVariants);
 
   return (
     <Box sx={{ my: 3 }}>
@@ -258,3 +280,4 @@ export default function ProductVariants({
     </Box>
   );
 }
+

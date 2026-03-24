@@ -378,5 +378,7 @@
   "You got free shipping":"You got free shipping",
   "Complete your cart with {{amount}} to get free shipping":"Complete your cart with {{amount}} to get free shipping"
 ,"Baghdad price":"Baghdad price",
-"No Options Available in your city":"No Options Available in your city"
+"No Options Available in your city":"No Options Available in your city",
+"Cancel Reason":"Cancel Reason",
+"We couldn't locate your city automatically. Please choose your city.": "We couldn't locate your city automatically. Please choose your city."
 }

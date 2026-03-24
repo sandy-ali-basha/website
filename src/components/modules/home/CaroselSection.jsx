@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import i18n from "i18n";
+import MultiLinksBannerSection from "./MultiLinksBannerSection";
 
 const CaroselSection = () => {
   const { data: slider } = useHomeSlider();
@@ -15,7 +16,7 @@ const CaroselSection = () => {
       <Box
         sx={{
           height: { xs: "30dvh", sm: "100dvh" },
-          mt: { xs: "5dvh", sm: "0" },
+          mt: { xs: "9dvh", sm: "0vh" },
         }}
       >
         <Swiper
@@ -82,6 +83,9 @@ const CaroselSection = () => {
                 </SwiperSlide>
               )
           )}
+          <SwiperSlide key="multi-links-banner">
+            <MultiLinksBannerSection />
+          </SwiperSlide>
         </Swiper>
       </Box>
     </>

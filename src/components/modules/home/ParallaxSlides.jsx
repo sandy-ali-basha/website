@@ -3,13 +3,12 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useHomeSection } from "hooks/home/useHome";
 import defaultImage from "assets/images/defaultImg.jpg";
 import i18n from "i18n";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* 🔹 Slide Panel Component (with safe background image) */
+/* 🔹 Slide Panel */
 function SlidePanel({ item, index }) {
   const [bgImage, setBgImage] = useState(defaultImage);
 
@@ -33,22 +32,23 @@ function SlidePanel({ item, index }) {
 
   return (
     <Box
-      key={index}
       className="panel"
       sx={{
+        position: "absolute",
+        inset: 0,
         width: "100%",
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        height: "100%",
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundColor: "#f2f2f2",
-        position: "relative",
+        zIndex: index + 1,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        willChange: "transform",
       }}
     >
-      {item.link && (
+      {item?.link && (
         <a
           href={item.link}
           target="_blank"
@@ -56,12 +56,13 @@ function SlidePanel({ item, index }) {
           style={{ textDecoration: "none" }}
         >
           <Typography
+            className="panel-title"
             variant="h2"
             sx={{
-              color: "white",
+              color: "#fff",
               fontSize: "6vw",
-              textShadow: "2px 2px 10px rgba(0,0,0,0.6)",
               textAlign: "center",
+              textShadow: "2px 2px 10px rgba(0,0,0,0.6)",
             }}
           >
             {item[`title_${i18n.language}`] || item.title_en || "Slide"}
@@ -72,41 +73,63 @@ function SlidePanel({ item, index }) {
   );
 }
 
+/* 🔹 Main Component */
 export default function ParallaxSlides({ data, isLoading }) {
   const containerRef = useRef(null);
 
-  const slides = useMemo(() => data?.items || [], [data]);
+  // ⚠️ freeze slides to avoid re-render issues during scroll
+  const slides = useMemo(() => data?.items || [], []);
 
-  /* GSAP */
   useEffect(() => {
     if (!slides.length) return;
 
-    const sections = gsap.utils.toArray(".panel");
+    const ctx = gsap.context(() => {
+      const panels = gsap.utils.toArray(".panel", containerRef.current);
 
-    const scrollTrigger = ScrollTrigger.create({
-      trigger: containerRef.current,
-      start: "top top",
-      end: () => "+=" + containerRef.current.offsetHeight,
-      snap: {
-        snapTo: 1 / (sections.length - 1),
-        duration: 0.8,
-        ease: "power2.inOut",
-      },
-      markers: false,
-    });
+      // initial state
+      gsap.set(panels.slice(1), { yPercent: 100 });
 
-    return () => scrollTrigger.kill();
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: `+=${panels.length * 100}%`,
+          scrub: true,
+          // ❌ NO pin here → avoids React DOM crash
+        },
+      });
+
+      panels.forEach((panel, i) => {
+        if (i === 0) return;
+
+        tl.to(
+          panel,
+          {
+            yPercent: 0,
+            ease: "none",
+            duration: 1.5
+          },
+          i
+        );
+      });
+    }, containerRef);
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+      ctx.revert();
+    };
   }, [slides]);
 
+  /* 🔹 Loading */
   if (isLoading) {
     return (
-      <Box sx={{ width: "100%", height: "100vh" }}>
+      <Box sx={{ width: "100%", height: "100dvh" }}>
         {[1, 2, 3].map((i) => (
           <Box
             key={i}
             sx={{
               width: "100%",
-              height: "100vh",
+              height: "100dvh",
               backgroundColor: "#e0e0e0",
               mb: 2,
             }}
@@ -116,6 +139,7 @@ export default function ParallaxSlides({ data, isLoading }) {
     );
   }
 
+  /* 🔹 Empty */
   if (!slides.length) {
     return (
       <Typography textAlign="center" mt={5}>
@@ -124,14 +148,27 @@ export default function ParallaxSlides({ data, isLoading }) {
     );
   }
 
+  /* 🔹 Render */
   return (
-    <Box
-      ref={containerRef}
-      sx={{ width: "100%", height: "100%", overflow: "hidden" }}
-    >
-      {slides.map((item, index) => (
-        <SlidePanel key={index} item={item} index={index} />
-      ))}
+    <Box sx={{ height: `${slides.length * 200}dvh` }}>
+      {/* Sticky viewport */}
+      <Box
+        ref={containerRef}
+        sx={{
+          position: "sticky",
+          top: 0,
+          height: "100dvh",
+          overflow: "hidden",
+        }}
+      >
+        {slides.map((item, index) => (
+          <SlidePanel
+            key={item.id || `${item.image}-${index}`} // ✅ stable key
+            item={item}
+            index={index}
+          />
+        ))}
+      </Box>
     </Box>
   );
 }

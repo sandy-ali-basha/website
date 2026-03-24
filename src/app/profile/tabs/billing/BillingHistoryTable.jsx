@@ -260,7 +260,7 @@ const BillingHistoryTable = () => {
                       <Typography sx={{ color: "text.secondary" }}>
                         {t("Issued Date")}:{" "}
                         {new Date(
-                          order.lines[0].created_at
+                          order.created_at
                         ).toLocaleDateString()}
                       </Typography>
                       <Typography sx={{ color: "text.secondary" }}>

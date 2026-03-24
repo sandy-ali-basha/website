@@ -32,7 +32,8 @@ export default function ProductPrice({ variant }) {
     start && end
       ? now >= start && now <= end
       : false;
-
+
+
   const isActiveDiscount = hasDiscount && isValidDateRange && isWithinDateRange;
   // Calculate time left
   let timeLeft = "";
@@ -83,16 +84,8 @@ export default function ProductPrice({ variant }) {
           {t("Discount ends in")}: {timeLeft}
         </Typography>
       )}
-      {variant?.points > 0 && (
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ display: "inline-flex", gap: 1, my: 2, px: 2 }}
-        >
-          <PaidRounded color="warning" /> {t("you earn")} {variant?.points}{" "}
-          {t("points by purchasing this product")}
-        </Typography>
-      )}
+
+      
     </Box>
   );
 }

@@ -103,6 +103,7 @@ const ChooseCity = ({ onClose }) => {
       <FormControl fullWidth sx={{ mb: 3 }}>
         <InputLabel id="country-select-label">{t("choose country")}</InputLabel>
         <Select
+        sx={{width:["70dvw","40dvw"]}}
           labelId="country-select-label"
           label={t("choose country")}
           value={selectedCountry}
@@ -120,6 +121,8 @@ const ChooseCity = ({ onClose }) => {
       <FormControl fullWidth disabled={!selectedCountry || loadingCities}>
         <InputLabel id="city-select-label">{t("choose city")}</InputLabel>
         <Select
+        sx={{width:["70dvw","40dvw"]}}
+
           labelId="city-select-label"
           label={t("choose city")}
           value={selectedCity}

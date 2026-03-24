@@ -376,4 +376,6 @@
   "Complete your cart with {{amount}} to get free shipping": "أكمل سلتك بمبلغ {{amount}} للحصول على شحن مجاني"
 ,"Baghdad price":"سعر بغداد",
 "No Options Available in your city":"لا توجد خيارات متاحة في مدينتك"
+,"Cancel Reason":"سبب الإلغاء",
+"We couldn't locate your city automatically. Please choose your city.": "لم نتمكن من تحديد موقع مدينتك تلقائيًا. يرجى اختيار مدينتك."
 }

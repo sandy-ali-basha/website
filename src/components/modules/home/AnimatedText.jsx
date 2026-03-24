@@ -28,7 +28,7 @@ export default function AnimatedText({ text }) {
   const gummie3ref = useRef(null);
   const imageRefs = useRef([]);
   imageRefs.current = [];
-const lang = localStorage.getItem("i18nextLng") || "en";
+  const lang = localStorage.getItem("i18nextLng") || "en";
   useEffect(() => {
     window.scrollTo(0, 0);
     if (window.innerWidth > 900) {
@@ -138,7 +138,7 @@ const lang = localStorage.getItem("i18nextLng") || "en";
   };
 
   return (
-    <Box sx={{ overflow: "hidden", width: "98vw" }}>
+    <Box sx={{ overflow: "hidden", width: "100%" }}>
       <Box sx={{ position: "relative", mt: "20vh" }}>
         <Box
           sx={{
@@ -268,7 +268,7 @@ const lang = localStorage.getItem("i18nextLng") || "en";
             <Grid md="6"></Grid>
             <Grid md="6">
               <Typography
-              dir={lang === "en" ? "ltr" : "rtl"}
+                dir={lang === "en" ? "ltr" : "rtl"}
                 dangerouslySetInnerHTML={{
                   __html: text,
                 }}
