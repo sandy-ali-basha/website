@@ -84,8 +84,7 @@ export default function ProductPrice({ variant }) {
           {t("Discount ends in")}: {timeLeft}
         </Typography>
       )}
-
-      
+    
     </Box>
   );
 }

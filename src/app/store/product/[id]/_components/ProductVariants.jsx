@@ -36,7 +36,7 @@ export default function ProductVariants({
   ========================== */
   const cityId = useSelectedCity();
   const cities = useCityStore((state) => state.cities);
-console.log("cities",cities)
+
   const localCityName = useMemo(() => {
     if (!cityId) return null;
 
@@ -204,7 +204,7 @@ console.log("cities",cities)
             ))
           : filteredVariants.map((variant) => {
               const isSelected = selectedVariant?.id === variant.id;
-              const isDisabled = variant.storage_qty === 0;
+              const isDisabled = variant.storage_qty === 0 || variant.purchasable === "false";
 
               return (
                 <Grid item xs={12} sm={6} md={4} key={variant.id}>
