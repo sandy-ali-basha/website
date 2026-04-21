@@ -14,7 +14,7 @@ function LogoDesktop() {
         display: { xs: "none", lg: "flex" },
       }}
     >
-      <img loading="lazy" alt="logo" src={logo} style={{ width: "6vw" }} />
+      <img loading="lazy" alt="logo" src={logo} style={{ width: "5vw" }} />
     </Typography>
   );
 }

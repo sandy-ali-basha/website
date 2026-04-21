@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { AppBar, Box, Container, Toolbar } from "@mui/material";
+import { AppBar, Box, Container, Toolbar, Typography, Link } from "@mui/material";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
 import { useNavBar } from "./useNavBar";
 import LanguageSelector from "components/LanguageSelector";
 import MobileNavBar from "./MobileNavBar";
@@ -25,9 +27,11 @@ function NavBar() {
     brands,
     categories,
     t,
+    navOffer,
   } = useNavBar();
 
   const cartCount = parseInt(localStorage.getItem("cart_count")) || 0;
+  const showOffer = Boolean(navOffer?.items?.length);
 
   const handleDrawerToggle = (nextOpen) => {
     setMobileOpen((prevOpen) =>
@@ -37,15 +41,70 @@ function NavBar() {
 
   return (
     <AppBar
-      position="fixed"
+      position="relative"
       color="transparent"
       sx={{
         width: "100%",
-        boxShadow: "0px",
-        background: ["#666666ab","#6666663d"],
+        background: ["#6666667a", "#66666669"],
         backdropFilter: "blur(5px)",
       }}
     >
+      {showOffer && (
+        <Box
+          sx={{
+            width: "100%",
+            backgroundColor: "secondary.main",
+            color: "secondary.contrastText",
+            px: 2,
+            py: 1,
+          }}
+        >
+          <Swiper
+            modules={[Autoplay]}
+            loop={navOffer.items.length > 1}
+            autoplay={{ delay: 5000, disableOnInteraction: false }}
+            slidesPerView={1}
+            style={{ width: "100%" }}
+          >
+            {navOffer.items.map((item, index) => (
+              <SwiperSlide key={index}>
+                <Typography
+                  variant="body2"
+                  component="div"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 1,
+                    flexWrap: "wrap",
+                    m: 0,
+                  }}
+                >
+                  {item.title && (
+                    <Box component="span" sx={{ fontWeight: 700 }}>
+                      {item.title}
+                    </Box>
+                  )}
+                  {item.text && (
+                    <Box component="span" sx={{ opacity: 0.9 }}>
+                      {item.text}
+                    </Box>
+                  )}
+                  {item.link && (
+                    <Link
+                      href={item.link}
+                      underline="always"
+                      sx={{ color: "inherit", fontWeight: 700 }}
+                    >
+                      {t("Shop now", { defaultValue: "Shop now" })}
+                    </Link>
+                  )}
+                </Typography>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Box>
+      )}
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <LogoDesktop />
@@ -63,8 +122,7 @@ function NavBar() {
             />
           </Box>
 
-          <LogoMobile />
-
+      
           {/* Desktop Navigation */}
           <DesktopNav
             pages={pages}
@@ -93,6 +151,7 @@ function NavBar() {
           />
 
           <AuthSection settings={settings} t={t} navigate={navigate} />
+           <LogoMobile />
         </Toolbar>
       </Container>
     </AppBar>
@@ -100,3 +159,4 @@ function NavBar() {
 }
 
 export default NavBar;
+

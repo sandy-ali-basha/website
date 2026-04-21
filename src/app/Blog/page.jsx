@@ -15,7 +15,7 @@ export default function Blog() {
   }, []);
 
   return (
-    <Container sx={{ mt: 20 }}>
+    <Container sx={{ mt: 20, }}>
       <Seo
         title="Blog"
         description="Read the latest updates, health tips, and product news from Dawaa Alhayat."

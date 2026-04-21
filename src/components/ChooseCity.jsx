@@ -10,7 +10,6 @@ import {
   Stack,
 } from "@mui/material";
 import { _countries } from "api/country/countries";
-import { _cities } from "api/country/country";
 import { getCityLabel, setSelectedCity as persistSelectedCity } from "utils/citySelection";
 
 const isActiveRegionOrCity = (item) => {
@@ -23,8 +22,7 @@ const ChooseCity = ({ onClose }) => {
   const { t } = useTranslation("index");
 
   const [countries, setCountries] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [loadingCities, setLoadingCities] = useState(false);
+  const [loadingCities] = useState(false); // No longer used, but kept for compatibility
 
   const [selectedCountry, setSelectedCountry] = useState(
     localStorage.getItem("country") || ""
@@ -33,35 +31,16 @@ const ChooseCity = ({ onClose }) => {
     localStorage.getItem("city") || ""
   );
 
-  const loadCitiesByCountry = async (countryId) => {
-    if (!countryId) {
-      setCities([]);
-      return;
-    }
 
-    setLoadingCities(true);
-    try {
-      const response = await _cities.viewCity(countryId);
-      setCities((response?.data?.state || []).filter(isActiveRegionOrCity));
-    } finally {
-      setLoadingCities(false);
-    }
-  };
 
-  // Load countries list once, then load saved country cities lazily
+  // Load countries list once
   useEffect(() => {
     const fetchCountries = async () => {
       const response = await _countries.index();
       if (response.data) {
         setCountries(response.data.filter(isActiveRegionOrCity));
-
-        const savedCountryId = localStorage.getItem("country");
-        if (savedCountryId) {
-          await loadCitiesByCountry(savedCountryId);
-        }
       }
     };
-
     fetchCountries();
   }, []);
 
@@ -70,8 +49,6 @@ const ChooseCity = ({ onClose }) => {
     const countryId = String(event.target.value);
     setSelectedCountry(countryId);
     localStorage.setItem("country", countryId);
-    loadCitiesByCountry(countryId);
-
     // Reset city
     setSelectedCity("");
   };
@@ -84,7 +61,11 @@ const ChooseCity = ({ onClose }) => {
 
   // When clicking Save
   const handleSave = () => {
-    const selectedCityObj = cities.find(
+    const selectedCountryObj = countries.find(
+      (country) => String(country.id) === String(selectedCountry)
+    );
+    const citiesList = selectedCountryObj?.cities?.filter(isActiveRegionOrCity) || [];
+    const selectedCityObj = citiesList.find(
       (city) => String(city.id) === String(selectedCity)
     );
 
@@ -97,13 +78,18 @@ const ChooseCity = ({ onClose }) => {
     if (onClose) onClose();
   };
 
-  return (  
-    <Box sx={{ mt: 2 }}>
+  // Get cities for selected country
+  const selectedCountryObj = countries.find(
+    (country) => String(country.id) === String(selectedCountry)
+  );
+  const citiesList = selectedCountryObj?.cities?.filter(isActiveRegionOrCity) || [];
+
+  return (
+    <Box sx={{ mt: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
       {/* Country Select */}
-      <FormControl fullWidth sx={{ mb: 3 }}>
+      <FormControl sx={{ width: ["70dvw", "40dvw", "40dvw", "30dvw"], mx: "auto", mb: 2 }}>
         <InputLabel id="country-select-label">{t("choose country")}</InputLabel>
         <Select
-        sx={{width:["70dvw","40dvw"]}}
           labelId="country-select-label"
           label={t("choose country")}
           value={selectedCountry}
@@ -118,17 +104,18 @@ const ChooseCity = ({ onClose }) => {
       </FormControl>
 
       {/* City Select */}
-      <FormControl fullWidth disabled={!selectedCountry || loadingCities}>
+      <FormControl
+        sx={{ width: ["70dvw", "40dvw", "40dvw", "30dvw"], mx: "auto" }}
+        disabled={!selectedCountry}
+      >
         <InputLabel id="city-select-label">{t("choose city")}</InputLabel>
         <Select
-        sx={{width:["70dvw","40dvw"]}}
-
           labelId="city-select-label"
           label={t("choose city")}
           value={selectedCity}
           onChange={handleCityChange}
         >
-          {cities.map((city) => (
+          {citiesList.map((city) => (
             <MenuItem key={city.id} value={city.id}>
               {city.name}
             </MenuItem>

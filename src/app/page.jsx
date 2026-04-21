@@ -77,7 +77,6 @@ export default function Home() {
         return <BrandsSection />
       case "home.page.categories":
         return <CategoriesSection />
-
       default:
         return null;
     }

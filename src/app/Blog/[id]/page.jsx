@@ -47,7 +47,7 @@ export default function BlogPost() {
   const content = translatedPost?.text || data?.text;
 
   return (
-    <Container sx={{ my: 20 }}>
+    <Container sx={{ my: 10, px: [1, 15],py:5, border: "1px solid #d1d1d1", borderRadius: "10px", maxWidth: ["100%", "75dvw"], mx: "auto" }}>
       <Seo
         title={title || "Blog Post"}
         description={
@@ -72,7 +72,7 @@ export default function BlogPost() {
         sx={{ mt: 6, mb: 5, width: "80%" }}
         dir={currentLocale === "ar" ? "rtl" : "ltr"}
       >
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
           {isLoading ? (
             <CardShimmer style={{ width: "100%", height: "20px" }} />
           ) : (

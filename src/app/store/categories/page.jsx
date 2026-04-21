@@ -58,7 +58,7 @@ export default function Categories() {
   }, []);
   
   return (
-    <Container sx={{ pt: 15 }}>
+    <Container sx={{ pt: 5 }}>
       <Seo
         title="Categories"
         description="Browse Dawaa Alhayat product categories to find trusted healthcare items."

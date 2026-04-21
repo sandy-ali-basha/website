@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { _countries } from "api/country/countries";
 import { _Brands } from "api/brand/brands";
 import { useQuery } from "react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CITY_CHANGED_EVENT, setSelectedCity } from "utils/citySelection";
 import { useFetchCategories } from "hooks/useFetchCategories";
 import { useCityStore } from "store/cityStore";
+import { useHome } from "hooks/home/useHome";
 
 const isActiveRegion = (region) => {
   if (region?.is_active === null || region?.is_active === undefined) return true;
@@ -37,7 +38,7 @@ export const useNavBar = () => {
     localStorage.getItem("city_resolving") === "1"
   );
 
-  const { t } = useTranslation("navbar");
+  const { t, i18n } = useTranslation("navbar");
 
   const [selectedCityLabel, setSelectedCityLabel] = useState(
     localStorage.getItem("city_label") || ""
@@ -192,6 +193,72 @@ export const useNavBar = () => {
   );
 
   const { categories } = useFetchCategories();
+  const { data: homeTabs } = useHome();
+
+  const navOffer = useMemo(() => {
+    if (!homeTabs) return null;
+
+    const offerBlock = homeTabs.find(
+      (block) =>
+        block?.type === "setting" && block?.data?.name === "home.page.navbar"
+    );
+
+    const offerData = offerBlock?.data;
+    const isActive =
+      offerData &&
+      (offerData.active === true ||
+        offerData.active === 1 ||
+        Number(offerData.active) === 1);
+
+    if (!isActive) return null;
+
+    const lang = i18n?.resolvedLanguage || i18n?.language || "en";
+    const langKey =
+      offerData?.value?.[lang] !== undefined
+        ? lang
+        : offerData?.value?.[lang?.slice(0, 2)] !== undefined
+        ? lang?.slice(0, 2)
+        : "en";
+
+    const localized = offerData?.value?.[langKey] || {};
+    const items = Array.isArray(localized?.items)
+      ? localized.items
+      : Array.isArray(offerData?.value?.items)
+      ? offerData.value.items
+      : null;
+
+    const serializeItem = (item) => {
+      const activeLang =
+        item?.[langKey] ||
+        item?.[lang?.slice(0, 2)] ||
+        item?.en ||
+        item?.ar ||
+        item?.kr ||
+        item || {};
+
+      return {
+        title: activeLang?.title || activeLang?.heading || "",
+        text: activeLang?.text || activeLang?.description || "",
+        link: item?.link || activeLang?.link || offerData?.value?.link || "",
+      };
+    };
+
+    const offerItems = items
+      ? items.map(serializeItem)
+      : [
+          {
+            title: localized?.title || "",
+            text: localized?.text || "",
+            link: offerData?.value?.link || "",
+          },
+        ];
+
+    return {
+      items: offerItems.filter(
+        (item) => item.title || item.text || item.link
+      ),
+    };
+  }, [homeTabs, i18n]);
 
   const visibleNavbarCategories = categories.filter((category) => {
     if (typeof category?.navActive === "boolean") {
@@ -211,5 +278,6 @@ export const useNavBar = () => {
     brands,
     categories: visibleNavbarCategories,
     t,
+    navOffer,
   };
 };

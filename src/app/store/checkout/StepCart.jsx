@@ -368,7 +368,6 @@ const StepCart = ({ handleNext }) => {
                         {data?.data?.discount_amount > 0
                           ? data?.data?.sub_total_after_points.toLocaleString()
                           : data?.data?.sub_total.toLocaleString()}{" "}
-                        
                       </Typography>
                     </Box>
 
@@ -393,6 +392,7 @@ const StepCart = ({ handleNext }) => {
                             />
                           </Box>
                         )}
+
                         <Box
                           sx={{
                             mb: 2,
@@ -406,7 +406,6 @@ const StepCart = ({ handleNext }) => {
                           <Typography>{t("Discount Amount")}</Typography>
                           <Typography variant="h6" sx={{ color: "primary.main" }}>
                             {data?.data?.discount_amount.toLocaleString()}{" "}
-                          
                           </Typography>
                         </Box>
                       </>
@@ -482,6 +481,11 @@ const StepCart = ({ handleNext }) => {
                       >
                         {data?.data?.sub_total.toLocaleString()}
                       </Typography>
+                      <Typography variant="h5" sx={{ color: "primary.main" }}>
+                        {data?.data?.discount_amount > 0
+                          ? data?.data?.sub_total_after_points.toLocaleString()
+                          : data?.data?.sub_total.toLocaleString()}{" "}
+                      </Typography>
 
                       {data?.data?.points_used > 0 && (
                         <Typography
@@ -492,7 +496,6 @@ const StepCart = ({ handleNext }) => {
                           }}
                         >
                           {data?.data?.sub_total_after_points.toLocaleString()}{" "}
-                        
                         </Typography>
                       )}
                     </Box>

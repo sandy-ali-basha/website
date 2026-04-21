@@ -79,7 +79,7 @@ export default function Category() {
         </script>
       </Helmet>
 
-      <Container sx={{ pt: 15 }}>
+      <Container sx={{ pt: 5 }}>
         <Typography
           variant="h3"
           color="initial"

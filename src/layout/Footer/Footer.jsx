@@ -43,9 +43,9 @@ function Footer() {
   const { data, isLoading } = useContactUs();
 
   const socialData = [
-    { title: "facebook", icon: <Facebook sx={{ color: "white" }} />, link: data?.data[0]?.facebook },
-    { title: "instagram", icon: <Instagram sx={{ color: "white" }} />, link: data?.data[0]?.instagram },
-    { title: "linkedin", icon: <LinkedIn sx={{ color: "white" }} />, link: data?.data[0]?.linkedin },
+    { title: "facebook", icon: <Facebook sx={{ color: "white" }} />, link: data?.data[0]?.facebook ?? "" },
+    { title: "instagram", icon: <Instagram sx={{ color: "white" }} />, link: data?.data[0]?.instagram ?? "" },
+    { title: "linkedin", icon: <LinkedIn sx={{ color: "white" }} />, link: data?.data[0]?.linkedin ?? "" },
     { title: "whatsapp", icon: <WhatsApp sx={{ color: "white" }} />, link: `https://wa.me/${data?.data[0]?.whatsapp}` },
     { title: "email", icon: <Mail sx={{ color: "white" }} />, link: `mailto:${data?.data[0]?.email}` },
   ];
@@ -55,46 +55,17 @@ function Footer() {
       <Container sx={{ py: 4 }}>
         <Grid container>
           {/* Logo */}
-          <Grid item xs={6}>
-            <Box sx={{ width: "10vw" }}>
+          <Grid item xs={12}>
+            <Box sx={{ width: ["50vw", "10vw"], mx: { xs: "auto", md: 0 } }}>
               <img alt="logo" src={logo} style={{ width: "100%" }} />
             </Box>
           </Grid>
-
-          {/* Contact Button */}
-         
-      {/* Menu Items */}
-          <Grid
-            xs={12}
-            md={6}
-            item
-            sx={{
-              my: 2,
-              alignItems: "center",
-              justifyContent: "space-evenly",
-              height: "auto",
-              display: "flex",
-              flexWrap: "wrap",
-            }}
-          >
-            {MenuItems.map((item, index) => (
-              <Button
-                sx={{ color: "white" }}
-                href={item.href}
-                variant="text"
-                key={index}
-              >
-                {item.title}
-              </Button>
-            ))}
-          </Grid>
           {/* Social Icons */}
           <Grid
-            md={6}
+            md={4}
             xs={12}
             sx={{
               display: "flex",
-              justifyContent: "end",
               my: 2,
               gap: 1,
               flexWrap: "wrap",
@@ -112,6 +83,31 @@ function Footer() {
                   {item.icon}
                 </IconButton>
               </Tooltip>
+            ))}
+          </Grid>
+          {/* Menu Items */}
+          <Grid
+            xs={12}
+            md={8}
+            item
+            sx={{
+              my: 2,
+              alignItems: "center",
+              justifyContent: ["center", "space-between"],
+              height: "auto",
+              display: "flex",
+              flexWrap: "wrap",
+            }}
+          >
+            {MenuItems.map((item, index) => (
+              <Button
+                sx={{ color: "white" }}
+                href={item.href}
+                variant="text"
+                key={index}
+              >
+                {item.title}
+              </Button>
             ))}
           </Grid>
 
@@ -152,6 +148,7 @@ function Footer() {
               </Button>
             ))}
           </Grid>
+
 
           {/* Copyright */}
           <Grid

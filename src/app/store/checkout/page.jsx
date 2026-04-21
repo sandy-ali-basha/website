@@ -40,6 +40,7 @@ const Checkout = () => {
   const [opendFIB, setOpendFIB] = useState(false);
   const [orderId, setOrderId] = useState();
   const [orderResponse, setOrderResponse] = useState(null); // New state for storing order response
+  const [deliveryNote, setDeliveryNote] = useState(""); // Delivery note from user
   const { t } = useTranslation("index");
   const theme = useTheme();
   const [value] = ValueStore((state) => [state.value]);
@@ -105,7 +106,8 @@ const Checkout = () => {
           first_name: userData?.first_name,
           last_name: userData?.last_name,
           email: userData?.email,
-          message: "message",
+          message: deliveryNote || null,
+          delivery_notes: deliveryNote || null,
           cart_id: cart_id,
           payment_method: value,
         };
@@ -226,6 +228,8 @@ const Checkout = () => {
             handleNext={handleNext}
             selectedBasicRadio={selectedBasicRadio}
             setSelectedBasicRadio={setSelectedBasicRadio}
+            deliveryNote={deliveryNote}
+            setDeliveryNote={setDeliveryNote}
           />
         );
       case 2:
@@ -280,3 +284,5 @@ const Checkout = () => {
 };
 
 export default Checkout;
+
+

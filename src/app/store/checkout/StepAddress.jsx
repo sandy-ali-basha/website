@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
@@ -36,6 +37,8 @@ const StepAddress = ({
   handleNext,
   selectedBasicRadio,
   setSelectedBasicRadio,
+  deliveryNote,
+  setDeliveryNote,
 }) => {
   // const [selectedIconRadio, setSelectedIconRadio] = useState("standard");
   const { data = { addresses: [] }, isLoading } = useAddresses();
@@ -146,6 +149,19 @@ const StepAddress = ({
           <Button variant="tonal" sx={{ mt: 4 }} onClick={handleAddNewAddress}>
             {t("Add new address")}
           </Button>
+          <Box sx={{ mt: 4 }}>
+            <Typography sx={{ mb: 1 }} variant="subtitle1">
+              {t("delivery instructions")}
+            </Typography>
+            <TextField
+              fullWidth
+              multiline
+              minRows={3}
+              value={deliveryNote}
+              onChange={(e) => setDeliveryNote(e.target.value)}
+              placeholder={t("delivery instructions")}
+            />
+          </Box>
         </Grid>
         <Grid item xs={12} lg={4}>
           <Card sx={{ mb: 4, borderRadius: 3, boxShadow: 3 }}>
@@ -200,9 +216,9 @@ const StepAddress = ({
                           >
                             <ListItemText primary={item?.name} />
                           </Link>
-                          {/* ⬇️ Display Variants Here ⬇️ */}
+                          {/* ?? Display Variants Here ?? */}
                           <RenderVariants options={item?.options} />
-                          {/* ⬆️ Display Variants Here ⬆️ */}
+                          {/* ?? Display Variants Here ?? */}
                           <ProductPrice variant={item?.variant} />
 
                         </Grid>
@@ -231,8 +247,7 @@ const StepAddress = ({
                 >
                   <Typography>{t("Sub Total")}</Typography>
                   <Typography sx={{ color: "text.secondary" }}>
-                    {/* Assuming data?.data?.sub_total is in an integer unit (like fils or cents) and you display in a higher unit (like dinars or dollars) */}
-                    {cartData?.data?.sub_total }{" "}
+                    {cartData?.data?.sub_total?.toLocaleString()}{" "}
                   </Typography>
                 </Box>
                 {/* Delivery Charges */}
@@ -257,7 +272,7 @@ const StepAddress = ({
                         variant="body2"
                         sx={{ color: "text.secondary" }}
                       >
-                        {shippingAddress?.shipping_price}
+                        {shippingAddress?.shipping_price?.toLocaleString()}
                       </Typography>
                     )}
                     {shippingAddress?.shipping_price === 0 && (
@@ -277,7 +292,7 @@ const StepAddress = ({
                 {cartData?.data?.discount_amount > 0 && (
                   <Box
                     sx={{
-                      my: 2, // Added margin for separation
+                      my: 2,
                       gap: 2,
                       display: "flex",
                       flexWrap: "wrap",
@@ -287,8 +302,7 @@ const StepAddress = ({
                   >
                     <Typography>{t("Discount Amount")}</Typography>
                     <Typography variant="body1" sx={{ color: "primary.main" }}>
-                      {" "}
-                      {cartData?.data?.discount_amount}{" "}
+                      {cartData?.data?.discount_amount?.toLocaleString()}{" "}
                     </Typography>
                   </Box>
                 )}
@@ -297,7 +311,7 @@ const StepAddress = ({
                   <Box
                     sx={{
                       mt: 2,
-                      mb: 2, // Retained original bottom margin
+                      mb: 2,
                       gap: 2,
                       display: "flex",
                       flexWrap: "wrap",
@@ -308,9 +322,12 @@ const StepAddress = ({
                     <Typography>{t("Points Discount")}</Typography>
                     <Typography variant="body1" color="secondary">
                       -{" "}
-                      {cartData?.data?.sub_total -
-                        cartData?.data?.sub_total_after_points >
-                        0  ? ((cartData?.data?.sub_total -  cartData?.data?.sub_total_after_points)) : 0}{" "}
+                      {((cartData?.data?.sub_total -
+                        cartData?.data?.sub_total_after_points) >
+                        0
+                        ? cartData?.data?.sub_total -
+                          cartData?.data?.sub_total_after_points
+                        : 0)?.toLocaleString()}{" "}
                     </Typography>
                   </Box>
                 )}
@@ -328,12 +345,12 @@ const StepAddress = ({
                 >
                   <Typography variant="h6">{t("Order Total")}</Typography>
                   <Typography variant="h6" color="primary">
-                   {(
+                    {(
                       (cartData?.data?.sub_total_after_points ||
                         cartData?.data?.sub_total_after_discount ||
                         cartData?.data?.sub_total) +
                       (shippingAddress?.shipping_price || 0) / 1000
-                    )}{" "}
+                    )?.toLocaleString()}{" "}
                   </Typography>
                 </Box>
               </Box>

@@ -29,6 +29,7 @@ const MobileNavBar = ({
   handleDrawerToggle,
 }) => {
   const [openCategories, setOpenCategories] = useState({});
+  const [catId, setCatId] = useState(null);
   const [openBrands, setOpenBrands] = useState(false);
   const closeDrawer = () => handleDrawerToggle(false);
 
@@ -37,6 +38,7 @@ const MobileNavBar = ({
       ...prev,
       [categoryId]: !prev[categoryId],
     }));
+    setCatId(categoryId);
   };
 
   const handleBrandsToggle = () => {
@@ -150,7 +152,7 @@ const MobileNavBar = ({
                       <ListItem key={item.id} sx={{ pl: 4 }} disablePadding>
                         <ListItemButton
                           component={Link}
-                          to={`/store`}
+                          to={`/store/${catId}/${item.id}`}
                           onClick={closeDrawer}
                         >
                           <ListItemText primary={getTranslatedValue(item)} />

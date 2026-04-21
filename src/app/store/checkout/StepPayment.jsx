@@ -145,8 +145,8 @@ const StepPayment = ({ handleNext }) => {
                           placeholder="123"
                         />
                       </Grid>
-                      
-                      <Grid item xs={12} sx={{display:'flex',gap:2}}>
+
+                      <Grid item xs={12} sx={{ display: 'flex', gap: 2 }}>
                         <Button variant="contained" onClick={handleNext}>
                           {t("Checkout")}
                         </Button>
@@ -202,7 +202,7 @@ const StepPayment = ({ handleNext }) => {
                       <Typography>{t("Sub Total")}</Typography>
                       <Typography sx={{ color: "text.secondary" }}>
                         {cartData?.data?.sub_total.toLocaleString()}{" "}
-                   
+
                       </Typography>
                     </Box>
 
@@ -220,7 +220,7 @@ const StepPayment = ({ handleNext }) => {
                         {shippingAddress?.shipping_price > 0 && (
                           <div>
                             {shippingAddress?.shipping_price.toLocaleString()}{" "}
-                         
+
                           </div>
                         )}
                         {shippingAddress?.shipping_price === 0 && (
@@ -229,31 +229,87 @@ const StepPayment = ({ handleNext }) => {
                       </Box>
                     </Box>
 
+                    {/* Discount and subtotal after discount */}
                     {cartData?.data?.discount_amount > 0 && (
-                      <Box
-                        sx={{
-                          mb: 2,
-                          gap: 2,
-                          display: "flex",
-                          flexWrap: "wrap",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Typography>{t("Discount Amount")}</Typography>
-                        <Typography
-                          variant="body1"
-                          sx={{ color: "primary.main" }}
+                      <>
+                        <Box
+                          sx={{
+                            mb: 1,
+                            gap: 2,
+                            display: "flex",
+                            flexWrap: "wrap",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
                         >
-                          {cartData?.data?.sub_total_after_discount}
-                        </Typography>
-                      </Box>
+                          <Typography>{t("Discount")}</Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ color: "primary.main" }}
+                          >
+                            -{cartData?.data?.discount_amount.toLocaleString()}
+                          </Typography>
+                        </Box>
+                        <Box
+                          sx={{
+                            mb: 2,
+                            gap: 2,
+                            display: "flex",
+                            flexWrap: "wrap",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Typography>{t("Subtotal After Discount")}</Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ color: "primary.main" }}
+                          >
+                            {cartData?.data?.sub_total_after_discount.toLocaleString()}
+                          </Typography>
+                        </Box>
+                      </>
                     )}
 
                     {cartData?.data?.points_used > 0 && (
+                      <>
+                        <Box
+                          sx={{
+                            gap: 2,
+                            display: "flex",
+                            flexWrap: "wrap",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Typography>{t("Points Used")}</Typography>
+                          <Typography variant="body1" color="secondary">
+                            -{cartData?.data?.points_used.toLocaleString()}
+                          </Typography>
+                        </Box>
+                        <Box
+                          sx={{
+                            my: 2,
+                            gap: 2,
+                            display: "flex",
+                            flexWrap: "wrap",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Typography>
+                            {t("Subtotal After Points")}
+                          </Typography>
+                          <Typography variant="body1" color="secondary">
+                            {cartData?.data?.sub_total_after_points.toLocaleString()} {" "}
+                          </Typography>
+                        </Box>
+                      </>
+                    )}
+                    {/* Taxes and additional details example */}
+                    {cartData?.data?.tax && (
                       <Box
                         sx={{
-                          my: 2,
                           gap: 2,
                           display: "flex",
                           flexWrap: "wrap",
@@ -261,15 +317,34 @@ const StepPayment = ({ handleNext }) => {
                           justifyContent: "space-between",
                         }}
                       >
+                        <Typography>{t("Tax")}</Typography>
                         <Typography>
-                          {t("Sub Total After Points Used")}
-                        </Typography>
-                        <Typography variant="body1" color="secondary">
-                          {cartData?.data?.sub_total_after_points.toLocaleString()}{" "}
-                         
+                          {cartData?.data?.tax.toLocaleString()}
                         </Typography>
                       </Box>
                     )}
+                    {/* Add more details as needed here */}
+                    <Box
+                      sx={{
+                        mt: 2,
+                        gap: 2,
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography variant="h6">{t("Order Total")}</Typography>
+                      <Typography variant="h6" color="primary">
+                        {(
+                          (cartData?.data?.sub_total_after_points ||
+                            cartData?.data?.sub_total_after_discount ||
+                            cartData?.data?.sub_total) +
+                          (shippingAddress?.shipping_price || 0) +
+                          (cartData?.data?.tax || 0)
+                        ).toLocaleString()}
+                      </Typography>
+                    </Box>
                   </Box>
                 </Box>
               )}

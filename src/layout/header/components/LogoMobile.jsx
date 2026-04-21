@@ -20,7 +20,7 @@ function LogoMobile() {
         textDecoration: "none",
       }}
     >
-      <img loading="lazy" alt="logo" style={{ width: "10vw" }} src={logo} />
+      <img loading="lazy" alt="logo" style={{ width: "15vw" }} src={logo} />
     </Typography>
   );
 }

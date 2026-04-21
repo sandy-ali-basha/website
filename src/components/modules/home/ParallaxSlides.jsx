@@ -39,8 +39,9 @@ function SlidePanel({ item, index }) {
         width: "100%",
         height: "100%",
         backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover",
+        backgroundSize: "contain",
         backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         zIndex: index + 1,
         display: "flex",
         alignItems: "center",
@@ -124,7 +125,8 @@ export default function ParallaxSlides({ data, isLoading }) {
   if (isLoading) {
     return (
       <Box sx={{ width: "100%", height: "100dvh" }}>
-        {[1, 2, 3].map((i) => (
+        {[1, 2, 3].map((i) => 
+         (
           <Box
             key={i}
             sx={{
@@ -150,14 +152,14 @@ export default function ParallaxSlides({ data, isLoading }) {
 
   /* 🔹 Render */
   return (
-    <Box sx={{ height: `${slides.length * 200}dvh` }}>
+    <Box sx={{ height: `${slides.length * 170}dvh` }}>
       {/* Sticky viewport */}
       <Box
         ref={containerRef}
         sx={{
           position: "sticky",
           top: 0,
-          height: "100dvh",
+          height: "90dvh",
           overflow: "hidden",
         }}
       >

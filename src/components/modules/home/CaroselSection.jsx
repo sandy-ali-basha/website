@@ -16,7 +16,6 @@ const CaroselSection = () => {
       <Box
         sx={{
           height: { xs: "30dvh", sm: "100dvh" },
-          mt: { xs: "9dvh", sm: "0vh" },
         }}
       >
         <Swiper

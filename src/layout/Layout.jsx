@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
     <div>
       {/* Shared site navigation */}
       <NavBar />
-      <main className="page-content">{children}</main>
+      <main>{children}</main>
       {/* Shared site footer */}
       <Footer />
     </div>

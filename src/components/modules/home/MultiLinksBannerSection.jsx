@@ -14,7 +14,7 @@ const MultiLinksBannerSection = () => {
       {isLoading ? (
         <Skeleton height={"80dvh"} width="100%" />
       ) : data && (
-        <Box
+        data?.is_active && <Box
           sx={{
             height: { xs: "35dvh", sm: "80dvh" },
             position: "relative",
