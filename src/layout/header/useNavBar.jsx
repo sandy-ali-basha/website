@@ -188,8 +188,8 @@ export const useNavBar = () => {
     },
   ];
 
-  const { data: brands } = useQuery(["brands"], async () =>
-    _Brands.getBrands().then((res) => res?.data.brands)
+  const { data: brands = [] } = useQuery(["brands"], async () =>
+    _Brands.getBrands().then((res) => res?.data?.brands || [])
   );
 
   const { categories } = useFetchCategories();
@@ -213,33 +213,19 @@ export const useNavBar = () => {
     if (!isActive) return null;
 
     const lang = i18n?.resolvedLanguage || i18n?.language || "en";
-    const langKey =
-      offerData?.value?.[lang] !== undefined
-        ? lang
-        : offerData?.value?.[lang?.slice(0, 2)] !== undefined
-        ? lang?.slice(0, 2)
-        : "en";
+    const langKey = lang?.slice(0, 2) || "en"; // Use 2-letter language code (ar, en, kr)
 
-    const localized = offerData?.value?.[langKey] || {};
-    const items = Array.isArray(localized?.items)
-      ? localized.items
-      : Array.isArray(offerData?.value?.items)
+    const items = Array.isArray(offerData?.value?.items)
       ? offerData.value.items
       : null;
 
     const serializeItem = (item) => {
-      const activeLang =
-        item?.[langKey] ||
-        item?.[lang?.slice(0, 2)] ||
-        item?.en ||
-        item?.ar ||
-        item?.kr ||
-        item || {};
+      const activeLang = item?.[langKey] || item?.en || item?.ar || item?.kr || {};
 
       return {
-        title: activeLang?.title || activeLang?.heading || "",
-        text: activeLang?.text || activeLang?.description || "",
-        link: item?.link || activeLang?.link || offerData?.value?.link || "",
+        title: activeLang?.title || "",
+        text: activeLang?.text || "",
+        link: item?.link || "",
       };
     };
 

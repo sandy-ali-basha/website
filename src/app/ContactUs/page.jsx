@@ -80,8 +80,7 @@ export default function ContactUs() {
   const { data: contactData } = useContactUs();
   const { data: locationsData } = useContactLocations();
   const locations = locationsData?.data || [];
-
-  console.log("data", contactData?.data);
+  const contactInfo = contactData?.data?.[0] || {};
 
   return (
     <Container sx={{ my: 20 }}>
@@ -211,11 +210,11 @@ export default function ContactUs() {
             {/* Link */}
             <Link
               style={{ color: "initial", textDecoration: "none" }}
-              href={`mailto:${contactData?.data[0]?.email}`}
+              href={`mailto:${contactInfo?.email || ""}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {contactData?.data[0]?.email}
+              {contactInfo?.email || "-"}
             </Link>
           </Box>
           <Box
@@ -233,7 +232,7 @@ export default function ContactUs() {
             <Facebook />
             <Link
               style={{ color: "initial", textDecoration: "none" }}
-              href={contactData?.data[0]?.facebook}
+              href={contactInfo?.facebook || "#"}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -255,7 +254,7 @@ export default function ContactUs() {
             <Instagram />
             <Link
               style={{ color: "initial", textDecoration: "none" }}
-              href={contactData?.data[0]?.instagram}
+              href={contactInfo?.instagram || "#"}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -277,7 +276,7 @@ export default function ContactUs() {
             <LinkedIn />
             <Link
               style={{ color: "initial", textDecoration: "none" }}
-              href={contactData?.data[0]?.linkedin}
+              href={contactInfo?.linkedin || "#"}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -299,7 +298,7 @@ export default function ContactUs() {
             <WhatsApp />
             <Link
               style={{ color: "initial", textDecoration: "none" }}
-              href={`wa.me${contactData?.data[0]?.whatsapp}`}
+              href={contactInfo?.whatsapp ? `https://wa.me/${contactInfo.whatsapp}` : "#"}
               target="_blank"
               rel="noopener noreferrer"
             >

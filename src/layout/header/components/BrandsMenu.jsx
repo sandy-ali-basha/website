@@ -69,8 +69,8 @@ function BrandsMenu({
                 >
                   <img
                     loading="lazy"
-                    src={e.images[0]}
-                    alt={e.name}
+                    src={e?.images?.[0] || ""}
+                    alt={e?.name || "brand"}
                     style={{
                       width: "100%",
                       height: "100%",

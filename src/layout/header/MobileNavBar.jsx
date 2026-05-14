@@ -194,8 +194,8 @@ const MobileNavBar = ({
                       >
                         <img
                           loading="lazy"
-                          src={brand.images[0]}
-                          alt={brand.name}
+                          src={brand?.images?.[0] || ""}
+                          alt={brand?.name || "brand"}
                           style={{
                             width: 40,
                             height: 40,

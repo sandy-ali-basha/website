@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -10,48 +10,33 @@ import {
   CircularProgress,
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { useTranslation } from "react-i18next";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import SearchIcon from "@mui/icons-material/Search";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import Seo from "components/Seo";
 import { usePharmacies } from "hooks/pharmacies/usePharmacies";
 
-// 🔧 حل مشكلة أيقونة الماركر
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-});
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "";
 
-function MapSizeFix({ location }) {
-  const map = useMap();
+const getDistanceMeters = (from, to) => {
+  const toRad = (deg) => (deg * Math.PI) / 180;
+  const earthRadius = 6371000;
 
-  useEffect(() => {
-    const resize = () => map.invalidateSize();
-    const timeoutId = window.setTimeout(resize, 0);
-    window.addEventListener("resize", resize);
+  const dLat = toRad(to.lat - from.lat);
+  const dLng = toRad(to.lng - from.lng);
 
-    return () => {
-      window.clearTimeout(timeoutId);
-      window.removeEventListener("resize", resize);
-    };
-  }, [map]);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(from.lat)) *
+      Math.cos(toRad(to.lat)) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
 
-  useEffect(() => {
-    if (location) {
-      map.setView([location.lat, location.lng], 13, { animate: true });
-      map.invalidateSize();
-    }
-  }, [location, map]);
-
-  return null;
-}
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return earthRadius * c;
+};
 
 export default function PharmacyLocator() {
   const { t } = useTranslation("index");
@@ -61,14 +46,41 @@ export default function PharmacyLocator() {
   const [radius, setRadius] = useState(10000);
   const [searchText, setSearchText] = useState("");
   const [selectedPharmacyId, setSelectedPharmacyId] = useState(null);
+  const [mapCenter, setMapCenter] = useState({ lat: 33.3152, lng: 44.3661 });
 
-  const normalizedPharmacies = pharmacies.map((pharmacy) => ({
-    ...pharmacy,
-    lat: Number(pharmacy.lat),
-    lng: Number(pharmacy.lng),
-  }));
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: GOOGLE_API_KEY,
+  });
+
+  const normalizedPharmacies = useMemo(
+    () =>
+      pharmacies
+        .map((pharmacy) => ({
+          ...pharmacy,
+          lat: Number(pharmacy.lat),
+          lng: Number(pharmacy.lng),
+        }))
+        .filter(
+          (pharmacy) => Number.isFinite(pharmacy.lat) && Number.isFinite(pharmacy.lng),
+        ),
+    [pharmacies],
+  );
+
+  useEffect(() => {
+    if (!location) return;
+    setMapCenter(location);
+  }, [location]);
+
   const normalizedSearch = searchText.trim().toLowerCase();
   const filteredPharmacies = normalizedPharmacies.filter((pharmacy) => {
+    if (location) {
+      const distance = getDistanceMeters(location, {
+        lat: pharmacy.lat,
+        lng: pharmacy.lng,
+      });
+      if (distance > Number(radius)) return false;
+    }
+
     if (!normalizedSearch) return true;
     return (
       pharmacy.name?.toLowerCase().includes(normalizedSearch) ||
@@ -145,40 +157,56 @@ export default function PharmacyLocator() {
         </Stack>
       </Box>
 
-      {/* MAP */}
-      <Box sx={{ height: 450, borderRadius: 3, overflow: "hidden", mb: 4 }}>
-        <MapContainer
-          center={location ? [location.lat, location.lng] : [33.3152, 44.3661]}
-          zoom={location ? 13 : 6}
-          style={{ height: "100%", width: "100%" }}
-        >
-          <MapSizeFix location={location} />
-          <TileLayer
-            attribution="&copy; OpenStreetMap contributors"
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-
-          {location && (
-            <Marker position={[location.lat, location.lng]}>
-              <Popup>{t("yourLocation")}</Popup>
-            </Marker>
-          )}
-
-          {filteredPharmacies.map((p) => (
-            <Marker
-              key={p.id}
-              position={[p.lat, p.lng]}
-              eventHandlers={{
-                click: () => setSelectedPharmacyId(p.id),
-              }}
-            >
-              <Popup>
-                <Typography fontWeight={600}>{p.name}</Typography>
-                <Typography variant="body2">{p.city}</Typography>
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
+      <Box
+        sx={{
+          height: 420,
+          borderRadius: 3,
+          overflow: "hidden",
+          mb: 4,
+          boxShadow: 1,
+          bgcolor: "#f3f4f6",
+          border: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        {!GOOGLE_API_KEY ? (
+          <Box
+            sx={{
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              px: 2,
+              textAlign: "center",
+            }}
+          >
+            <Typography color="text.secondary">
+              Google Maps API key is missing. Add `VITE_GOOGLE_MAPS_API_KEY` to your `.env`.
+            </Typography>
+          </Box>
+        ) : !isLoaded ? (
+          <Box
+            sx={{
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <GoogleMap
+            center={mapCenter}
+            zoom={location ? 12 : 6}
+            mapContainerStyle={{ width: "100%", height: "100%" }}
+          >
+            {location && <Marker position={location} />}
+            {filteredPharmacies.map((p) => (
+              <Marker key={p.id} position={{ lat: p.lat, lng: p.lng }} />
+            ))}
+          </GoogleMap>
+        )}
       </Box>
 
       {/* LIST */}
@@ -202,6 +230,10 @@ export default function PharmacyLocator() {
         {filteredPharmacies.map((p) => (
           <Card
             key={p.id}
+            onClick={() => {
+              setSelectedPharmacyId(p.id);
+              setMapCenter({ lat: p.lat, lng: p.lng });
+            }}
             sx={{
               borderRadius: 3,
               border: p.id === selectedPharmacyId ? "2px solid" : "1px solid",
@@ -209,6 +241,7 @@ export default function PharmacyLocator() {
                 p.id === selectedPharmacyId ? "primary.main" : "divider",
               boxShadow: p.id === selectedPharmacyId ? 6 : 1,
               transition: "0.2s ease",
+              cursor: "pointer",
             }}
           >
             <CardContent>

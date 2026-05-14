@@ -121,7 +121,14 @@ const StepCart = ({ handleNext }) => {
         queryClient.invalidateQueries("cart");
         const currentCartCount =
           parseInt(localStorage.getItem("cart_count")) || 0;
-        localStorage.setItem("cart_count", Math.max(currentCartCount - 1, 0));
+        const newCartCount = Math.max(currentCartCount - 1, 0);
+        localStorage.setItem("cart_count", newCartCount);
+        
+        // Remove cart_id from localStorage when cart is empty
+        if (newCartCount === 0) {
+          localStorage.removeItem("cart_id");
+        }
+        
         Swal.fire({
           icon: "success",
           title: "Success",
